@@ -1,2 +1,2 @@
-string mac_address
-string data
+uint8[] mac_address
+uint8[] data
