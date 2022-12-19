@@ -21,14 +21,14 @@ class ActAsAmbulance(object):
         if packet_type != Packet.PACKET_TYPE_EMERGENCY:
             return
         else:
-            map_frame = msg.data[1:1+63]
-            position_x = struct.unpack('<f', msg.data[1+63+4*0:1+63+4*1])[0]
-            position_y = struct.unpack('<f', msg.data[1+63+4*1:1+63+4*2])[0]
-            position_z = struct.unpack('<f', msg.data[1+63+4*2:1+63+4*3])[0]
-            rotation_x = struct.unpack('<f', msg.data[1+63+4*3:1+63+4*4])[0]
-            rotation_y = struct.unpack('<f', msg.data[1+63+4*4:1+63+4*5])[0]
-            rotation_z = struct.unpack('<f', msg.data[1+63+4*5:1+63+4*6])[0]
-            rotation_w = struct.unpack('<f', msg.data[1+63+4*6:1+63+4*7])[0]
+            map_frame = msg.data[1:1+64].encode('utf-8').strip('\0')
+            position_x = struct.unpack('<f', msg.data[1+64+4*0:1+64+4*1])[0]
+            position_y = struct.unpack('<f', msg.data[1+64+4*1:1+64+4*2])[0]
+            position_z = struct.unpack('<f', msg.data[1+64+4*2:1+64+4*3])[0]
+            rotation_x = struct.unpack('<f', msg.data[1+64+4*3:1+64+4*4])[0]
+            rotation_y = struct.unpack('<f', msg.data[1+64+4*4:1+64+4*5])[0]
+            rotation_z = struct.unpack('<f', msg.data[1+64+4*5:1+64+4*6])[0]
+            rotation_w = struct.unpack('<f', msg.data[1+64+4*6:1+64+4*7])[0]
 
             pose = PoseStamped()
             pose.header.frame_id = map_frame

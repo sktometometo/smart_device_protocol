@@ -33,12 +33,14 @@ class EmergencyCaller(object):
 
         try:
             transform = self.tf_buffer.lookup_transform(
-                self.base_frame_id,
                 self.fixed_frame_id,
+                self.base_frame_id,
                 rospy.Time())
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
             rospy.logwarn('Error: {}'.format(e))
             return
+
+        rospy.loginfo('transform: {}'.format(transform))
 
         msg = Packet()
         msg.mac_address = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
