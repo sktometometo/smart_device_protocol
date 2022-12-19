@@ -45,7 +45,7 @@ class EmergencyCaller(object):
 
         bytes_packet_type = [Packet.PACKET_TYPE_EMERGENCY]
         bytes_map_frame = map(
-            ord, (transform.header.frame_id.encode('utf-8') + ' ' * 64)[:63] + '\0')
+            ord, (transform.header.frame_id.encode('utf-8') + '\0' * 64)[:64])
         bytes_position_x = map(ord, struct.pack(
             '<f', transform.transform.translation.x))
         bytes_position_y = map(ord, struct.pack(
@@ -61,9 +61,10 @@ class EmergencyCaller(object):
         bytes_rotation_w = map(ord, struct.pack(
             '<f', transform.transform.rotation.w))
 
-        msg.data = bytes_packet_type + bytes_map_frame + bytes_position_x + bytes_position_y + \
-            bytes_position_z + bytes_rotation_x + \
-            bytes_rotation_y + bytes_rotation_z + bytes_rotation_w
+        msg.data = bytes_packet_type + bytes_map_frame + \
+            bytes_position_x + bytes_position_y + bytes_position_z + \
+            bytes_rotation_x + bytes_rotation_y + \
+            bytes_rotation_z + bytes_rotation_w
 
         self.pub.publish(msg)
 

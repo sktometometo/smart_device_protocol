@@ -13,22 +13,22 @@ class ActAsAmbulance(object):
 
     def __init__(self):
 
-        self.sub = rospy.Subscriber('/esp_now_ros/read', Packet, self.callback)
+        self.sub = rospy.Subscriber('/esp_now_ros/recv', Packet, self.callback)
 
     def callback(self, msg):
 
-        packet_type = ord(msg[0:1])
+        packet_type = ord(msg.data[0:1])
         if packet_type != Packet.PACKET_TYPE_EMERGENCY:
             return
         else:
-            map_frame = msg[1:1+63].decode('utf-8')
-            position_x = struct.unpack('<f', msg[1+63+4*0:1+63+4*1])[0]
-            position_y = struct.unpack('<f', msg[1+63+4*1:1+63+4*2])[0]
-            position_z = struct.unpack('<f', msg[1+63+4*2:1+63+4*3])[0]
-            rotation_x = struct.unpack('<f', msg[1+63+4*3:1+63+4*4])[0]
-            rotation_y = struct.unpack('<f', msg[1+63+4*4:1+63+4*5])[0]
-            rotation_z = struct.unpack('<f', msg[1+63+4*5:1+63+4*6])[0]
-            rotation_w = struct.unpack('<f', msg[1+63+4*6:1+63+4*7])[0]
+            map_frame = msg.data[1:1+63]
+            position_x = struct.unpack('<f', msg.data[1+63+4*0:1+63+4*1])[0]
+            position_y = struct.unpack('<f', msg.data[1+63+4*1:1+63+4*2])[0]
+            position_z = struct.unpack('<f', msg.data[1+63+4*2:1+63+4*3])[0]
+            rotation_x = struct.unpack('<f', msg.data[1+63+4*3:1+63+4*4])[0]
+            rotation_y = struct.unpack('<f', msg.data[1+63+4*4:1+63+4*5])[0]
+            rotation_z = struct.unpack('<f', msg.data[1+63+4*5:1+63+4*6])[0]
+            rotation_w = struct.unpack('<f', msg.data[1+63+4*6:1+63+4*7])[0]
 
             pose = PoseStamped()
             pose.header.frame_id = map_frame
