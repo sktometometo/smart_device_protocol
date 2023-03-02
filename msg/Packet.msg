@@ -8,21 +8,35 @@
 #   +----------------------+----------------------------+--------------------------+----------------------------+
 #
 # ROS Bridge packets
-
+#
 #   1st
 #   +----------------------+----------------+------------------+---------------------+
 #   | PACKET_TYPE (1 byte) | Stamp (4 byte) | DATA_ID (4 byte) | TOPIC_TYPE (String) |
 #   +----------------------+----------------+------------------+---------------------+
-
+#
 #   2nd
 #   +----------------------+----------------+------------------+---------------------+
 #   | PACKET_TYPE (1 byte) | Stamp (4 byte) | DATA_ID (4 byte) | TOPIC_NAME (String) |
 #   +----------------------+----------------+------------------+---------------------+
-
+#
 #   3rd
 #   +----------------------+----------------+------------------+--------------------------+
 #   | PACKET_TYPE (1 byte) | Stamp (4 byte) | DATA_ID (4 byte) | SERIALIZED_DATA (String) |
 #   +----------------------+----------------+------------------+--------------------------+
+#
+# Sensor modules
+#
+#   ENV III Packet
+#
+#     +----------------------+--------------------+-------------------+
+#     | PACKET_TYPE (1 byte) | MODULE_ID (4 byte) | PRESSURE (4 byte) |
+#     +----------------------+--------------------+-------------------+
+#
+#   IMU Packet
+#
+#     +----------------------+--------------------+-------------------+
+#     | PACKET_TYPE (1 byte) | MODULE_ID (4 byte) | PRESSURE (4 byte) |
+#     +----------------------+--------------------+-------------------+
 #
 
 uint8 PACKET_TYPE_NONE = 0
@@ -30,6 +44,7 @@ uint8 PACKET_TYPE_EMERGENCY = 1
 uint8 PACKET_TYPE_ROSBRIDGE_TOPIC_TYPE = 11
 uint8 PACKET_TYPE_ROSBRIDGE_TOPIC_NAME = 12
 uint8 PACKET_TYPE_ROSBRIDGE_TOPIC_DATA = 13
+uint8 PACKET_TYPE_SENSOR_ENV_III = 21
 
 uint8[] mac_address # Must be 6
 uint8[] data

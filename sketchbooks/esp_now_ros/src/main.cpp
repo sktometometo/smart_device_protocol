@@ -1,15 +1,21 @@
 #include <esp_now.h>
 #include <esp_system.h>
-#include <M5Stack.h>
+
+#ifdef M5STACKFIRE
+  #include <M5Stack.h>
+#endif
+#ifdef M5STACKCORE2
+  #include <M5Core2.h>
+#endif
 #include <WiFi.h>
 
-#define LGFX_M5STACK
+#define LGFX_AUTODETECT
 #define LGFX_USE_V1
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 
-#define ESP_SERIAL // Use USB-Rosserial
-#include <ros.h>
+#include "ros/node_handle.h"
+#include "ArduinoHardware.h"
 #include <esp_now_ros/Packet.h>
 
 void messageCb(const esp_now_ros::Packet&);
@@ -22,7 +28,7 @@ esp_now_ros::Packet msg_recv_packet;
 uint8_t mac_address_for_msg[6];
 uint8_t buffer_for_msg[256];
 
-ros::NodeHandle nh;
+ros::NodeHandle_<ArduinoHardware> nh;
 ros::Publisher publisher("~recv", &msg_recv_packet);
 ros::Subscriber<esp_now_ros::Packet> subscriber("~send", &messageCb);
 

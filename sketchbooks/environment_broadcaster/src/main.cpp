@@ -1,6 +1,3 @@
-#define LGFX_AUTODETECT
-#define LGFX_USE_V1
-
 #include <M5EPD.h>
 
 #include <esp_system.h>
@@ -24,6 +21,40 @@ void OnDataSent(const uint8_t* mac_addr, esp_now_send_status_t status)
                 mac_addr[5]);
   Serial.print("Last Packet Send Status: ");
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+}
+
+void broadcastMessage()
+{
+  esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t*)message, sizeof(message));
+  Serial.print("Broadcasted: ");
+  if (result == ESP_OK)
+  {
+    Serial.println("Success");
+  }
+  else if (result == ESP_ERR_ESPNOW_NOT_INIT)
+  {
+    Serial.println("ESPNOW not Init.");
+  }
+  else if (result == ESP_ERR_ESPNOW_ARG)
+  {
+    Serial.println("Invalid Argument");
+  }
+  else if (result == ESP_ERR_ESPNOW_INTERNAL)
+  {
+    Serial.println("Internal Error");
+  }
+  else if (result == ESP_ERR_ESPNOW_NO_MEM)
+  {
+    Serial.println("ESP_ERR_ESPNOW_NO_MEM");
+  }
+  else if (result == ESP_ERR_ESPNOW_NOT_FOUND)
+  {
+    Serial.println("Peer not found.");
+  }
+  else
+  {
+    Serial.println("Not sure what happened");
+  }
 }
 
 void setup()
@@ -72,42 +103,11 @@ void setup()
 
 void loop()
 {
-  esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t*)message, sizeof(message));
-  Serial.print("Broadcasted: ");
-  if (result == ESP_OK)
-  {
-    Serial.println("Success");
-  }
-  else if (result == ESP_ERR_ESPNOW_NOT_INIT)
-  {
-    Serial.println("ESPNOW not Init.");
-  }
-  else if (result == ESP_ERR_ESPNOW_ARG)
-  {
-    Serial.println("Invalid Argument");
-  }
-  else if (result == ESP_ERR_ESPNOW_INTERNAL)
-  {
-    Serial.println("Internal Error");
-  }
-  else if (result == ESP_ERR_ESPNOW_NO_MEM)
-  {
-    Serial.println("ESP_ERR_ESPNOW_NO_MEM");
-  }
-  else if (result == ESP_ERR_ESPNOW_NOT_FOUND)
-  {
-    Serial.println("Peer not found.");
-  }
-  else
-  {
-    Serial.println("Not sure what happened");
-  }
-
   float pressure = qmp6988.calcPressure();
   Serial.printf("Pressure: %f\n", pressure);
 
   canvas.createCanvas(540, 100);
   canvas.printf("pressure: %lf", pressure);
 
-  delay(5000);
+  delay(100);
 }
