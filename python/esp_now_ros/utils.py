@@ -15,15 +15,59 @@ def parse_packet(packet: bytes):
     string = struct.unpack('64s', packet[10:74])[0].decode('utf-8').replace(
         '\x00', '')
     return packet_type, number_int, number_float, string
+  elif packet_type == Packet.PACKET_TYPE_TASK_DISPATCHER:
+    caller_name = struct.unpack('16s', packet[2:18])[0].decode('utf-8').replace(
+        '\x00', '')
+    target_name = struct.unpack('16s',
+                                packet[18:34])[0].decode('utf-8').replace(
+                                    '\x00', '')
+    task_name = struct.unpack('16s', packet[34:50])[0].decode('utf-8').replace(
+        '\x00', '')
+    if len(packet) > 50:
+      task_args = struct.unpack('{}s'.format(len(packet) - 50),
+                                packet[50:])[0].decode('utf-8').replace(
+                                    '\x00', '')
+    else:
+      task_args = ''
+    return packet_type, caller_name, target_name, task_name, task_args
+  elif packet_type == Packet.PACKET_TYPE_TASK_RESULT:
+    caller_name = struct.unpack('16s', packet[2:18])[0].decode('utf-8').replace(
+        '\x00', '')
+    target_name = struct.unpack('16s',
+                                packet[18:34])[0].decode('utf-8').replace(
+                                    '\x00', '')
+    task_name = struct.unpack('16s', packet[34:50])[0].decode('utf-8').replace(
+        '\x00', '')
+    if len(packet) > 50:
+      task_result = struct.unpack('{}s'.format(len(packet) - 50),
+                                  packet[50:])[0].decode('utf-8').replace(
+                                      '\x00', '')
+    else:
+      task_result = ''
+    return packet_type, caller_name, target_name, task_name, task_result
   else:
     print('{} is not supported packet type', format(packet_type))
+    return Packet.PACKET_TYPE_NONE, None
 
 
 def create_test_packet():
 
-  return struct.pack('H', Packet.PACKET_TYPE_TEST) + struct.pack(
-      'i', -120) + struct.pack('f', -1.0) + struct.pack(
-          '64s', 'Hello, world!'.encode('utf-8'))
+  return struct.pack('H', Packet.PACKET_TYPE_TEST) + \
+         struct.pack('i', -120) + \
+         struct.pack('f', -1.0) + \
+         struct.pack('64s', 'Hello, world!'.encode('utf-8'))
+
+
+def create_task_dispatcher_packet(caller_name: str,
+                                  target_name: str,
+                                  task_name: str,
+                                  task_args: str = ''):
+
+  return struct.pack('H', Packet.PACKET_TYPE_TASK_DISPATCHER) + \
+       struct.pack('16s', caller_name.encode('utf-8')) + \
+       struct.pack('16s', target_name.encode('utf-8')) + \
+       struct.pack('16s', task_name.encode('utf-8')) + \
+       struct.pack('{}s'.format(max(1, len(task_args))), task_args.encode('utf-8'))
 
 
 class ESPNOWROSInterface:
