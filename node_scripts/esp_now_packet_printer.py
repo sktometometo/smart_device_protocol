@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import rospy
-from esp_now_ros.utils import ESPNOWROSInterface
+from esp_now_ros.utils import ESPNOWROSInterface, parse_packet
 
 
 def callback(src_address, data):
 
-  rospy.loginfo('Packet from {} : {}'.format(src_address, data))
+  result = parse_packet(data)
+  rospy.loginfo('Packet from {} : {}'.format(src_address, result))
 
 
 if __name__ == '__main__':

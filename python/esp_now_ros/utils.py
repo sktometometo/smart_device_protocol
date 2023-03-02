@@ -3,6 +3,22 @@ from esp_now_ros.msg import Packet
 import struct
 
 
+def parse_packet(packet: bytes):
+
+  packet_type = struct.unpack('H', packet[0:2])[0]
+
+  if packet_type == Packet.PACKET_TYPE_NONE:
+    return Packet.PACKET_TYPE_NONE, None
+  elif packet_type == Packet.PACKET_TYPE_TEST:
+    number_int = struct.unpack('i', packet[2:6])[0]
+    number_float = struct.unpack('f', packet[6:10])[0]
+    string = struct.unpack('64s', packet[10:74])[0].decode('utf-8').replace(
+        '\x00', '')
+    return packet_type, number_int, number_float, string
+  else:
+    print('{} is not supported packet type', format(packet_type))
+
+
 def create_test_packet():
 
   return struct.pack('H', Packet.PACKET_TYPE_TEST) + struct.pack(
