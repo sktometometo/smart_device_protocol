@@ -12,7 +12,7 @@ def create_test_packet():
 
 class ESPNOWROSInterface:
 
-  def __init__(self, calback=None):
+  def __init__(self, callback=None):
 
     self.raw_callback = callback
     self.sub = rospy.Subscriber('/esp_now_ros/recv', Packet, self.callback)
