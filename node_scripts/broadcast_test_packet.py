@@ -14,4 +14,4 @@ if __name__ == '__main__':
     rate.sleep()
     data = create_test_packet()
     interface.send((255, 255, 255, 255, 255, 255), data)
-    rospy.info('send data: {}'.format(data))
+    rospy.loginfo('send data: {}'.format(data))
