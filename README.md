@@ -61,7 +61,12 @@ TODO
 | PACKET_TYPE (2 byte unsigned int) | Caller name (16 byte String) | Target name (16 byte String) | Task name (16 byte String) | Task Args (String) |
 |-|-|-|-|-|
 
+### Task Received Packet
+
+| PACKET_TYPE (2 byte unsigned int) | Worker name (16 byte String) | Caller name (16 byte String) | Task name (16 byte String) |
+|-|-|-|-|
+
 ### Task Result Packet
 
-| PACKET_TYPE (2 byte unsigned int) | Caller name (16 byte String) | Target name (16 byte String) | Task name (16 byte String) | Result (String) |
+| PACKET_TYPE (2 byte unsigned int) | Worker name (16 byte String) | Caller name (16 byte String) | Task name (16 byte String) | Result (String) |
 |-|-|-|-|-|
