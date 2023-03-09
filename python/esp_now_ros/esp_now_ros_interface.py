@@ -20,7 +20,7 @@ class ESPNOWROSInterface:
     if self.raw_callback is not None:
       self.raw_callback(src_address, data)
 
-  def send(self, target_address, data):
+  def send(self, target_address, data, num_trial=1):
     """
     Args:
         target_address (list of int)
@@ -31,4 +31,5 @@ class ESPNOWROSInterface:
                                   target_address[2], target_address[3],
                                   target_address[4], target_address[5])
     msg.data = data
-    self.pub.publish(msg)
+    for _ in range(num_trial):
+      self.pub.publish(msg)
