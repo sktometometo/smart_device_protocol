@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import rospy
-from esp_now_ros.utils import create_test_packet, ESPNOWROSInterface
+
+from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterface
+from esp_now_ros.packet_generator import create_test_packet
 
 if __name__ == '__main__':
 

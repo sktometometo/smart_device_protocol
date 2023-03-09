@@ -23,9 +23,7 @@ catkin_package(
 
 catkin_install_python(
   PROGRAMS
-    node_scripts/act_as_ambulance.py
     node_scripts/broadcast_test_packet.py
-    node_scripts/emergency_caller.py
     node_scripts/esp_now_packet_printer.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

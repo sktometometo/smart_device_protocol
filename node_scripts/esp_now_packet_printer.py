@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import rospy
-from esp_now_ros.utils import ESPNOWROSInterface, parse_packet
+
+from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterface
+from esp_now_ros.packet_parser import parse_packet
 
 
 def callback(src_address, data):
