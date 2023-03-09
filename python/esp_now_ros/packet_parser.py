@@ -33,6 +33,16 @@ def parse_packet(packet: bytes):
       task_args = ''
     return packet_type, caller_name, target_name, task_name, task_args
 
+  elif packet_type == Packet.PACKET_TYPE_TASK_RECEIVED:
+    worker_name = struct.unpack('16s', packet[2:18])[0].decode('utf-8').replace(
+        '\x00', '')
+    caller_name = struct.unpack('16s',
+                                packet[18:34])[0].decode('utf-8').replace(
+                                    '\x00', '')
+    task_name = struct.unpack('16s', packet[34:50])[0].decode('utf-8').replace(
+        '\x00', '')
+    return packet_type, worker_name, caller_name, task_name
+
   elif packet_type == Packet.PACKET_TYPE_TASK_RESULT:
     caller_name = struct.unpack('16s', packet[2:18])[0].decode('utf-8').replace(
         '\x00', '')

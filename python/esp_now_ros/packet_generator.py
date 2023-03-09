@@ -23,6 +23,15 @@ def create_task_dispatcher_packet(caller_name: str,
        struct.pack('{}s'.format(max(1, len(task_args))), task_args.encode('utf-8'))
 
 
+def create_task_received_packet(worker_name: str, caller_name: str,
+                                task_name: str):
+
+  return struct.pack('H', Packet.PACKET_TYPE_TASK_RECEIVED) + \
+       struct.pack('16s', worker_name.encode('utf-8')) + \
+       struct.pack('16s', caller_name.encode('utf-8')) + \
+       struct.pack('16s', task_name.encode('utf-8'))
+
+
 def create_emergency_packet(map_frame: str, position_x: float,
                             position_y: float, position_z: float,
                             orientation_x: float, orientation_y: float,
