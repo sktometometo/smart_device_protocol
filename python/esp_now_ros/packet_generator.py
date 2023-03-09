@@ -3,12 +3,14 @@ import struct
 from esp_now_ros.msg import Packet
 
 
-def create_test_packet():
+def create_test_packet(num_int: int = -120,
+                       num_float: float = -1.0,
+                       string: str = "Hello, world!"):
 
   return struct.pack('H', Packet.PACKET_TYPE_TEST) + \
-         struct.pack('i', -120) + \
-         struct.pack('f', -1.0) + \
-         struct.pack('64s', 'Hello, world!'.encode('utf-8'))
+         struct.pack('i', num_int) + \
+         struct.pack('f', num_float) + \
+         struct.pack('64s', string.encode('utf-8'))
 
 
 def create_task_dispatcher_packet(caller_name: str,
