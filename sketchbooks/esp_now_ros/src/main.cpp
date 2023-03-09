@@ -2,10 +2,10 @@
 #include <esp_system.h>
 
 #ifdef M5STACKFIRE
-  #include <M5Stack.h>
+#include <M5Stack.h>
 #endif
 #ifdef M5STACKCORE2
-  #include <M5Core2.h>
+#include <M5Core2.h>
 #endif
 #include <WiFi.h>
 
@@ -32,12 +32,14 @@ ros::NodeHandle_<ArduinoHardware> nh;
 ros::Publisher publisher("~recv", &msg_recv_packet);
 ros::Subscriber<esp_now_ros::Packet> subscriber("~send", &messageCb);
 
-void messageCb(const esp_now_ros::Packet& msg) {
+void messageCb(const esp_now_ros::Packet& msg)
+{
   // Register a peer
   esp_now_peer_info_t peer_temp;
   memset(&peer_temp, 0, sizeof(peer_temp));
-  for (int i=0; i<6; i++) {
-      peer_temp.peer_addr[i] = msg.mac_address[i];
+  for (int i = 0; i < 6; i++)
+  {
+    peer_temp.peer_addr[i] = msg.mac_address[i];
   }
   esp_err_t add_status = esp_now_add_peer(&peer_temp);
 
@@ -51,30 +53,29 @@ void messageCb(const esp_now_ros::Packet& msg) {
   sprite_event_info.fillScreen(0xFFFFFF);
   sprite_event_info.setCursor(0, 0);
   sprite_event_info.println("send packet");
-  sprite_event_info.printf(
-          "target mac: %02X:%02X:%02X:%02X:%02X:%02X\n",
-          msg.mac_address[0],
-          msg.mac_address[1],
-          msg.mac_address[2],
-          msg.mac_address[3],
-          msg.mac_address[4],
-          msg.mac_address[5]
-          );
+  sprite_event_info.printf("target mac: %02X:%02X:%02X:%02X:%02X:%02X\n", msg.mac_address[0], msg.mac_address[1],
+                           msg.mac_address[2], msg.mac_address[3], msg.mac_address[4], msg.mac_address[5]);
   sprite_event_info.print("data: ");
-  for ( int i=0; i<msg.data_length; i++ ) {
-      sprite_event_info.printf("%d ", msg.data[i]);
+  for (int i = 0; i < msg.data_length; i++)
+  {
+    sprite_event_info.printf("%d ", msg.data[i]);
   }
   sprite_event_info.println("");
   sprite_event_info.pushSprite(0, 80);
+
+  // Log
+  nh.loginfo("Subscribe a message and send a packet.");
 }
 
-
-void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
-  for ( int i=0; i<6; i++ ) {
-      mac_address_for_msg[i] = mac_addr[i];
+void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
+{
+  for (int i = 0; i < 6; i++)
+  {
+    mac_address_for_msg[i] = mac_addr[i];
   }
-  for ( int i=0; i<data_len; i++ ) {
-      buffer_for_msg[i] = data[i];
+  for (int i = 0; i < data_len; i++)
+  {
+    buffer_for_msg[i] = data[i];
   }
   msg_recv_packet.mac_address = mac_address_for_msg;
   msg_recv_packet.mac_address_length = 6;
@@ -87,28 +88,25 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   sprite_event_info.fillScreen(0xFFFFFF);
   sprite_event_info.setCursor(0, 0);
   sprite_event_info.println("recieve packet");
-  sprite_event_info.printf(
-          "src mac: %02X:%02X:%02X:%02X:%02X:%02X\n",
-          mac_address_for_msg[0],
-          mac_address_for_msg[1],
-          mac_address_for_msg[2],
-          mac_address_for_msg[3],
-          mac_address_for_msg[4],
-          mac_address_for_msg[5]
-          );
+  sprite_event_info.printf("src mac: %02X:%02X:%02X:%02X:%02X:%02X\n", mac_address_for_msg[0], mac_address_for_msg[1],
+                           mac_address_for_msg[2], mac_address_for_msg[3], mac_address_for_msg[4],
+                           mac_address_for_msg[5]);
   sprite_event_info.print("data: ");
-  for ( int i=0; i<data_len; i++ ) {
-      sprite_event_info.printf("%d ", data[i]);
+  for (int i = 0; i < data_len; i++)
+  {
+    sprite_event_info.printf("%d ", data[i]);
   }
   sprite_event_info.println("");
   sprite_event_info.pushSprite(0, 80);
-}
 
+  // Log
+  nh.loginfo("Received a packet and publish a message.");
+}
 
 void setup()
 {
   // Read device mac address
-  uint8_t device_mac_address[6] = {0};
+  uint8_t device_mac_address[6] = { 0 };
   esp_read_mac(device_mac_address, ESP_MAC_WIFI_STA);
 
   // LCD Initialization
@@ -128,15 +126,8 @@ void setup()
   sprite_event_info.setTextColor(0x000000);
 
   sprite_device_info.println("ESP-NOW ROS Driver");
-  sprite_device_info.printf(
-          "MAC ADDR: %02X:%02X:%02X:%02X:%02X:%02X\n",
-          device_mac_address[0],
-          device_mac_address[1],
-          device_mac_address[2],
-          device_mac_address[3],
-          device_mac_address[4],
-          device_mac_address[5]
-          );
+  sprite_device_info.printf("MAC ADDR: %02X:%02X:%02X:%02X:%02X:%02X\n", device_mac_address[0], device_mac_address[1],
+                            device_mac_address[2], device_mac_address[3], device_mac_address[4], device_mac_address[5]);
   sprite_device_info.pushSprite(0, 0);
 
   // Rosserial Initialization
@@ -145,9 +136,10 @@ void setup()
   nh.subscribe(subscriber);
   sprite_device_info.println("ROSSERIAL connecting...");
   sprite_device_info.pushSprite(0, 0);
-  while (not nh.connected()) {
-      delay(1000);
-      nh.spinOnce();
+  while (not nh.connected())
+  {
+    delay(1000);
+    nh.spinOnce();
   }
   sprite_device_info.println("ROSSERIAL Initialized.");
   sprite_device_info.pushSprite(0, 0);
@@ -155,9 +147,12 @@ void setup()
   // ESP-NOW initialization
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
-  if (esp_now_init() == ESP_OK) {
+  if (esp_now_init() == ESP_OK)
+  {
     nh.loginfo("ESPNow Init Success");
-  } else {
+  }
+  else
+  {
     nh.logerror("ESPNow Init Failed");
     ESP.restart();
   }
@@ -166,7 +161,8 @@ void setup()
   sprite_device_info.pushSprite(0, 0);
 }
 
-void loop() {
+void loop()
+{
   nh.spinOnce();
   delay(5);
 }
