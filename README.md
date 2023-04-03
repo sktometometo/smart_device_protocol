@@ -141,6 +141,11 @@ TODO
 +-----------------------------------+---------------------------------+------------------------------+
 ```
 
+#### UNITV2 Person Counter Packet
+
+| PACKET_TYPE (2 byte unsigned int) | NUMBER OF PERSON (4 byte unsigned int) | PLACE_NAME (64 byte String) |
+|-|-|-|
+
 #### IMU Packet
 
 TODO
