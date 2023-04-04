@@ -61,6 +61,10 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
 
 void setup()
 {
+  // Read device mac address
+  uint8_t device_mac_address[6] = { 0 };
+  esp_read_mac(device_mac_address, ESP_MAC_WIFI_STA);
+
   // Device Initialization
   M5.begin(true, false, true, true);
   Serial.begin(115200);
@@ -69,6 +73,27 @@ void setup()
 
   // Set default name
   strncpy(module_name, "default", 64);
+
+  // LCD
+  lcd.init();
+  lcd.setRotation(1);
+  lcd.setBrightness(128);
+  lcd.setColorDepth(24);
+  lcd.fillScreen(0xFFFFFF);
+
+  sprite_header.createSprite(320, 80);
+  sprite_sensor.createSprite(320, 160);
+
+  sprite_header.fillScreen(0xFFFFFF);
+  sprite_header.setTextColor(0x000000);
+  sprite_header.setTextSize(1.5, 1.5);
+  sprite_sensor.fillScreen(0xFFFFFF);
+  sprite_sensor.setTextColor(0x000000);
+
+  sprite_header.println("ENR DPS310 Interface");
+  sprite_header.printf("MAC ADDR: %02X:%02X:%02X:%02X:%02X:%02X\n", device_mac_address[0], device_mac_address[1],
+                       device_mac_address[2], device_mac_address[3], device_mac_address[4], device_mac_address[5]);
+  sprite_header.pushSprite(0, 0);
 
   // Initialize ESP-NOW
   WiFi.mode(WIFI_STA);
@@ -95,13 +120,22 @@ void loop()
   Dps310PressureSensor.measurePressureOnce(pressure);
   Dps310PressureSensor.measureTempOnce(temp_dps);
 
+  sprite_sensor.fillScreen(0xFFFFFF);
+  sprite_sensor.setCursor(0, 0);
   Serial.println("==== measured ====");
   Serial.printf("acc: %f %f %f\n", accX, accY, accZ);
+  sprite_sensor.printf("acc: %f %f %f\n", accX, accY, accZ);
   Serial.printf("gyro: %f %f %f\n", gyroX, gyroY, gyroZ);
+  sprite_sensor.printf("gyro: %f %f %f\n", gyroX, gyroY, gyroZ);
   Serial.printf("rpy: %f %f %f\n", roll, pitch, yaw);
+  sprite_sensor.printf("rpy: %f %f %f\n", roll, pitch, yaw);
   Serial.printf("temp(mpu): %f\n", temp_mpu);
+  sprite_sensor.printf("temp(mpu): %f\n", temp_mpu);
   Serial.printf("pressure: %f\n", pressure);
+  sprite_sensor.printf("pressure: %f\n", pressure);
   Serial.printf("temp(dps): %f\n", temp_dps);
+  sprite_sensor.printf("temp(dps): %f\n", temp_dps);
+  sprite_sensor.pushSprite(0, 80);
 
   create_sensor_enviii_packet(packet, module_name, pressure);
   esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t*)packet, sizeof(packet) / sizeof(packet[0]));
