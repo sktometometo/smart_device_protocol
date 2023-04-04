@@ -105,6 +105,22 @@ TODO
 | PACKET_TYPE (2 byte unsigned int) | Integer number = -120 (4 byte signed int) | Float number -1.0 (4 byte float) | String (Hello, world!) (64 bytes String) |
 |-|-|-|-|
 
+### Named value packet
+
+#### Named String Packet
+
+| PACKET_TYPE (2 byte unsigned int) | Name (64 byte string) | Value (64 bytes String) |
+|-|-|-|
+
+#### Named Int Packet
+
+| PACKET_TYPE (2 byte unsigned int) | Name (64 byte string) | Value (4 bytes signed int) |
+|-|-|-|
+
+#### Named Float Packet
+
+| PACKET_TYPE (2 byte unsigned int) | Name (64 byte string) | Value (4 bytes float) |
+|-|-|-|
 
 ### Sensor modules
 
