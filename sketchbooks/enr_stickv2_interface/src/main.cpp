@@ -11,6 +11,8 @@
 
 #include <esp_now_ros/Packet.h>
 
+#include <packet_creator.h>
+
 #define BUFSIZE 2048
 
 const char place[] = "73B2_TV_Front";
@@ -26,14 +28,6 @@ esp_now_peer_info_t peer;
 uint8_t packet[240];
 
 StaticJsonDocument<BUFSIZE> doc;
-
-void send_packet(uint32_t number_of_person, const char* place_name)
-{
-  *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_SENSOR_UNITV2_PERSON_COUNTER;
-  *(uint32_t*)(packet + 2) = number_of_person;
-  strncpy((char*)(packet + 2 + 4), place_name, 200);
-  esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t*)packet, sizeof(packet) / sizeof(packet[0]));
-}
 
 void setup()
 {
@@ -134,7 +128,8 @@ void loop()
         Serial.printf("number of people: %d\n", num_of_person);
         Serial.print("\n");
 
-        send_packet(num_of_person, place);
+        create_sensor_stickv2_packet(packet, num_person, place);
+        esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t*)packet, sizeof(packet) / sizeof(packet[0]));
       }
       else
       {
