@@ -2,14 +2,13 @@
 #include <esp_system.h>
 
 #if defined(M5STACKFIRE)
-#include <M5Stack.h>
+#include <Arduino.h>
 #define LGFX_USE_V1
 #elif defined(M5STACKCORE2)
-#include <M5Core2.h>
+#include <Arduino.h>
 #define LGFX_USE_V1
 #elif defined(M5STACKATOMS3)
 #include <Arduino.h>
-//#include <M5AtomS3.h>
 #endif
 #include <WiFi.h>
 
@@ -18,7 +17,11 @@
 #include <LGFX_AUTODETECT.hpp>
 
 #include "ros/node_handle.h"
+#if defined(M5StackATOMS3)
+#include "ArduinoAtomS3Hardware.h"
+#else
 #include "ArduinoHardware.h"
+#endif
 #include <esp_now_ros/Packet.h>
 
 void messageCb(const esp_now_ros::Packet&);
@@ -126,6 +129,7 @@ void setup()
   sprite_device_info.setTextColor(0x000000);
 #if defined(M5STACKATOMS3)
   sprite_device_info.setTextSize(1.0, 1.0);
+  sprite_event_info.setTextSize(1.0, 1.0);
 #else
   sprite_device_info.setTextSize(1.5, 1.5);
 #endif
