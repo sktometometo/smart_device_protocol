@@ -1,16 +1,19 @@
 #include <esp_now.h>
 #include <esp_system.h>
 
-#ifdef M5STACKFIRE
+#if defined(M5STACKFIRE)
 #include <M5Stack.h>
-#endif
-#ifdef M5STACKCORE2
+#define LGFX_USE_V1
+#elif defined(M5STACKCORE2)
 #include <M5Core2.h>
+#define LGFX_USE_V1
+#elif defined(M5STACKATOMS3)
+#include <Arduino.h>
+//#include <M5AtomS3.h>
 #endif
 #include <WiFi.h>
 
 #define LGFX_AUTODETECT
-#define LGFX_USE_V1
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 
@@ -116,12 +119,16 @@ void setup()
   lcd.setColorDepth(24);
   lcd.fillScreen(0xFFFFFF);
 
-  sprite_device_info.createSprite(320, 80);
-  sprite_event_info.createSprite(320, 160);
+  sprite_device_info.createSprite(lcd.width(), lcd.height() / 3);
+  sprite_event_info.createSprite(lcd.width(), lcd.height() * 2 / 3);
 
   sprite_device_info.fillScreen(0xFFFFFF);
   sprite_device_info.setTextColor(0x000000);
+#if defined(M5STACKATOMS3)
+  sprite_device_info.setTextSize(1.0, 1.0);
+#else
   sprite_device_info.setTextSize(1.5, 1.5);
+#endif
   sprite_event_info.fillScreen(0xFFFFFF);
   sprite_event_info.setTextColor(0x000000);
 
