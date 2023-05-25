@@ -3,7 +3,7 @@ import struct
 from esp_now_ros.msg import Packet
 
 
-def parse_packet(packet: bytes):
+def parse_packet(packet):
 
   packet_type = struct.unpack('H', packet[0:2])[0]
 
