@@ -56,4 +56,3 @@ protected:
   long baud_;
 };
 
-#endif
