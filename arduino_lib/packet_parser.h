@@ -21,3 +21,17 @@ void parse_packet_as_named_string_packet(const uint8_t* packet, uint16_t& packet
   strncpy(name, (char*)(packet + 2), 64);
   strncpy(value, (char*)(packet + 2 + 64), 64);
 }
+
+void parse_packet_as_message_board_meta_packet(const uint8_t* packet, uint16_t& packet_type, char* module_name)
+{
+  packet_type = *(uint16_t*)packet;
+  strncpy(module_name, (char*)(packet + 2), 64);
+}
+
+void parse_packet_as_message_board_data_packet(const uint8_t* packet, uint16_t& packet_type, char* source_name,
+                                               char* message)
+{
+  packet_type = *(uint16_t*)packet;
+  strncpy(source_name, (char*)(packet + 2), 64);
+  strncpy(message, (char*)(packet + 2 + 64), 64);
+}
