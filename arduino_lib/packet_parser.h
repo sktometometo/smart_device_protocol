@@ -1,3 +1,6 @@
+#ifndef ESP_NOW_ROS_PACKET_PARSER_H__
+#define ESP_NOW_ROS_PACKET_PARSER_H__
+
 #include <esp_now_ros/Packet.h>
 #include <string.h>
 
@@ -35,3 +38,5 @@ void parse_packet_as_message_board_data_packet(const uint8_t* packet, uint16_t& 
   strncpy(source_name, (char*)(packet + 2), 64);
   strncpy(message, (char*)(packet + 2 + 64), 64);
 }
+
+#endif

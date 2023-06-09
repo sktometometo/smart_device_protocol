@@ -1,3 +1,6 @@
+#ifndef ESP_NOW_ROS_PACKET_CREATOR_H__
+#define ESP_NOW_ROS_PACKET_CREATOR_H__
+
 #include <esp_now_ros/Packet.h>
 
 void create_sensor_enviii_packet(uint8_t* packet, const char* module_name, int32_t pressure)
@@ -24,5 +27,7 @@ void create_device_message_board_data_packet(uint8_t* packet, const char* source
 {
   *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_META;
   strncpy((char*)(packet + 2), source_name, 64);
-  strncpy((char*)(packet + 2 + 64), message_name, 128);
+  strncpy((char*)(packet + 2 + 64), message, 128);
 }
+
+#endif
