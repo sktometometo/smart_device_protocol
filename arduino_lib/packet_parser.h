@@ -32,11 +32,12 @@ void parse_packet_as_message_board_meta_packet(const uint8_t* packet, uint16_t& 
 }
 
 void parse_packet_as_message_board_data_packet(const uint8_t* packet, uint16_t& packet_type, char* source_name,
-                                               char* message)
+                                               uint64_t& timeout_duration, char* message)
 {
   packet_type = *(uint16_t*)packet;
   strncpy(source_name, (char*)(packet + 2), 64);
-  strncpy(message, (char*)(packet + 2 + 64), 64);
+  timeout_duration = *(uint64_t*)(packet + 2 + 64);
+  strncpy(message, (char*)(packet + 2 + 64 + 8), 64);
 }
 
 #endif

@@ -81,9 +81,10 @@ def parse_packet(packet):
   elif packet_type == Packet.PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA:
     source_name = struct.unpack('16s', packet[2:2 + 64])[0].decode('utf-8').replace(
         '\x00', '')
-    message = struct.unpack('16s', packet[2 + 64:2 + 64 + 64])[0].decode('utf-8').replace(
+    timeout_duration = struct.unpack('L', packet[2 + 64:2 + 64 + 8])[0]
+    message = struct.unpack('16s', packet[2 + 64 + 8:2 + 64 + 8 + 64])[0].decode('utf-8').replace(
         '\x00', '')
-    return packet_type, source_name, message
+    return packet_type, source_name, timeout_duration, message
   
   else:
     print('{} is not supported packet type', format(packet_type))

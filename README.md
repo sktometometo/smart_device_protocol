@@ -170,5 +170,5 @@ TODO
 
 #### Device message board data packet
 
-| PACKET_TYPE (2 byte unsigned int) | source name (64 byte String) | message name (64 byte String) |
-|-|-|-|
+| PACKET_TYPE (2 byte unsigned int) | source name (64 byte String) | timeout duration (msec) (8 byte unsigned int) | message name (64 byte String) |
+|-|-|-|-|

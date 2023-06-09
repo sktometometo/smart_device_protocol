@@ -49,7 +49,8 @@ def create_emergency_packet(map_frame: str, position_x: float,
       struct.pack('f', orientation_z) + \
       struct.pack('f', orientation_w)
 
-def create_device_message_board_data(source_name: str, message: str):
+def create_device_message_board_data(source_name: str, timeout_duration: int, message: str):
   return struct.pack('H', Packet.PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA) + \
       struct.pack('64s', source_name.encode('utf-8')) + \
+      struct.pack('L', timeout_duration) + \
       struct.pack('64s', message.encode('utf-8'))
