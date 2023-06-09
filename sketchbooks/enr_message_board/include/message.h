@@ -3,23 +3,20 @@
 
 class Message
 {
-private:
-  std::string message;
-  std::string source_name;
-
 public:
-  Message(const uint8_t* data)
+  char message[64];
+  char source_name[64];
+  unsigned long deadline;
+
+  Message(const uint8_t* data, unsigned long deadline)
   {
     uint16_t packet_type;
-    char* bytes_source_name;
-    char* bytes_message;
-    parse_packet_as_message_board_data_packet(data, packet_type, bytes_source_name, bytes_message);
-    message = std::string(bytes_message);
-    source_name = std::string(bytes_source_name);
+    parse_packet_as_message_board_data_packet(data, packet_type, source_name, message);
+    this->deadline = deadline;
   }
 
   void to_packet(uint8_t* data)
   {
-    return;
+    create_device_message_board_data_packet(data, source_name, message);
   }
 };
