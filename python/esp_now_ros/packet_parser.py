@@ -72,7 +72,19 @@ def parse_packet(packet):
     else:
       task_result = ''
     return packet_type, caller_name, target_name, task_name, task_result
-
+  
+  elif packet_type == Packet.PACKET_TYPE_DEVICE_MESSAGE_BOARD_META:
+    device_name = struct.unpack('16s', packet[2:2 + 64])[0].decode('utf-8').replace(
+        '\x00', '')
+    return packet_type, device_name
+  
+  elif packet_type == Packet.PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA:
+    source_name = struct.unpack('16s', packet[2:2 + 64])[0].decode('utf-8').replace(
+        '\x00', '')
+    message = struct.unpack('16s', packet[2 + 64:2 + 64 + 64])[0].decode('utf-8').replace(
+        '\x00', '')
+    return packet_type, source_name, message
+  
   else:
     print('{} is not supported packet type', format(packet_type))
     return Packet.PACKET_TYPE_NONE, None
