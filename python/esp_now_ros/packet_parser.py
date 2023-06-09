@@ -74,15 +74,15 @@ def parse_packet(packet):
     return packet_type, caller_name, target_name, task_name, task_result
   
   elif packet_type == Packet.PACKET_TYPE_DEVICE_MESSAGE_BOARD_META:
-    device_name = struct.unpack('16s', packet[2:2 + 64])[0].decode('utf-8').replace(
+    device_name = struct.unpack('64s', packet[2:2 + 64])[0].decode('utf-8').replace(
         '\x00', '')
     return packet_type, device_name
   
   elif packet_type == Packet.PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA:
-    source_name = struct.unpack('16s', packet[2:2 + 64])[0].decode('utf-8').replace(
+    source_name = struct.unpack('64s', packet[2:2 + 64])[0].decode('utf-8').replace(
         '\x00', '')
     timeout_duration = struct.unpack('L', packet[2 + 64:2 + 64 + 8])[0]
-    message = struct.unpack('16s', packet[2 + 64 + 8:2 + 64 + 8 + 64])[0].decode('utf-8').replace(
+    message = struct.unpack('64s', packet[2 + 64 + 8:2 + 64 + 8 + 64])[0].decode('utf-8').replace(
         '\x00', '')
     return packet_type, source_name, timeout_duration, message
   

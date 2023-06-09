@@ -7,7 +7,6 @@
 #include <esp_now_ros/Packet.h>
 
 #include <packet_creator.h>
-#include <packet_parser.h>
 
 #include <message.h>
 
@@ -34,7 +33,7 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
   Serial.printf("Received packet. type: %d\n", packet_type);
   if (get_packet_type(data) == esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
   {
-    message_board.push_back(Message(data, millis() + duration_timeout));
+    message_board.push_back(Message(data));
     Serial.printf("Push message\n");
   }
 }
@@ -82,6 +81,7 @@ void loop()
 {
   uint8_t buf[250];
   create_device_message_board_meta_packet(buf, DEVICE_NAME);
+  esp_now_send(peer_broadcast.peer_addr, (uint8_t*)buf, sizeof(buf));
   canvas_message.clear();
   canvas_message.setCursor(0, 0);
   for (auto m = message_board.begin(); m != message_board.end();)

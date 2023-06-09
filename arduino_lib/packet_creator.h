@@ -26,7 +26,7 @@ void create_device_message_board_meta_packet(uint8_t* packet, const char* module
 void create_device_message_board_data_packet(uint8_t* packet, const char* source_name, uint64_t timeout_duration,
                                              const char* message)
 {
-  *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_META;
+  *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA;
   strncpy((char*)(packet + 2), source_name, 64);
   *(uint64_t*)(packet + 2 + 64) = timeout_duration;
   strncpy((char*)(packet + 2 + 64 + 8), message, 64);
