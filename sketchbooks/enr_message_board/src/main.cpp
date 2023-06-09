@@ -52,6 +52,7 @@ void setup()
   canvas.setTextSize(3);
   canvas.setCursor(0, 0);
   canvas.printf("ENR MESSAGE BOARD\n");
+  canvas.printf("Name: %s\n", DEVICE_NAME);
   canvas.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
                 mac_address[4], mac_address[5]);
   canvas.pushCanvas(0, 0, UPDATE_MODE_DU4);
