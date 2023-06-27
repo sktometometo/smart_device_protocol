@@ -5,14 +5,14 @@ from esp_now_ros.msg import Packet
 
 def parse_packet(packet):
 
-  packet_type = struct.unpack('H', packet[0:2])[0]
+  packet_type = struct.unpack('<H', packet[0:2])[0]
 
   if packet_type == Packet.PACKET_TYPE_NONE:
     return Packet.PACKET_TYPE_NONE, None
 
   elif packet_type == Packet.PACKET_TYPE_TEST:
-    number_int = struct.unpack('i', packet[2:6])[0]
-    number_float = struct.unpack('f', packet[6:10])[0]
+    number_int = struct.unpack('<i', packet[2:6])[0]
+    number_float = struct.unpack('<f', packet[6:10])[0]
     string = struct.unpack('64s', packet[10:74])[0].decode('utf-8').replace(
         '\x00', '')
     return packet_type, number_int, number_float, string
@@ -21,12 +21,12 @@ def parse_packet(packet):
 
     module_name = struct.unpack('64s', packet[2:66])[0].decode('utf-8').replace(
         '\x00', '')
-    pressure = struct.unpack('i', packet[66:70])[0]
+    pressure = struct.unpack('<i', packet[66:70])[0]
     return packet_type, module_name, pressure
 
   elif packet_type == Packet.PACKET_TYPE_SENSOR_UNITV2_PERSON_COUNTER:
 
-    number_of_person = struct.unpack('i', packet[2:6])[0]
+    number_of_person = struct.unpack('<i', packet[2:6])[0]
     place_name = struct.unpack('64s', packet[6:70])[0].decode('utf-8').replace(
         '\x00', '')
     return packet_type, number_of_person, place_name
@@ -81,7 +81,7 @@ def parse_packet(packet):
   elif packet_type == Packet.PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA:
     source_name = struct.unpack('64s', packet[2:2 + 64])[0].decode('utf-8').replace(
         '\x00', '')
-    timeout_duration = struct.unpack('L', packet[2 + 64:2 + 64 + 8])[0]
+    timeout_duration = struct.unpack('<L', packet[2 + 64:2 + 64 + 8])[0]
     message = struct.unpack('64s', packet[2 + 64 + 8:2 + 64 + 8 + 64])[0].decode('utf-8').replace(
         '\x00', '')
     return packet_type, source_name, timeout_duration, message
