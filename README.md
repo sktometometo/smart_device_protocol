@@ -1,5 +1,7 @@
 # esp_now_ros
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 This package enables to send and receive packet between multiple machines via ESP-NOW.
 
 ## How to use
