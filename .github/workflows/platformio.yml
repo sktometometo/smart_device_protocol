@@ -19,10 +19,11 @@ jobs:
         required-ros-distributions: noetic
     - name: Install catkin tool
       run: sudo apt-get install python3-catkin-tools
-    - name: Update pip
+    - name: Update pip and install pip package
       run: |
         pip3 install pip --upgrade
         pip3 install pyopenssl --upgrade
+        pip3 install platformio
     - name: Init workspace
       run: |
         source /opt/ros/noetic/setup.bash
