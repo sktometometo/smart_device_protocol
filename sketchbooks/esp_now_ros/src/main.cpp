@@ -70,7 +70,7 @@ void messageCb(const esp_now_ros::Packet& msg)
   sprite_event_info.pushSprite(0, 80);
 
   // Log
-  nh.loginfo("Subscribe a message and send a packet.");
+  nh.logdebug("Subscribe a message and send a packet.");
 }
 
 void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
@@ -106,7 +106,7 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
   sprite_event_info.pushSprite(0, 80);
 
   // Log
-  nh.loginfo("Received a packet and publish a message.");
+  nh.logdebug("Received a packet and publish a message.");
 }
 
 void setup()
