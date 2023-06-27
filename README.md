@@ -3,6 +3,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Black formatting](https://github.com/sktometometo/esp_now_ros/actions/workflows/python_black.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/python_black.yml)
 [![ROS build workflow](https://github.com/sktometometo/esp_now_ros/actions/workflows/catkin_build.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/catkin_build.yml)
+[![PlatformIO Build Workflow](https://github.com/sktometometo/esp_now_ros/actions/workflows/platformio.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/platformio.yml)
 
 This package enables to send and receive packet between multiple machines via ESP-NOW.
 
