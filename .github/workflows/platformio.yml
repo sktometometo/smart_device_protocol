@@ -1,0 +1,50 @@
+name: PlatformIO Build Workflow
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    env:
+      CATKIN_WS: /home/runner/work/catkin_ws
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup ROS
+      uses: ros-tooling/setup-ros@v0.2
+      with:
+        required-ros-distributions: noetic
+    - name: Install catkin tool
+      run: sudo apt-get install python3-catkin-tools
+    - name: Update pip
+      run: |
+        pip3 install pip --upgrade
+        pip3 install pyopenssl --upgrade
+    - name: Init workspace
+      run: |
+        source /opt/ros/noetic/setup.bash
+        mkdir -p ${CATKIN_WS}/src
+        ln -s ${GITHUB_WORKSPACE} ${CATKIN_WS}/src/
+    - name: pre build
+      run: |
+        source /opt/ros/noetic/setup.bash
+        rosdep update
+        rosdep install -i -y --from-paths ./
+    - name: build
+      run: |
+        source /opt/ros/noetic/setup.bash
+        cd ${CATKIN_WS}
+        catkin build
+    - name: generate ros_lib
+      run: |
+        source ${CATKIN_WS}/devel/setup.bash
+        rosrun rosserial_arduino make_libraries.py $(rospack find esp_now_ros)/sketchbooks/esp_now_ros/lib/
+    - name: build sketches esp_now_ros
+      run: |
+        source ${CATKIN_WS}/devel/setup.bash
+        roscd esp_now_ros
+        cd sketchbooks/esp_now_ros
+        pio run
