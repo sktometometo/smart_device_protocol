@@ -40,6 +40,12 @@ ros::Subscriber<esp_now_ros::Packet> subscriber("~send", &messageCb);
 
 void messageCb(const esp_now_ros::Packet& msg)
 {
+  if (msg.mac_address_length != 6)
+  {
+    nh.logerror("MAC Address length have to be 6.");
+    return;
+  }
+
   // Register a peer
   esp_now_peer_info_t peer_temp;
   memset(&peer_temp, 0, sizeof(peer_temp));
