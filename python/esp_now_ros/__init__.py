@@ -27,7 +27,7 @@ class MetaFrame:
     __hash__ = None
 
     def to_bytes(self) -> bytes:
-        data = struct.pack("<B", PACKET_TYPE_META)
+        data = struct.pack("<H", PACKET_TYPE_META)
         data += struct.pack("20s", self.device_name.encode("utf-8"))
         for i in range(3):
             if i < len(self.interface_descriptions):
@@ -42,23 +42,23 @@ class MetaFrame:
 
     @staticmethod
     def from_bytes(data: bytes):
-        packet_type = struct.unpack("<B", data[0:1])[0]
+        packet_type = struct.unpack("<H", data[0:2])[0]
         if packet_type != PACKET_TYPE_META:
             raise ValueError(f"packet type if not MetaFrame: {packet_type}")
         device_name = (
-            struct.unpack("20s", data[1 : 1 + 20])[0]
+            struct.unpack("20s", data[2 : 2 + 20])[0]
             .decode("utf-8")
             .replace("\x00", "")
         )
         interface_descriptions = []
         for i in range(3):
             packet_description = (
-                struct.unpack("64s", data[21 + i * 74 : 21 + 64 + i * 74])[0]
+                struct.unpack("64s", data[22 + i * 74 : 22 + 64 + i * 74])[0]
                 .decode("utf-8")
                 .replace("\x00", "")
             )
             serialization_format = (
-                struct.unpack("10s", data[21 + 64 + i * 74 : 21 + 64 + 10 + i * 74])[0]
+                struct.unpack("10s", data[22 + 64 + i * 74 : 22 + 64 + 10 + i * 74])[0]
                 .decode("utf-8")
                 .replace("\x00", "")
             )
@@ -112,7 +112,7 @@ class DataFrame:
 
     def to_bytes(self) -> bytes:
         data: bytes = (
-            struct.pack("<B", PACKET_TYPE_DATA)
+            struct.pack("<H", PACKET_TYPE_DATA)
             + struct.pack("64s", self.packet_description.encode("utf-8"))
             + struct.pack("10s", self.serialization_format.encode("utf-8"))
         )
@@ -133,21 +133,21 @@ class DataFrame:
 
     @staticmethod
     def from_bytes(data: bytes):
-        packet_type = struct.unpack("<B", data[0:1])[0]
+        packet_type = struct.unpack("<H", data[0:2])[0]
         if packet_type != PACKET_TYPE_DATA:
             raise ValueError(f"packet type if not DataFrame: {packet_type}")
         packet_description = (
-            struct.unpack("64s", data[1 : 1 + 64])[0]
+            struct.unpack("64s", data[2 : 2 + 64])[0]
             .decode("utf-8")
             .replace("\x00", "")
         )
         serialization_format = (
-            struct.unpack("10s", data[1 + 64 : 1 + 64 + 10])[0]
+            struct.unpack("10s", data[2 + 64 : 2 + 64 + 10])[0]
             .decode("utf-8")
             .replace("\x00", "")
         )
         content: List[Union[bool, int, float, str]] = []
-        index: int = 1 + 64 + 10
+        index: int = 2 + 64 + 10
         for format_specifier in serialization_format:
             if format_specifier == "?":
                 entry = struct.unpack("<?", data[index : index + 1])[0]
@@ -184,7 +184,7 @@ class DataFrame:
 
 def parse_packet(packet: Packet) -> Tuple[Tuple, Union[MetaFrame, DataFrame]]:
     src_address = struct.unpack("6B", packet.mac_address)
-    packet_type = struct.unpack("<B", packet.data[0:1])[0]
+    packet_type = struct.unpack("<H", packet.data[0:2])[0]
     if packet_type == PACKET_TYPE_META:
         return src_address, MetaFrame.from_bytes(packet.data)
     elif packet_type == PACKET_TYPE_DATA:
