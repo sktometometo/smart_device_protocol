@@ -20,7 +20,7 @@ def main(
     packet = create_device_message_board_data(
         source_name=source_name, timeout_duration=timeout_duration, message=message
     )
-    interface.send(addr, packet, num_trial=5)
+    interface.send(addr, packet, num_trial=1)
     rospy.sleep(1.0)
     rospy.loginfo(
         f"Send packet with message {message} from {source_name} to {target_address} Finished."
