@@ -64,6 +64,6 @@ def create_device_message_board_data(
     return (
         struct.pack("<H", Packet.PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
         + struct.pack("64s", source_name.encode("utf-8"))
-        + struct.pack("<L", int(timeout_duration))
+        + struct.pack("<Q", int(timeout_duration))
         + struct.pack("64s", message.encode("utf-8"))
     )

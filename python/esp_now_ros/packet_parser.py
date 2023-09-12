@@ -97,7 +97,7 @@ def parse_packet(packet):
             .decode("utf-8")
             .replace("\x00", "")
         )
-        timeout_duration = struct.unpack("<L", packet[2 + 64 : 2 + 64 + 8])[0]
+        timeout_duration = struct.unpack("<Q", packet[2 + 64 : 2 + 64 + 8])[0]
         message = (
             struct.unpack("64s", packet[2 + 64 + 8 : 2 + 64 + 8 + 64])[0]
             .decode("utf-8")
