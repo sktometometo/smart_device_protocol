@@ -49,6 +49,9 @@ void generate_data_frame(uint8_t* packet, const char* packet_description, const 
   *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_DATA_FRAME;
   strncpy((char*)(packet + 2), packet_description, 64);
   strncpy((char*)(packet + 2 + 64), serialization_format, 10);
+  for (auto = data.begin(); it != data.end(); ++it) {
+    
+  }
   // TODO
 }
 
