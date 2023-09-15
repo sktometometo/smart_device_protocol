@@ -23,7 +23,6 @@ catkin_package(
 
 catkin_install_python(
   PROGRAMS
-    node_scripts/broadcast_test_packet.py
-    node_scripts/esp_now_packet_printer.py
+    node_scripts/smart_device_interface.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
