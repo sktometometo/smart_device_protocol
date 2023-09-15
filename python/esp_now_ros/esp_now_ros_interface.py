@@ -6,10 +6,13 @@ from esp_now_ros.msg import Packet
 
 
 class ESPNOWROSInterface:
-    def __init__(self, callback=None):
+    def __init__(self,
+            recv_topic="/esp_now_ros/recv",
+            send_topic="/esp_now_ros/send",
+            callback=None):
         self.raw_callback = callback
-        self.sub = rospy.Subscriber("/esp_now_ros/recv", Packet, self.callback)
-        self.pub = rospy.Publisher("/esp_now_ros/send", Packet, queue_size=1)
+        self.sub = rospy.Subscriber(recv_topic, Packet, self.callback)
+        self.pub = rospy.Publisher(send_topic, Packet, queue_size=1)
 
     def callback(self, msg):
         src_address = struct.unpack("6B", msg.mac_address)
