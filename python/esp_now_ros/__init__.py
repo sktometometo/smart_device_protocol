@@ -1,4 +1,4 @@
-simport struct
+import struct
 from typing import List, Tuple, Union
 
 from esp_now_ros.msg import Packet
