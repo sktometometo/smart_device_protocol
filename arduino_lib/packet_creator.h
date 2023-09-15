@@ -9,7 +9,7 @@
 
 void generate_meta_frame(uint8_t* packet, const char* device_name, const char* packet_description_01, const char* serialization_format_01, const char* packet_description_02, const char* serialization_format_02, const char* packet_description_03, const char* serialization_format_03)
 {
-  *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_META_FRAME;
+  *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_META;
   strncpy((char*)(packet + 2), device_name, 20);
   strncpy((char*)(packet + 2 + 20), packet_description_01, 64);
   strncpy((char*)(packet + 2 + 20 + 64), serialization_format_01, 10);
@@ -21,11 +21,11 @@ void generate_meta_frame(uint8_t* packet, const char* device_name, const char* p
 
 void generate_data_frame(uint8_t* packet, const char* packet_description, const char* serialization_format, std::vector<std::variant<int32_t, float, std::string, bool>> data)
 {
-  *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_DATA_FRAME;
+  *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_DATA;
   strncpy((char*)(packet + 2), packet_description, 64);
   strncpy((char*)(packet + 2 + 64), serialization_format, 10);
   auto packet_data_p = packet + 2 + 64 + 10;
-  for (auto = data.begin(); it != data.end(); ++it) {
+  for (auto it = data.begin(); it != data.end(); ++it) {
     if (std::holds_alternative<int32_t>(*it)) {
       *(int32_t*)packet_data_p = std::get<int32_t>(*it);
       packet_data_p += sizeof(int32_t);

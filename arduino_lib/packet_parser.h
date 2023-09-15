@@ -32,17 +32,17 @@ std::tuple<std::string, std::string, std::vector<std::variant<int32_t, float, st
   auto packet_data_p = packet + 2 + 64 + 10;
   for (int i = 0; i < serialization_format.size(); ++i) {
     if (serialization_format[i] == 'i') {
-      data.push_back(std::get<int32_t>(*(int32_t*)packet_data_p));
+      data.push_back(std::variant<int32_t, float, std::string, bool>(*(int32_t*)packet_data_p));
       packet_data_p += sizeof(int32_t);
     } else if (serialization_format[i] == 'f') {
-      data.push_back(std::get<float>(*(float*)packet_data_p));
+      data.push_back(std::variant<int32_t, float, std::string, bool>(*(float*)packet_data_p));
       packet_data_p += sizeof(float);
     } else if (serialization_format[i] == 's') {
-      std::string str = std::string((char*)packet_data_p, 64);
+      std::variant<int32_t, float, std::string, bool> str = std::string((char*)packet_data_p, 64);
       data.push_back(str);
       packet_data_p += 64;
     } else if (serialization_format[i] == '?') {
-      data.push_back(std::get<bool>(*(bool*)packet_data_p));
+      data.push_back(std::variant<int32_t, float, std::string, bool>(*(bool*)packet_data_p));
       packet_data_p += sizeof(bool);
     }
   }
