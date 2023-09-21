@@ -27,26 +27,39 @@ std::tuple<std::string, std::list<std::tuple<std::string, std::string>>> parse_p
 
 std::tuple<std::string, std::string, std::list<std::variant<int32_t, float, std::string, bool>>> parse_packet_as_data_packet(const uint8_t* packet)
 {
-  std::string packet_description = std::string((char*)(packet + 2), 64);
+  Serial.println("hoge01");
+  std::string packet_description = std::string((char *)(packet + 2), 64);
   std::string serialization_format = std::string((char*)(packet + 2 + 64), 10);
+  packet_description.erase(std::find(packet_description.begin(), packet_description.end(), '\0'), packet_description.end());
+  serialization_format.erase(std::find(serialization_format.begin(), serialization_format.end(), '\0'), serialization_format.end());
+  Serial.printf("packet_description: %s\n", packet_description.c_str());
+  Serial.printf("serialization_format: %s\n", serialization_format.c_str());
   std::list<std::variant<int32_t, float, std::string, bool>> data;
   auto packet_data_p = packet + 2 + 64 + 10;
-  for (int i = 0; i < serialization_format.size(); ++i) {
+  Serial.println("hoge02");
+  for (int i = 0; i < serialization_format.size(); ++i)
+  {
+    Serial.printf("hoge03: i = %d\n", i);
     if (serialization_format[i] == 'i') {
       data.push_back(std::variant<int32_t, float, std::string, bool>(*(int32_t*)packet_data_p));
       packet_data_p += sizeof(int32_t);
     } else if (serialization_format[i] == 'f') {
       data.push_back(std::variant<int32_t, float, std::string, bool>(*(float*)packet_data_p));
       packet_data_p += sizeof(float);
-    } else if (serialization_format[i] == 's') {
+    } else if (serialization_format[i] == 'S') {
       std::variant<int32_t, float, std::string, bool> str = std::string((char*)packet_data_p, 64);
       data.push_back(str);
       packet_data_p += 64;
+    } else if (serialization_format[i] == 's') {
+      std::variant<int32_t, float, std::string, bool> str = std::string((char*)packet_data_p, 16);
+      data.push_back(str);
+      packet_data_p += 16;
     } else if (serialization_format[i] == '?') {
       data.push_back(std::variant<int32_t, float, std::string, bool>(*(bool*)packet_data_p));
       packet_data_p += sizeof(bool);
     }
   }
+  return std::make_tuple(packet_description, serialization_format, data);
 }
 
 #endif

@@ -20,7 +20,7 @@ const unsigned long duration_timeout = 1 * 60 * 1000;
 const int packets_buffer_length = 3;
 
 M5EPD_Canvas canvas(&M5.EPD);
-//M5EPD_Canvas canvas_message(&M5.EPD);
+M5EPD_Canvas canvas_message(&M5.EPD);
 uint8_t mac_address[6] = { 0 };
 esp_now_peer_info_t peer_broadcast;
 
@@ -43,11 +43,17 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
     {
       meta_packets.erase(meta_packets.begin());
     }
-    // meta_packets.push_back(parse_packet_as_meta_packet(data));
+    meta_packets.push_back(parse_packet_as_meta_packet(data));
   }
   else if (get_packet_type(data) == esp_now_ros::Packet::PACKET_TYPE_DATA)
   {
     Serial.printf("Received data packet\n");
+    Serial.print("data: ");
+    for (int i = 0; i < data_len; ++i)
+    {
+      Serial.printf("%02x ", data[i]);
+    }
+    Serial.println();
     if (data_packets.size() >= packets_buffer_length)
     {
       data_packets.erase(data_packets.begin());
@@ -77,8 +83,8 @@ void setup()
   canvas.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
                 mac_address[4], mac_address[5]);
   canvas.pushCanvas(0, 0, UPDATE_MODE_DU4);
-  //canvas_message.createCanvas(540, 800);
-  //canvas_message.setTextSize(2);
+  canvas_message.createCanvas(540, 800);
+  canvas_message.setTextSize(2);
   Serial.println("Display initialized.!");
 
   // Initialization of ESP-NOW
@@ -102,24 +108,24 @@ void setup()
 void loop()
 {
   uint8_t buf[250];
-  //canvas_message.clear();
-  //canvas_message.setCursor(0, 0);
+  canvas_message.clear();
+  canvas_message.setCursor(0, 0);
   for (auto it = data_packets.begin(); it != data_packets.end(); ++it) {
-    // canvas_message.printf("== Data packet ==\n");
-    // canvas_message.printf("Description: %s\n", std::get<0>(*it).c_str());
-    // canvas_message.printf("Serialization format: %s\n", std::get<1>(*it).c_str());
-    // canvas_message.printf("Data:\n");
-    // for (auto it2 = std::get<2>(*it).begin(); it2 != std::get<2>(*it).end(); ++it2) {
-    //   if (std::holds_alternative<int32_t>(*it2)) {
-    //     canvas_message.printf("  %d\n", std::get<int32_t>(*it2));
-    //   } else if (std::holds_alternative<float>(*it2)) {
-    //     canvas_message.printf("  %f\n", std::get<float>(*it2));
-    //   } else if (std::holds_alternative<std::string>(*it2)) {
-    //     canvas_message.printf("  %s\n", std::get<std::string>(*it2).c_str());
-    //   } else if (std::holds_alternative<bool>(*it2)) {
-    //     canvas_message.printf("  %s\n", std::get<bool>(*it2) ? "true" : "false");
-    //   }
-    // }
+    canvas_message.printf("== Data packet ==\n");
+    canvas_message.printf("Description: %s\n", std::get<0>(*it).c_str());
+    canvas_message.printf("Serialization format: %s\n", std::get<1>(*it).c_str());
+    canvas_message.printf("Data:\n");
+    for (auto it2 = std::get<2>(*it).begin(); it2 != std::get<2>(*it).end(); ++it2) {
+      if (std::holds_alternative<int32_t>(*it2)) {
+        canvas_message.printf("  %d\n", std::get<int32_t>(*it2));
+      } else if (std::holds_alternative<float>(*it2)) {
+        canvas_message.printf("  %f\n", std::get<float>(*it2));
+      } else if (std::holds_alternative<std::string>(*it2)) {
+        canvas_message.printf("  %s\n", std::get<std::string>(*it2).c_str());
+      } else if (std::holds_alternative<bool>(*it2)) {
+        canvas_message.printf("  %s\n", std::get<bool>(*it2) ? "true" : "false");
+      }
+    }
     Serial.printf("== Data packet ==\n");
     Serial.printf("Description: %s\n", std::get<0>(*it).c_str());
     Serial.printf("Serialization format: %s\n", std::get<1>(*it).c_str());
@@ -136,6 +142,6 @@ void loop()
       }
     }
   }
-  // canvas_message.pushCanvas(0, 100, UPDATE_MODE_DU4);
+  canvas_message.pushCanvas(0, 100, UPDATE_MODE_DU4);
   delay(1000);
 }
