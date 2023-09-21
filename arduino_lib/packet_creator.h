@@ -2,7 +2,7 @@
 #define ESP_NOW_ROS_PACKET_CREATOR_H__
 
 #include <variant>
-#include <vector>
+#include <list>
 #include <string.h>
 
 #include <esp_now_ros/Packet.h>
@@ -19,7 +19,7 @@ void generate_meta_frame(uint8_t* packet, const char* device_name, const char* p
   strncpy((char*)(packet + 2 + 20 + 64 + 10 + 64 + 10 + 64), serialization_format_03, 10);
 }
 
-void generate_data_frame(uint8_t* packet, const char* packet_description, const char* serialization_format, std::vector<std::variant<int32_t, float, std::string, bool>> data)
+void generate_data_frame(uint8_t* packet, const char* packet_description, const char* serialization_format, std::list<std::variant<int32_t, float, std::string, bool>> data)
 {
   *(uint16_t*)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_DATA;
   strncpy((char*)(packet + 2), packet_description, 64);
