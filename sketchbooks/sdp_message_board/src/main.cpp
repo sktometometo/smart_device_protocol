@@ -4,9 +4,13 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
+#include <variant>
+#include <vector>
+
 #include <esp_now_ros/Packet.h>
 
 #include <packet_creator.h>
+#include <packet_parser.h>
 
 #include <message.h>
 
@@ -22,6 +26,9 @@ uint8_t mac_address[6] = { 0 };
 std::vector<Message> message_board;
 esp_now_peer_info_t peer_broadcast;
 
+const std::string packet_description_write = std::string("Message Board to write");
+const std::string serialization_format_write = std::string("siS");
+
 void OnDataSent(const uint8_t* mac_addr, esp_now_send_status_t status)
 {
   return;
@@ -31,10 +38,20 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
 {
   uint8_t packet_type = get_packet_type(data);
   Serial.printf("Received packet. type: %d\n", packet_type);
-  if (get_packet_type(data) == esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
+  if (get_packet_type(data) == esp_now_ros::Packet::PACKET_TYPE_DATA)
   {
-    message_board.push_back(Message(data));
-    Serial.printf("Push message\n");
+    auto ret = parse_packet_as_data_packet(data);
+    std::string packet_description = std::get<0>(ret);
+    std::string serialization_format = std::get<1>(ret);
+    std::vector<std::variant<int32_t, float, std::string, bool>> data = std::get<2>(ret);
+    if (packet_description == packet_description_write and serialization_format == serialization_format_write)
+    {
+      std::string source_name = std::get<std::string>(data[0]);
+      int32_t duration_until_deletion = std::get<int32_t>(data[1]);
+      std::string message = std::get<std::string>(data[2]);
+      message_board.push_back(Message(source_name, message, duration_timeout));
+      Serial.printf("Push message\n");
+    }
   }
 }
 
@@ -81,7 +98,8 @@ void setup()
 void loop()
 {
   uint8_t buf[250];
-  create_device_message_board_meta_packet(buf, DEVICE_NAME);
+  generate_meta_frame(buf, DEVICE_NAME, packet_description_write.c_str(), serialization_format_write.c_str(), "", "",
+                      "", "");
   esp_now_send(peer_broadcast.peer_addr, (uint8_t*)buf, sizeof(buf));
   canvas_message.clear();
   canvas_message.setCursor(0, 0);

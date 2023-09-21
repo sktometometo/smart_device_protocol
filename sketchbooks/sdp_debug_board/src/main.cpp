@@ -24,8 +24,8 @@ M5EPD_Canvas canvas_message(&M5.EPD);
 uint8_t mac_address[6] = { 0 };
 esp_now_peer_info_t peer_broadcast;
 
-std::list<std::tuple<std::string, std::list<std::tuple<std::string, std::string>>>> meta_packets;
-std::list<std::tuple<std::string, std::string, std::list<std::variant<int32_t, float, std::string, bool>>>> data_packets;
+std::vector<std::tuple<std::string, std::vector<std::tuple<std::string, std::string>>>> meta_packets;
+std::vector<std::tuple<std::string, std::string, std::vector<std::variant<int32_t, float, std::string, bool>>>> data_packets;
 
 void OnDataSent(const uint8_t* mac_addr, esp_now_send_status_t status)
 {

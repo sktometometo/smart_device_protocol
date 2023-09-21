@@ -5,17 +5,17 @@
 #include <string.h>
 #include <tuple>
 #include <variant>
-#include <list>
+#include <vector>
 
 uint16_t get_packet_type(const uint8_t* packet)
 {
   return *(uint16_t*)packet;
 }
 
-std::tuple<std::string, std::list<std::tuple<std::string, std::string>>> parse_packet_as_meta_packet(const uint8_t* packet)
+std::tuple<std::string, std::vector<std::tuple<std::string, std::string>>> parse_packet_as_meta_packet(const uint8_t* packet)
 {
   std::string device_name;
-  std::list<std::tuple<std::string, std::string>> packet_description_and_serialization_format;
+  std::vector<std::tuple<std::string, std::string>> packet_description_and_serialization_format;
   device_name = std::string((char*)(packet + 2), 20);
   for (int i = 0; i < 3; ++i) {
     std::string packet_description = std::string((char*)(packet + 2 + 20 + 74 * i), 64);
@@ -25,7 +25,7 @@ std::tuple<std::string, std::list<std::tuple<std::string, std::string>>> parse_p
   return std::make_tuple(device_name, packet_description_and_serialization_format);
 }
 
-std::tuple<std::string, std::string, std::list<std::variant<int32_t, float, std::string, bool>>> parse_packet_as_data_packet(const uint8_t* packet)
+std::tuple<std::string, std::string, std::vector<std::variant<int32_t, float, std::string, bool>>> parse_packet_as_data_packet(const uint8_t* packet)
 {
   Serial.println("hoge01");
   std::string packet_description = std::string((char *)(packet + 2), 64);
@@ -34,7 +34,7 @@ std::tuple<std::string, std::string, std::list<std::variant<int32_t, float, std:
   serialization_format.erase(std::find(serialization_format.begin(), serialization_format.end(), '\0'), serialization_format.end());
   Serial.printf("packet_description: %s\n", packet_description.c_str());
   Serial.printf("serialization_format: %s\n", serialization_format.c_str());
-  std::list<std::variant<int32_t, float, std::string, bool>> data;
+  std::vector<std::variant<int32_t, float, std::string, bool>> data;
   auto packet_data_p = packet + 2 + 64 + 10;
   Serial.println("hoge02");
   for (int i = 0; i < serialization_format.size(); ++i)

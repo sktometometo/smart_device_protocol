@@ -9,7 +9,7 @@
 #include <WiFi.h>
 
 #include <variant>
-#include <list>
+#include <vector>
 #include <packet_creator.h>
 
 static LGFX lcd;
@@ -66,7 +66,7 @@ void setup()
   sprite_send_result.pushSprite(0, 120);
 
   // Packet
-  std::list<std::variant<int32_t, float, std::string, bool>> data;
+  std::vector<std::variant<int32_t, float, std::string, bool>> data;
   data.push_back(std::variant<int32_t, float, std::string, bool>(std::string("Hello, World!")));
   data.push_back(std::variant<int32_t, float, std::string, bool>((int32_t)123));
   data.push_back(std::variant<int32_t, float, std::string, bool>((float)123.456));
