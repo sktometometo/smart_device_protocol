@@ -9,6 +9,7 @@
 #include <WiFi.h>
 
 #include <variant>
+#include <list>
 #include <packet_creator.h>
 
 static LGFX lcd;
@@ -58,13 +59,14 @@ void setup()
   sprite_device_info.println("Smart Device Protocol Broadcast Example");
   sprite_device_info.printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X", mac_address[0], mac_address[1], mac_address[2],
                             mac_address[3], mac_address[4], mac_address[5]);
+  sprite_packet_info.printf("size of element: %d\n", sizeof(std::variant<int32_t, float, std::string, bool>));
   sprite_device_info.pushSprite(0, 0);
 
   sprite_packet_info.pushSprite(0, 60);
   sprite_send_result.pushSprite(0, 120);
 
   // Packet
-  std::vector<std::variant<int32_t, float, std::string, bool>> data;
+  std::list<std::variant<int32_t, float, std::string, bool>> data;
   data.push_back(std::variant<int32_t, float, std::string, bool>(std::string("Hello, World!")));
   data.push_back(std::variant<int32_t, float, std::string, bool>((int32_t)123));
   data.push_back(std::variant<int32_t, float, std::string, bool>((float)123.456));
@@ -88,10 +90,17 @@ void setup()
 
   esp_now_register_send_cb(OnDataSent);
 }
+
 void loop()
 {
   Serial.println("Broadcasted!");
   esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t*)buffer, sizeof(buffer));
+  Serial.print("buffer: ");
+  for (int i = 0; i < sizeof(buffer); ++i)
+  {
+    Serial.printf("%02X ", buffer[i]);
+  }
+  Serial.println();
   sprite_send_result.fillScreen(0xFFFFFF);
   sprite_send_result.setCursor(0, 0);
   sprite_send_result.print("Send Status: ");

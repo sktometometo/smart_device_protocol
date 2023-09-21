@@ -30,23 +30,23 @@ std::tuple<std::string, std::string, std::list<std::variant<int32_t, float, std:
   std::string packet_description = std::string((char*)(packet + 2), 64);
   std::string serialization_format = std::string((char*)(packet + 2 + 64), 10);
   std::list<std::variant<int32_t, float, std::string, bool>> data;
-  // auto packet_data_p = packet + 2 + 64 + 10;
-  // for (int i = 0; i < serialization_format.size(); ++i) {
-  //   if (serialization_format[i] == 'i') {
-  //     data.push_back(std::variant<int32_t, float, std::string, bool>(*(int32_t*)packet_data_p));
-  //     packet_data_p += sizeof(int32_t);
-  //   } else if (serialization_format[i] == 'f') {
-  //     data.push_back(std::variant<int32_t, float, std::string, bool>(*(float*)packet_data_p));
-  //     packet_data_p += sizeof(float);
-  //   } else if (serialization_format[i] == 's') {
-  //     std::variant<int32_t, float, std::string, bool> str = std::string((char*)packet_data_p, 64);
-  //     data.push_back(str);
-  //     packet_data_p += 64;
-  //   } else if (serialization_format[i] == '?') {
-  //     data.push_back(std::variant<int32_t, float, std::string, bool>(*(bool*)packet_data_p));
-  //     packet_data_p += sizeof(bool);
-  //   }
-  // }
+  auto packet_data_p = packet + 2 + 64 + 10;
+  for (int i = 0; i < serialization_format.size(); ++i) {
+    if (serialization_format[i] == 'i') {
+      data.push_back(std::variant<int32_t, float, std::string, bool>(*(int32_t*)packet_data_p));
+      packet_data_p += sizeof(int32_t);
+    } else if (serialization_format[i] == 'f') {
+      data.push_back(std::variant<int32_t, float, std::string, bool>(*(float*)packet_data_p));
+      packet_data_p += sizeof(float);
+    } else if (serialization_format[i] == 's') {
+      std::variant<int32_t, float, std::string, bool> str = std::string((char*)packet_data_p, 64);
+      data.push_back(str);
+      packet_data_p += 64;
+    } else if (serialization_format[i] == '?') {
+      data.push_back(std::variant<int32_t, float, std::string, bool>(*(bool*)packet_data_p));
+      packet_data_p += sizeof(bool);
+    }
+  }
 }
 
 #endif
