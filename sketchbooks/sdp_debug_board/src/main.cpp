@@ -114,6 +114,7 @@ void setup()
 
 void loop()
 {
+  Serial.println("Loop");
   uint8_t buf[250];
   canvas_message.clear();
   canvas_message.setCursor(0, 0);
