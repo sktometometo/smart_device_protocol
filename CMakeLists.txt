@@ -24,6 +24,6 @@ catkin_package(
 file(GLOB ${PROJECT_NAME}_node_scripts ${PROJECT_SOURCE_DIR}/node_scripts/*)
 
 catkin_install_python(
-  PROGRAMS ${PROJECT_NAME}_node_scripts
+  PROGRAMS ${${PROJECT_NAME}_node_scripts}
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
