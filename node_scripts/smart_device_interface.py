@@ -2,10 +2,10 @@
 
 import rospy
 
-from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterfaceNode
+from esp_now_ros.sdp_interface import SDPInterfaceNode
 
 
 if __name__ == "__main__":
     rospy.init_node("smart_device_interface")
-    node = ESPNOWROSInterfaceNode()
+    node = SDPInterfaceNode()
     node.run()
