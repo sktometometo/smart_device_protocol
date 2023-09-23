@@ -1,11 +1,12 @@
 #ifndef ESP_NOW_ROS_PACKET_PARSER_H__
 #define ESP_NOW_ROS_PACKET_PARSER_H__
 
-#include <esp_now_ros/Packet.h>
 #include <string.h>
 #include <tuple>
 #include <variant>
 #include <vector>
+
+#include <esp_now_ros/Packet.h>
 
 #include "packet_util.h"
 
@@ -30,19 +31,14 @@ std::tuple<std::string, std::vector<std::tuple<std::string, std::string>>> parse
 
 std::tuple<std::string, std::string, std::vector<SDPData>> parse_packet_as_data_packet(const uint8_t *packet)
 {
-  Serial.println("hoge01");
   std::string packet_description = std::string((char *)(packet + 2), 64);
   std::string serialization_format = std::string((char *)(packet + 2 + 64), 10);
   packet_description.erase(std::find(packet_description.begin(), packet_description.end(), '\0'), packet_description.end());
   serialization_format.erase(std::find(serialization_format.begin(), serialization_format.end(), '\0'), serialization_format.end());
-  Serial.printf("packet_description: %s\n", packet_description.c_str());
-  Serial.printf("serialization_format: %s\n", serialization_format.c_str());
   std::vector<SDPData> data;
   auto packet_data_p = packet + 2 + 64 + 10;
-  Serial.println("hoge02");
   for (int i = 0; i < serialization_format.size(); ++i)
   {
-    Serial.printf("hoge03: i = %d\n", i);
     if (serialization_format[i] == 'i')
     {
       data.push_back(SDPData(*(int32_t *)packet_data_p));
@@ -72,6 +68,38 @@ std::tuple<std::string, std::string, std::vector<SDPData>> parse_packet_as_data_
     }
   }
   return std::make_tuple(packet_description, serialization_format, data);
+}
+
+/* Version 1 functions */
+void parse_packet_as_test_packet(const uint8_t *packet, uint16_t &packet_type, int32_t &num_int, float num_float,
+                                 char *str)
+{
+  packet_type = *(uint16_t *)packet;
+  num_int = *(int32_t *)(packet + 2);
+  num_float = *(float *)(packet + 2 + 4);
+  strncpy(str, (char *)(packet + 2 + 4 + 4), 64);
+}
+
+void parse_packet_as_named_string_packet(const uint8_t *packet, uint16_t &packet_type, char *name, char *value)
+{
+  packet_type = *(uint16_t *)packet;
+  strncpy(name, (char *)(packet + 2), 64);
+  strncpy(value, (char *)(packet + 2 + 64), 64);
+}
+
+void parse_packet_as_message_board_meta_packet(const uint8_t *packet, uint16_t &packet_type, char *module_name)
+{
+  packet_type = *(uint16_t *)packet;
+  strncpy(module_name, (char *)(packet + 2), 64);
+}
+
+void parse_packet_as_message_board_data_packet(const uint8_t *packet, uint16_t &packet_type, char *source_name,
+                                               uint64_t &timeout_duration, char *message)
+{
+  packet_type = *(uint16_t *)packet;
+  strncpy(source_name, (char *)(packet + 2), 64);
+  timeout_duration = *(uint64_t *)(packet + 2 + 64);
+  strncpy(message, (char *)(packet + 2 + 64 + 8), 64);
 }
 
 #endif
