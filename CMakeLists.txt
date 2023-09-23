@@ -21,8 +21,9 @@ catkin_package(
     CATKIN_DEPENDS message_runtime
 )
 
+file(GLOB ${PROJECT_NAME}_node_scripts ${PROJECT_SOURCE_DIR}/node_scripts/*)
+
 catkin_install_python(
-  PROGRAMS
-    node_scripts/smart_device_interface.py
+  PROGRAMS ${PROJECT_NAME}_node_scripts
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
