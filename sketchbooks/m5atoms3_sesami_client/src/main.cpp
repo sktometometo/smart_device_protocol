@@ -1,45 +1,96 @@
+#include <optional>
+
 #include <M5AtomS3.h>
+
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <HTTPClient.h>
+
 #include <ArduinoJson.h>
-#include <optional>
+
+#define LGFX_AUTODETECT
+#include <LovyanGFX.hpp>
+#include <LGFX_AUTODETECT.hpp>
 
 #include "Time.h"
-#include <sesami_util.h>
+#include "sesami_util.h"
 
 /* Mofidy below */
-const char* ssid = "";
-const char* password = "";
+String ssid = "";
+String password = "";
 String device_uuid = "";
 String secret_key = "";
 String api_key = "";
 
+//
 WiFiMulti WiFiMulti;
+static LGFX lcd;
+static LGFX_Sprite sprite_device_info(&lcd);
+static LGFX_Sprite sprite_event_info(&lcd);
+
+bool initWiFi(const char *ssid, const char *password, LGFX_Sprite &sprite)
+{
+  WiFiMulti.addAP(ssid, password);
+  sprite.fillScreen(0xFFFFFF);
+  sprite.setCursor(0, 0);
+  sprite.printf("Waiting connect to WiFi: %s ...", ssid);
+  sprite.pushSprite(0, lcd.height() / 3);
+  int sum = 0;
+  while (WiFiMulti.run() != WL_CONNECTED)
+  {
+    sprite.print(".");
+    sprite.pushSprite(0, lcd.height() / 3);
+    delay(1000);
+    sum += 1;
+    if (sum == 5)
+    {
+      sprite.print("Conncet failed!");
+      sprite.pushSprite(0, lcd.height() / 3);
+      return false;
+    }
+  }
+  sprite.fillScreen(0xFFFFFF);
+  sprite.println("WiFi connected");
+  sprite.print("IP address: ");
+  sprite.println(WiFi.localIP());
+  sprite.pushSprite(0, lcd.height() / 3);
+  Time.set_time();
+  delay(500);
+  return true;
+}
+
+void show_device_info(LGFX_Sprite &sprite, const char *message)
+{
+  sprite.fillScreen(0xFFFFFF);
+  sprite.setCursor(0, 0);
+  sprite.println(message);
+  sprite.pushSprite(0, lcd.height() / 3);
+}
 
 void setup()
 {
-  int sum = 0;
-  M5.begin(true, true, false, false);
-  WiFiMulti.addAP(ssid, password);
-  M5.lcd.printf("== M5AtomS3 Sesami Client ==\n");
-  M5.lcd.printf("Waiting connect to WiFi: %s ...", ssid);
-  while (WiFiMulti.run() != WL_CONNECTED)
-  {
-    M5.lcd.print(".");
-    delay(1000);
-    sum += 1;
-    if (sum == 8)
-      M5.lcd.print("Conncet failed!");
-  }
-  M5.lcd.println("\nWiFi connected");
-  M5.lcd.print("IP address: ");
-  M5.lcd.println(WiFi.localIP());
-  delay(500);
-
-  Time.set_time();
-
+  M5.begin(false, true, false, false);
   Serial2.begin(115200, SERIAL_8N1, 2, 1);
+
+  // LovyanGFX Initialization
+  lcd.init();
+  lcd.setRotation(1);
+  lcd.setBrightness(128);
+  lcd.setColorDepth(24);
+  lcd.fillScreen(0xFFFFFF);
+  sprite_device_info.createSprite(lcd.width(), lcd.height() / 3);
+  sprite_event_info.createSprite(lcd.width(), lcd.height() / 3 * 2);
+  sprite_device_info.fillScreen(0xFFFFFF);
+  sprite_event_info.fillScreen(0xFFFFFF);
+  sprite_device_info.setTextColor(0x000000);
+  sprite_event_info.setTextColor(0x000000);
+  sprite_device_info.setTextSize(1);
+  sprite_event_info.setTextSize(1);
+
+  //
+  sprite_device_info.setCursor(0, 0);
+  sprite_device_info.println("SESAMI Client");
+  sprite_device_info.pushSprite(0, 0);
 }
 
 void loop()
@@ -55,6 +106,9 @@ void loop()
   if (Serial2.available())
   {
     bufstring = Serial2.readStringUntil('\n');
+    // if (USBSerial.available())
+    // {
+    //   bufstring = USBSerial.readStringUntil('\n');
     DeserializationError error = deserializeJson(input_json, bufstring.c_str());
 
     if (error)
@@ -62,6 +116,7 @@ void loop()
       success = false;
       message = "deserializeJson() failed: " + String(error.c_str());
       USBSerial.println(message);
+      show_device_info(sprite_event_info, message.c_str());
       response_json["success"] = success;
       response_json["message"] = message;
       Serial2.printf("%s\n", response_json.as<String>().c_str());
@@ -73,6 +128,7 @@ void loop()
       success = false;
       message = "command key not found";
       USBSerial.println(message);
+      show_device_info(sprite_event_info, message.c_str());
       response_json["success"] = success;
       response_json["message"] = message;
       Serial2.printf("%s\n", response_json.as<String>().c_str());
@@ -98,7 +154,7 @@ void loop()
       if (ret)
       {
         success = true;
-        message = "toggle success";
+        message = "toggle/lock/unlock success";
       }
       else
       {
@@ -150,6 +206,65 @@ void loop()
         response_json["message"] = message;
       }
     }
+    else if (command == String("config_wifi"))
+    {
+      if (not input_json.containsKey("ssid") or not input_json.containsKey("password"))
+      {
+        success = false;
+        message = "ssid or password key not found";
+        response_json["success"] = success;
+        response_json["message"] = message;
+      }
+      else
+      {
+        ssid = input_json["ssid"].as<String>();
+        password = input_json["password"].as<String>();
+        success = initWiFi(ssid.c_str(), password.c_str(), sprite_event_info);
+        if (success)
+        {
+          message = "config_wifi success";
+        }
+        else
+        {
+          message = "config_wifi failed";
+        }
+        response_json["success"] = success;
+        response_json["message"] = message;
+      }
+    }
+    else if (command == String("config_sesami"))
+    {
+      if (not input_json.containsKey("device_uuid") or not input_json.containsKey("secret_key") or not input_json.containsKey("api_key"))
+      {
+        success = false;
+        message = "device_uuid or secret_key or api_key key not found";
+        response_json["success"] = success;
+        response_json["message"] = message;
+      }
+      else
+      {
+        device_uuid = input_json["device_uuid"].as<String>();
+        secret_key = input_json["secret_key"].as<String>();
+        api_key = input_json["api_key"].as<String>();
+        success = true;
+        message = "config_sesami success";
+        response_json["success"] = success;
+        response_json["message"] = message;
+      }
+    }
+    else if (command == String("get_device_config"))
+    {
+      success = true;
+      message = "get_device_config success";
+      result_json["ssid"] = ssid;
+      result_json["password"] = password;
+      result_json["device_uuid"] = device_uuid;
+      result_json["secret_key"] = secret_key;
+      result_json["api_key"] = api_key;
+      response_json["success"] = success;
+      response_json["message"] = message;
+      response_json["result"] = result_json;
+    }
     else
     {
       success = false;
@@ -158,6 +273,7 @@ void loop()
       response_json["message"] = message;
     }
     USBSerial.printf("response_json: %s\n", response_json.as<String>().c_str());
+    show_device_info(sprite_event_info, (String("response_json") + response_json.as<String>()).c_str());
     Serial2.printf("%s\n", response_json.as<String>().c_str());
   }
 }
