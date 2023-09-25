@@ -8,6 +8,7 @@
 
 #include <esp_now_ros/Packet.h>
 
+#include <packet_util.h>
 #include <packet_creator.h>
 #include <packet_parser.h>
 
@@ -25,7 +26,7 @@ uint8_t mac_address[6] = {0};
 esp_now_peer_info_t peer_broadcast;
 
 std::vector<std::tuple<std::string, std::vector<std::tuple<std::string, std::string>>>> meta_packets;
-std::vector<std::tuple<std::string, std::string, std::vector<std::variant<int32_t, float, std::string, bool>>>> data_packets;
+std::vector<std::tuple<SDPInterfaceDescription, std::vector<SDPData>>> data_packets;
 std::vector<unsigned long> meta_packets_timeouts;
 std::vector<unsigned long> data_packets_timeouts;
 
@@ -141,48 +142,35 @@ void loop()
   for (auto it = data_packets.begin(); it != data_packets.end(); ++it)
   {
     canvas_message.printf("== Data packet ==\n");
-    canvas_message.printf("Description: %s\n", std::get<0>(*it).c_str());
-    canvas_message.printf("Serialization format: %s\n", std::get<1>(*it).c_str());
+    auto packet_description_and_format_description = std::get<0>(*it);
+    canvas_message.printf("Description: %s\n", std::get<0>(packet_description_and_format_description).c_str());
+    canvas_message.printf("Serialization format: %s\n", std::get<1>(packet_description_and_format_description).c_str());
     canvas_message.printf("Data:\n");
-    for (auto it2 = std::get<2>(*it).begin(); it2 != std::get<2>(*it).end(); ++it2)
+    Serial.printf("== Data packet ==\n");
+    Serial.printf("Description: %s\n", std::get<0>(packet_description_and_format_description).c_str());
+    Serial.printf("Serialization format: %s\n", std::get<1>(packet_description_and_format_description).c_str());
+    Serial.printf("Data:\n");
+
+    for (auto it2 = std::get<1>(*it).begin(); it2 != std::get<1>(*it).end(); ++it2)
     {
       if (std::holds_alternative<int32_t>(*it2))
       {
         canvas_message.printf("  %d\n", std::get<int32_t>(*it2));
-      }
-      else if (std::holds_alternative<float>(*it2))
-      {
-        canvas_message.printf("  %f\n", std::get<float>(*it2));
-      }
-      else if (std::holds_alternative<std::string>(*it2))
-      {
-        canvas_message.printf("  %s\n", std::get<std::string>(*it2).c_str());
-      }
-      else if (std::holds_alternative<bool>(*it2))
-      {
-        canvas_message.printf("  %s\n", std::get<bool>(*it2) ? "true" : "false");
-      }
-    }
-    Serial.printf("== Data packet ==\n");
-    Serial.printf("Description: %s\n", std::get<0>(*it).c_str());
-    Serial.printf("Serialization format: %s\n", std::get<1>(*it).c_str());
-    Serial.printf("Data:\n");
-    for (auto it2 = std::get<2>(*it).begin(); it2 != std::get<2>(*it).end(); ++it2)
-    {
-      if (std::holds_alternative<int32_t>(*it2))
-      {
         Serial.printf("  %d\n", std::get<int32_t>(*it2));
       }
       else if (std::holds_alternative<float>(*it2))
       {
+        canvas_message.printf("  %f\n", std::get<float>(*it2));
         Serial.printf("  %f\n", std::get<float>(*it2));
       }
       else if (std::holds_alternative<std::string>(*it2))
       {
+        canvas_message.printf("  %s\n", std::get<std::string>(*it2).c_str());
         Serial.printf("  %s\n", std::get<std::string>(*it2).c_str());
       }
       else if (std::holds_alternative<bool>(*it2))
       {
+        canvas_message.printf("  %s\n", std::get<bool>(*it2) ? "true" : "false");
         Serial.printf("  %s\n", std::get<bool>(*it2) ? "true" : "false");
       }
     }
