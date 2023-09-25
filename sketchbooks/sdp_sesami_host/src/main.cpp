@@ -42,9 +42,11 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
         Serial.println();
 
         auto packet = parse_packet_as_data_packet(data);
-        std::string packet_description = std::get<0>(packet);
-        std::string serialization_format = std::get<1>(packet);
-        auto body = std::get<2>(packet);
+        SDPInterfaceDescription packet_description_and_serialization_format = std::get<0>(packet);
+        std::string packet_description = std::get<0>(packet_description_and_serialization_format);
+        std::string serialization_format = std::get<1>(packet_description_and_serialization_format);
+        std::vector<SDPData> body = std::get<1>(packet);
+
         Serial.printf("packet_description: %s\n", packet_description.c_str());
         Serial.printf("serialization_format: %s\n", serialization_format.c_str());
         if (packet_description == packet_description_operation and serialization_format == serialization_format_operation)

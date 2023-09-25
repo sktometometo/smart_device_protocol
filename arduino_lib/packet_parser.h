@@ -15,10 +15,19 @@ uint16_t get_packet_type(const uint8_t *packet)
   return *(uint16_t *)packet;
 }
 
-std::tuple<std::string, std::vector<std::tuple<std::string, std::string>>> parse_packet_as_meta_packet(const uint8_t *packet)
+SDPInterfaceDescription get_interface_definition(const uint8_t *packet)
+{
+  std::string packet_description = std::string((char *)(packet + 2), 64);
+  std::string serialization_format = std::string((char *)(packet + 2 + 64), 10);
+  packet_description.erase(std::find(packet_description.begin(), packet_description.end(), '\0'), packet_description.end());
+  serialization_format.erase(std::find(serialization_format.begin(), serialization_format.end(), '\0'), serialization_format.end());
+  return std::make_tuple(packet_description, serialization_format);
+}
+
+std::tuple<std::string, std::vector<SDPInterfaceDescription>> parse_packet_as_meta_packet(const uint8_t *packet)
 {
   std::string device_name;
-  std::vector<std::tuple<std::string, std::string>> packet_description_and_serialization_format;
+  std::vector<SDPInterfaceDescription> packet_description_and_serialization_format;
   device_name = std::string((char *)(packet + 2), 20);
   for (int i = 0; i < 3; ++i)
   {
@@ -29,12 +38,10 @@ std::tuple<std::string, std::vector<std::tuple<std::string, std::string>>> parse
   return std::make_tuple(device_name, packet_description_and_serialization_format);
 }
 
-std::tuple<std::string, std::string, std::vector<SDPData>> parse_packet_as_data_packet(const uint8_t *packet)
+std::tuple<SDPInterfaceDescription, std::vector<SDPData>> parse_packet_as_data_packet(const uint8_t *packet)
 {
-  std::string packet_description = std::string((char *)(packet + 2), 64);
-  std::string serialization_format = std::string((char *)(packet + 2 + 64), 10);
-  packet_description.erase(std::find(packet_description.begin(), packet_description.end(), '\0'), packet_description.end());
-  serialization_format.erase(std::find(serialization_format.begin(), serialization_format.end(), '\0'), serialization_format.end());
+  SDPInterfaceDescription packet_description_and_serialization_format = get_interface_definition(packet);
+  std::string serialization_format = std::get<1>(packet_description_and_serialization_format);
   std::vector<SDPData> data;
   auto packet_data_p = packet + 2 + 64 + 10;
   for (int i = 0; i < serialization_format.size(); ++i)
@@ -67,7 +74,7 @@ std::tuple<std::string, std::string, std::vector<SDPData>> parse_packet_as_data_
       packet_data_p += sizeof(bool);
     }
   }
-  return std::make_tuple(packet_description, serialization_format, data);
+  return std::make_tuple(packet_description_and_serialization_format, data);
 }
 
 /* Version 1 functions */
