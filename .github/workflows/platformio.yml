@@ -39,13 +39,17 @@ jobs:
         source /opt/ros/noetic/setup.bash
         cd ${CATKIN_WS}
         catkin build
-    - name: generate ros_lib
+    - name: Update ros_lib
       run: |
         source ${CATKIN_WS}/devel/setup.bash
-        rosrun rosserial_arduino make_libraries.py $(rospack find esp_now_ros)/sketchbooks/esp_now_ros/lib/
+        rm -rf $(rospack find esp_now_ros)/ros_lib
+        rosrun rosserial_arduino make_libraries.py $(rospack find esp_now_ros)/ros_lib
     - name: build sketches esp_now_ros
       run: |
         source ${CATKIN_WS}/devel/setup.bash
-        roscd esp_now_ros
-        cd sketchbooks/esp_now_ros
-        pio run
+        find $(rospack find esp_now_ros)/sketchbooks -maxdepth 1 -type d | while read dir; do
+            if [ "$dir" != "$(rospack find esp_now_ros)/sketchbooks" ]; then
+                echo "Building $dir"
+                pio run -d $dir
+            fi
+        done
