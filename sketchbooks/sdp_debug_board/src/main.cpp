@@ -180,16 +180,17 @@ void loop()
     canvas_message.printf("== Meta packet ==\n");
     canvas_message.printf("Description: %s\n", std::get<0>(*it).c_str());
     canvas_message.printf("Data:\n");
-    for (auto it2 = std::get<1>(*it).begin(); it2 != std::get<1>(*it).end(); ++it2)
-    {
-      canvas_message.printf("  %s: %s\n", std::get<0>(*it2).c_str(), std::get<1>(*it2).c_str());
-    }
     Serial.printf("== Meta packet ==\n");
     Serial.printf("Description: %s\n", std::get<0>(*it).c_str());
     Serial.printf("Data:\n");
     for (auto it2 = std::get<1>(*it).begin(); it2 != std::get<1>(*it).end(); ++it2)
     {
-      Serial.printf("  %s: %s\n", std::get<0>(*it2).c_str(), std::get<1>(*it2).c_str());
+      canvas_message.printf(" IF: \n");
+      canvas_message.printf("   PD: %s\n", std::get<0>(*it2).c_str());
+      canvas_message.printf("   SF: %s\n", std::get<1>(*it2).c_str());
+      Serial.printf(" IF: \n");
+      Serial.printf("   PD: %s\n", std::get<0>(*it2).c_str());
+      Serial.printf("   SF: %s\n", std::get<1>(*it2).c_str());
     }
   }
   canvas_message.pushCanvas(0, 100, UPDATE_MODE_DU4);
