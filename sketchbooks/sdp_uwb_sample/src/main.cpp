@@ -8,84 +8,11 @@
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 
-#include <esp_now_ros/Packet.h>
+#include "uwb_module_util.h"
 
 static LGFX lcd;
 static LGFX_Sprite sprite_device_info(&lcd);
 static LGFX_Sprite sprite_event_info(&lcd);
-
-void readUWB()
-{
-  if (Serial2.available())
-  {
-    auto DATA = Serial2.readStringUntil('\n');
-    Serial.print(DATA);
-  }
-}
-
-void testUWB()
-{
-  Serial2.write("AT\r\n"); // RESET 复位
-  delay(100);
-  readUWB();
-}
-
-void resetUWB()
-{
-  Serial2.write("AT+RST\r\n"); // RESET 复位
-  delay(100);
-  auto ret = Serial2.readStringUntil('\n');
-  Serial.printf("ret of reset: %s\n", ret.c_str());
-  String DATA;
-  auto timeout = millis() + 1000;
-  while (timeout > millis())
-  {
-    if (Serial2.available())
-    {
-      DATA = Serial2.readStringUntil('\n');
-      Serial.println(DATA);
-      timeout = millis() + 1000;
-    }
-  }
-}
-
-void initUWB(bool tag = true, int id = 0)
-{
-  String DATA;
-  resetUWB();
-  if (tag)
-  {
-    Serial2.printf("AT+anchor_tag=0\r\n", id);
-    delay(100);
-    DATA = Serial2.readStringUntil('\n');
-    Serial.printf("ret of anchor_tag: %s\n", DATA.c_str());
-
-    Serial2.write("AT+interval=5\r\n");
-    delay(100);
-    DATA = Serial2.readStringUntil('\n');
-    Serial.printf("ret of interval: %s\n", DATA.c_str());
-
-    resetUWB();
-
-    Serial2.write("AT+switchdis=1\r\n");
-    delay(100);
-    DATA = Serial2.readStringUntil('\n');
-    Serial.printf("ret of switchdis: %s\n", DATA.c_str());
-  }
-  else
-  {
-    Serial2.printf("AT+anchor_tag=1,%d\r\n", id);
-    delay(100);
-    DATA = Serial2.readStringUntil('\n');
-    Serial.printf("ret of anchor_tag: %s\n", DATA.c_str());
-
-    resetUWB();
-  }
-
-  sprite_event_info.printf("ID: %d\n", id);
-  sprite_event_info.printf("mode: %s\n", tag ? "tag" : "anchor");
-  sprite_event_info.pushSprite(0, lcd.height() / 3);
-}
 
 void setup()
 {
@@ -120,11 +47,29 @@ void setup()
   delay(100);
 
   // initUWB(true, 0);
-  initUWB(false, 1);
+  initUWB(false, 1, Serial2);
 }
 
 void loop()
 {
   delay(100);
-  readUWB();
+  auto ret = readUWB(Serial2);
+  if (ret)
+  {
+    Serial.println(*ret);
+
+    sprite_event_info.fillScreen(0xFFFFFF);
+    sprite_event_info.setCursor(0, 0);
+    sprite_event_info.println(*ret);
+    sprite_event_info.pushSprite(0, lcd.height() / 3);
+  }
+  else
+  {
+    Serial.println("No response");
+
+    sprite_event_info.fillScreen(0xFFFFFF);
+    sprite_event_info.setCursor(0, 0);
+    sprite_event_info.println("No response");
+    sprite_event_info.pushSprite(0, lcd.height() / 3);
+  }
 }
