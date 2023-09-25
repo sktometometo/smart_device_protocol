@@ -128,8 +128,8 @@ void loop()
         Serial.printf("number of people: %d\n", num_of_person);
         Serial.print("\n");
 
-        create_sensor_stickv2_packet(packet, num_person, place);
-        esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t*)packet, sizeof(packet) / sizeof(packet[0]));
+        create_sensor_stickv2_packet(packet, num_of_person, place);
+        esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t *)packet, sizeof(packet) / sizeof(packet[0]));
       }
       else
       {
