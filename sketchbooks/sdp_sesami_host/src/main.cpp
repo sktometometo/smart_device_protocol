@@ -9,6 +9,7 @@
 #include <esp_now_ros/Packet.h>
 #include <packet_creator.h>
 #include <packet_parser.h>
+#include "uwb_module_util.h"
 
 #define DEVICE_NAME "SDP_SESAMI_INTERFACE"
 
@@ -20,6 +21,9 @@ esp_now_peer_info_t peer_broadcast;
 std::string packet_description_operation = "Operation Key";
 std::string serialization_format_operation = "s";
 uint8_t buf_for_meta_packet[250];
+
+// UWB
+const int uwb_id = 1;
 
 // Other
 uint8_t buf[240];
@@ -108,6 +112,7 @@ void setup()
                   mac_address[4], mac_address[5]);
 
     Serial.begin(115200);
+    Serial1.begin(115200, SERIAL_8N1, 16, 17);
     Serial2.begin(115200, SERIAL_8N1, 22, 21);
 
     // Initialization of ESP-NOW
@@ -134,6 +139,17 @@ void setup()
 
     // SDP meta packet
     generate_meta_frame(buf_for_meta_packet, DEVICE_NAME, packet_description_operation.c_str(), serialization_format_operation.c_str(), "", "", "", "");
+
+    // UWB module
+    bool result = initUWB(false, uwb_id, Serial1);
+    if (result)
+    {
+        Serial.println("UWB module initialized");
+    }
+    else
+    {
+        Serial.println("Failed to initialize UWB module");
+    }
 }
 
 void loop()
