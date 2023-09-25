@@ -3,6 +3,7 @@ import struct
 from esp_now_ros.msg import Packet
 
 
+# Version 1 of the packet generator
 def create_test_packet(
     num_int: int = -120, num_float: float = -1.0, string: str = "Hello, world!"
 ):

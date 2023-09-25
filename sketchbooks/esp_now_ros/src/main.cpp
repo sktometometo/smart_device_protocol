@@ -17,7 +17,7 @@
 #include <LGFX_AUTODETECT.hpp>
 
 #include "ros/node_handle.h"
-#if defined(M5StackATOMS3)
+#if defined(M5STACKATOMS3)
 #include "ArduinoAtomS3Hardware.h"
 #else
 #include "ArduinoHardware.h"
@@ -28,6 +28,7 @@ void messageCb(const esp_now_ros::Packet&);
 
 static LGFX lcd;
 static LGFX_Sprite sprite_device_info(&lcd);
+static LGFX_Sprite sprite_device_status(&lcd);
 static LGFX_Sprite sprite_event_info(&lcd);
 
 esp_now_ros::Packet msg_recv_packet;
@@ -35,8 +36,8 @@ uint8_t mac_address_for_msg[6];
 uint8_t buffer_for_msg[256];
 
 ros::NodeHandle_<ArduinoHardware> nh;
-ros::Publisher publisher("~recv", &msg_recv_packet);
-ros::Subscriber<esp_now_ros::Packet> subscriber("~send", &messageCb);
+ros::Publisher publisher("/esp_now_ros/recv", &msg_recv_packet);
+ros::Subscriber<esp_now_ros::Packet> subscriber("/esp_now_ros/send", &messageCb);
 
 void messageCb(const esp_now_ros::Packet& msg)
 {
@@ -73,7 +74,7 @@ void messageCb(const esp_now_ros::Packet& msg)
     sprite_event_info.printf("%d ", msg.data[i]);
   }
   sprite_event_info.println("");
-  sprite_event_info.pushSprite(0, 80);
+  sprite_event_info.pushSprite(0, lcd.height() * 2 / 3);
 
   // Log
   nh.logdebug("Subscribe a message and send a packet.");
@@ -109,7 +110,7 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
     sprite_event_info.printf("%d ", data[i]);
   }
   sprite_event_info.println("");
-  sprite_event_info.pushSprite(0, 80);
+  sprite_event_info.pushSprite(0, lcd.height() * 2 / 3);
 
   // Log
   nh.logdebug("Received a packet and publish a message.");
@@ -129,18 +130,23 @@ void setup()
   lcd.fillScreen(0xFFFFFF);
 
   sprite_device_info.createSprite(lcd.width(), lcd.height() / 3);
-  sprite_event_info.createSprite(lcd.width(), lcd.height() * 2 / 3);
+  sprite_device_status.createSprite(lcd.width(), lcd.height() / 3);
+  sprite_event_info.createSprite(lcd.width(), lcd.height() / 3);
 
   sprite_device_info.fillScreen(0xFFFFFF);
   sprite_device_info.setTextColor(0x000000);
+  sprite_device_status.fillScreen(0xFFFFFF);
+  sprite_device_status.setTextColor(0x000000);
+  sprite_event_info.fillScreen(0xFFFFFF);
+  sprite_event_info.setTextColor(0x000000);
+
 #if defined(M5STACKATOMS3)
   sprite_device_info.setTextSize(1.0, 1.0);
+  sprite_device_status.setTextSize(1.0, 1.0);
   sprite_event_info.setTextSize(1.0, 1.0);
 #else
   sprite_device_info.setTextSize(1.5, 1.5);
 #endif
-  sprite_event_info.fillScreen(0xFFFFFF);
-  sprite_event_info.setTextColor(0x000000);
 
   sprite_device_info.println("ESP-NOW ROS Driver");
   sprite_device_info.printf("MAC ADDR: %02X:%02X:%02X:%02X:%02X:%02X\n", device_mac_address[0], device_mac_address[1],
@@ -151,15 +157,17 @@ void setup()
   nh.initNode();
   nh.advertise(publisher);
   nh.subscribe(subscriber);
-  sprite_device_info.println("ROSSERIAL connecting...");
-  sprite_device_info.pushSprite(0, 0);
+  sprite_device_status.println("ROSSERIAL connecting...");
+  sprite_device_status.pushSprite(0, lcd.height() / 3);
   while (not nh.connected())
   {
     delay(1000);
     nh.spinOnce();
   }
-  sprite_device_info.println("ROSSERIAL Initialized.");
-  sprite_device_info.pushSprite(0, 0);
+  sprite_device_status.fillScreen(0xFFFFFF);
+  sprite_device_status.setCursor(0, 0);
+  sprite_device_status.println("ROSSERIAL Initialized.");
+  sprite_device_status.pushSprite(0, lcd.height() / 3);
 
   // ESP-NOW initialization
   WiFi.mode(WIFI_STA);
@@ -174,8 +182,10 @@ void setup()
     ESP.restart();
   }
   esp_now_register_recv_cb(OnDataRecv);
-  sprite_device_info.println("ESP-NOW Initialized.");
-  sprite_device_info.pushSprite(0, 0);
+  sprite_device_status.fillScreen(0xFFFFFF);
+  sprite_device_status.setCursor(0, 0);
+  sprite_device_status.println("ESP-NOW Initialized.");
+  sprite_device_status.pushSprite(0, lcd.height() / 3);
 }
 
 void loop()

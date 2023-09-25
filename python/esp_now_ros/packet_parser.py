@@ -1,8 +1,25 @@
 import struct
+from typing import List, Tuple, Union
 
+from esp_now_ros import MetaFrame, DataFrame
 from esp_now_ros.msg import Packet
 
+PACKET_TYPE_META = Packet.PACKET_TYPE_META
+PACKET_TYPE_DATA = Packet.PACKET_TYPE_DATA
 
+
+def parse_packet_as_v2(packet: Packet) -> Tuple[Tuple, Union[MetaFrame, DataFrame]]:
+    src_address = struct.unpack("6B", packet.mac_address)
+    packet_type = struct.unpack("<H", packet.data[0:2])[0]
+    if packet_type == PACKET_TYPE_META:
+        return src_address, MetaFrame.from_bytes(packet.data)
+    elif packet_type == PACKET_TYPE_DATA:
+        return src_address, DataFrame.from_bytes(packet.data)
+    else:
+        raise ValueError(f"Unknown packet type: {packet_type}")
+
+
+# Version 1 of the packet parser
 def parse_packet(packet):
     packet_type = struct.unpack("<H", packet[0:2])[0]
 
