@@ -1,12 +1,14 @@
+#include <vector>
+#include <variant>
+
 #include <M5Stack.h>
 #include <esp_system.h>
 #include <esp_now.h>
 #include <WiFi.h>
+
 #include <esp_now_ros/Packet.h>
 #include <packet_creator.h>
 #include <packet_parser.h>
-#include <vector>
-#include <variant>
 
 #define DEVICE_NAME "SDP_SESAMI_INTERFACE"
 
@@ -160,6 +162,20 @@ void loop()
         Serial.printf("Dummy callback calling\n");
         OnDataRecv(NULL, buf, sizeof(buf));
         return;
+    }
+
+    // Get sesami status
+    Serial.printf("Status of the key\n");
+    Serial2.print("{\"command\":\"status\"}\n");
+    auto timeout = millis() + 5000;
+    while (millis() < timeout)
+    {
+        if (Serial2.available())
+        {
+            String ret = Serial2.readStringUntil('\n');
+            Serial.printf("Response: %s\n", ret.c_str());
+            break;
+        }
     }
 
     // Send data
