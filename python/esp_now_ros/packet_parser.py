@@ -1,7 +1,7 @@
 import struct
 from typing import List, Tuple, Union
 
-from esp_now_ros import MetaFrame, DataFrame
+from esp_now_ros.sdp_frames import MetaFrame, DataFrame
 from esp_now_ros.msg import Packet
 
 PACKET_TYPE_META = Packet.PACKET_TYPE_META
