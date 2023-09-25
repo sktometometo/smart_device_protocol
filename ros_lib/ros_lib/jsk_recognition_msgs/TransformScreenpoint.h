@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "geometry_msgs/Vector3.h"
 #include "geometry_msgs/Point.h"
 #include "std_msgs/Header.h"
+#include "geometry_msgs/Vector3.h"
 
 namespace jsk_recognition_msgs
 {

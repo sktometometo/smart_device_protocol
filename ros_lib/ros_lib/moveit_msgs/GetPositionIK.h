@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/PositionIKRequest.h"
-#include "moveit_msgs/RobotState.h"
 #include "moveit_msgs/MoveItErrorCodes.h"
+#include "moveit_msgs/RobotState.h"
+#include "moveit_msgs/PositionIKRequest.h"
 
 namespace moveit_msgs
 {

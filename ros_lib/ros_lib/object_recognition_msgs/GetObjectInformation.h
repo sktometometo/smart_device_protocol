@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "object_recognition_msgs/ObjectInformation.h"
 #include "object_recognition_msgs/ObjectType.h"
+#include "object_recognition_msgs/ObjectInformation.h"
 
 namespace object_recognition_msgs
 {

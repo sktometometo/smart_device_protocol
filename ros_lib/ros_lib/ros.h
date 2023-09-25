@@ -39,10 +39,6 @@
 
 #if defined(ROSSERIAL_ARDUINO_TCP)
   #include "ArduinoTcpHardware.h"
-#elif defined(ROSSERIAL_ARDUINO_BLUETOOTH)
-  #include "ArduinoBluetoothHardware.h"
-#elif defined(ROSSERIAL_ARDUINO_BLE)
-  #include "ArduinoBLEHardware.h"
 #else
   #include "ArduinoHardware.h"
 #endif

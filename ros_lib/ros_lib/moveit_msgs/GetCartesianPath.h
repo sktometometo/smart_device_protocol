@@ -4,12 +4,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "geometry_msgs/Pose.h"
-#include "moveit_msgs/MoveItErrorCodes.h"
 #include "moveit_msgs/Constraints.h"
-#include "moveit_msgs/RobotTrajectory.h"
-#include "moveit_msgs/RobotState.h"
 #include "std_msgs/Header.h"
+#include "moveit_msgs/RobotTrajectory.h"
+#include "moveit_msgs/MoveItErrorCodes.h"
+#include "moveit_msgs/RobotState.h"
+#include "geometry_msgs/Pose.h"
 
 namespace moveit_msgs
 {

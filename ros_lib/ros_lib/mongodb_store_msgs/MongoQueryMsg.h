@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "mongodb_store_msgs/SerialisedMessage.h"
 #include "mongodb_store_msgs/StringPairList.h"
+#include "mongodb_store_msgs/SerialisedMessage.h"
 
 namespace mongodb_store_msgs
 {

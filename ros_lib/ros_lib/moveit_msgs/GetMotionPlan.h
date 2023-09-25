@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/MotionPlanRequest.h"
 #include "moveit_msgs/MotionPlanResponse.h"
+#include "moveit_msgs/MotionPlanRequest.h"
 
 namespace moveit_msgs
 {

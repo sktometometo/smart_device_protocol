@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/RobotTrajectory.h"
 #include "moveit_msgs/MoveItErrorCodes.h"
+#include "moveit_msgs/RobotTrajectory.h"
 
 namespace moveit_msgs
 {

@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include "ros/msg.h"
 #include "moveit_msgs/MoveItErrorCodes.h"
-#include "moveit_msgs/RobotState.h"
 #include "std_msgs/Header.h"
 #include "geometry_msgs/PoseStamped.h"
+#include "moveit_msgs/RobotState.h"
 
 namespace moveit_msgs
 {

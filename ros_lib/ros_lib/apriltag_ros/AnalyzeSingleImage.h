@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "apriltag_ros/AprilTagDetectionArray.h"
 #include "sensor_msgs/CameraInfo.h"
+#include "apriltag_ros/AprilTagDetectionArray.h"
 
 namespace apriltag_ros
 {

@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "posedetection_msgs/Feature1D.h"
 #include "sensor_msgs/Image.h"
+#include "posedetection_msgs/Feature1D.h"
 
 namespace posedetection_msgs
 {

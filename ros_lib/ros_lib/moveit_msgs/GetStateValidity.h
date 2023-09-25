@@ -6,9 +6,9 @@
 #include "ros/msg.h"
 #include "moveit_msgs/ContactInformation.h"
 #include "moveit_msgs/Constraints.h"
-#include "moveit_msgs/ConstraintEvalResult.h"
 #include "moveit_msgs/CostSource.h"
 #include "moveit_msgs/RobotState.h"
+#include "moveit_msgs/ConstraintEvalResult.h"
 
 namespace moveit_msgs
 {

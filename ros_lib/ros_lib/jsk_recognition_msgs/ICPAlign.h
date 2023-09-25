@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "jsk_recognition_msgs/ICPResult.h"
 #include "sensor_msgs/PointCloud2.h"
+#include "jsk_recognition_msgs/ICPResult.h"
 
 namespace jsk_recognition_msgs
 {

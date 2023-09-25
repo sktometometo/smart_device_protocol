@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "speech_recognition_msgs/Grammar.h"
 #include "speech_recognition_msgs/SpeechRecognitionCandidates.h"
+#include "speech_recognition_msgs/Grammar.h"
 #include "speech_recognition_msgs/Vocabulary.h"
 
 namespace speech_recognition_msgs

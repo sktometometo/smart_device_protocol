@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/PlanningScene.h"
 #include "moveit_msgs/PlanningSceneComponents.h"
+#include "moveit_msgs/PlanningScene.h"
 
 namespace moveit_msgs
 {

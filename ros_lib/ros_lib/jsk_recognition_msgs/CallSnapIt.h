@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "jsk_recognition_msgs/SnapItRequest.h"
 #include "geometry_msgs/Pose.h"
+#include "jsk_recognition_msgs/SnapItRequest.h"
 
 namespace jsk_recognition_msgs
 {

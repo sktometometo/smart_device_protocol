@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "opencv_apps/Rect.h"
 #include "sensor_msgs/Image.h"
+#include "opencv_apps/Rect.h"
 
 namespace opencv_apps
 {
