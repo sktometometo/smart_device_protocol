@@ -180,14 +180,3 @@ class DataFrame:
             else:
                 raise ValueError(f"Unknown format specifier: {format_specifier}")
         return DataFrame(packet_description=packet_description, content=content)
-
-
-def parse_packet(packet: Packet) -> Tuple[Tuple, Union[MetaFrame, DataFrame]]:
-    src_address = struct.unpack("6B", packet.mac_address)
-    packet_type = struct.unpack("<H", packet.data[0:2])[0]
-    if packet_type == PACKET_TYPE_META:
-        return src_address, MetaFrame.from_bytes(packet.data)
-    elif packet_type == PACKET_TYPE_DATA:
-        return src_address, DataFrame.from_bytes(packet.data)
-    else:
-        raise ValueError(f"Unknown packet type: {packet_type}")
