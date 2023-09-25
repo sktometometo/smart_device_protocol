@@ -17,7 +17,7 @@ esp_now_peer_info_t peer_broadcast;
 // Interface
 std::string packet_description_operation = "Operation Key";
 std::string serialization_format_operation = "s";
-uint8_t buf_for_meta_packet[128];
+uint8_t buf_for_meta_packet[250];
 
 // Other
 uint8_t buf[240];
@@ -30,7 +30,6 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
     uint8_t packet_type = get_packet_type(data);
-    Serial.printf("Received packet. type: %d\n", packet_type);
     if (packet_type == esp_now_ros::Packet::PACKET_TYPE_DATA)
     {
         Serial.printf("Received data packet\n");
@@ -53,6 +52,7 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
         {
             std::string operation_key = std::get<std::string>(body[0]);
             Serial.printf("operation_key: %s\n", operation_key.c_str());
+            Serial.printf("operation_key length: %d\n", operation_key.length());
             if (operation_key == "lock")
             {
                 Serial.printf("Lock the key\n");
@@ -92,10 +92,6 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
         {
             Serial.printf("Unknown packet description or serialization format\n");
         }
-    }
-    else
-    {
-        Serial.printf("Unknown packet type\n");
     }
 }
 
@@ -146,13 +142,13 @@ void loop()
         data.clear();
         String str = Serial.readStringUntil('\n');
         Serial.printf("Input: %s\n", str.c_str());
-        if (str.indexOf("lock") != -1)
+        if (str.indexOf("unlock") != -1)
         {
-            data.push_back(SDPData(std::string("lock")));
+            data.push_back(SDPData(std::string("unlock")));
         }
         else
         {
-            data.push_back(SDPData(std::string("unlock")));
+            data.push_back(SDPData(std::string("lock")));
         }
         Serial.println("Generate data frame");
         std::string serialization_format = get_serialization_format(data);

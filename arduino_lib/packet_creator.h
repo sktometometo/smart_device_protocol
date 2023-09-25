@@ -86,20 +86,20 @@ void generate_data_frame(uint8_t *packet, const char *packet_description, const 
       }
       else if (str.size() <= 64 and str.size() > 16)
       {
-        strncpy((char *)packet_data_p, str.c_str(), str.size());
         for (int i = str.size(); i < 64; ++i)
         {
-          *(char *)(packet + 2 + 64 + 10 + i) = '\0';
+          *(char *)packet_data_p = '\0';
         }
+        strncpy((char *)packet_data_p, str.c_str(), str.size());
         packet_data_p += 64;
       }
       else if (str.size() <= 16)
       {
-        strncpy((char *)packet_data_p, str.c_str(), str.size());
         for (int i = str.size(); i < 16; ++i)
         {
-          *(char *)(packet + 2 + 64 + 10 + i) = '\0';
+          *(char *)packet_data_p = '\0';
         }
+        strncpy((char *)packet_data_p, str.c_str(), str.size());
         packet_data_p += 16;
       }
     }

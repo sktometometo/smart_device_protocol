@@ -58,14 +58,18 @@ std::tuple<SDPInterfaceDescription, std::vector<SDPData>> parse_packet_as_data_p
     }
     else if (serialization_format[i] == 'S')
     {
-      SDPData str = std::string((char *)packet_data_p, 64);
-      data.push_back(str);
+      std::string str = std::string((char *)packet_data_p, 64);
+      str.erase(std::find(str.begin(), str.end(), '\0'), str.end());
+      SDPData str_sdp = str;
+      data.push_back(str_sdp);
       packet_data_p += 64;
     }
     else if (serialization_format[i] == 's')
     {
-      SDPData str = std::string((char *)packet_data_p, 16);
-      data.push_back(str);
+      std::string str = std::string((char *)packet_data_p, 16);
+      str.erase(std::find(str.begin(), str.end(), '\0'), str.end());
+      SDPData str_sdp = str;
+      data.push_back(str_sdp);
       packet_data_p += 16;
     }
     else if (serialization_format[i] == '?')
