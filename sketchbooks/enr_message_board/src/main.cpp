@@ -4,6 +4,8 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
+#include <vector>
+
 #include <esp_now_ros/Packet.h>
 
 #include <packet_creator.h>
@@ -18,22 +20,23 @@ const unsigned long duration_timeout = 1 * 60 * 1000;
 
 M5EPD_Canvas canvas(&M5.EPD);
 M5EPD_Canvas canvas_message(&M5.EPD);
-uint8_t mac_address[6] = { 0 };
+uint8_t mac_address[6] = {0};
 std::vector<Message> message_board;
 esp_now_peer_info_t peer_broadcast;
 
-void OnDataSent(const uint8_t* mac_addr, esp_now_send_status_t status)
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
   return;
 }
 
-void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
+void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
   uint8_t packet_type = get_packet_type(data);
   Serial.printf("Received packet. type: %d\n", packet_type);
-  if (get_packet_type(data) == esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
+  auto m = Message(data);
+  if (m.deadline > millis())
   {
-    message_board.push_back(Message(data));
+    message_board.push_back(m);
     Serial.printf("Push message\n");
   }
 }
@@ -51,7 +54,7 @@ void setup()
   canvas.createCanvas(540, 100);
   canvas.setTextSize(3);
   canvas.setCursor(0, 0);
-  canvas.printf("ENR MESSAGE BOARD\n");
+  canvas.printf("ENR & SDP MESSAGE BOARD\n");
   canvas.printf("Name: %s\n", DEVICE_NAME);
   canvas.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
                 mac_address[4], mac_address[5]);
@@ -81,8 +84,13 @@ void setup()
 void loop()
 {
   uint8_t buf[250];
+  // Send V1 Meta Packet
   create_device_message_board_meta_packet(buf, DEVICE_NAME);
-  esp_now_send(peer_broadcast.peer_addr, (uint8_t*)buf, sizeof(buf));
+  esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
+  // Send V2 Meta Packet
+  generate_meta_frame(buf, DEVICE_NAME, Message::packet_description_write.c_str(), Message::serialization_format_write.c_str(), "", "", "", "");
+  esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
+
   canvas_message.clear();
   canvas_message.setCursor(0, 0);
   for (auto m = message_board.begin(); m != message_board.end();)
@@ -96,8 +104,14 @@ void loop()
       canvas_message.printf("From: %s\n", m->source_name);
       canvas_message.printf("Duration until deletion(sec): %d\n", (int)((m->deadline - millis()) / 1000));
       canvas_message.printf("Message: %s\n\n", m->message);
-      m->to_packet(buf);
-      auto result = esp_now_send(peer_broadcast.peer_addr, (uint8_t*)buf, sizeof(buf));
+
+      m->to_v1_packet(buf);
+      esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
+      delay(10);
+      m->to_v2_packet(buf);
+      esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
+      delay(10);
+
       m++;
     }
   }
