@@ -73,29 +73,37 @@ class MetaFrame:
 
 class DataFrame:
     def __init__(
-        self, packet_description: str, content: List[Union[bool, int, float, str]]
+        self,
+        packet_description: str,
+        content: List[Union[bool, int, float, str]],
+        serialization_format=None,
     ):
         self.packet_description = packet_description
-        serialization_format = ""
-        for entry in content:
-            if type(entry) is bool:
-                serialization_format += "?"
-            elif type(entry) is int:
-                serialization_format += "i"
-            elif type(entry) is float:
-                serialization_format += "f"
-            elif type(entry) is str:
-                encoded_entry = entry.encode("utf-8")
-                if len(encoded_entry) <= 16:
-                    serialization_format += "s"
-                elif len(encoded_entry) <= 64:
-                    serialization_format += "S"
+        if serialization_format is not None:
+            self.serialization_format = serialization_format
+        else:
+            serialization_format = ""
+            for entry in content:
+                if type(entry) is bool:
+                    serialization_format += "?"
+                elif type(entry) is int:
+                    serialization_format += "i"
+                elif type(entry) is float:
+                    serialization_format += "f"
+                elif type(entry) is str:
+                    encoded_entry = entry.encode("utf-8")
+                    if len(encoded_entry) <= 16:
+                        serialization_format += "s"
+                    elif len(encoded_entry) <= 64:
+                        serialization_format += "S"
+                    else:
+                        raise ValueError(
+                            f"String entry of content is longer than 64 bytes: {len(encoded_entry)}"
+                        )
                 else:
                     raise ValueError(
-                        f"String entry of content is longer than 64 bytes: {len(encoded_entry)}"
+                        f"There is an unknown type of content: {type(entry)}"
                     )
-            else:
-                raise ValueError(f"There is an unknown type of content: {type(entry)}")
         self.serialization_format = serialization_format
         self.content = content
 
