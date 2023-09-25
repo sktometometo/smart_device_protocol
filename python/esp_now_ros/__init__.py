@@ -7,7 +7,11 @@ PACKET_TYPE_META = Packet.PACKET_TYPE_META
 PACKET_TYPE_DATA = Packet.PACKET_TYPE_DATA
 
 
-class MetaFrame:
+class BaseFrame:
+    pass
+
+
+class MetaFrame(BaseFrame):
     def __init__(self, device_name: str, interface_descriptions: List[Tuple[str, str]]):
         self.device_name = device_name
         self.interface_descriptions = interface_descriptions
@@ -71,7 +75,7 @@ class MetaFrame:
         )
 
 
-class DataFrame:
+class DataFrame(BaseFrame):
     def __init__(
         self,
         packet_description: str,

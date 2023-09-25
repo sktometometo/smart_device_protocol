@@ -1,12 +1,30 @@
 import struct
-from esp_now_ros import MetaFrame, DataFrame
+from typing import Callable, Union, List, Tuple, Optional
+
+from esp_now_ros import MetaFrame, DataFrame, BaseFrame
 from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterface
 from esp_now_ros.packet_parser import parse_packet_as_v2
 from esp_now_ros.msg import Packet
 
 
 class SDPInterface:
-    def __init__(self, callback_data=None, callback_meta=None):
+    """Smart Device Protocol Interface"""
+
+    def __init__(
+        self,
+        callback_data: Optional[
+            Callable[[Union[List[int], Tuple[int]], BaseFrame], None]
+        ] = None,
+        callback_meta: Optional[
+            Callable[[Union[List[int], Tuple[int]], BaseFrame], None]
+        ] = None,
+    ):
+        """Smart Device Protocol Interface
+
+        Args:
+            callback_data (Optional[ Callable[[Union[List[int], Tuple[int]], BaseFrame], None] ], optional): callback function for DataFrame. Defaults to None.
+            callback_meta (Optional[ Callable[[Union[List[int], Tuple[int]], BaseFrame], None] ], optional): callback function for MetaFrame. Defaults to None.
+        """
         self.callback_data = callback_data
         self.callback_meta = callback_meta
         self.esp_now_ros_interface = ESPNOWROSInterface(self.callback)
@@ -18,9 +36,9 @@ class SDPInterface:
             )
         except ValueError:
             return
-        if isinstance(frame, DataFrame):
+        if isinstance(frame, DataFrame) and self.callback_data is not None:
             self.callback_data(src_address, frame)
-        elif isinstance(frame, MetaFrame):
+        elif isinstance(frame, MetaFrame) and self.callback_meta is not None:
             self.callback_meta(src_address, frame)
 
     def send(self, target_address, frame, num_trial=1):

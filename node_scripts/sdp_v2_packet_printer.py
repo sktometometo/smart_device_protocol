@@ -3,7 +3,6 @@
 import rospy
 
 from esp_now_ros.smart_device_protocol_interface import SDPInterface
-from esp_now_ros import DataFrame
 
 
 def callback(src_address, frame):
