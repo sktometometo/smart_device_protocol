@@ -1,5 +1,0 @@
-.pio
-sdkconfig*
-!sdkconfig.defaults
-build
-.vs
