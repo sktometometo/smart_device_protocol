@@ -1,0 +1,103 @@
+#include <esp_now.h>
+#include <esp_system.h>
+
+#include <M5Core2.h>
+#include <WiFi.h>
+
+#include <LovyanGFX.hpp>
+#include <LGFX_AUTODETECT.hpp>
+
+#include <Dps310.h>
+
+#include "enr_util.h"
+#include "esp_now_ros/Packet.h"
+#include "packet_parser.h"
+#include "packet_creator.h"
+
+static LGFX lcd;
+static LGFX_Sprite sprite_header(&lcd);
+static LGFX_Sprite sprite_status(&lcd);
+
+Dps310 Dps310PressureSensor = Dps310();
+
+/* Sensor */
+float sensor_accX = 0.0F;
+float sensor_accY = 0.0F;
+float sensor_accZ = 0.0F;
+float sensor_gyroX = 0.0F;
+float sensor_gyroY = 0.0F;
+float sensor_gyroZ = 0.0F;
+float sensor_pitch = 0.0F;
+float sensor_roll = 0.0F;
+float sensor_yaw = 0.0F;
+float sensor_temp_mpu = 0.0F;
+float sensor_temp_dps = 0;
+float sensor_pressure = 0;
+
+/* ESP-NOW */
+uint8_t device_mac_address[6];
+uint8_t peer_mac_address[6];
+esp_now_peer_info_t peer;
+uint8_t packet_buf[250];
+
+void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
+{
+  uint16_t packet_type = get_packet_type(data);
+}
+
+void init_lcd()
+{
+  // LCD
+  lcd.init();
+  lcd.setRotation(1);
+  lcd.setBrightness(128);
+  lcd.setColorDepth(24);
+  lcd.fillScreen(0xFFFFFF);
+
+  sprite_header.createSprite(lcd.width(), lcd.height() / 4);
+  sprite_status.createSprite(lcd.width(), lcd.height() * 3 / 4);
+
+  sprite_header.fillScreen(0xFFFFFF);
+  sprite_header.setTextColor(0x000000);
+  sprite_header.setTextSize(1.5, 1.5);
+  sprite_status.fillScreen(0xFFFFFF);
+  sprite_status.setTextColor(0x000000);
+}
+
+void measure_sensors()
+{
+  M5.IMU.getGyroData(&sensor_gyroX, &sensor_gyroY, &sensor_gyroZ);
+  M5.IMU.getAccelData(&sensor_accX, &sensor_accY, &sensor_accZ);
+  M5.IMU.getAhrsData(&sensor_pitch, &sensor_roll, &sensor_yaw);
+  M5.IMU.getTempData(&sensor_temp_mpu);
+  Dps310PressureSensor.measurePressureOnce(sensor_pressure);
+  Dps310PressureSensor.measureTempOnce(sensor_temp_dps);
+}
+
+void setup()
+{
+  // Device Initialization
+  M5.begin(true, false, true, true);
+  Serial.begin(115200);
+  M5.IMU.Init();
+  Dps310PressureSensor.begin(Wire, 0x77);
+
+  // initialize LCD
+  init_lcd();
+
+  // Initialize ESP-NOW
+  init_esp_now(Serial, device_mac_address, OnDataRecv);
+
+  // Print
+  sprite_header.println("ENR DPS310 Interface");
+  sprite_header.printf("MAC ADDR: %02X:%02X:%02X:%02X:%02X:%02X\n", device_mac_address[0], device_mac_address[1],
+                       device_mac_address[2], device_mac_address[3], device_mac_address[4], device_mac_address[5]);
+  sprite_header.pushSprite(0, 0);
+}
+
+void loop()
+{
+  measure_sensors();
+
+  esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t *)packet_buf, sizeof(packet_buf) / sizeof(packet[0]));
+}
