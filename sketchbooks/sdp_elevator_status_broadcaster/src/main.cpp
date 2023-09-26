@@ -35,9 +35,10 @@ float sensor_temp_dps = 0;
 float sensor_pressure = 0;
 
 /* ESP-NOW */
+extern esp_now_peer_info_t peer;
+
 uint8_t device_mac_address[6];
 uint8_t peer_mac_address[6];
-esp_now_peer_info_t peer;
 uint8_t packet_buf[250];
 
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
@@ -98,6 +99,5 @@ void setup()
 void loop()
 {
   measure_sensors();
-
-  esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t *)packet_buf, sizeof(packet_buf) / sizeof(packet[0]));
+  // esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t *)packet_buf, sizeof(packet_buf) / sizeof(packet[0]));
 }

@@ -4,7 +4,8 @@
 
 esp_now_peer_info_t peer;
 
-<template T> bool init_esp_now(T &logprinter, uint8[] device_mac_address, esp_now_recv_cb_t recv_callback = NULL, esp_now_send_cb_t send_callback = NULL)
+template <typename T>
+bool init_esp_now(T &logprinter, uint8_t *device_mac_address, esp_now_recv_cb_t recv_callback = NULL, esp_now_send_cb_t send_callback = NULL)
 {
     esp_read_mac(device_mac_address, ESP_MAC_WIFI_STA);
     logprinter.print("MAC Address: ");
