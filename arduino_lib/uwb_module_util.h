@@ -104,7 +104,7 @@ bool initUWB(bool tag, int id, HardwareSerial &serial)
 
         resetUWB(serial);
 
-        serial.write("AT+interval=5\r\n");
+        serial.write("AT+interval=1\r\n");
         delay(100);
         readUWB(serial);
 
