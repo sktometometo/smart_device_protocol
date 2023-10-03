@@ -110,12 +110,15 @@ void loop()
   StaticJsonDocument<2048> response_json;
   String message;
   bool success;
-  // if (Serial2.available())
-  // {
-  //   bufstring = Serial2.readStringUntil('\n');
+#ifdef USBMODE
   if (USBSerial.available())
   {
     bufstring = USBSerial.readStringUntil('\n');
+#else
+  if (Serial2.available())
+  {
+    bufstring = Serial2.readStringUntil('\n');
+#endif
     DeserializationError error = deserializeJson(input_json, bufstring.c_str());
 
     if (error)

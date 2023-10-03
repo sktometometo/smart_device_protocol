@@ -1,6 +1,6 @@
-# M5AtomS3 Sesami Client
+# M5AtomS3 Switchbot Client
 
-This sketch is for sesami client with M5AtomS3.
+This sketch is for switchbot client with M5AtomS3.
 
 ## How to use
 
@@ -8,9 +8,8 @@ First, update parameters in the skectch below
 
 - SSID
 - Password
-- device UUID
-- secret key
-- api key
+- token
+- secret
 
 Then, burn the sketch to M5AtomS3
 
@@ -21,27 +20,19 @@ This device can be controlled with serial command via GROVE port.
 example is
 
 ```
-{"command": "toggle"}\n
+{"command": "get_device_list"}\n
 ```
 
 ```
-{"command": "lock"}\n
+{"command": "get_device_status", "device_id": "<device ID>"}\n
 ```
 
 ```
-{"command": "unlock"}\n
-```
-
-```
-{"command": "status"}\n
-```
-
-```
-{"command": "history"}\n
+{"command": "send_device_command", "device_id": "<device ID>", "pb_command_type": "<commandType>", "pb_command": "<command>"}\n
 ```
 
 And result will be sent via serial port like
 
 ```
-{"success":true,"message":"toggle success"}\n
+{"success":true,"message":"get_device_list success"}\n
 ```
