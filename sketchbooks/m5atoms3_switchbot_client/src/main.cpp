@@ -182,13 +182,23 @@ void loop()
         std::optional<String> ret = get_device_status(token, secret, device_id);
         if (ret)
         {
-          success = true;
-          message = "get_device_status success";
           String result = ret.value();
-          deserializeJson(result_json, result.c_str());
-          response_json["success"] = success;
-          response_json["message"] = message;
-          response_json["result"] = result_json;
+          DeserializationError error = deserializeJson(result_json, result.c_str());
+          if (error)
+          {
+            success = false;
+            message = "deserializeJson() failed during get_device_status: " + String(error.c_str()) + ", ret: " + result;
+            response_json["success"] = success;
+            response_json["message"] = message;
+          }
+          else
+          {
+            success = true;
+            message = "get_device_status success";
+            response_json["success"] = success;
+            response_json["message"] = message;
+            response_json["result"] = result_json;
+          }
         }
         else
         {
@@ -263,7 +273,7 @@ void loop()
         success = initWiFi(ssid.c_str(), password.c_str(), sprite_event_info);
         if (success)
         {
-          message = "config_wifi success";
+          message = "config_wifi success. SSID: " + ssid + ", password: " + password + ", IP: " + WiFi.localIP().toString();
         }
         else
         {
