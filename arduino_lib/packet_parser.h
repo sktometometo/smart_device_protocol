@@ -72,7 +72,7 @@ std::tuple<SDPInterfaceDescription, std::vector<SDPData>> parse_packet_as_data_p
       data.push_back(str_sdp);
       packet_data_p += 16;
     }
-    else if (serialization_format[i] == '?')
+    else if (serialization_format[i] == '?' or serialization_format[i] == 'b')
     {
       data.push_back(SDPData(*(bool *)packet_data_p));
       packet_data_p += sizeof(bool);

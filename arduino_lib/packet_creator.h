@@ -35,7 +35,7 @@ std::string get_serialization_format(std::vector<SDPData> &data)
     }
     else if (std::holds_alternative<bool>(*itr))
     {
-      serialization_format += "b";
+      serialization_format += "?";
     }
   }
   return serialization_format;
