@@ -6,7 +6,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include <FS.h>
-#include <LITTLEFS.h>
+#include <SPIFFS.h>
 
 #include <ArduinoJson.h>
 
@@ -34,17 +34,17 @@ std::string serialization_format_control = "?";
 uint8_t buf_for_meta_packet[250];
 
 // UWB
-const int uwb_id = UWB_STATION_ID;
+int uwb_id = -1;
 std::string packet_description_uwb = "UWB Station";
 std::string serialization_format_uwb = "i";
 uint8_t buf_for_uwb_packet[250];
 
 // Switchbot Client Configuration
-std::string device_id = "";
-std::string wifi_ssid = "";
-std::string wifi_password = "";
-std::string switchbot_token = "";
-std::string switchbot_secret = "";
+String device_id = "";
+String wifi_ssid = "";
+String wifi_password = "";
+String switchbot_token = "";
+String switchbot_secret = "";
 
 // Other
 uint8_t buf[240];
@@ -64,9 +64,9 @@ void get_bot_status_and_update_buf()
         {
             String ret = Serial2.readStringUntil('\n');
             DeserializationError error = deserializeJson(result_json, ret);
-            if (error)
+            if (error or (result_json.containsKey("success") and not result_json["success"].as<bool>()))
             {
-                Serial.printf("deserializeJson() failed: %s\n", error.c_str());
+                Serial.printf("deserializeJson() failed or get_device_status failed: %s\n", error.c_str());
                 return;
             }
             else
@@ -84,24 +84,25 @@ void get_bot_status_and_update_buf()
 
 bool load_config_from_FS()
 {
-    FILE file = LITTLEFS.open("/config.json", "r");
+    auto file = SPIFFS.open("/config.json", "r");
     if (!file)
     {
         Serial.println("Failed to open config file");
-        show_d return false;
+        return false;
     }
+    String file_content = file.readString();
 
     StaticJsonDocument<1024> doc;
-    DeserializationError error = deserializeJson(doc, file);
+    DeserializationError error = deserializeJson(doc, file_content);
     if (error)
     {
         Serial.println("Failed to parse config file");
         return false;
     }
 
-    if (not doc.containsKey("wifi_ssid") or not doc.containsKey("wifi_password") or not doc.containsKey("switchbot_token") or not doc.containsKey("switchbot_secret") or not doc.containsKey("device_id")
+    if (not doc.containsKey("wifi_ssid") or not doc.containsKey("wifi_password") or not doc.containsKey("switchbot_token") or not doc.containsKey("switchbot_secret") or not doc.containsKey("device_id") or not doc.containsKey("uwb_id"))
     {
-        Serial.println("Config file is invalid. It should have wifi_ssid, wifi_password, switchbot_token, switchbot_secret, and device_id");
+        Serial.println("Config file is invalid. It should have wifi_ssid, wifi_password, switchbot_token, switchbot_secret, device_id, and uwb_id");
         return false;
     }
 
@@ -110,6 +111,14 @@ bool load_config_from_FS()
     switchbot_token = doc["switchbot_token"].as<String>();
     switchbot_secret = doc["switchbot_secret"].as<String>();
     device_id = doc["device_id"].as<String>();
+    uwb_id = doc["uwb_id"].as<int>();
+
+    Serial.printf("wifi_ssid: %s\n", wifi_ssid.c_str());
+    Serial.printf("wifi_password: %s\n", wifi_password.c_str());
+    Serial.printf("switchbot_token: %s\n", switchbot_token.c_str());
+    Serial.printf("switchbot_secret: %s\n", switchbot_secret.c_str());
+    Serial.printf("device_id: %s\n", device_id.c_str());
+    Serial.printf("uwb_id: %d\n", uwb_id);
     return true;
 }
 
@@ -122,13 +131,13 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
     uint8_t packet_type = get_packet_type(data);
     if (packet_type == esp_now_ros::Packet::PACKET_TYPE_DATA)
     {
-        Serial.printf("Received data packet\n");
-        Serial.print("data: ");
-        for (int i = 0; i < data_len; ++i)
-        {
-            Serial.printf("%02x ", data[i]);
-        }
-        Serial.println();
+        // Serial.printf("Received data packet\n");
+        // Serial.print("data: ");
+        // for (int i = 0; i < data_len; ++i)
+        // {
+        //     Serial.printf("%02x ", data[i]);
+        // }
+        // Serial.println();
 
         auto packet = parse_packet_as_data_packet(data);
         SDPInterfaceDescription packet_description_and_serialization_format = std::get<0>(packet);
@@ -136,8 +145,8 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
         std::string serialization_format = std::get<1>(packet_description_and_serialization_format);
         std::vector<SDPData> body = std::get<1>(packet);
 
-        Serial.printf("packet_description: %s\n", packet_description.c_str());
-        Serial.printf("serialization_format: %s\n", serialization_format.c_str());
+        // Serial.printf("packet_description: %s\n", packet_description.c_str());
+        // Serial.printf("serialization_format: %s\n", serialization_format.c_str());
         if (packet_description == packet_description_control and serialization_format == serialization_format_control)
         {
             Serial.printf("Length of body: %d\n", body.size());
@@ -178,7 +187,7 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
         }
         else
         {
-            Serial.printf("Unknown packet description or serialization format\n");
+            // Serial.printf("Unknown packet description or serialization format\n");
         }
     }
 }
@@ -194,7 +203,7 @@ void setup()
                   mac_address[4], mac_address[5]);
 
     // Load config from FS
-    if (not LITTLEFS.begin())
+    if (not SPIFFS.begin())
     {
         Serial.println("Failed to mount file system");
         ESP.restart();
@@ -291,9 +300,14 @@ void loop()
         {
             data.push_back(SDPData(true));
         }
-        else
+        else if (str.indexOf("turnOff") != -1)
         {
             data.push_back(SDPData(false));
+        }
+        else
+        {
+            Serial.printf("Unknown command\n");
+            return;
         }
         Serial.println("Generate data frame");
         std::string serialization_format = get_serialization_format(data);
@@ -317,31 +331,19 @@ void loop()
 
     // Send meta packet
     esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_meta_packet, sizeof(buf_for_meta_packet));
-    if (result == ESP_OK)
-    {
-        Serial.println("Sent SDP meta packet");
-    }
-    else
+    if (result != ESP_OK)
     {
         Serial.printf("Send error: %d\n", result);
     }
     // Send UWB data
     result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_uwb_packet, sizeof(buf_for_uwb_packet));
-    if (result == ESP_OK)
-    {
-        Serial.println("Sent UWB data packet");
-    }
-    else
+    if (result != ESP_OK)
     {
         Serial.printf("Send error: %d\n", result);
     }
     // send data packet
     result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
-    if (result == ESP_OK)
-    {
-        Serial.println("Sent SDP data packet");
-    }
-    else
+    if (result != ESP_OK)
     {
         Serial.printf("Send error: %d\n", result);
     }
