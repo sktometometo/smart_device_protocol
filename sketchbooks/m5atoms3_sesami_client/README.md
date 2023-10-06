@@ -45,3 +45,10 @@ And result will be sent via serial port like
 ```
 {"success":true,"message":"toggle success"}\n
 ```
+
+## Notice
+
+See the pages below if you have a problem with WiFiClientSecure.
+
+- https://www.mgo-tec.com/blog-entry-arduino-esp32-wificlientsecure-hangup-solution.html
+- https://www.1ft-seabass.jp/memo/2017/07/31/esp32-developer-aws-iot-tips/

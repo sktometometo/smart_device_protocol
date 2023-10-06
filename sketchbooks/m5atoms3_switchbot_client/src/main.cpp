@@ -58,8 +58,6 @@ void setup()
   {
     initWiFi(ssid.c_str(), password.c_str(), sprite_event_info, lcd, WiFiMulti);
   }
-
-  USBSerial.printf("ARDUINO_LOOP_STACK_SIZE: %d\n", getArduinoLoopTaskStackSize());
 }
 
 void loop()
@@ -68,10 +66,7 @@ void loop()
   String bufstring;
   StaticJsonDocument<1024> input_json;
   StaticJsonDocument<1024> result_json;
-  JsonObject result_json_obj;
   StaticJsonDocument<2048> response_json;
-  String message;
-  bool success;
   if (USBSerial.available() or Serial2.available())
   {
     if (USBSerial.available())
@@ -86,11 +81,10 @@ void loop()
 
     if (error)
     {
-      success = false;
-      message = "deserializeJson() failed: " + String(error.c_str());
+      String message = "deserializeJson() failed: " + String(error.c_str());
       USBSerial.println(message);
       show_device_info(message.c_str(), sprite_event_info, lcd);
-      response_json["success"] = success;
+      response_json["success"] = false;
       response_json["message"] = message;
       Serial2.printf("%s\n", response_json.as<String>().c_str());
       return;
@@ -98,11 +92,10 @@ void loop()
 
     if (not input_json.containsKey("command"))
     {
-      success = false;
-      message = "command key not found";
+      String message = "command key not found";
       USBSerial.println(message);
       show_device_info(message.c_str(), sprite_event_info, lcd);
-      response_json["success"] = success;
+      response_json["success"] = false;
       response_json["message"] = message;
       Serial2.printf("%s\n", response_json.as<String>().c_str());
       return;
@@ -114,30 +107,31 @@ void loop()
       std::optional<String> ret = get_device_list(token, secret);
       if (ret)
       {
-        success = true;
-        message = "get_device_list success";
-        String result = ret.value();
-        deserializeJson(result_json, result.c_str());
-        response_json["success"] = success;
-        response_json["message"] = message;
-        response_json["result"] = result_json;
+        DeserializationError error = deserializeJson(result_json, ret.value().c_str());
+        if (error)
+        {
+          response_json["success"] = false;
+          response_json["message"] = "deserializeJson() failed during get_device_list: " + String(error.c_str()) + ", ret: " + ret.value();
+        }
+        else
+        {
+          response_json["success"] = true;
+          response_json["message"] = "get_device_list success";
+          response_json["result"] = result_json;
+        }
       }
       else
       {
-        success = false;
-        message = "get_device_list failed";
-        response_json["success"] = success;
-        response_json["message"] = message;
+        response_json["success"] = false;
+        response_json["message"] = "get_device_list failed";
       }
     }
     else if (command == String("get_device_status"))
     {
       if (not input_json.containsKey("device_id"))
       {
-        success = false;
-        message = "device_id key not found";
-        response_json["success"] = success;
-        response_json["message"] = message;
+        response_json["success"] = false;
+        response_json["message"] = "device_id key not found for get_device_status";
       }
       else
       {
@@ -145,30 +139,23 @@ void loop()
         std::optional<String> ret = get_device_status(token, secret, device_id);
         if (ret)
         {
-          String result = ret.value();
-          DeserializationError error = deserializeJson(result_json, result.c_str());
+          DeserializationError error = deserializeJson(result_json, ret.value().c_str());
           if (error)
           {
-            success = false;
-            message = "deserializeJson() failed during get_device_status: " + String(error.c_str()) + ", ret: " + result;
-            response_json["success"] = success;
-            response_json["message"] = message;
+            response_json["success"] = false;
+            response_json["message"] = "deserializeJson() failed during get_device_status: " + String(error.c_str()) + ", ret: " + ret.value();
           }
           else
           {
-            success = true;
-            message = "get_device_status success";
-            response_json["success"] = success;
-            response_json["message"] = message;
+            response_json["success"] = true;
+            response_json["message"] = "get_device_status success";
             response_json["result"] = result_json;
           }
         }
         else
         {
-          success = false;
-          message = "get_device_status failed";
-          response_json["success"] = success;
-          response_json["message"] = message;
+          response_json["success"] = false;
+          response_json["message"] = "get_device_status failed";
         }
       }
     }
@@ -176,10 +163,8 @@ void loop()
     {
       if (not input_json.containsKey("device_id") or not input_json.containsKey("sb_command_type") or not input_json.containsKey("sb_command"))
       {
-        success = false;
-        message = "device_id or sb_command_type or sb_command key not found";
-        response_json["success"] = success;
-        response_json["message"] = message;
+        response_json["success"] = false;
+        response_json["message"] = "device_id or sb_command_type or sb_command key not found for send_device_command";
       }
       else
       {
@@ -189,41 +174,38 @@ void loop()
         std::optional<String> ret = send_device_command(token, secret, device_id, sb_command_type, sb_command);
         if (ret)
         {
-          success = true;
-          message = "send_device_command success";
-          String result = ret.value();
-          deserializeJson(result_json, result.c_str());
-          response_json["success"] = success;
-          response_json["message"] = message;
-          response_json["result"] = result_json;
+          DeserializationError error = deserializeJson(result_json, ret.value().c_str());
+          if (error)
+          {
+            response_json["success"] = false;
+            response_json["message"] = "deserializeJson() failed during send_device_command: " + String(error.c_str()) + ", ret: " + ret.value();
+          }
+          else
+          {
+            response_json["success"] = true;
+            response_json["message"] = "send_device_command success";
+            response_json["result"] = result_json;
+          }
         }
         else
         {
-          success = false;
-          message = "send_device_command failed";
-          response_json["success"] = success;
-          response_json["message"] = message;
+          response_json["success"] = false;
+          response_json["message"] = "send_device_command failed";
         }
       }
     }
     else if (command == "get_time")
     {
       uint32_t t = (uint32_t)std::time(nullptr);
-      success = true;
-      message = "get_time success";
-      result_json["time"] = t;
-      response_json["success"] = success;
-      response_json["message"] = message;
-      response_json["result"] = result_json;
+      response_json["success"] = true;
+      response_json["message"] = "get_time success: " + String(t);
     }
     else if (command == String("config_wifi"))
     {
       if (not input_json.containsKey("ssid") or not input_json.containsKey("password"))
       {
-        success = false;
-        message = "ssid or password key not found";
-        response_json["success"] = success;
-        response_json["message"] = message;
+        response_json["success"] = false;
+        response_json["message"] = "ssid or password key not found";
       }
       else
       {
@@ -233,7 +215,8 @@ void loop()
           ssid = new_ssid;
         if (new_password != "")
           password = new_password;
-        success = initWiFi(ssid.c_str(), password.c_str(), sprite_event_info, lcd, WiFiMulti);
+        bool success = initWiFi(ssid.c_str(), password.c_str(), sprite_event_info, lcd, WiFiMulti);
+        String message;
         if (success)
         {
           message = "config_wifi success. SSID: " + ssid + ", password: " + password + ", IP: " + WiFi.localIP().toString();
@@ -250,39 +233,32 @@ void loop()
     {
       if (not input_json.containsKey("token") or not input_json.containsKey("secret"))
       {
-        success = false;
-        message = "token or secret key not found";
-        response_json["success"] = success;
-        response_json["message"] = message;
+        response_json["success"] = false;
+        response_json["message"] = "token or secret key not found";
       }
       else
       {
         token = input_json["token"].as<String>();
         secret = input_json["secret"].as<String>();
-        success = true;
-        message = "config_switchbot success";
-        response_json["success"] = success;
-        response_json["message"] = message;
+        response_json["success"] = true;
+        response_json["message"] = "config_switchbot success";
       }
     }
     else if (command == String("get_device_config"))
     {
-      success = true;
-      message = "get_device_config success";
       result_json["ssid"] = ssid;
       result_json["password"] = password;
       result_json["token"] = token;
       result_json["secret"] = secret;
-      response_json["success"] = success;
-      response_json["message"] = message;
+      result_json["ip"] = WiFi.localIP().toString();
+      response_json["success"] = true;
+      response_json["message"] = "get_device_config success";
       response_json["result"] = result_json;
     }
     else
     {
-      success = false;
-      message = "Unknown command error: " + command;
-      response_json["success"] = success;
-      response_json["message"] = message;
+      response_json["success"] = false;
+      response_json["message"] = "Unknown command error: " + command;
     }
     USBSerial.printf("response_json: %s\n", response_json.as<String>().c_str());
     show_device_info((String("response_json") + response_json.as<String>()).c_str(), sprite_event_info, lcd);
