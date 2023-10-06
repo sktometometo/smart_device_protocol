@@ -6,6 +6,8 @@ find_package(catkin REQUIRED COMPONENTS message_generation catkin_virtualenv std
 catkin_generate_virtualenv(
   PYTHON_INTERPRETER python3
   CHECK_VENV FALSE 
+  USE_SYSTEM_PACKAGES FALSE
+  ISOLATE_REQUIREMENTS TRUE
 )
 
 catkin_python_setup()
