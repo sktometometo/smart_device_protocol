@@ -14,7 +14,7 @@
 
 #include "Time.h"
 #include "sesami_util.h"
-#include "iot_wifi_util.h"
+#include "iot_client_util.h"
 
 /* Mofidy below */
 String ssid = "";
@@ -35,26 +35,12 @@ void setup()
   Serial2.begin(115200, SERIAL_8N1, 2, 1);
 
   // LovyanGFX Initialization
-  lcd.init();
-  lcd.setRotation(1);
-  lcd.setBrightness(128);
-  lcd.setColorDepth(24);
-  lcd.fillScreen(0xFFFFFF);
-  sprite_device_info.createSprite(lcd.width(), lcd.height() / 3);
-  sprite_event_info.createSprite(lcd.width(), lcd.height() / 3 * 2);
-  sprite_device_info.fillScreen(0xFFFFFF);
-  sprite_event_info.fillScreen(0xFFFFFF);
-  sprite_device_info.setTextColor(0x000000);
-  sprite_event_info.setTextColor(0x000000);
-  sprite_device_info.setTextSize(1);
-  sprite_event_info.setTextSize(1);
+  init_screen(lcd, sprite_device_info, sprite_event_info);
 
-  //
   sprite_device_info.setCursor(0, 0);
   sprite_device_info.println("SESAMI Client");
   sprite_device_info.pushSprite(0, 0);
 
-  //
   if (ssid != "" and password != "")
   {
     initWiFi(ssid.c_str(), password.c_str(), sprite_event_info, lcd, WiFiMulti);
