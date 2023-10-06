@@ -67,7 +67,7 @@ void get_key_status_and_update_buf()
     else
     {
         String status = result_json["result"]["CHSesami2Status"].as<String>();
-        bool locked = false;
+        bool locked = true ? status == "locked" : false;
         data.clear();
         data.push_back(SDPData(locked));
         generate_data_frame(buf_for_data_packet, packet_description_operation.c_str(), data);
@@ -144,32 +144,14 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
             if (operation_key == "lock")
             {
                 Serial.printf("Lock the key\n");
-                Serial2.print("{\"command\":\"lock\"}\n");
-                auto timeout = millis() + 5000;
-                while (millis() < timeout)
-                {
-                    if (Serial2.available())
-                    {
-                        String ret = Serial2.readStringUntil('\n');
-                        Serial.printf("Response: %s\n", ret.c_str());
-                        break;
-                    }
-                }
+                String ret = send_serial_command("{\"command\":\"lock\"}\n");
+                Serial.printf("Response: %s\n", ret.c_str());
             }
             else if (operation_key == "unlock")
             {
                 Serial.printf("Unlock the key\n");
-                Serial2.print("{\"command\":\"unlock\"}\n");
-                auto timeout = millis() + 5000;
-                while (millis() < timeout)
-                {
-                    if (Serial2.available())
-                    {
-                        String ret = Serial2.readStringUntil('\n');
-                        Serial.printf("Response: %s\n", ret.c_str());
-                        break;
-                    }
-                }
+                String ret = send_serial_command("{\"command\":\"unlock\"}\n");
+                Serial.printf("Response: %s\n", ret.c_str());
             }
             else
             {
@@ -248,31 +230,26 @@ void setup()
         packet_description_uwb.c_str(),
         data);
 
-    // Sesami Client Configuration
-    Serial2.printf("{\"command\":\"config_wifi\",\"ssid\":\"%s\",\"password\":\"%s\"}\n", wifi_ssid.c_str(), wifi_password.c_str());
-    auto timeout = millis() + 20000;
-    while (millis() < timeout)
-    {
-        if (Serial2.available())
-        {
-            String ret = Serial2.readStringUntil('\n');
-            Serial.printf("Response for wifi config: %s\n", ret.c_str());
-            break;
-        }
-    }
-    Serial2.printf("{\"command\":\"config_sesami\",\"device_uuid\":\"%s\",\"secret_key\":\"%s\",\"api_key\":\"%s\"}\n", sesami_device_uuid.c_str(), sesami_secret_key.c_str(), sesami_api_key.c_str());
-    timeout = millis() + 5000;
-    while (millis() < timeout)
-    {
-        if (Serial2.available())
-        {
-            String ret = Serial2.readStringUntil('\n');
-            Serial.printf("Response for switchbot config: %s\n", ret.c_str());
-            break;
-        }
-    }
+    // WiFi Configuration
+    String ret = send_serial_command(
+        String("") +
+            "{\"command\":\"config_wifi\"," +
+            "\"ssid\":\"" + wifi_ssid + "\"," +
+            "\"password\":\"" + wifi_password + "\"}\n",
+        20000);
+    Serial.printf("Response for wifi config: %s\n", ret.c_str());
 
-    //
+    // Sesami Client Configuration
+    ret = send_serial_command(
+        String("") +
+            "{\"command\":\"config_sesami\"," +
+            "\"device_uuid\":\"" + sesami_device_uuid + "\"," +
+            "\"secret_key\":\"" + sesami_secret_key + "\"," +
+            "\"api_key\":\"" + sesami_api_key + "\"}\n",
+        5000);
+    Serial.printf("Response for sesami config: %s\n", ret.c_str());
+
+    // Show device config
     show_device_config();
 }
 

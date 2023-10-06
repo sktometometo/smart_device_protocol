@@ -14,6 +14,7 @@
 #include <packet_creator.h>
 #include <packet_parser.h>
 #include "uwb_module_util.h"
+#include "iot_host_util.h"
 
 #ifndef DEVICE_NAME
 #define DEVICE_NAME "SDP_SWITCHBOT_LIGHT_INTERFACE"
@@ -51,28 +52,24 @@ int loop_counter = 0;
 void get_bot_status_and_update_buf()
 {
     Serial.printf("Get switchbot status\n");
-    Serial2.printf("{\"command\":\"get_device_status\",\"device_id\":\"%s\"}\n", switchbot_device_id.c_str());
-    auto timeout = millis() + 5000;
-    while (millis() < timeout)
+    String result = send_serial_command(
+        String("") +
+            "{\"command\":\"get_device_status\"," +
+            "\"device_id\":\"" + switchbot_device_id + "\"}\n",
+        5000);
+    DeserializationError error = deserializeJson(result_json, result);
+    if (error or (result_json.containsKey("success") and not result_json["success"].as<bool>()))
     {
-        delay(100);
-        if (Serial2.available())
-        {
-            DeserializationError error = deserializeJson(result_json, Serial2.readStringUntil('\n'););
-            if (error or (result_json.containsKey("success") and not result_json["success"].as<bool>()))
-            {
-                Serial.printf("deserializeJson() failed or get_device_status failed: %s\n", error.c_str());
-                return;
-            }
-            else
-            {
-                String power = result_json["result"]["body"]["power"];
-                data.clear();
-                data.push_back(SDPData(power == "on" ? true : false));
-                generate_data_frame(buf_for_data_packet, packet_description_status.c_str(), data);
-                break;
-            }
-        }
+        Serial.printf("deserializeJson() failed or get_device_status failed: %s, result: %s\n", error.c_str(), result.c_str());
+        return;
+    }
+    else
+    {
+        String power = result_json["result"]["body"]["power"];
+        data.clear();
+        data.push_back(SDPData(power == "on" ? true : false));
+        generate_data_frame(buf_for_data_packet, packet_description_status.c_str(), data);
+        return;
     }
 }
 
@@ -139,32 +136,27 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
             if (control)
             {
                 Serial.printf("Turn On the light.\n");
-                Serial2.printf("{\"command\":\"send_device_command\",\"device_id\":\"%s\",\"sb_command_type\":\"command\",\"sb_command\":\"turnOn\"}\n", switchbot_device_id.c_str());
-                auto timeout = millis() + 10000;
-                while (millis() < timeout)
-                {
-                    if (Serial2.available())
-                    {
-                        String ret = Serial2.readStringUntil('\n');
-                        Serial.printf("Response: %s\n", ret.c_str());
-                        break;
-                    }
-                }
+                String ret = send_serial_command(
+                    String("") +
+                        "{\"command\":\"send_device_command\"," +
+                        "\"device_id\":\"" + switchbot_device_id + "\"," +
+                        "\"sb_command_type\":\"command\"," +
+                        "\"sb_command\":\"turnOn\"}\n",
+                    10000);
+                Serial.printf("Response: %s\n", ret.c_str());
             }
             else
             {
                 Serial.printf("Turn Off the light.\n");
                 Serial2.printf("{\"command\":\"send_device_command\",\"device_id\":\"%s\",\"sb_command_type\":\"command\",\"sb_command\":\"turnOff\"}\n", switchbot_device_id.c_str());
-                auto timeout = millis() + 10000;
-                while (millis() < timeout)
-                {
-                    if (Serial2.available())
-                    {
-                        String ret = Serial2.readStringUntil('\n');
-                        Serial.printf("Response: %s\n", ret.c_str());
-                        break;
-                    }
-                }
+                String ret = send_serial_command(
+                    String("") +
+                        "{\"command\":\"send_device_command\"," +
+                        "\"device_id\":\"" + switchbot_device_id + "\"," +
+                        "\"sb_command_type\":\"command\"," +
+                        "\"sb_command\":\"turnOff\"}\n",
+                    10000);
+                Serial.printf("Response: %s\n", ret.c_str());
             }
             Serial.printf("Light Control Command Done\n");
             get_bot_status_and_update_buf();
@@ -240,30 +232,26 @@ void setup()
         packet_description_uwb.c_str(),
         data);
 
+    // Wifi Configuration
+    Serial.printf("Wifi Configuration\n");
+    String ret = send_serial_command(
+        String("") +
+            "{\"command\":\"config_wifi\"," +
+            "\"ssid\":\"" + wifi_ssid + "\"," +
+            "\"password\":\"" + wifi_password + "\"}\n",
+        20000);
+    Serial.printf("Response for wifi config: %s\n", ret.c_str());
+
     // Switchbot Client Configuration
     Serial.printf("Switchbot Client Configuration\n");
-    Serial2.printf("{\"command\":\"config_wifi\",\"ssid\":\"%s\",\"password\":\"%s\"}\n", wifi_ssid.c_str(), wifi_password.c_str());
-    auto timeout = millis() + 20000;
-    while (millis() < timeout)
-    {
-        if (Serial2.available())
-        {
-            String ret = Serial2.readStringUntil('\n');
-            Serial.printf("Response for wifi config: %s\n", ret.c_str());
-            break;
-        }
-    }
     Serial2.printf("{\"command\":\"config_switchbot\",\"token\":\"%s\",\"secret\":\"%s\"}\n", switchbot_token.c_str(), switchbot_secret.c_str());
-    timeout = millis() + 5000;
-    while (millis() < timeout)
-    {
-        if (Serial2.available())
-        {
-            String ret = Serial2.readStringUntil('\n');
-            Serial.printf("Response for switchbot config: %s\n", ret.c_str());
-            break;
-        }
-    }
+    ret = send_serial_command(
+        String("") +
+            "{\"command\":\"config_switchbot\"," +
+            "\"token\":\"" + switchbot_token + "\"," +
+            "\"secret\":\"" + switchbot_secret + "\"}\n",
+        5000);
+    Serial.printf("Response for switchbot config: %s\n", ret.c_str());
 }
 
 void loop()
