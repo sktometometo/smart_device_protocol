@@ -20,30 +20,29 @@ static LGFX_Sprite sprite_sensor(&lcd);
 
 Dps310 Dps310PressureSensor = Dps310();
 
+// SDP
 esp_now_peer_info_t peer;
-
 uint8_t packet[240];
+String packet_description_config = "Elevator status config";
+String serialization_format_config = "S";
 
+// Sensor values
 float accX = 0.0F;
 float accY = 0.0F;
 float accZ = 0.0F;
-
 float gyroX = 0.0F;
 float gyroY = 0.0F;
 float gyroZ = 0.0F;
-
 float pitch = 0.0F;
 float roll = 0.0F;
 float yaw = 0.0F;
-
 float temp_mpu = 0.0F;
-
 float temp_dps = 0;
 float pressure = 0;
 
 char module_name[64];
 
-void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
+void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
   uint16_t packet_type = get_packet_type(data);
   if (packet_type == esp_now_ros::Packet::PACKET_TYPE_NAMED_STRING)
@@ -62,7 +61,7 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
 void setup()
 {
   // Read device mac address
-  uint8_t device_mac_address[6] = { 0 };
+  uint8_t device_mac_address[6] = {0};
   esp_read_mac(device_mac_address, ESP_MAC_WIFI_STA);
 
   // Device Initialization
@@ -138,5 +137,5 @@ void loop()
   sprite_sensor.pushSprite(0, 80);
 
   create_sensor_enviii_packet(packet, module_name, pressure);
-  esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t*)packet, sizeof(packet) / sizeof(packet[0]));
+  esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t *)packet, sizeof(packet) / sizeof(packet[0]));
 }

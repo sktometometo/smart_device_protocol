@@ -6,28 +6,48 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
+#include <ArduinoJson.h>
+
 #include <esp_now_ros/Packet.h>
 #include <packet_creator.h>
 #include <packet_parser.h>
 #include "uwb_module_util.h"
 
+#ifndef DEVICE_NAME
 #define DEVICE_NAME "SDP_SESAMI_INTERFACE"
+#endif
+
+#ifndef UWB_STATION_ID
+#define UWB_STATION_ID 1
+#endif
 
 // ESP-NOW
 uint8_t mac_address[6] = {0};
 esp_now_peer_info_t peer_broadcast;
 
 // Interface
-std::string packet_description_operation = "Operation Key";
+std::string packet_description_operation = "Key control";
 std::string serialization_format_operation = "s";
 uint8_t buf_for_meta_packet[250];
 
 // UWB
-const int uwb_id = 1;
+const int uwb_id = UWB_STATION_ID;
+std::string packet_description_uwb = "UWB Station";
+std::string serialization_format_uwb = "i";
+uint8_t buf_for_uwb_packet[250];
+
+// Switchbot Client Configuration
+std::string wifi_ssid = "";
+std::string wifi_password = "";
+std::string sesami_device_uuid = "";
+std::string sesami_secret_key = "";
+std::string sesami_api_key = "";
 
 // Other
 uint8_t buf[240];
 std::vector<SDPData> data;
+StaticJsonDocument<1024> result_json;
+int loop_counter = 0;
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
@@ -93,6 +113,7 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
             {
                 Serial.printf("Unknown operation key\n");
             }
+            Serial.printf("Key control command done\n");
         }
         else
         {
@@ -106,7 +127,7 @@ void setup()
     esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
 
     M5.begin(true, false, true, false);
-    M5.Lcd.printf("SDP SESAMI HOST\n");
+    M5.Lcd.printf("SDP SESAMI HOST DEVICE\n");
     M5.Lcd.printf("Name: %s\n", DEVICE_NAME);
     M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
                   mac_address[4], mac_address[5]);
@@ -150,11 +171,43 @@ void setup()
     {
         Serial.println("Failed to initialize UWB module");
     }
+    data.clear();
+    data.push_back(SDPData(uwb_id));
+    generate_data_frame(
+        buf_for_uwb_packet,
+        packet_description_uwb.c_str(),
+        data);
+
+    // Sesami Client Configuration
+    Serial2.printf("{\"command\":\"config_wifi\",\"ssid\":\"%s\",\"password\":\"%s\"}\n", wifi_ssid.c_str(), wifi_password.c_str());
+    auto timeout = millis() + 20000;
+    while (millis() < timeout)
+    {
+        if (Serial2.available())
+        {
+            String ret = Serial2.readStringUntil('\n');
+            Serial.printf("Response for wifi config: %s\n", ret.c_str());
+            break;
+        }
+    }
+    Serial2.printf("{\"command\":\"config_sesami\",\"device_uuid\":\"%s\",\"secret_key\":\"%s\",\"api_key\":\"%s\"}\n", sesami_device_uuid.c_str(), sesami_secret_key.c_str(), sesami_api_key.c_str());
+    timeout = millis() + 5000;
+    while (millis() < timeout)
+    {
+        if (Serial2.available())
+        {
+            String ret = Serial2.readStringUntil('\n');
+            Serial.printf("Response for switchbot config: %s\n", ret.c_str());
+            break;
+        }
+    }
 }
 
 void loop()
 {
     delay(5000);
+
+    // Run dummy callback if Serial available
     if (Serial.available())
     {
         data.clear();
@@ -180,21 +233,22 @@ void loop()
         return;
     }
 
-    // Get sesami status
-    Serial.printf("Status of the key\n");
-    Serial2.print("{\"command\":\"status\"}\n");
-    auto timeout = millis() + 5000;
-    while (millis() < timeout)
-    {
-        if (Serial2.available())
-        {
-            String ret = Serial2.readStringUntil('\n');
-            Serial.printf("Response: %s\n", ret.c_str());
-            break;
-        }
-    }
+    // if (loop_counter % 20 == 0)
+    // {
+    //     // Get sesami status
+    //     Serial2.print("{\"command\":\"status\"}\n");
+    //     auto timeout = millis() + 5000;
+    //     while (millis() < timeout)
+    //     {
+    //         if (Serial2.available())
+    //         {
+    //             String ret = Serial2.readStringUntil('\n');
+    //             break;
+    //         }
+    //     }
+    // }
 
-    // Send data
+    // Send meta data
     esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_meta_packet, sizeof(buf_for_meta_packet));
     if (result == ESP_OK)
     {
@@ -204,4 +258,16 @@ void loop()
     {
         Serial.printf("Send error: %d\n", result);
     }
+    // Send UWB data
+    result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_uwb_packet, sizeof(buf_for_uwb_packet));
+    if (result == ESP_OK)
+    {
+        Serial.println("Sent UWB data packet");
+    }
+    else
+    {
+        Serial.printf("Send error: %d\n", result);
+    }
+
+    loop_counter++;
 }

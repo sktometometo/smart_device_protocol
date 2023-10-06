@@ -5,14 +5,23 @@
 #include <esp_system.h>
 #include <esp_now.h>
 #include <WiFi.h>
+#include <FS.h>
+#include <LITTLEFS.h>
 
 #include <ArduinoJson.h>
 
 #include <esp_now_ros/Packet.h>
 #include <packet_creator.h>
 #include <packet_parser.h>
+#include "uwb_module_util.h"
 
+#ifndef DEVICE_NAME
 #define DEVICE_NAME "SDP_SWITCHBOT_LIGHT_INTERFACE"
+#endif
+
+#ifndef UWB_STATION_ID
+#define UWB_STATION_ID 2
+#endif
 
 // ESP-NOW
 uint8_t mac_address[6] = {0};
@@ -23,6 +32,12 @@ std::string packet_description_control = "Light control";
 std::string packet_description_status = "Light status";
 std::string serialization_format_control = "?";
 uint8_t buf_for_meta_packet[250];
+
+// UWB
+const int uwb_id = UWB_STATION_ID;
+std::string packet_description_uwb = "UWB Station";
+std::string serialization_format_uwb = "i";
+uint8_t buf_for_uwb_packet[250];
 
 // Switchbot Client Configuration
 std::string device_id = "";
@@ -35,6 +50,68 @@ std::string switchbot_secret = "";
 uint8_t buf[240];
 std::vector<SDPData> data;
 StaticJsonDocument<1024> result_json;
+int loop_counter = 0;
+
+void get_bot_status_and_update_buf()
+{
+    Serial.printf("Status of the bot\n");
+    Serial2.printf("{\"command\":\"get_device_status\",\"device_id\":\"%s\"}\n", device_id.c_str());
+    auto timeout = millis() + 5000;
+    while (millis() < timeout)
+    {
+        delay(100);
+        if (Serial2.available())
+        {
+            String ret = Serial2.readStringUntil('\n');
+            DeserializationError error = deserializeJson(result_json, ret);
+            if (error)
+            {
+                Serial.printf("deserializeJson() failed: %s\n", error.c_str());
+                return;
+            }
+            else
+            {
+                String power = result_json["result"]["body"]["power"];
+                Serial.printf("Power: %s\n", power.c_str());
+                data.clear();
+                data.push_back(SDPData(power == "on" ? true : false));
+                generate_data_frame(buf, packet_description_status.c_str(), data);
+                break;
+            }
+        }
+    }
+}
+
+bool load_config_from_FS()
+{
+    FILE file = LITTLEFS.open("/config.json", "r");
+    if (!file)
+    {
+        Serial.println("Failed to open config file");
+        show_d return false;
+    }
+
+    StaticJsonDocument<1024> doc;
+    DeserializationError error = deserializeJson(doc, file);
+    if (error)
+    {
+        Serial.println("Failed to parse config file");
+        return false;
+    }
+
+    if (not doc.containsKey("wifi_ssid") or not doc.containsKey("wifi_password") or not doc.containsKey("switchbot_token") or not doc.containsKey("switchbot_secret") or not doc.containsKey("device_id")
+    {
+        Serial.println("Config file is invalid. It should have wifi_ssid, wifi_password, switchbot_token, switchbot_secret, and device_id");
+        return false;
+    }
+
+    wifi_ssid = doc["wifi_ssid"].as<String>();
+    wifi_password = doc["wifi_password"].as<String>();
+    switchbot_token = doc["switchbot_token"].as<String>();
+    switchbot_secret = doc["switchbot_secret"].as<String>();
+    device_id = doc["device_id"].as<String>();
+    return true;
+}
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
@@ -63,47 +140,41 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
         Serial.printf("serialization_format: %s\n", serialization_format.c_str());
         if (packet_description == packet_description_control and serialization_format == serialization_format_control)
         {
-            try
+            Serial.printf("Length of body: %d\n", body.size());
+            bool control = std::get<bool>(body[0]);
+            Serial.printf("Light Control Command: %s\n", control ? "ON" : "OFF");
+            if (control)
             {
-                Serial.printf("Length of body: %d\n", body.size());
-                bool control = std::get<bool>(body[0]);
-                Serial.printf("Light Control Command: %s\n", control ? "ON" : "OFF");
-                if (control)
+                Serial.printf("Turn On the light.\n");
+                Serial2.printf("{\"command\":\"send_device_command\",\"device_id\":\"%s\",\"sb_command_type\":\"command\",\"sb_command\":\"turnOn\"}\n", device_id.c_str());
+                auto timeout = millis() + 10000;
+                while (millis() < timeout)
                 {
-                    Serial.printf("Turn On the light.\n");
-                    Serial2.printf("{\"command\":\"send_device_command\",\"device_id\":\"%s\",\"sb_command_type\":\"command\",\"sb_command\":\"turnOn\"}\n", device_id.c_str());
-                    auto timeout = millis() + 10000;
-                    while (millis() < timeout)
+                    if (Serial2.available())
                     {
-                        if (Serial2.available())
-                        {
-                            String ret = Serial2.readStringUntil('\n');
-                            Serial.printf("Response: %s\n", ret.c_str());
-                            break;
-                        }
+                        String ret = Serial2.readStringUntil('\n');
+                        Serial.printf("Response: %s\n", ret.c_str());
+                        break;
                     }
                 }
-                else
+            }
+            else
+            {
+                Serial.printf("Turn Off the light.\n");
+                Serial2.printf("{\"command\":\"send_device_command\",\"device_id\":\"%s\",\"sb_command_type\":\"command\",\"sb_command\":\"turnOff\"}\n", device_id.c_str());
+                auto timeout = millis() + 10000;
+                while (millis() < timeout)
                 {
-                    Serial.printf("Turn Off the light.\n");
-                    Serial2.printf("{\"command\":\"send_device_command\",\"device_id\":\"%s\",\"sb_command_type\":\"command\",\"sb_command\":\"turnOff\"}\n", device_id.c_str());
-                    auto timeout = millis() + 10000;
-                    while (millis() < timeout)
+                    if (Serial2.available())
                     {
-                        if (Serial2.available())
-                        {
-                            String ret = Serial2.readStringUntil('\n');
-                            Serial.printf("Response: %s\n", ret.c_str());
-                            break;
-                        }
+                        String ret = Serial2.readStringUntil('\n');
+                        Serial.printf("Response: %s\n", ret.c_str());
+                        break;
                     }
                 }
-                Serial.printf("Light Control Command Done\n");
             }
-            catch (const std::bad_variant_access &e)
-            {
-                Serial.printf("Bad variant access: %s\n", e.what());
-            }
+            Serial.printf("Light Control Command Done\n");
+            get_bot_status_and_update_buf();
         }
         else
         {
@@ -121,6 +192,18 @@ void setup()
     M5.Lcd.printf("Name: %s\n", DEVICE_NAME);
     M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
                   mac_address[4], mac_address[5]);
+
+    // Load config from FS
+    if (not LITTLEFS.begin())
+    {
+        Serial.println("Failed to mount file system");
+        ESP.restart();
+    }
+    if (not load_config_from_FS())
+    {
+        Serial.println("Failed to load config from FS");
+        ESP.restart();
+    }
 
     Serial.begin(115200);
     Serial1.begin(115200, SERIAL_8N1, 16, 17);
@@ -150,6 +233,23 @@ void setup()
 
     // SDP meta packet
     generate_meta_frame(buf_for_meta_packet, DEVICE_NAME, packet_description_control.c_str(), serialization_format_control.c_str(), "", "", "", "");
+
+    // UWB module
+    bool result = initUWB(false, uwb_id, Serial1);
+    if (result)
+    {
+        Serial.println("UWB module initialized");
+    }
+    else
+    {
+        Serial.println("Failed to initialize UWB module");
+    }
+    data.clear();
+    data.push_back(SDPData(uwb_id));
+    generate_data_frame(
+        buf_for_uwb_packet,
+        packet_description_uwb.c_str(),
+        data);
 
     // Switchbot Client Configuration
     Serial.printf("Switchbot Client Configuration\n");
@@ -210,33 +310,12 @@ void loop()
     }
 
     // Get switchbot status
-    Serial.printf("Status of the bot\n");
-    Serial2.printf("{\"command\":\"get_device_status\",\"device_id\":\"%s\"}\n", device_id.c_str());
-    auto timeout = millis() + 5000;
-    while (millis() < timeout)
+    if (loop_counter % 50 == 0)
     {
-        if (Serial2.available())
-        {
-            String ret = Serial2.readStringUntil('\n');
-            DeserializationError error = deserializeJson(result_json, ret);
-            if (error)
-            {
-                Serial.printf("deserializeJson() failed: %s\n", error.c_str());
-            }
-            else
-            {
-                String power = result_json["result"]["body"]["power"];
-                Serial.printf("Power: %s\n", power.c_str());
-                data.clear();
-                data.push_back(SDPData(power == "on" ? true : false));
-                generate_data_frame(buf, packet_description_status.c_str(), data);
-                break;
-            }
-            break;
-        }
+        get_bot_status_and_update_buf();
     }
 
-    // Send data
+    // Send meta packet
     esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_meta_packet, sizeof(buf_for_meta_packet));
     if (result == ESP_OK)
     {
@@ -246,6 +325,17 @@ void loop()
     {
         Serial.printf("Send error: %d\n", result);
     }
+    // Send UWB data
+    result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_uwb_packet, sizeof(buf_for_uwb_packet));
+    if (result == ESP_OK)
+    {
+        Serial.println("Sent UWB data packet");
+    }
+    else
+    {
+        Serial.printf("Send error: %d\n", result);
+    }
+    // send data packet
     result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
     if (result == ESP_OK)
     {
@@ -255,4 +345,6 @@ void loop()
     {
         Serial.printf("Send error: %d\n", result);
     }
+
+    loop_counter++;
 }

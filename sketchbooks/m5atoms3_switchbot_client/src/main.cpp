@@ -14,6 +14,7 @@
 
 #include "Time.h"
 #include "switchbot_util.h"
+#include "iot_wifi_util.h"
 
 /* Mofidy below */
 String ssid = "";
@@ -26,45 +27,6 @@ WiFiMulti WiFiMulti;
 static LGFX lcd;
 static LGFX_Sprite sprite_device_info(&lcd);
 static LGFX_Sprite sprite_event_info(&lcd);
-
-bool initWiFi(const char *ssid, const char *password, LGFX_Sprite &sprite)
-{
-  WiFiMulti.addAP(ssid, password);
-  sprite.fillScreen(0xFFFFFF);
-  sprite.setCursor(0, 0);
-  sprite.printf("Waiting connect to WiFi: %s ...", ssid);
-  sprite.pushSprite(0, lcd.height() / 3);
-  int sum = 0;
-  while (WiFiMulti.run() != WL_CONNECTED)
-  {
-    sprite.print(".");
-    sprite.pushSprite(0, lcd.height() / 3);
-    delay(1000);
-    sum += 1;
-    if (sum == 5)
-    {
-      sprite.print("Conncet failed!");
-      sprite.pushSprite(0, lcd.height() / 3);
-      return false;
-    }
-  }
-  sprite.fillScreen(0xFFFFFF);
-  sprite.println("WiFi connected");
-  sprite.print("IP address: ");
-  sprite.println(WiFi.localIP());
-  sprite.pushSprite(0, lcd.height() / 3);
-  Time.set_time();
-  delay(500);
-  return true;
-}
-
-void show_device_info(LGFX_Sprite &sprite, const char *message)
-{
-  sprite.fillScreen(0xFFFFFF);
-  sprite.setCursor(0, 0);
-  sprite.println(message);
-  sprite.pushSprite(0, lcd.height() / 3);
-}
 
 void setup()
 {
@@ -94,7 +56,7 @@ void setup()
   //
   if (ssid != "" and password != "")
   {
-    initWiFi(ssid.c_str(), password.c_str(), sprite_event_info);
+    initWiFi(ssid.c_str(), password.c_str(), sprite_event_info, lcd, WiFiMulti);
   }
 
   USBSerial.printf("ARDUINO_LOOP_STACK_SIZE: %d\n", getArduinoLoopTaskStackSize());
@@ -126,7 +88,7 @@ void loop()
       success = false;
       message = "deserializeJson() failed: " + String(error.c_str());
       USBSerial.println(message);
-      show_device_info(sprite_event_info, message.c_str());
+      show_device_info(message.c_str(), sprite_event_info, lcd);
       response_json["success"] = success;
       response_json["message"] = message;
       Serial2.printf("%s\n", response_json.as<String>().c_str());
@@ -138,7 +100,7 @@ void loop()
       success = false;
       message = "command key not found";
       USBSerial.println(message);
-      show_device_info(sprite_event_info, message.c_str());
+      show_device_info(message.c_str(), sprite_event_info, lcd);
       response_json["success"] = success;
       response_json["message"] = message;
       Serial2.printf("%s\n", response_json.as<String>().c_str());
@@ -270,7 +232,7 @@ void loop()
           ssid = new_ssid;
         if (new_password != "")
           password = new_password;
-        success = initWiFi(ssid.c_str(), password.c_str(), sprite_event_info);
+        success = initWiFi(ssid.c_str(), password.c_str(), sprite_event_info, lcd, WiFiMulti);
         if (success)
         {
           message = "config_wifi success. SSID: " + ssid + ", password: " + password + ", IP: " + WiFi.localIP().toString();
@@ -317,12 +279,12 @@ void loop()
     else
     {
       success = false;
-      message = "command error: " + command;
+      message = "Unknown command error: " + command;
       response_json["success"] = success;
       response_json["message"] = message;
     }
     USBSerial.printf("response_json: %s\n", response_json.as<String>().c_str());
-    show_device_info(sprite_event_info, (String("response_json") + response_json.as<String>()).c_str());
+    show_device_info((String("response_json") + response_json.as<String>()).c_str(), sprite_event_info, lcd);
     Serial2.printf("%s\n", response_json.as<String>().c_str());
   }
 }
