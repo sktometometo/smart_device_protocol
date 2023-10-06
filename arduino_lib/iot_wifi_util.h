@@ -4,6 +4,7 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 
+#include <ESP32Ping.h>
 #include <LovyanGFX.hpp>
 
 #include "Time.h"
@@ -28,6 +29,15 @@ bool initWiFi(const char *ssid, const char *password, LGFX_Sprite &sprite, LGFX 
             sprite.pushSprite(0, lcd.height() / 3);
             return false;
         }
+    }
+
+    if (not Ping.ping("www.google.com"))
+    {
+        sprite.fillScreen(0xFFFFFF);
+        sprite.setCursor(0, 0);
+        sprite.print("Ping failed!");
+        sprite.pushSprite(0, lcd.height() / 3);
+        return false;
     }
     sprite.fillScreen(0xFFFFFF);
     sprite.println("WiFi connected");

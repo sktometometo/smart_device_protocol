@@ -32,12 +32,6 @@ std::tuple<String, String, String> make_switchbot_sign(String &token, String &se
     unsigned char hmacResult[32];
     hmac_sha256(secret.c_str(), sign_str.c_str(), hmacResult);
     String sign = base64::encode(hmacResult, 32);
-    // USBSerial.printf("sign_str: %s\n", sign_str.c_str());
-    // USBSerial.printf("token: %s\n", token.c_str());
-    // USBSerial.printf("secret: %s\n", secret.c_str());
-    // USBSerial.printf("sign: %s\n", sign.c_str());
-    // USBSerial.printf("t: %s\n", t_str.c_str());
-    // USBSerial.printf("nonce: %s\n", nonce.c_str());
     return std::make_tuple(sign, t_str, nonce);
 }
 
@@ -59,11 +53,20 @@ std::optional<String> get_device_list(String &token, String &secret)
     http.addHeader("nonce", nonce);
     int responseCode = http.GET();
     String result_body = http.getString();
+    http.end();
+
     USBSerial.printf("** GET result **\n");
     USBSerial.printf("responseCode: %d\n", responseCode);
     USBSerial.println("body: " + result_body);
-    http.end();
-    return result_body;
+
+    if (responseCode != 200)
+    {
+        return std::nullopt;
+    }
+    else
+    {
+        return result_body;
+    }
 }
 
 std::optional<String> get_device_status(String &token, String &secret, String &device_id)
@@ -84,11 +87,19 @@ std::optional<String> get_device_status(String &token, String &secret, String &d
     http.addHeader("nonce", nonce);
     int responseCode = http.GET();
     String result_body = http.getString();
+    http.end();
+
     USBSerial.printf("** GET result **\n");
     USBSerial.printf("responseCode: %d\n", responseCode);
     USBSerial.println("body: " + result_body);
-    http.end();
-    return result_body;
+    if (responseCode != 200)
+    {
+        return std::nullopt;
+    }
+    else
+    {
+        return result_body;
+    }
 }
 
 std::optional<String> send_device_command(
@@ -118,11 +129,19 @@ std::optional<String> send_device_command(
     body = body + "}";
     int responseCode = http.POST(body);
     String result_body = http.getString();
+    http.end();
+
     USBSerial.printf("** POST result **\n");
     USBSerial.printf("responseCode: %d\n", responseCode);
     USBSerial.println("body: " + result_body);
-    http.end();
-    return result_body;
+    if (responseCode != 200)
+    {
+        return std::nullopt;
+    }
+    else
+    {
+        return result_body;
+    }
 }
 
 #endif // SWITCHBOT_UTIL_H
