@@ -73,7 +73,10 @@ void _meta_frame_broadcast_task(void *parameter)
 
 bool init_sdp(uint8_t *mac_address, const String &device_name)
 {
-    esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
+    if (mac_address != NULL)
+    {
+        esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
+    }
     _sdp_device_name = device_name;
     WiFi.mode(WIFI_STA);
     WiFi.disconnect();
