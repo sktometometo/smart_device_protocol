@@ -6,7 +6,8 @@ from esp_now_ros.smart_device_protocol_interface import SDPInterface
 
 
 def callback(src_address, frame):
-    rospy.loginfo("Packet from {} : {}".format(src_address, frame))
+    print("{} Packet from {}".format(type(frame), src_address))
+    print("{}".format(frame))
 
 
 if __name__ == "__main__":
