@@ -1,4 +1,3 @@
-from operator import call
 import rospy
 
 import struct
@@ -7,7 +6,7 @@ from typing import Callable, Union, List, Tuple, Optional, Dict
 from esp_now_ros.sdp_frames import MetaFrame, DataFrame, BaseFrame
 from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterface
 from esp_now_ros.packet_parser import parse_packet_as_v2
-from esp_now_ros.msg import Packet, UWBDistance
+from esp_now_ros.msg import Packet
 
 
 class SDPInterface:
@@ -57,15 +56,17 @@ class SDPInterface:
 class DeviceDictSDPInterface(SDPInterface):
     """Smart Device Protocol Interface with Device Dictionary"""
 
-    def __init__(self, callback_data=None, callback_meta=None):
+    def __init__(self, callback_data=None, callback_meta=None, timeout: float = 10.0):
         self._device_interfaces: Dict[Union[List[int], Tuple[int]], Dict] = {}
         self._original_callback_data = callback_data
         self._original_callback_meta = callback_meta
+        self._timeout = rospy.Duration(timeout)
         super().__init__(
             self._original_callback_data, self._callback_meta_for_device_interfaces
         )
 
     def _callback_meta_for_device_interfaces(self, src_address, frame):
+        self._remove_timeout_device()
         self._device_interface_meta_callback(src_address, frame)
         if self._original_callback_meta is not None:
             self._original_callback_meta(src_address, frame)
@@ -75,16 +76,29 @@ class DeviceDictSDPInterface(SDPInterface):
             self._device_interfaces[src_address] = {}
             self._device_interfaces[src_address]["device_name"] = frame.device_name
             self._device_interfaces[src_address]["interfaces"] = []
-            self._device_interfaces[src_address]["last_stamp"] = rospy.Time.now()
 
-        for i in range(3):
-            if (frame.interface_descriptions[i] != ("", "")) and (
-                frame.interface_description[i]
+        self._device_interfaces[src_address]["last_stamp"] = rospy.Time.now()
+
+        for interface_description in frame.interface_descriptions:
+            if (interface_description != ("", "")) and (
+                interface_description
                 not in self._device_interfaces[src_address]["interfaces"]
             ):
                 self._device_interfaces[src_address]["interfaces"].append(
-                    frame.interface_descriptions[i]
+                    interface_description
                 )
+
+    def _remove_timeout_device(self):
+        now = rospy.Time.now()
+        for src_address in list(self._device_interfaces.keys()):
+            device_interface = self._device_interfaces[src_address]
+            if now - device_interface["last_stamp"] > self._timeout:
+                rospy.logwarn(
+                    "Remove timeout device: {}, {}".format(
+                        src_address, device_interface["device_name"]
+                    )
+                )
+                self._device_interfaces.pop(src_address)
 
     @property
     def device_interfaces(self):
@@ -98,10 +112,13 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
             Tuple[str, str], Callable[[Union[List[int], Tuple[int]], List], None]
         ] = {},
         callback_meta=None,
+        timeout: float = 10.0,
     ):
         self._callbacks_data = callbacks_data
         self._callback_meta = callback_meta
-        super().__init__(self._callback_data_for_interface, self._callback_meta)
+        super().__init__(
+            self._callback_data_for_interface, self._callback_meta, timeout
+        )
 
     def _callback_data_for_interface(self, src_address, frame):
         interface_description = frame.interface_description
