@@ -9,6 +9,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        target_project:
+          - enr_dps310_interface
+          - enr_message_board
+          - enr_stickv2_interface
+          - m5atoms3_sesami_client
+          - m5atoms3_switchbot_client
+          - sample_aes_cmac
+          - sample_esp_now_broadcaster
+          - sample_esp_now_receiver
+          - sample_sesami
+          - sample_uwb
+          - sdp_debug_board
+          - sdp_elevator_status_broadcaster
+          - sdp_example
+          - sdp_landmark_information
+          - sdp_sesami_host
+          - sdp_stickv2_interface
+          - smart_device_protocol_interface
     env:
       CATKIN_WS: /home/runner/work/catkin_ws
     steps:
@@ -52,7 +72,7 @@ jobs:
         source /opt/ros/noetic/setup.bash
         rosdep update
         rosdep install -i -y --from-paths ./
-    - name: build
+    - name: catkin build
       run: |
         source /opt/ros/noetic/setup.bash
         cd ${CATKIN_WS}
@@ -62,12 +82,7 @@ jobs:
         source ${CATKIN_WS}/devel/setup.bash
         rm -rf $(rospack find esp_now_ros)/ros_lib
         rosrun rosserial_arduino make_libraries.py $(rospack find esp_now_ros)/ros_lib
-    - name: build sketches esp_now_ros
+    - name: build sketch ${{ matrix.target_project }}
       run: |
         source ${CATKIN_WS}/devel/setup.bash
-        find $(rospack find esp_now_ros)/sketchbooks -maxdepth 1 -type d | while read dir; do
-            if [ "$dir" != "$(rospack find esp_now_ros)/sketchbooks" ]; then
-                echo "Building $dir"
-                pio run -d $dir
-            fi
-        done
+        pio run -d $(rospack find esp_now_ros)/sketchbooks/${{ matrix.target_project }}
