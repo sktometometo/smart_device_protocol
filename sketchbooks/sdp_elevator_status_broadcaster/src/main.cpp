@@ -8,10 +8,8 @@
 #include <ArduinoJson.h>
 
 #include "esp_now_ros/Packet.h"
-#include "sdp/packet_parser.h"
-#include "sdp/packet_creator.h"
-#include "sdp/sdp_util.h"
-#include "iot_com_util/iot_host_util.h"
+#include "sdp/sdp.h"
+#include "utils/config_loader.h"
 
 static LGFX lcd;
 static LGFX_Sprite sprite_header(&lcd);

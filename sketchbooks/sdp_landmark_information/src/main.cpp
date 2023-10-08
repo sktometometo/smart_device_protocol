@@ -2,20 +2,16 @@
 #include <variant>
 
 #include <M5Stack.h>
-#include <esp_system.h>
-#include <esp_now.h>
-#include <WiFi.h>
 #include <FS.h>
 #include <SPIFFS.h>
 
 #include <ArduinoJson.h>
 
 #include <esp_now_ros/Packet.h>
-#include "sdp/packet_creator.h"
-#include "sdp/packet_parser.h"
-#include "sdp/sdp_util.h"
-#include "devices/uwb_module_util.h"
-#include "iot_com_util/iot_host_util.h"
+
+#include <sdp/sdp.h>
+#include <utils/config_loader.h>
+#include <devices/uwb_module_util.h>
 
 // Device name
 String device_name = "";

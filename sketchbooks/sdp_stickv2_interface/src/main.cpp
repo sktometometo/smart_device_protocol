@@ -1,15 +1,11 @@
-#include <esp_now.h>
-#include <esp_system.h>
-
 #include <M5Core2.h>
-#include <WiFi.h>
 
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 #include <ArduinoJson.h>
 
-#include "sdp/sdp_util.h"
-#include "iot_com_util/iot_host_util.h"
+#include "sdp/sdp.h"
+#include "utils/config_loader.h"
 #include "devices/stickv2_util.h"
 #include "devices/uwb_module_util.h"
 

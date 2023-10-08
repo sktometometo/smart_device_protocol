@@ -2,20 +2,16 @@
 #include <variant>
 
 #include <M5Stack.h>
-#include <esp_system.h>
-#include <esp_now.h>
-#include <WiFi.h>
 #include <FS.h>
 #include <SPIFFS.h>
 
 #include <ArduinoJson.h>
 
 #include <esp_now_ros/Packet.h>
-#include "sdp/packet_creator.h"
-#include "sdp/packet_parser.h"
-#include "sdp/sdp_util.h"
+#include "sdp/sdp.h"
 #include "devices/uwb_module_util.h"
 #include "iot_com_util/iot_host_util.h"
+#include "utils/config_loader.h"
 
 // Device name
 String device_name = "";
@@ -111,7 +107,7 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
     return true;
 }
 
-void callback_sesami_operation(std::vector<SDPData> &body)
+void callback_sesami_operation(const uint8_t *mac_address, const std::vector<SDPData> &body)
 {
     std::string operation_key = std::get<std::string>(body[0]);
     Serial.printf("operation_key: %s\n", operation_key.c_str());

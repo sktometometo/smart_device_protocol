@@ -2,19 +2,15 @@
 #include <variant>
 
 #include <M5Stack.h>
-#include <esp_system.h>
-#include <esp_now.h>
-#include <WiFi.h>
 #include <FS.h>
 #include <SPIFFS.h>
 
 #include <ArduinoJson.h>
 
 #include <esp_now_ros/Packet.h>
-#include "sdp/packet_creator.h"
-#include "sdp/packet_parser.h"
-#include "sdp/sdp_util.h"
+#include "sdp/sdp.h"
 #include "iot_com_util/iot_host_util.h"
+#include "utils/config_loader.h"
 #include "devices/uwb_module_util.h"
 
 // Device Name
@@ -103,7 +99,7 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
     return true;
 }
 
-void callback_for_switch_control(std::vector<SDPData> &body)
+void callback_for_switch_control(const uint8_t *mac_address, const std::vector<SDPData> &body)
 {
     Serial.printf("Length of body: %d\n", body.size());
     bool control = std::get<bool>(body[0]);
