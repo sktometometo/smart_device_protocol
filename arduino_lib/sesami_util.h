@@ -98,8 +98,6 @@ std::optional<String> operation_sesami(String device_uuid, String api_key, int c
 
     if (!http.begin(url))
     {
-        USBSerial.println("Connection failed.\nWaiting 5 seconds before retrying...\n");
-        delay(5000);
         return std::nullopt;
     }
 
@@ -112,13 +110,21 @@ std::optional<String> operation_sesami(String device_uuid, String api_key, int c
     http.addHeader("x-api-key", api_key);
     int responseCode = http.POST(body);
     String result_body = http.getString();
+    http.end();
     USBSerial.printf("** POST result **\n");
     USBSerial.printf("responseCode: %d\n", responseCode);
-    body.replace("\\\"", "\"");
-    USBSerial.println("body: " + result_body);
-    http.end();
+    USBSerial.println("result_body: " + result_body);
 
-    return result_body;
+    if (responseCode != 200)
+    {
+        return std::nullopt;
+    }
+    else
+    {
+        body.replace("\\\"", "\"");
+        USBSerial.println("body: " + result_body);
+        return result_body;
+    }
 }
 
 std::optional<String> get_sesami_status(String device_uuid, String api_key)
@@ -129,8 +135,6 @@ std::optional<String> get_sesami_status(String device_uuid, String api_key)
 
     if (!http.begin(url))
     {
-        USBSerial.println("Connection failed.\nWaiting 5 seconds before retrying...\n");
-        delay(5000);
         return std::nullopt;
     }
 
@@ -157,8 +161,6 @@ std::optional<String> get_sesami_history(String device_uuid, String api_key)
 
     if (!http.begin(url))
     {
-        USBSerial.println("Connection failed.\nWaiting 5 seconds before retrying...\n");
-        delay(5000);
         return std::nullopt;
     }
 

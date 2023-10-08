@@ -106,8 +106,18 @@ void loop()
       }
       if (ret)
       {
-        response_json["success"] = true;
-        response_json["message"] = command + " success";
+        DeserializationError error = deserializeJson(result_json, ret.value().c_str());
+        if (error)
+        {
+          response_json["success"] = false;
+          response_json["message"] = "deserializeJson() failed during operation_sesami: " + String(error.c_str()) + ", result: " + ret.value();
+        }
+        else
+        {
+          response_json["success"] = true;
+          response_json["message"] = command + " success";
+          response_json["result"] = result_json;
+        }
       }
       else
       {
