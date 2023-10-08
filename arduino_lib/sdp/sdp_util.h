@@ -22,10 +22,14 @@
 String _sdp_device_name;
 esp_now_peer_info_t _peer_broadcast;
 
-typedef void (*sdp_data_recv_cb_t)(std::vector<SDPData> &body);
-typedef std::tuple<SDPInterfaceDescription, sdp_data_recv_cb_t> SDPInterfaceCallbackEntry;
+typedef void (*sdp_data_if_recv_cb_t)(const uint8_t *mac_addr, const std::vector<SDPData> &body);
+typedef void (*sdp_data_recv_cb_t)(const uint8_t *mac_addr, const SDPInterfaceDescription &interface_description, const std::vector<SDPData> &body);
+typedef void (*sdp_meta_recv_cb_t)(const uint8_t *mac_addr, const std::string &device_name, const std::vector<SDPInterfaceDescription> &interfaces);
+typedef std::tuple<SDPInterfaceDescription, sdp_data_if_recv_cb_t> SDPInterfaceCallbackEntry;
 
-std::vector<SDPInterfaceCallbackEntry> sdp_interface_callbacks;
+std::vector<SDPInterfaceCallbackEntry> _sdp_interface_data_callbacks;
+std::vector<sdp_data_recv_cb_t> _sdp_data_callbacks;
+std::vector<sdp_meta_recv_cb_t> _sdp_meta_callbacks;
 
 void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
@@ -38,13 +42,29 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
         std::string serialization_format = std::get<1>(packet_description_and_serialization_format);
         std::vector<SDPData> body = std::get<1>(packet);
 
-        for (auto &entry : sdp_interface_callbacks)
+        for (auto &entry : _sdp_data_callbacks)
+        {
+            entry(mac_addr, packet_description_and_serialization_format, body);
+        }
+
+        for (auto &entry : _sdp_interface_data_callbacks)
         {
             if (packet_description == std::get<0>(std::get<0>(entry)) and
                 serialization_format == std::get<1>(std::get<0>(entry)))
             {
-                std::get<1>(entry)(body);
+                std::get<1>(entry)(mac_addr, body);
             }
+        }
+    }
+    else if (packet_type == esp_now_ros::Packet::PACKET_TYPE_META)
+    {
+        auto packet = parse_packet_as_meta_packet(data);
+        std::string device_name = std::get<0>(packet);
+        std::vector<SDPInterfaceDescription> interfaces = std::get<1>(packet);
+
+        for (auto &entry : _sdp_meta_callbacks)
+        {
+            entry(mac_addr, device_name, interfaces);
         }
     }
 }
@@ -64,12 +84,12 @@ void _meta_frame_broadcast_task(void *parameter)
     for (;;)
     {
         vTaskDelay(pdMS_TO_TICKS(10000));
-        for (auto &entry : sdp_interface_callbacks)
+        for (auto &entry : _sdp_interface_data_callbacks)
         {
             const SDPInterfaceDescription &packet_description_and_serialization_format = std::get<0>(entry);
             _broadcast_sdp_meta_packet(packet_description_and_serialization_format);
         }
-        if (sdp_interface_callbacks.size() == 0)
+        if (_sdp_interface_data_callbacks.size() == 0)
         {
             _broadcast_sdp_meta_packet(std::make_tuple("", ""));
         }
@@ -104,9 +124,30 @@ bool init_sdp(uint8_t *mac_address, const String &device_name)
     return true;
 }
 
-bool register_sdp_interface_callback(SDPInterfaceDescription packet_description_and_serialization_format, sdp_data_recv_cb_t callback)
+bool register_sdp_interface_callback(SDPInterfaceDescription packet_description_and_serialization_format, sdp_data_if_recv_cb_t callback)
 {
-    sdp_interface_callbacks.push_back(std::make_tuple(packet_description_and_serialization_format, callback));
+    // Check if the callback is already registered
+    for (auto &entry : _sdp_interface_data_callbacks)
+    {
+        if (std::get<0>(std::get<0>(entry)) == std::get<0>(packet_description_and_serialization_format) and
+            std::get<1>(std::get<0>(entry)) == std::get<1>(packet_description_and_serialization_format))
+        {
+            return false;
+        }
+    }
+    _sdp_interface_data_callbacks.push_back(std::make_tuple(packet_description_and_serialization_format, callback));
+    return true;
+}
+
+bool register_sdp_data_callback(sdp_data_recv_cb_t callback)
+{
+    _sdp_data_callbacks.push_back(callback);
+    return true;
+}
+
+bool register_sdp_meta_callback(sdp_meta_recv_cb_t callback)
+{
+    _sdp_meta_callbacks.push_back(callback);
     return true;
 }
 
