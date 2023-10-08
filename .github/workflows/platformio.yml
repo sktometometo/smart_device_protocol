@@ -37,26 +37,26 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/package.xml') }}-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: ${{ runner.os }}-pip-${{ hashFiles('**/package.xml') }}-${{ hashFiles('**/requirements.txt') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('${GITHUB_WORKSPACE}/package.xml') }}-${{ hashFiles('${GITHUB_WORKSPACE}/requirements.txt') }}
+        restore-keys: ${{ runner.os }}-pip-${{ hashFiles('${GITHUB_WORKSPACE}/package.xml') }}-${{ hashFiles('${GITHUB_WORKSPACE}/requirements.txt') }}
     - name: Cache apt
       uses: actions/cache@v2
       with:
         path: /var/cache/apt/archives
-        key: ${{ runner.os }}-apt-${{ github.run_id }}
-        restore-keys: ${{ runner.os }}-apt-${{ github.run_id }}
-    - name: Cache PlatformIO
+        key: ${{ runner.os }}-apt-${{ hashFiles('${GITHUB_WORKSPACE}/package.xml') }}
+        restore-keys: ${{ runner.os }}-apt-${{ hashFiles('${GITHUB_WORKSPACE}/package.xml') }}
+    - name: Cache PlatformIO global ${{ matrix.target_project }}
       uses: actions/cache@v2
       with:
         path: ~/.platformio/cache
-        key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
-        restore-keys: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
-    - name: Cache PlatformIO ${{ matrix.target_project }}
+        key: ${{ runner.os }}-platformio-global-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
+        restore-keys: ${{ runner.os }}-platformio-global-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
+    - name: Cache PlatformIO local ${{ matrix.target_project }}
       uses: actions/cache@v2
       with:
         path: ${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/.pio
-        key: ${{ runner.os }}-platformio-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
-        restore-keys: ${{ runner.os }}-platformio-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
+        key: ${{ runner.os }}-platformio-local-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
+        restore-keys: ${{ runner.os }}-platformio-local-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
     - name: Setup ROS
       uses: ros-tooling/setup-ros@v0.2
       with:
