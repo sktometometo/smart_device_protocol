@@ -5,175 +5,188 @@
 [![ROS build workflow](https://github.com/sktometometo/esp_now_ros/actions/workflows/catkin_build.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/catkin_build.yml)
 [![PlatformIO Build Workflow](https://github.com/sktometometo/esp_now_ros/actions/workflows/platformio.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/platformio.yml)
 
-This package enables to send and receive packet between multiple machines via ESP-NOW.
+Smart Device Protocol (SDP) Repository.
+
+## What is this?
+
+Smart Device Protocol (SDP) is a protocol to communicate between smart devices, wearable devices, and robots.
+SDP is based on [ESP-NOW](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_now.html) protocol, which is a protocol to communicate between ESP32 devices.
+
+This package provides firmwares and ROS nodes to communicate with ESP32 devices via Smart Device Protocol.
+
+For more details of Smart Device Protocol, please see [Smart Device Protocol Document](./docs/sdp.md)
 
 ## How to use
 
-### Make esp_now_ros device
+### 0. Prerequisites
 
-First, instal `platformio` package to your environment.
+This code is developed under environment below. Other environment is not tested.
 
-it can be installed with pip. (Python>=3.6 is strongly recommended.)
+- Ubuntu 20.04
+- ROS Noetic
+- Python 3.8
 
-```bash
-pip3 install platformio
-```
+And you have to install `platformio` pip package to your environment.
+  
+  ```bash
+  pip3 install platformio
+  ```
 
-Now you can execute `pio` command.
+### 1. Build ROS package
 
-```bash
-~ $ pio
-Usage: pio [OPTIONS] COMMAND [ARGS]...
+First, clone this repository to your catkin workspace and build it.
 
-Options:
-  --version          Show the version and exit.
-  -c, --caller TEXT  Caller ID (service)
-  --no-ansi          Do not print ANSI control characters
-  -h, --help         Show this message and exit.
+  ```bash
+  cd ~/catkin_ws/src
+  git clone https://github.com/sktometometo/esp_now_ros.git
+  cd ..
+  catkin build
+  ```
 
-Commands:
-  access    Manage resource access
-  account   Manage PlatformIO account
-  boards    Board Explorer
-  check     Static Code Analysis
-  ci        Continuous Integration
-  debug     Unified Debugger
-  device    Device manager & Serial/Socket monitor
-  home      GUI to manage PlatformIO
-  org       Manage organizations
-  pkg       Unified Package Manager
-  project   Project Manager
-  remote    Remote Development
-  run       Run project targets (build, upload, clean, etc.)
-  settings  Manage system settings
-  system    Miscellaneous system commands
-  team      Manage organization teams
-  test      Unit Testing
-  upgrade   Upgrade PlatformIO Core to the latest version
-```
+### 2. Make Smart Device Protocol interface device
+
+Second, you have to make an ESP32 device which is connected to your PC via USB.
+This device will be the interface to Smart Device Protocol communication of your PC.
+Basically, you can use any ESP32 device, but this package is tested with M5Stack-Fire, M5Stack-Core2, and M5Atom-S3.
+
+There are two types of smart device protocol interface device. In this tutorial, we will use [esp_now_ros_interface](./sketchbooks/esp_now_ros/).
+
+- [esp_now_ros_interface](./sketchbooks/esp_now_ros/): This is the basic interface device. You can send and receive packet via ROS topic.
+- [enr_interface_with_uwb](./sketchbooks/enr_interface_with_uwb/): This is the interface device with [UWB module](https://shop.m5stack.com/products/ultra-wideband-uwb-unit-indoor-positioning-module-dw1000). You can send and receive packet via ROS topic, and also you can get UWB ranging result via ROS topic.
+
+This code is developed with [PlatformIO](https://platformio.org/). So you can build and burn firmware with it.
+
+You can execute `pio` command.
+
+  ```bash
+  ~ $ pio
+  Usage: pio [OPTIONS] COMMAND [ARGS]...
+
+  Options:
+    --version          Show the version and exit.
+    -c, --caller TEXT  Caller ID (service)
+    --no-ansi          Do not print ANSI control characters
+    -h, --help         Show this message and exit.
+
+  Commands:
+    access    Manage resource access
+    account   Manage PlatformIO account
+    boards    Board Explorer
+    check     Static Code Analysis
+    ci        Continuous Integration
+    debug     Unified Debugger
+    device    Device manager & Serial/Socket monitor
+    home      GUI to manage PlatformIO
+    org       Manage organizations
+    pkg       Unified Package Manager
+    project   Project Manager
+    remote    Remote Development
+    run       Run project targets (build, upload, clean, etc.)
+    settings  Manage system settings
+    system    Miscellaneous system commands
+    team      Manage organization teams
+    test      Unit Testing
+    upgrade   Upgrade PlatformIO Core to the latest version
+  ```
 
 Then, connect M5Stack-Core2 to your PC. You can check which port is connected to it by
 
-```bash
-~ $ pio device list
-/dev/ttyACM0
-------------
-Hardware ID: USB VID:PID=1A86:55D4 SER=54BB013663 LOCATION=7-1:1.0
-Description: USB Single Serial
-```
+  ```bash
+  ~ $ pio device list
+  /dev/ttyACM0
+  ------------
+  Hardware ID: USB VID:PID=1A86:55D4 SER=54BB013663 LOCATION=7-1:1.0
+  Description: USB Single Serial
+  ```
 
 So let's build firmware and burn it to M5Stack-Core2
 
-```bash
-roscd esp_now_ros/sketchbooks/esp_now_ros/
-rosrun rosserial_arduino make_libraries.py ./lib/
-pio run -e m5stack-core2 --target upload --upload-port /dev/ttyACM0
-```
+  ```bash
+  roscd esp_now_ros/sketchbooks/esp_now_ros/
+  pio run -e m5stack-core2 --target upload --upload-port /dev/ttyACM0
+  ```
 
-### Run interface program
+### 3. Make an example of Smart Device Protocol device
 
-After burned, let's start with 
+In this tutorial, you will see your PC can communicate with ESP32 device via Smart Device Protocol. So you have to make another ESP32 Smart Device Protocol device.
+We will use [sdp_example](./sketchbooks/sdp_example/).
 
-```bash
-roslaunch esp_now_ros demo.launch port:=/dev/ttyACM0
-```
+Connect M5Stack-Fire to your PC and burn firmware to it.
+
+  ```bash
+  roscd esp_now_ros/sketchbooks/sdp_example/
+  pio run -e m5stack-fire --target upload --upload-port /dev/ttyACM0
+  ```
+  
+### 4. Run Smart Device Protocol Interface Device
+
+After step 2, you can run Smart Device Protocol interface node.
+
+  ```bash
+  roslaunch esp_now_ros demo.launch port:=/dev/ttyACM0
+  ```
 
 with this, you can see topics below.
 
-```bash
-$ rostopic list
-/diagnostics
-/esp_now_ros/recv
-/esp_now_ros/send
-/rosout
-/rosout_agg
+  ```bash
+  $ rostopic list
+  /diagnostics
+  /esp_now_ros/recv
+  /esp_now_ros/send
+  /rosout
+  /rosout_agg
+  ```
 
-```
+You can send a ESP-NOW (which is the bottom of Smart Device Protocol) packet directly by sending ROS a message to `/esp_now_ros/send` topic.
 
-You can send packet by sending ROS a message to `/esp_now_ros/send` topic.
+  ```bash
+  rostopic pub -1 /esp_now_ros/send esp_now_ros/Packet "mac_address: [255, 255, 255, 255, 255, 255]
+  data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+  ```
 
-```bash
-rostopic pub -1 /esp_now_ros/send esp_now_ros/Packet "mac_address: [255, 255, 255, 255, 255, 255]
-data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-```
+### 5. Run a ROS Node with Smart Device Protocol Interface
 
-### Run demo
+Now you can communicate with smart devices, wearable devices, and robots via Smart Device Protocol.
+You can run an example of Smart Device Protocol Interface node.
 
-TODO
+  ```bash
+  rosrun esp_now_ros sdp_v2_packet_printer.py
+  ```
 
-## Packet Specification
+With this command, you can see Smart Device Protocol packets from other devices.
 
-### System packet
+  ```bash
+  TODO
+  ```
 
-#### Test Packet
+You can also send Smart Device Protocol packets to other devices.
 
-| PACKET_TYPE (2 byte unsigned int LSB) | Integer number = -120 (4 byte signed int LSB) | Float number -1.0 (4 byte float LSB) | String (Hello, world!) (64 bytes String) |
-|-|-|-|-|
+  ```bash
+  TODO
+  ```
 
-### Named value packet
+## API for Smart Device Protocol
 
-#### Named String Packet
+### Python API (for ROS Node)
 
-| PACKET_TYPE (2 byte unsigned int LSB) | Name (64 byte string) | Value (64 bytes String) |
-|-|-|-|
+You can use Smart Device Protocol API in Python for ROS Node. Please see [this document](./docs/python.md) for more details.
 
-#### Named Int Packet
+### C++ API (for Arduino)
 
-| PACKET_TYPE (2 byte unsigned int LSB) | Name (64 byte string) | Value (4 bytes signed int LSB) |
-|-|-|-|
+You can use Smart Device Protocol API in C++ for Arduino. Please see (this document)[./arduino_lib/README.md] for more details.
 
-#### Named Float Packet
+## Examples of Smart Device Protocol Interface Device
 
-| PACKET_TYPE (2 byte unsigned int LSB) | Name (64 byte string) | Value (4 bytes float LSB) |
-|-|-|-|
+There are some examples of Smart Device Protocol Interface Device. For more details, please see [this directory](./sketchbooks/).
 
-### Sensor modules
+## Notices
 
-#### ENV III Packet
+### Update of ros_lib for Arduino
 
-| PACKET_TYPE (2 byte unsigned int LSB) | MODULE_NAME (64 byte String) | PRESSURE (4 byte signed int LSB) |
-|-|-|-|
+If you update ros_lib for Arduino, you have to update `ros_lib` directory in [this directory](./ros_lib/).
 
-#### UNITV2 Person Counter Packet
-
-| PACKET_TYPE (2 byte unsigned int LSB) | NUMBER OF PERSON (4 byte unsigned int LSB) | PLACE_NAME (64 byte String) |
-|-|-|-|
-
-#### IMU Packet
-
-| PACKET_TYPE (2 byte unsigned int LSB) | MODULE_NAME (64 byte String) | Accel_X, Y, Z (4 byte float LSB x 3) |
-|-|-|-|
-
-### Task packet
-
-#### Emergency Packet
-
-| PACKET_TYPE (2 byte unsigned int LSB) | MAP_FRAME (64 byte String) | POS_X, Y, Z (4 byte float LSB x 3) | ROT_X, Y, Z, W (4byte float LSB x 4) |
-|-|-|-|-|
-
-#### Task Dispatcher Packet
-
-| PACKET_TYPE (2 byte unsigned int LSB) | Caller name (16 byte String) | Target name (16 byte String) | Task name (16 byte String) | Task Args (String) |
-|-|-|-|-|-|
-
-#### Task Received Packet
-
-| PACKET_TYPE (2 byte unsigned int LSB) | Worker name (16 byte String) | Caller name (16 byte String) | Task name (16 byte String) |
-|-|-|-|-|
-
-#### Task Result Packet
-
-| PACKET_TYPE (2 byte unsigned int LSB) | Worker name (16 byte String) | Caller name (16 byte String) | Task name (16 byte String) | Result (String) |
-|-|-|-|-|-|
-
-### Device Packet
-
-#### Device message board meta packet
-
-| PACKET_TYPE (2 byte unsigned int LSB) | device name (64 byte String) |
-|-|-|
-
-#### Device message board data packet
-
-| PACKET_TYPE (2 byte unsigned int LSB) | source name (64 byte String) | timeout duration (msec) (8 byte unsigned int LSB) | message name (64 byte String) |
-|-|-|-|-|
+  ```bash
+  cd ~/catkin_ws/src/esp_now_ros/ros_lib
+  rm -rf ros_lib
+  rosrun rosserial_arduino make_libraries.py .
+  ```
