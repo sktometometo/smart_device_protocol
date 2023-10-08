@@ -14,7 +14,7 @@
 
 #include <esp_now_ros/Packet.h>
 
-#include "sdp/esp_now_ros.h"
+#include "sdp/esp_now.h"
 #include "sdp/packet_util.h"
 #include "sdp/packet_creator.h"
 #include "sdp/packet_parser.h"
