@@ -51,6 +51,12 @@ jobs:
         path: ~/.platformio/cache
         key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
         restore-keys: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
+    - name: Cache PlatformIO ${{ matrix.target_project }}
+      uses: actions/cache@v2
+      with:
+        path: ${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/.pio
+        key: ${{ runner.os }}-platformio-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
+        restore-keys: ${{ runner.os }}-platformio-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
     - name: Setup ROS
       uses: ros-tooling/setup-ros@v0.2
       with:
