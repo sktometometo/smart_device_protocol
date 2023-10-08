@@ -93,7 +93,11 @@ class DeviceDictSDPInterface(SDPInterface):
 
 class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
     def __init__(
-        self, callbacks_data: Dict[Tuple[str, str], Callable] = {}, callback_meta=None
+        self,
+        callbacks_data: Dict[
+            Tuple[str, str], Callable[[Union[List[int], Tuple[int]], List], None]
+        ] = {},
+        callback_meta=None,
     ):
         self._callbacks_data = callbacks_data
         self._callback_meta = callback_meta
