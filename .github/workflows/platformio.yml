@@ -48,7 +48,7 @@ jobs:
     - name: Cache PlatformIO local ${{ matrix.target_project }}
       uses: actions/cache@v2
       with:
-        path: ${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/.pio
+        path: ${{ github.workspace }}/sketchbooks/${{ matrix.target_project }}/.pio
         key: ${{ runner.os }}-platformio-local-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
         restore-keys: ${{ runner.os }}-platformio-local-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
     - name: Update pip and install pip package
@@ -58,4 +58,4 @@ jobs:
         pip3 install platformio
     - name: build sketch ${{ matrix.target_project }}
       run: |
-        pio run -d $(GITHUB_WORKSPACE)/sketchbooks/${{ matrix.target_project }}
+        pio run -d ${{ github.workspace }}/sketchbooks/${{ matrix.target_project }}

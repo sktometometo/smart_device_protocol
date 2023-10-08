@@ -52,7 +52,7 @@ jobs:
     - name: Cache PlatformIO local ${{ matrix.target_project }}
       uses: actions/cache@v2
       with:
-        path: ${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/.pio
+        path: ${{ github.workspace }}/sketchbooks/${{ matrix.target_project }}/.pio
         key: ${{ runner.os }}-platformio-local-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
         restore-keys: ${{ runner.os }}-platformio-local-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
     - name: Setup ROS
@@ -70,7 +70,7 @@ jobs:
       run: |
         source /opt/ros/noetic/setup.bash
         mkdir -p ${CATKIN_WS}/src
-        ln -s ${GITHUB_WORKSPACE} ${CATKIN_WS}/src/
+        ln -s ${{ github.workspace }} ${CATKIN_WS}/src/
     - name: pre build
       run: |
         source /opt/ros/noetic/setup.bash
@@ -84,8 +84,8 @@ jobs:
     - name: Update ros_lib
       run: |
         source ${CATKIN_WS}/devel/setup.bash
-        rm -rf $(GITHUB_WORKSPACE)/ros_lib
-        rosrun rosserial_arduino make_libraries.py $(GITHUB_WORKSPACE)/ros_lib
+        rm -rf ${{ github.workspace }}/ros_lib
+        rosrun rosserial_arduino make_libraries.py ${{ github.workspace }}/ros_lib
     - name: build sketch ${{ matrix.target_project }}
       run: |
-        pio run -d $(GITHUB_WORKSPACE)/sketchbooks/${{ matrix.target_project }}
+        pio run -d ${{ github.workspace }}/sketchbooks/${{ matrix.target_project }}
