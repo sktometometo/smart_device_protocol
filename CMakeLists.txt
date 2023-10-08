@@ -33,3 +33,15 @@ catkin_install_python(
   PROGRAMS ${${PROJECT_NAME}_node_scripts}
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+if (CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+
+  file(GLOB ${PROJECT_NAME}_test_node_scripts ${PROJECT_SOURCE_DIR}/tests/*.py)
+  catkin_install_python(
+    PROGRAMS ${${PROJECT_NAME}_test_node_scripts}
+    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  )
+
+  add_rostest(tests/sdp_v2_interface_rostest.test)
+endif()
