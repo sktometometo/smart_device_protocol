@@ -56,14 +56,24 @@ void generate_meta_frame(uint8_t *packet, const char *device_name, const char *p
   strncpy((char *)(packet + 2 + 20 + 64 + 10 + 64 + 10 + 64), serialization_format_03, 10);
 }
 
-void generate_data_frame(uint8_t *packet, const char *packet_description, const char *serialization_format,
+bool generate_data_frame(uint8_t *packet, const char *packet_description, const char *serialization_format,
                          std::vector<SDPData> &data)
 {
+  if (std::string(serialization_format) != get_serialization_format(data))
+  {
+    return false;
+  }
+  if (strlen(serialization_format) != std::vector<SDPData>(data).size())
+  {
+    return false;
+  }
   *(uint16_t *)(packet + 0) = esp_now_ros::Packet::PACKET_TYPE_DATA;
   strncpy((char *)(packet + 2), packet_description, 64);
   strncpy((char *)(packet + 2 + 64), serialization_format, 10);
   auto packet_data_p = packet + 2 + 64 + 10;
-  for (auto it = data.begin(); it != data.end(); ++it)
+  auto it = data.begin();
+  int index_sf = 0;
+  while (it != data.end())
   {
     if (std::holds_alternative<int32_t>(*it))
     {
@@ -88,7 +98,7 @@ void generate_data_frame(uint8_t *packet, const char *packet_description, const 
       {
         for (int i = str.size(); i < 64; ++i)
         {
-          *(char *)packet_data_p = '\0';
+          *(char *)(packet_data_p + i) = '\0';
         }
         strncpy((char *)packet_data_p, str.c_str(), str.size());
         packet_data_p += 64;
@@ -97,7 +107,7 @@ void generate_data_frame(uint8_t *packet, const char *packet_description, const 
       {
         for (int i = str.size(); i < 16; ++i)
         {
-          *(char *)packet_data_p = '\0';
+          *(char *)(packet_data_p + i) = '\0';
         }
         strncpy((char *)packet_data_p, str.c_str(), str.size());
         packet_data_p += 16;
@@ -108,14 +118,17 @@ void generate_data_frame(uint8_t *packet, const char *packet_description, const 
       *(bool *)packet_data_p = std::get<bool>(*it);
       packet_data_p += sizeof(bool);
     }
+    ++it;
+    ++index_sf;
   }
+  return true;
 }
 
-void generate_data_frame(uint8_t *packet, const char *packet_description,
+bool generate_data_frame(uint8_t *packet, const char *packet_description,
                          std::vector<SDPData> &data)
 {
   std::string serialization_format = get_serialization_format(data);
-  generate_data_frame(packet, packet_description, serialization_format.c_str(), data);
+  return generate_data_frame(packet, packet_description, serialization_format.c_str(), data);
 }
 
 /* Version 1 functions */

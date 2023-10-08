@@ -50,11 +50,12 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 
 bool _broadcast_sdp_meta_packet(const SDPInterfaceDescription &packet_description_and_serialization_format)
 {
-    uint8_t buf[240];
-    std::string packet_description = std::get<0>(packet_description_and_serialization_format);
-    std::string serialization_format = std::get<1>(packet_description_and_serialization_format);
+    uint8_t buf[245];
+    const std::string &packet_description = std::get<0>(packet_description_and_serialization_format);
+    const std::string &serialization_format = std::get<1>(packet_description_and_serialization_format);
     generate_meta_frame(buf, _sdp_device_name.c_str(), packet_description.c_str(), serialization_format.c_str(), "", "", "", "");
-    return esp_now_send(_peer_broadcast.peer_addr, buf, sizeof(buf)) == ESP_OK;
+    bool success = esp_now_send(_peer_broadcast.peer_addr, buf, sizeof(buf)) == ESP_OK;
+    return success;
 }
 
 void _meta_frame_broadcast_task(void *parameter)
@@ -62,10 +63,9 @@ void _meta_frame_broadcast_task(void *parameter)
     for (;;)
     {
         vTaskDelay(pdMS_TO_TICKS(10000));
-
         for (auto &entry : sdp_interface_callbacks)
         {
-            SDPInterfaceDescription packet_description_and_serialization_format = std::get<0>(entry);
+            const SDPInterfaceDescription &packet_description_and_serialization_format = std::get<0>(entry);
             _broadcast_sdp_meta_packet(packet_description_and_serialization_format);
         }
     }
@@ -94,7 +94,7 @@ bool init_sdp(uint8_t *mac_address, const String &device_name)
     {
         return false;
     }
-    xTaskCreate(_meta_frame_broadcast_task, "meta_frame_broadcast_task", 4096, NULL, 1, NULL);
+    xTaskCreate(_meta_frame_broadcast_task, "meta_frame_broadcast_task", 16384, NULL, 1, NULL);
     esp_now_register_recv_cb(_OnDataRecv);
     return true;
 }

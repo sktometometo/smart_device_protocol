@@ -15,25 +15,28 @@
 #include <packet_parser.h>
 #include "uwb_module_util.h"
 #include "iot_host_util.h"
+#include "sdp/sdp_util.h"
 
-#ifndef DEVICE_NAME
-#define DEVICE_NAME "SDP_SESAMI_INTERFACE"
-#endif
+// Device name
+String device_name = "";
 
 // ESP-NOW
 uint8_t mac_address[6] = {0};
-esp_now_peer_info_t peer_broadcast;
 
 // Interface
 std::string packet_description_operation = "Key control";
 std::string serialization_format_operation = "s";
-uint8_t buf_for_meta_packet[250];
+SDPInterfaceDescription interface_description_operation = std::make_tuple(packet_description_operation, serialization_format_operation);
+
+// Key Status
+std::string packet_description_key_status = "Key status";
+std::vector<SDPData> data_for_key_status_data_packet;
 
 // UWB
 int uwb_id = -1;
 std::string packet_description_uwb = "UWB Station";
 std::string serialization_format_uwb = "i";
-uint8_t buf_for_uwb_packet[250];
+std::vector<SDPData> data_for_uwb_data_packet;
 
 // Switchbot Client Configuration
 String wifi_ssid = "";
@@ -43,7 +46,6 @@ String sesami_secret_key = "";
 String sesami_api_key = "";
 
 // Other
-uint8_t buf_for_data_packet[240];
 std::vector<SDPData> data;
 StaticJsonDocument<1024> result_json;
 int loop_counter = 0;
@@ -68,9 +70,8 @@ void get_key_status_and_update_buf()
     {
         String status = result_json["result"]["CHSesami2Status"].as<String>();
         bool locked = true ? status == "locked" : false;
-        data.clear();
-        data.push_back(SDPData(locked));
-        generate_data_frame(buf_for_data_packet, packet_description_operation.c_str(), data);
+        data_for_key_status_data_packet.clear();
+        data_for_key_status_data_packet.push_back(SDPData(locked));
         return;
     }
 }
@@ -84,27 +85,22 @@ void show_device_config()
 bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
 {
     StaticJsonDocument<1024> doc;
-
-    auto file = fs.open(filename.c_str());
-    if (!file)
+    if (not load_json_from_FS<1024>(fs, filename, doc))
     {
-        Serial.printf("Failed to open config file from %s\n", filename.c_str());
+        return false;
+    }
+    if (not doc.containsKey("device_name") and
+        not doc.containsKey("wifi_ssid") and
+        not doc.containsKey("wifi_password") and
+        not doc.containsKey("sesami_device_uuid") and
+        not doc.containsKey("sesami_secret_key") and
+        not doc.containsKey("sesami_api_key") and
+        not doc.containsKey("uwb_id"))
+    {
         return false;
     }
 
-    DeserializationError error = deserializeJson(doc, file.readString());
-    if (error)
-    {
-        Serial.println("Failed to parse config file");
-        return false;
-    }
-
-    if (not doc.containsKey("wifi_ssid") and not doc.containsKey("wifi_password") and not doc.containsKey("sesami_device_uuid") and not doc.containsKey("sesami_secret_key") and not doc.containsKey("sesami_api_key") and not doc.containsKey("uwb_id"))
-    {
-        Serial.println("Config file is invalid. It should have wifi_ssid, wifi_password, sesami_device_uuid, sesami_secret_key, sesami_api_key, and uwb_id");
-        return false;
-    }
-
+    device_name = doc["device_name"].as<String>();
     wifi_ssid = doc["wifi_ssid"].as<String>();
     wifi_password = doc["wifi_password"].as<String>();
     sesami_device_uuid = doc["sesami_device_uuid"].as<String>();
@@ -112,65 +108,43 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
     sesami_api_key = doc["sesami_api_key"].as<String>();
     uwb_id = doc["uwb_id"].as<int>();
 
-    Serial.printf("wifi_ssid: %s\n", wifi_ssid.c_str());
-    Serial.printf("wifi_password: %s\n", wifi_password.c_str());
-    Serial.printf("sesami_device_uuid: %s\n", sesami_device_uuid.c_str());
-    Serial.printf("sesami_secret_key: %s\n", sesami_secret_key.c_str());
-    Serial.printf("sesami_api_key: %s\n", sesami_api_key.c_str());
-    Serial.printf("uwb_id: %d\n", uwb_id);
     return true;
 }
 
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
+void callback_sesami_operation(std::vector<SDPData> &body)
 {
-}
-
-void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
-{
-    uint8_t packet_type = get_packet_type(data);
-    if (packet_type == esp_now_ros::Packet::PACKET_TYPE_DATA)
+    std::string operation_key = std::get<std::string>(body[0]);
+    Serial.printf("operation_key: %s\n", operation_key.c_str());
+    Serial.printf("operation_key length: %d\n", operation_key.length());
+    if (operation_key == "lock")
     {
-        auto packet = parse_packet_as_data_packet(data);
-        SDPInterfaceDescription packet_description_and_serialization_format = std::get<0>(packet);
-        std::string packet_description = std::get<0>(packet_description_and_serialization_format);
-        std::string serialization_format = std::get<1>(packet_description_and_serialization_format);
-        std::vector<SDPData> body = std::get<1>(packet);
-
-        if (packet_description == packet_description_operation and serialization_format == serialization_format_operation)
-        {
-            std::string operation_key = std::get<std::string>(body[0]);
-            Serial.printf("operation_key: %s\n", operation_key.c_str());
-            Serial.printf("operation_key length: %d\n", operation_key.length());
-            if (operation_key == "lock")
-            {
-                Serial.printf("Lock the key\n");
-                String ret = send_serial_command("{\"command\":\"lock\"}\n");
-                Serial.printf("Response: %s\n", ret.c_str());
-            }
-            else if (operation_key == "unlock")
-            {
-                Serial.printf("Unlock the key\n");
-                String ret = send_serial_command("{\"command\":\"unlock\"}\n");
-                Serial.printf("Response: %s\n", ret.c_str());
-            }
-            else
-            {
-                Serial.printf("Unknown operation key\n");
-            }
-            Serial.printf("Key control command done\n");
-        }
+        Serial.printf("Lock the key\n");
+        String ret = send_serial_command("{\"command\":\"lock\"}\n");
+        Serial.printf("Response: %s\n", ret.c_str());
     }
+    else if (operation_key == "unlock")
+    {
+        Serial.printf("Unlock the key\n");
+        String ret = send_serial_command("{\"command\":\"unlock\"}\n");
+        Serial.printf("Response: %s\n", ret.c_str());
+    }
+    else
+    {
+        Serial.printf("Unknown operation key\n");
+    }
+    Serial.printf("Key control command done\n");
 }
 
 void setup()
 {
     esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
 
-    M5.begin(true, false, true, false);
+    M5.begin(true, true, true, false);
+    Serial.begin(115200);
+    Serial1.begin(115200, SERIAL_8N1, 16, 17);
+    Serial2.begin(115200, SERIAL_8N1, 22, 21);
+
     M5.Lcd.printf("SDP SESAMI HOST DEVICE\n");
-    M5.Lcd.printf("Name: %s\n", DEVICE_NAME);
-    M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
-                  mac_address[4], mac_address[5]);
 
     // Load config from FS
     SPIFFS.begin();
@@ -180,55 +154,36 @@ void setup()
         if (not load_config_from_FS(SPIFFS, "/config.json"))
         {
             Serial.println("Failed to load config file");
-            ESP.restart();
+            M5.Lcd.printf("Failed to load config file\n");
+            while (true)
+            {
+                delay(1000);
+            }
         }
     }
 
-    Serial.begin(115200);
-    Serial1.begin(115200, SERIAL_8N1, 16, 17);
-    Serial2.begin(115200, SERIAL_8N1, 22, 21);
+    // Initialization of SDP
+    if (not init_sdp(mac_address, device_name))
+    {
+        Serial.println("Failed to initialize SDP");
+        M5.lcd.printf("Failed to initialize SDP\n");
+        while (true)
+        {
+            delay(1000);
+        }
+    }
+    register_sdp_interface_callback(interface_description_operation, callback_sesami_operation);
+    Serial.println("SDP Initialized!");
 
-    // Initialization of ESP-NOW
-    WiFi.mode(WIFI_STA);
-    WiFi.disconnect();
-    if (not esp_now_init() == ESP_OK)
-    {
-        ESP.restart();
-    }
-    memset(&peer_broadcast, 0, sizeof(peer_broadcast));
-    for (int i = 0; i < 6; i++)
-    {
-        peer_broadcast.peer_addr[i] = (uint8_t)0xff;
-    }
-    esp_err_t addStatus = esp_now_add_peer(&peer_broadcast);
-    if (addStatus != ESP_OK)
-    {
-        Serial.println("Failed to add peer");
-        ESP.restart();
-    }
-    esp_now_register_recv_cb(OnDataRecv);
-    esp_now_register_send_cb(OnDataSent);
-    Serial.println("ESP NOW Initialized!");
-
-    // SDP meta packet
-    generate_meta_frame(buf_for_meta_packet, DEVICE_NAME, packet_description_operation.c_str(), serialization_format_operation.c_str(), "", "", "", "");
+    // Print info
+    M5.Lcd.printf("Name: %s\n", device_name.c_str());
+    M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
+                  mac_address[4], mac_address[5]);
 
     // UWB module
     bool result = initUWB(false, uwb_id, Serial1);
-    if (result)
-    {
-        Serial.println("UWB module initialized");
-    }
-    else
-    {
-        Serial.println("Failed to initialize UWB module");
-    }
-    data.clear();
-    data.push_back(SDPData(uwb_id));
-    generate_data_frame(
-        buf_for_uwb_packet,
-        packet_description_uwb.c_str(),
-        data);
+    data_for_uwb_data_packet.clear();
+    data_for_uwb_data_packet.push_back(SDPData(uwb_id));
 
     // WiFi Configuration
     String ret = send_serial_command(
@@ -261,16 +216,17 @@ void loop()
     if (Serial.available())
     {
         uint8_t buf_dummy[240];
-        data.clear();
+        std::vector<SDPData> data_dummy;
+        data_dummy.clear();
         String str = Serial.readStringUntil('\n');
         Serial.printf("Input: %s\n", str.c_str());
         if (str.indexOf("unlock") != -1)
         {
-            data.push_back(SDPData(std::string("unlock")));
+            data_dummy.push_back(SDPData(std::string("unlock")));
         }
         else if (str.indexOf("lock") != -1)
         {
-            data.push_back(SDPData(std::string("lock")));
+            data_dummy.push_back(SDPData(std::string("lock")));
         }
         else
         {
@@ -278,40 +234,36 @@ void loop()
             return;
         }
         Serial.println("Generate data frame");
-        std::string serialization_format = get_serialization_format(data);
+        std::string serialization_format = get_serialization_format(data_dummy);
         Serial.printf("serialization_format: %s\n", serialization_format.c_str());
-        generate_data_frame(
+        bool ret = generate_data_frame(
             buf_dummy,
             packet_description_operation.c_str(),
-            data);
+            data_dummy);
+        if (not ret)
+        {
+            Serial.println("Failed to generate data frame");
+            return;
+        }
         Serial.printf("Dummy callback calling\n");
-        OnDataRecv(NULL, buf_dummy, sizeof(buf_dummy));
+        _OnDataRecv(NULL, buf_dummy, sizeof(buf_dummy));
         Serial.printf("Dummy callback done\n");
         return;
+    }
+
+    // Send SDP data packet
+    if (not send_sdp_data_packet(packet_description_key_status, data_for_key_status_data_packet))
+    {
+        Serial.println("Failed to send SDP data packet");
+    }
+    if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet))
+    {
+        Serial.println("Failed to send SDP data packet");
     }
 
     if (loop_counter % 50 == 0)
     {
         get_key_status_and_update_buf();
-    }
-
-    // Send meta data
-    esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_meta_packet, sizeof(buf_for_meta_packet));
-    if (result != ESP_OK)
-    {
-        Serial.printf("Send error: %d\n", result);
-    }
-    // Send UWB data
-    result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_uwb_packet, sizeof(buf_for_uwb_packet));
-    if (result != ESP_OK)
-    {
-        Serial.printf("Send error: %d\n", result);
-    }
-    // Send SDP data
-    result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf_for_data_packet, sizeof(buf_for_data_packet));
-    if (result != ESP_OK)
-    {
-        Serial.printf("Send error: %d\n", result);
     }
 
     loop_counter++;

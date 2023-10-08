@@ -60,9 +60,12 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
 
 void setup()
 {
-  M5.begin(true, false, true, false);
+  M5.begin(true, true, true, false);
   Serial.begin(115200);
   Serial2.begin(115200, SERIAL_8N1, 22, 21);
+
+  // LCD Print
+  M5.Lcd.printf("SDP LANDMARK INFORMATION HOST\n");
 
   // Load config from FS
   SPIFFS.begin();
@@ -72,7 +75,11 @@ void setup()
     if (not load_config_from_FS(SPIFFS, "/config.json"))
     {
       Serial.println("Failed to load config file");
-      ESP.restart();
+      M5.lcd.printf("Failed to load config file\n");
+      while (true)
+      {
+        delay(1000);
+      }
     }
   }
 
@@ -80,21 +87,20 @@ void setup()
   if (not init_sdp(mac_address, device_name))
   {
     Serial.println("Failed to initialize SDP");
-    ESP.restart();
+    M5.lcd.printf("Failed to initialize SDP\n");
+    while (true)
+    {
+      delay(1000);
+    }
   }
-  {
-    Serial.println("Failed to initialize ESP-NOW");
-    ESP.restart();
-  }
-  Serial.println("ESP NOW Initialized!");
+  Serial.println("SDP Initialized!");
 
   // UWB module
   Serial1.begin(115200, SERIAL_8N1, 16, 17);
   bool result = initUWB(false, uwb_id, Serial1);
   data_for_uwb_data_packet.push_back(SDPData(uwb_id));
 
-  // LCD Print
-  M5.Lcd.printf("SDP SWITCHBOT LIGHT HOST\n");
+  // Display MAC address
   M5.Lcd.printf("Name: %s\n", device_name.c_str());
   M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n",
                 mac_address[0], mac_address[1], mac_address[2],
