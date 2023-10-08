@@ -4,8 +4,8 @@
 #include <HTTPClient.h>
 #include <base64.h>
 
-#include "Time.h"
-#include "sesami_util.h"
+#include "iot_com_util/Time.h"
+#include "web_services/sesami_util.h"
 
 const char *ssid = "";
 const char *password = "";

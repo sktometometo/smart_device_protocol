@@ -8,7 +8,7 @@
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 
-#include "uwb_module_util.h"
+#include "devices/uwb_module_util.h"
 
 static LGFX lcd;
 static LGFX_Sprite sprite_device_info(&lcd);

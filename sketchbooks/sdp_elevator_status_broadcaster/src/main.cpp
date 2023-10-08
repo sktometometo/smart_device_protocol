@@ -1,18 +1,15 @@
-#include <esp_now.h>
-#include <esp_system.h>
-
 #include <M5Core2.h>
+
 #include <WiFi.h>
 
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
-
 #include <Dps310.h>
+#include <ArduinoJson.h>
 
-#include "enr_util.h"
 #include "esp_now_ros/Packet.h"
-#include "packet_parser.h"
-#include "packet_creator.h"
+#include "sdp/sdp.h"
+#include "utils/config_loader.h"
 
 static LGFX lcd;
 static LGFX_Sprite sprite_header(&lcd);
@@ -34,16 +31,45 @@ float sensor_temp_mpu = 0.0F;
 float sensor_temp_dps = 0;
 float sensor_pressure = 0;
 
-/* ESP-NOW */
-extern esp_now_peer_info_t peer;
-
+/* device */
 uint8_t device_mac_address[6];
-uint8_t peer_mac_address[6];
-uint8_t packet_buf[250];
+String device_name;
 
-void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
+/* Elevator config */
+typedef struct
 {
-  uint16_t packet_type = get_packet_type(data);
+  uint8_t floor_num;
+  float floor_height;
+} ElevatorConfig;
+std::vector<ElevatorConfig> elevator_config;
+
+bool load_config_from_FS(fs::FS &fs, const String &filename)
+{
+  StaticJsonDocument<1024> doc;
+  if (!load_json_from_FS<1024>(fs, filename, doc))
+  {
+    return false;
+  }
+
+  if (not doc.containsKey("device_name") or not doc.containsKey("elevator_config"))
+  {
+    return false;
+  }
+
+  device_name = doc["device_name"].as<String>();
+  JsonArray elevator_config_json = doc["elevator_config"].as<JsonArray>();
+  for (auto itr = elevator_config_json.begin(); itr != elevator_config_json.end(); ++itr)
+  {
+    JsonObject e = *itr;
+    if (e.containsKey("floor_num") and e.containsKey("floor_height"))
+    {
+      ElevatorConfig ec;
+      ec.floor_num = e["floor_num"].as<uint8_t>();
+      ec.floor_height = e["floor_height"].as<float>();
+      elevator_config.push_back(ec);
+    }
+  }
+  return true;
 }
 
 void init_lcd()
@@ -86,18 +112,34 @@ void setup()
   // initialize LCD
   init_lcd();
 
+  // Load config
+  SD.begin();
+  SPIFFS.begin();
+  if (not load_config_from_FS(SD, "/config.json"))
+  {
+    Serial.println("Failed to load config from SD");
+    if (not load_config_from_FS(SPIFFS, "/config.json"))
+    {
+      Serial.println("Failed to load config from SPIFFS");
+      while (true)
+      {
+        delay(1000);
+      }
+    }
+  }
+
   // Initialize ESP-NOW
-  init_esp_now(Serial, device_mac_address, OnDataRecv);
+  init_sdp(device_mac_address, String("elevator_status"));
 
   // Print
   sprite_header.println("ENR DPS310 Interface");
-  sprite_header.printf("MAC ADDR: %02X:%02X:%02X:%02X:%02X:%02X\n", device_mac_address[0], device_mac_address[1],
-                       device_mac_address[2], device_mac_address[3], device_mac_address[4], device_mac_address[5]);
+  sprite_header.printf("MAC ADDR: %02X:%02X:%02X:%02X:%02X:%02X\n",
+                       device_mac_address[0], device_mac_address[1], device_mac_address[2],
+                       device_mac_address[3], device_mac_address[4], device_mac_address[5]);
   sprite_header.pushSprite(0, 0);
 }
 
 void loop()
 {
   measure_sensors();
-  // esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t *)packet_buf, sizeof(packet_buf) / sizeof(packet[0]));
 }
