@@ -13,6 +13,24 @@ jobs:
       CATKIN_WS: /home/runner/work/catkin_ws
     steps:
     - uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/package.xml') }}-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: ${{ runner.os }}-pip-${{ hashFiles('**/package.xml') }}-${{ hashFiles('**/requirements.txt') }}
+    - name: Cache apt
+      uses: actions/cache@v2
+      with:
+        path: /var/cache/apt/archives
+        key: ${{ runner.os }}-apt-${{ github.run_id }}
+        restore-keys: ${{ runner.os }}-apt-${{ github.run_id }}
+    - name: Cache PlatformIO
+      uses: actions/cache@v2
+      with:
+        path: ~/.platformio/cache
+        key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
+        restore-keys: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
     - name: Setup ROS
       uses: ros-tooling/setup-ros@v0.2
       with:
