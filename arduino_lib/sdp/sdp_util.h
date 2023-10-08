@@ -1,5 +1,5 @@
-#ifndef SDP_UTIL_H
-#define SDP_UTIL_H
+#ifndef ESP_NOW_ROS_SDP_UTIL_H
+#define ESP_NOW_ROS_SDP_UTIL_H
 
 /*
  * SDP (Smart Device Protocol) Utility
@@ -14,9 +14,10 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-#include <esp_now_ros/Packet.h>
-#include <packet_creator.h>
-#include <packet_parser.h>
+#include "esp_now_ros/Packet.h"
+#include "packet_util.h"
+#include "packet_creator.h"
+#include "packet_parser.h"
 
 String _sdp_device_name;
 esp_now_peer_info_t _peer_broadcast;
@@ -139,4 +140,4 @@ bool send_sdp_data_packet(const SDPInterfaceDescription &interface_description, 
     }
 }
 
-#endif // SDP_UTIL_H
+#endif // ESP_NOW_ROS_SDP_UTIL_H

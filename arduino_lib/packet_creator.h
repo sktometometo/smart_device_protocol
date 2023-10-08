@@ -9,38 +9,6 @@
 
 #include "packet_util.h"
 
-std::string get_serialization_format(std::vector<SDPData> &data)
-{
-  std::string serialization_format;
-  for (auto itr = data.begin(); itr != data.end(); ++itr)
-  {
-    if (std::holds_alternative<int32_t>(*itr))
-    {
-      serialization_format += "i";
-    }
-    else if (std::holds_alternative<float>(*itr))
-    {
-      serialization_format += "f";
-    }
-    else if (std::holds_alternative<std::string>(*itr))
-    {
-      if (std::get<std::string>(*itr).size() > 16)
-      {
-        serialization_format += "S";
-      }
-      else
-      {
-        serialization_format += "s";
-      }
-    }
-    else if (std::holds_alternative<bool>(*itr))
-    {
-      serialization_format += "?";
-    }
-  }
-  return serialization_format;
-}
-
 void generate_meta_frame(uint8_t *packet, const char *device_name, const char *packet_description_01,
                          const char *serialization_format_01, const char *packet_description_02,
                          const char *serialization_format_02, const char *packet_description_03,
@@ -59,7 +27,7 @@ void generate_meta_frame(uint8_t *packet, const char *device_name, const char *p
 bool generate_data_frame(uint8_t *packet, const char *packet_description, const char *serialization_format,
                          std::vector<SDPData> &data)
 {
-  if (std::string(serialization_format) != get_serialization_format(data))
+  if (not is_consistent_serialization_format(serialization_format, data))
   {
     return false;
   }
@@ -75,48 +43,48 @@ bool generate_data_frame(uint8_t *packet, const char *packet_description, const 
   int index_sf = 0;
   while (it != data.end())
   {
-    if (std::holds_alternative<int32_t>(*it))
+    std::string str;
+    switch (serialization_format[index_sf])
     {
+    case 'i': // std::holds_alternative<int32_t>(*it)
       *(int32_t *)packet_data_p = std::get<int32_t>(*it);
       packet_data_p += sizeof(int32_t);
-    }
-    else if (std::holds_alternative<float>(*it))
-    {
+      break;
+    case 'f': // std::holds_alternative<float>(*it)
       *(float *)packet_data_p = std::get<float>(*it);
       packet_data_p += sizeof(float);
-    }
-    else if (std::holds_alternative<std::string>(*it))
-    {
-      std::string str = std::get<std::string>(*it);
+      break;
+    case 'S': // std::holds_alternative<std::string>(*it)
+      str = std::get<std::string>(*it);
       if (str.size() > 64)
       {
         str.resize(64);
-        strncpy((char *)packet_data_p, str.c_str(), 64);
-        packet_data_p += 64;
       }
-      else if (str.size() <= 64 and str.size() > 16)
+      for (int i = str.size(); i < 64; ++i)
       {
-        for (int i = str.size(); i < 64; ++i)
-        {
-          *(char *)(packet_data_p + i) = '\0';
-        }
-        strncpy((char *)packet_data_p, str.c_str(), str.size());
-        packet_data_p += 64;
+        *(char *)(packet_data_p + i) = '\0';
       }
-      else if (str.size() <= 16)
+      strncpy((char *)packet_data_p, str.c_str(), 64);
+      packet_data_p += 64;
+      break;
+    case 's': // std::holds_alternative<std::string>(*it)
+      str = std::get<std::string>(*it);
+      if (str.size() > 16)
       {
-        for (int i = str.size(); i < 16; ++i)
-        {
-          *(char *)(packet_data_p + i) = '\0';
-        }
-        strncpy((char *)packet_data_p, str.c_str(), str.size());
-        packet_data_p += 16;
+        str.resize(64);
       }
-    }
-    else if (std::holds_alternative<bool>(*it))
-    {
+      for (int i = str.size(); i < 16; ++i)
+      {
+        *(char *)(packet_data_p + i) = '\0';
+      }
+      strncpy((char *)packet_data_p, str.c_str(), str.size());
+      packet_data_p += 16;
+      break;
+    case '?': // std::holds_alternative<bool>(*it)
+    case 'b':
       *(bool *)packet_data_p = std::get<bool>(*it);
       packet_data_p += sizeof(bool);
+      break;
     }
     ++it;
     ++index_sf;
@@ -161,4 +129,4 @@ void create_device_message_board_data_packet(uint8_t *packet, const char *source
   strncpy((char *)(packet + 2 + 64 + 8), message, 64);
 }
 
-#endif
+#endif // ESP_NOW_ROS_PACKET_CREATOR_H__
