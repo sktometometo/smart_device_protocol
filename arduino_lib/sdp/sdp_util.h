@@ -68,6 +68,10 @@ void _meta_frame_broadcast_task(void *parameter)
             const SDPInterfaceDescription &packet_description_and_serialization_format = std::get<0>(entry);
             _broadcast_sdp_meta_packet(packet_description_and_serialization_format);
         }
+        if (sdp_interface_callbacks.size() == 0)
+        {
+            _broadcast_sdp_meta_packet(std::make_tuple("", ""));
+        }
     }
 }
 
@@ -108,8 +112,31 @@ bool register_sdp_interface_callback(SDPInterfaceDescription packet_description_
 bool send_sdp_data_packet(std::string &packet_description, std::vector<SDPData> &body)
 {
     uint8_t buf[240];
-    generate_data_frame(buf, packet_description.c_str(), body);
-    return esp_now_send(_peer_broadcast.peer_addr, buf, sizeof(buf)) == ESP_OK;
+    bool ret = generate_data_frame(buf, packet_description.c_str(), body);
+    if (not ret)
+    {
+        return false;
+    }
+    else
+    {
+        return esp_now_send(_peer_broadcast.peer_addr, buf, sizeof(buf)) == ESP_OK;
+    }
+}
+
+bool send_sdp_data_packet(const SDPInterfaceDescription &interface_description, std::vector<SDPData> &body)
+{
+    uint8_t buf[240];
+    const std::string &packet_description = std::get<0>(interface_description);
+    const std::string &serialization_format = std::get<1>(interface_description);
+    bool ret = generate_data_frame(buf, packet_description.c_str(), serialization_format.c_str(), body);
+    if (not ret)
+    {
+        return false;
+    }
+    else
+    {
+        return esp_now_send(_peer_broadcast.peer_addr, buf, sizeof(buf)) == ESP_OK;
+    }
 }
 
 #endif // SDP_UTIL_H
