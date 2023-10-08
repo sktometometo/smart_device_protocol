@@ -46,7 +46,7 @@ jobs:
     - name: Cache PlatformIO global ${{ matrix.target_project }}
       uses: actions/cache@v2
       with:
-        path: ~/.platformio/cache
+        path: ~/.platformio
         key: ${{ runner.os }}-platformio-global-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
         restore-keys: ${{ runner.os }}-platformio-global-${{ matrix.target_project }}-${{ hashFiles('${GITHUB_WORKSPACE}/sketchbooks/${{ matrix.target_project }}/platformio.ini') }}
     - name: Cache PlatformIO local ${{ matrix.target_project }}
