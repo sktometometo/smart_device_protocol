@@ -13,13 +13,15 @@ class BaseFrame:
 
 class MetaFrame(BaseFrame):
     def __init__(self, device_name: str, interface_descriptions: List[Tuple[str, str]]):
-        self.device_name = device_name
-        self.interface_descriptions = interface_descriptions
+        self._device_name = device_name
+        self._interface_descriptions = interface_descriptions
+
+    __hash__ = None
 
     def __repr__(self):
-        output = f"device_name: {self.device_name}\n"
+        output = f"device_name: {self._device_name}\n"
         output += "interface_description:\n"
-        for int_des in self.interface_descriptions:
+        for int_des in self._interface_descriptions:
             output += f"  - [{int_des[0]}, {int_des[1]}]"
         return output
 
@@ -28,15 +30,21 @@ class MetaFrame(BaseFrame):
             return self.__dict__ == other.__dict__
         return False
 
-    __hash__ = None
+    @property
+    def device_name(self):
+        return self._device_name
+
+    @property
+    def interface_descriptions(self):
+        return self._interface_descriptions
 
     def to_bytes(self) -> bytes:
         data = struct.pack("<H", PACKET_TYPE_META)
-        data += struct.pack("20s", self.device_name.encode("utf-8"))
+        data += struct.pack("20s", self._device_name.encode("utf-8"))
         for i in range(3):
-            if i < len(self.interface_descriptions):
-                packet_description = self.interface_descriptions[i][0]
-                serialization_format = self.interface_descriptions[i][1]
+            if i < len(self._interface_descriptions):
+                packet_description = self._interface_descriptions[i][0]
+                serialization_format = self._interface_descriptions[i][1]
                 data += struct.pack(
                     "64s", packet_description.encode("utf-8")
                 ) + struct.pack("10s", serialization_format.encode("utf-8"))
@@ -82,9 +90,9 @@ class DataFrame(BaseFrame):
         content: List[Union[bool, int, float, str]],
         serialization_format=None,
     ):
-        self.packet_description = packet_description
+        self._packet_description = packet_description
         if serialization_format is not None:
-            self.serialization_format = serialization_format
+            self._serialization_format = serialization_format
         else:
             serialization_format = ""
             for entry in content:
@@ -108,13 +116,13 @@ class DataFrame(BaseFrame):
                     raise ValueError(
                         f"There is an unknown type of content: {type(entry)}"
                     )
-        self.serialization_format = serialization_format
-        self.content = content
+        self._serialization_format = serialization_format
+        self._content = content
 
     def __repr__(self):
-        output = f"packet_description: {self.packet_description}\n"
-        output += f"serialization_format: {self.serialization_format}\n"
-        output += f"content: {self.content}"
+        output = f"packet_description: {self._packet_description}\n"
+        output += f"serialization_format: {self._serialization_format}\n"
+        output += f"content: {self._content}"
         return output
 
     def __eq__(self, other):
@@ -122,13 +130,29 @@ class DataFrame(BaseFrame):
             return self.__dict__ == other.__dict__
         return False
 
+    @property
+    def packet_description(self):
+        return self._packet_description
+
+    @property
+    def serialization_format(self):
+        return self._serialization_format
+
+    @property
+    def content(self):
+        return self._content
+
+    @property
+    def interface_description(self):
+        return (self._packet_description, self._serialization_format)
+
     def to_bytes(self) -> bytes:
         data: bytes = (
             struct.pack("<H", PACKET_TYPE_DATA)
-            + struct.pack("64s", self.packet_description.encode("utf-8"))
-            + struct.pack("10s", self.serialization_format.encode("utf-8"))
+            + struct.pack("64s", self._packet_description.encode("utf-8"))
+            + struct.pack("10s", self._serialization_format.encode("utf-8"))
         )
-        for format_c, entry in zip(self.serialization_format, self.content):
+        for format_c, entry in zip(self._serialization_format, self._content):
             if format_c == "?":
                 data += struct.pack("?", entry)
             elif format_c == "i":
