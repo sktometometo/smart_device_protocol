@@ -49,11 +49,7 @@ Second, you have to make an ESP32 device which is connected to your PC via USB.
 This device will be the interface to Smart Device Protocol communication of your PC.
 Basically, you can use any ESP32 device, but this package is tested with M5Stack-Fire, M5Stack-Core2, and M5Atom-S3.
 
-There are two types of smart device protocol interface device. In this tutorial, we will use [esp_now_ros_interface](./sketchbooks/esp_now_ros/).
-
-- [esp_now_ros_interface](./sketchbooks/esp_now_ros/): This is the basic interface device. You can send and receive packet via ROS topic.
-- [enr_interface_with_uwb](./sketchbooks/enr_interface_with_uwb/): This is the interface device with [UWB module](https://shop.m5stack.com/products/ultra-wideband-uwb-unit-indoor-positioning-module-dw1000). You can send and receive packet via ROS topic, and also you can get UWB ranging result via ROS topic.
-
+We will use [smart_device_protocol_interface](./sketchbooks/smart_device_protocol_interface) project.
 This code is developed with [PlatformIO](https://platformio.org/). So you can build and burn firmware with it.
 
 You can execute `pio` command.
@@ -102,7 +98,7 @@ Then, connect M5Stack-Core2 to your PC. You can check which port is connected to
 So let's build firmware and burn it to M5Stack-Core2
 
   ```bash
-  roscd esp_now_ros/sketchbooks/esp_now_ros/
+  roscd esp_now_ros/sketchbooks/smart_device_protocol_interface/
   pio run -e m5stack-core2 --target upload --upload-port /dev/ttyACM0
   ```
 
