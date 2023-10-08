@@ -1,4 +1,4 @@
-name: ROS build workflow
+name: ROS build and test workflow
 # Copied from https://qiita.com/srs/items/86e115e59662738275f4 and then mocified
 
 on:
@@ -39,4 +39,8 @@ jobs:
         source /opt/ros/noetic/setup.bash
         cd ${CATKIN_WS}
         catkin build
-        
+    - name: run_tests
+      run: |
+        source /opt/ros/noetic/setup.bash
+        cd ${CATKIN_WS}
+        catkin run_tests esp_now_ros -v
