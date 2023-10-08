@@ -11,8 +11,8 @@
 
 #include <esp_now_ros/Packet.h>
 
-#include <packet_creator.h>
-#include <packet_parser.h>
+#include "sdp/packet_creator.h"
+#include "sdp/packet_parser.h"
 
 static LGFX lcd;
 static LGFX_Sprite sprite_header(&lcd);

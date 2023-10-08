@@ -9,9 +9,9 @@
 #include <ArduinoJson.h>
 
 #include "sdp/sdp_util.h"
+#include "iot_com_util/iot_host_util.h"
 #include "devices/stickv2_util.h"
-#include "iot_host_util.h"
-#include "uwb_module_util.h"
+#include "devices/uwb_module_util.h"
 
 static LGFX lcd;
 static LGFX_Sprite sprite_header(&lcd);

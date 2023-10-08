@@ -15,9 +15,9 @@
 #include <WiFi.h>
 
 #include "esp_now_ros/Packet.h"
-#include "packet_util.h"
-#include "packet_creator.h"
-#include "packet_parser.h"
+#include "sdp/packet_util.h"
+#include "sdp/packet_creator.h"
+#include "sdp/packet_parser.h"
 
 String _sdp_device_name;
 esp_now_peer_info_t _peer_broadcast;

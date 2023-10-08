@@ -7,7 +7,7 @@
 
 #include <esp_now_ros/Packet.h>
 
-#include "packet_util.h"
+#include "sdp/packet_util.h"
 
 void generate_meta_frame(uint8_t *packet, const char *device_name, const char *packet_description_01,
                          const char *serialization_format_01, const char *packet_description_02,

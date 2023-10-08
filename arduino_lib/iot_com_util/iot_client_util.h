@@ -7,7 +7,7 @@
 #include <ESP32Ping.h>
 #include <LovyanGFX.hpp>
 
-#include "Time.h"
+#include "iot_com_util/Time.h"
 
 bool initWiFi(const char *ssid, const char *password, LGFX_Sprite &sprite, LGFX &lcd, WiFiMulti &WiFiMulti)
 {

@@ -12,9 +12,9 @@
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 
-#include "Time.h"
-#include "sesami_util.h"
-#include "iot_client_util.h"
+#include "iot_com_util/Time.h"
+#include "iot_com_util/iot_client_util.h"
+#include "web_services/sesami_util.h"
 
 /* Mofidy below */
 String ssid = "";

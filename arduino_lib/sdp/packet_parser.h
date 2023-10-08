@@ -8,7 +8,7 @@
 
 #include <esp_now_ros/Packet.h>
 
-#include "packet_util.h"
+#include "sdp/packet_util.h"
 
 uint16_t get_packet_type(const uint8_t *packet)
 {
