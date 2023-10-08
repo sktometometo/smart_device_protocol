@@ -6,8 +6,6 @@
  *
  * To use these functions, you need to include the following libraries:
  * - esp_now_ros/Packet.h
- * - packet_creator.h
- * - packet_parser.h
  */
 
 #include <esp_system.h>
@@ -16,6 +14,7 @@
 
 #include <esp_now_ros/Packet.h>
 
+#include "sdp/esp_now.h"
 #include "sdp/packet_util.h"
 #include "sdp/packet_creator.h"
 #include "sdp/packet_parser.h"
@@ -24,8 +23,10 @@ String _sdp_device_name;
 esp_now_peer_info_t _peer_broadcast;
 
 typedef void (*sdp_data_if_recv_cb_t)(const uint8_t *mac_addr, const std::vector<SDPData> &body);
-typedef void (*sdp_data_recv_cb_t)(const uint8_t *mac_addr, const SDPInterfaceDescription &interface_description, const std::vector<SDPData> &body);
-typedef void (*sdp_meta_recv_cb_t)(const uint8_t *mac_addr, const std::string &device_name, const std::vector<SDPInterfaceDescription> &interfaces);
+typedef void (*sdp_data_recv_cb_t)(const uint8_t *mac_addr, const SDPInterfaceDescription &interface_description,
+                                   const std::vector<SDPData> &body);
+typedef void (*sdp_meta_recv_cb_t)(const uint8_t *mac_addr, const std::string &device_name,
+                                   const std::vector<SDPInterfaceDescription> &interfaces);
 typedef std::tuple<SDPInterfaceDescription, sdp_data_if_recv_cb_t> SDPInterfaceCallbackEntry;
 
 std::vector<SDPInterfaceCallbackEntry> _sdp_interface_data_callbacks;
@@ -75,7 +76,8 @@ bool _broadcast_sdp_meta_packet(const SDPInterfaceDescription &packet_descriptio
     uint8_t buf[245];
     const std::string &packet_description = std::get<0>(packet_description_and_serialization_format);
     const std::string &serialization_format = std::get<1>(packet_description_and_serialization_format);
-    generate_meta_frame(buf, _sdp_device_name.c_str(), packet_description.c_str(), serialization_format.c_str(), "", "", "", "");
+    generate_meta_frame(buf, _sdp_device_name.c_str(), packet_description.c_str(), serialization_format.c_str(), "", "",
+                        "", "");
     bool success = esp_now_send(_peer_broadcast.peer_addr, buf, sizeof(buf)) == ESP_OK;
     return success;
 }
@@ -125,7 +127,8 @@ bool init_sdp(uint8_t *mac_address, const String &device_name)
     return true;
 }
 
-bool register_sdp_interface_callback(SDPInterfaceDescription packet_description_and_serialization_format, sdp_data_if_recv_cb_t callback)
+bool register_sdp_interface_callback(SDPInterfaceDescription packet_description_and_serialization_format,
+                                     sdp_data_if_recv_cb_t callback)
 {
     // Check if the callback is already registered
     for (auto &entry : _sdp_interface_data_callbacks)
