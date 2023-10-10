@@ -31,7 +31,7 @@ void callback_data_packet(const uint8_t *mac_addr, const SDPInterfaceDescription
   {
     data_packets.erase(data_packets.begin());
   }
-  data_packets.push_back(std::make_tuple(millis() + duration_timeout, interface_description, body));
+  data_packets.push_back(std::make_tuple(millis(), interface_description, body));
 }
 
 void load_config()
@@ -106,7 +106,7 @@ void loop()
   unsigned long current_time = millis();
   for (auto it = data_packets.begin(); it != data_packets.end();)
   {
-    if (std::get<0>(*it) < current_time)
+    if (current_time - std::get<0>(*it) > duration_timeout)
     {
       it = data_packets.erase(it);
     }
@@ -137,11 +137,13 @@ void loop()
   canvas_data_frame.printf("Data Packets:\n");
   for (auto it = data_packets.rbegin(); it != data_packets.rend(); ++it)
   {
+    const unsigned long timestamp = std::get<0>(*it);
     const SDPInterfaceDescription &interface_description = std::get<1>(*it);
     const std::string packet_description = std::get<0>(interface_description);
     const std::string serialization_format = std::get<1>(interface_description);
     const std::vector<SDPData> &body = std::get<2>(*it);
     canvas_data_frame.printf("=======================\n");
+    canvas_data_frame.printf("Time passed: %f sec\n", 1.0 * (millis() - timestamp) / 1000.0);
     canvas_data_frame.printf("Packet Description: %s\n", packet_description.c_str());
     canvas_data_frame.printf("Serialization Format: %s\n", serialization_format.c_str());
     canvas_data_frame.printf("Body:\n");
