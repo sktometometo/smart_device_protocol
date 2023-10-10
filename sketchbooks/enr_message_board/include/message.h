@@ -9,9 +9,9 @@
 class Message
 {
 public:
-  static std::string packet_description_write;
-  static std::string serialization_format_write;
-  static std::string packet_description_message;
+  inline static std::string packet_description_write = "Message Board to write";
+  inline static std::string serialization_format_write = "siS";
+  inline static std::string packet_description_message = "Message Board message";
 
   char message[64];
   char source_name[64];
@@ -76,8 +76,9 @@ public:
   {
     generate_meta_frame(data, device_name, packet_description_write.c_str(), serialization_format_write.c_str(), "", "", "", "");
   }
-};
 
-std::string Message::packet_description_write = std::string("Message Board to write");
-std::string Message::serialization_format_write = std::string("siS");
-std::string Message::packet_description_message = std::string("Message Board message");
+  static SDPInterfaceDescription get_interface_description()
+  {
+    return std::make_tuple(packet_description_message, serialization_format_write);
+  }
+};

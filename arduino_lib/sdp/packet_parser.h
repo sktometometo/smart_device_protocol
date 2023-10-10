@@ -33,6 +33,9 @@ std::tuple<std::string, std::vector<SDPInterfaceDescription>> parse_packet_as_me
   {
     std::string packet_description = std::string((char *)(packet + 2 + 20 + 74 * i), 64);
     std::string serialization_format = std::string((char *)(packet + 2 + 20 + 74 * i + 64), 10);
+    // Remove '\0' characters from strings
+    packet_description.erase(std::find(packet_description.begin(), packet_description.end(), '\0'), packet_description.end());
+    serialization_format.erase(std::find(serialization_format.begin(), serialization_format.end(), '\0'), serialization_format.end());
     packet_description_and_serialization_format.push_back(std::make_tuple(packet_description, serialization_format));
   }
   return std::make_tuple(device_name, packet_description_and_serialization_format);
