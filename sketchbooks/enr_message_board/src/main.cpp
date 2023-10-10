@@ -1,39 +1,57 @@
+
+#include <vector>
+
 #include <M5EPD.h>
 
 #include <esp_system.h>
 #include <esp_now.h>
 #include <WiFi.h>
 
-#include <vector>
-
 #include <esp_now_ros/Packet.h>
 
-#include "sdp/packet_creator.h"
+#include "sdp/sdp.h"
+#include "utils/config_loader.h"
 
 #include "message.h"
 
-#ifndef DEVICE_NAME
-#define DEVICE_NAME "default_message_board"
-#endif
+// CONFIG
+String device_name = "msg_board";
 
-const unsigned long duration_timeout = 1 * 60 * 1000;
-
-M5EPD_Canvas canvas(&M5.EPD);
+// CANVAS
+M5EPD_Canvas canvas_title(&M5.EPD);
+M5EPD_Canvas canvas_status(&M5.EPD);
 M5EPD_Canvas canvas_message(&M5.EPD);
+
+// SDP
 uint8_t mac_address[6] = {0};
+
+// MSG BUFFER
 std::vector<Message> message_board;
-esp_now_peer_info_t peer_broadcast;
 
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
-{
-  return;
-}
+// Others
+int loop_counter = 0;
 
-void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
+void OnDataRecvV1(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
   uint8_t packet_type = get_packet_type(data);
-  Serial.printf("Received packet. type: %d\n", packet_type);
-  auto m = Message(data);
+  if (packet_type == esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
+  {
+    auto m = Message(data);
+    if (m.deadline > millis())
+    {
+      message_board.push_back(m);
+      Serial.printf("Push message\n");
+    }
+  }
+}
+
+void callback_for_v2(const uint8_t *mac_addr, const std::vector<SDPData> &body)
+{
+  std::string source_name = std::get<std::string>(body[0]);
+  int32_t duration_until_deletion = std::get<int32_t>(body[1]);
+  std::string message = std::get<std::string>(body[2]);
+
+  auto m = Message((char *)source_name.c_str(), (char *)message.c_str(), duration_until_deletion);
   if (m.deadline > millis())
   {
     message_board.push_back(m);
@@ -41,58 +59,96 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
   }
 }
 
+void load_config()
+{
+  StaticJsonDocument<1024> doc;
+  if (not load_json_from_FS<1024>(SD, "/config.json", doc))
+  {
+    return;
+  }
+  if (doc.containsKey("device_name"))
+    device_name = doc["device_name"].as<String>();
+}
+
+void clear_canvas(M5EPD_Canvas &canvas)
+{
+  canvas.clear();
+  canvas.setCursor(0, 0);
+}
+
+void init_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Canvas &canvas_message)
+{
+  canvas_title.createCanvas(540, 100);
+  canvas_status.createCanvas(540, 60);
+  canvas_message.createCanvas(540, 800);
+  canvas_title.setTextSize(3);
+  canvas_status.setTextSize(2);
+  canvas_message.setTextSize(2);
+  clear_canvas(canvas_title);
+  clear_canvas(canvas_status);
+  clear_canvas(canvas_message);
+}
+
+void update_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Canvas &canvas_message)
+{
+  canvas_title.pushCanvas(0, 0, UPDATE_MODE_DU4);
+  canvas_status.pushCanvas(0, 100, UPDATE_MODE_DU4);
+  canvas_message.pushCanvas(0, 160, UPDATE_MODE_DU4);
+}
+
 void setup()
 {
   esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
 
-  M5.begin(false, false, true, true, false);
+  // Init M5Paper
+  M5.begin(false, true, true, true, false);
   M5.EPD.SetRotation(90);
   M5.EPD.Clear(true);
   M5.RTC.begin();
+  init_epd(canvas_title, canvas_status, canvas_message);
   Serial.println("Start init");
 
-  canvas.createCanvas(540, 100);
-  canvas.setTextSize(3);
-  canvas.setCursor(0, 0);
-  canvas.printf("ENR & SDP MESSAGE BOARD\n");
-  canvas.printf("Name: %s\n", DEVICE_NAME);
-  canvas.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
-                mac_address[4], mac_address[5]);
-  canvas.pushCanvas(0, 0, UPDATE_MODE_DU4);
-  canvas_message.createCanvas(540, 800);
-  canvas_message.setTextSize(2);
-  Serial.println("Display initialized.!");
+  // Load config
+  load_config();
 
-  // Initialization of ESP-NOW
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-  if (not esp_now_init() == ESP_OK)
-  {
-    ESP.restart();
-  }
-  memset(&peer_broadcast, 0, sizeof(peer_broadcast));
-  for (int i = 0; i < 6; i++)
-  {
-    peer_broadcast.peer_addr[i] = (uint8_t)0xff;
-  }
-  esp_err_t addStatus = esp_now_add_peer(&peer_broadcast);
-  esp_now_register_send_cb(OnDataSent);
-  esp_now_register_recv_cb(OnDataRecv);
-  Serial.println("ESP NOW Initialized!");
+  // Init SDP
+  init_sdp(mac_address, device_name);
+  register_sdp_esp_now_recv_callback(OnDataRecvV1);
+  register_sdp_interface_callback(Message::get_interface_description(), callback_for_v2);
+  Serial.println("SDP Initialized!");
+
+  // Show device info
+  canvas_title.printf("ENR & SDP MESSAGE BOARD\n");
+  canvas_title.printf("Name: %s\n", device_name.c_str());
+  canvas_title.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n",
+                      mac_address[0], mac_address[1],
+                      mac_address[2], mac_address[3],
+                      mac_address[4], mac_address[5]);
+  update_epd(canvas_title, canvas_status, canvas_message);
 }
 
 void loop()
 {
   uint8_t buf[250];
-  // Send V1 Meta Packet
-  create_device_message_board_meta_packet(buf, DEVICE_NAME);
-  esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
-  // Send V2 Meta Packet
-  generate_meta_frame(buf, DEVICE_NAME, Message::packet_description_write.c_str(), Message::serialization_format_write.c_str(), "", "", "", "");
-  esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
 
-  canvas_message.clear();
-  canvas_message.setCursor(0, 0);
+  // Manually Send V1 Meta Packet
+  create_device_message_board_meta_packet(buf, device_name.c_str());
+  broadcast_sdp_esp_now_packet((uint8_t *)buf, sizeof(buf));
+
+  // Show Battery voltage
+  uint32_t battery_voltage = M5.getBatteryVoltage();
+  clear_canvas(canvas_status);
+  if (loop_counter % 2 == 0)
+  {
+    canvas_status.printf("+ Battery: %u\n", battery_voltage);
+  }
+  else
+  {
+    canvas_status.printf("x Battery: %u\n", battery_voltage);
+  }
+
+  // Shoe messages
+  clear_canvas(canvas_message);
   for (auto m = message_board.begin(); m != message_board.end();)
   {
     if (millis() > m->deadline)
@@ -101,20 +157,23 @@ void loop()
     }
     else
     {
-      canvas_message.printf("From: %s\n", m->source_name);
-      canvas_message.printf("Duration until deletion(sec): %d\n", (int)((m->deadline - millis()) / 1000));
-      canvas_message.printf("Message: %s\n\n", m->message);
-
-      m->to_v1_packet(buf);
-      esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
-      delay(10);
-      m->to_v2_packet(buf);
-      esp_now_send(peer_broadcast.peer_addr, (uint8_t *)buf, sizeof(buf));
-      delay(10);
-
       m++;
     }
   }
-  canvas_message.pushCanvas(0, 100, UPDATE_MODE_DU4);
+  for (auto m = message_board.rbegin(); m != message_board.rend(); m++)
+  {
+    canvas_message.printf("From: %s\n", m->source_name);
+    canvas_message.printf("Duration until deletion(sec): %d\n", (int)((m->deadline - millis()) / 1000));
+    canvas_message.printf("Message: %s\n\n", m->message);
+
+    m->to_v1_packet(buf);
+    broadcast_sdp_esp_now_packet((uint8_t *)buf, sizeof(buf));
+    delay(10);
+    m->to_v2_packet(buf);
+    broadcast_sdp_esp_now_packet((uint8_t *)buf, sizeof(buf));
+    delay(10);
+  }
+  update_epd(canvas_title, canvas_status, canvas_message);
   delay(1000);
+  loop_counter++;
 }
