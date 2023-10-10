@@ -1,11 +1,19 @@
-# esp_now_ros
+<p align="center">
+  <img src="./docs/sdp_logo_v1.png" width="300px" />
+</p>
+
+<div align="center">
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Black formatting](https://github.com/sktometometo/esp_now_ros/actions/workflows/python_black.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/python_black.yml)
 [![ROS build workflow](https://github.com/sktometometo/esp_now_ros/actions/workflows/catkin_build.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/catkin_build.yml)
 [![PlatformIO Build Workflow](https://github.com/sktometometo/esp_now_ros/actions/workflows/platformio.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/platformio.yml)
 
-Smart Device Protocol (SDP) Repository.
+</div>
+
+# esp_now_ros
+
+The Smart Device Protocol (SDP) Repository.
 
 ## What is this?
 
