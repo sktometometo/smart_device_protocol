@@ -37,11 +37,8 @@ void OnDataRecvV1(const uint8_t *mac_addr, const uint8_t *data, int data_len)
   if (packet_type == esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
   {
     auto m = Message(data);
-    if (m.deadline > millis())
-    {
-      message_board.push_back(m);
-      Serial.printf("Push message\n");
-    }
+    message_board.push_back(m);
+    Serial.printf("Push message from V1 Data\n");
   }
 }
 
@@ -52,11 +49,8 @@ void callback_for_v2(const uint8_t *mac_addr, const std::vector<SDPData> &body)
   std::string message = std::get<std::string>(body[2]);
 
   auto m = Message((char *)source_name.c_str(), (char *)message.c_str(), duration_until_deletion);
-  if (m.deadline > millis())
-  {
-    message_board.push_back(m);
-    Serial.printf("Push message\n");
-  }
+  message_board.push_back(m);
+  Serial.printf("Push message from V2 Data\n");
 }
 
 void load_config()
@@ -129,6 +123,7 @@ void setup()
 
 void loop()
 {
+  Serial.printf("Loop %d\n", loop_counter);
   uint8_t buf[250];
 
   // Manually Send V1 Meta Packet
@@ -162,6 +157,7 @@ void loop()
   }
   for (auto m = message_board.rbegin(); m != message_board.rend(); m++)
   {
+    canvas_message.println("------------------------------------");
     canvas_message.printf("From: %s\n", m->source_name);
     canvas_message.printf("Duration until deletion(sec): %d\n", (int)((m->deadline - millis()) / 1000));
     canvas_message.printf("Message: %s\n\n", m->message);
@@ -174,6 +170,7 @@ void loop()
     delay(10);
   }
   update_epd(canvas_title, canvas_status, canvas_message);
-  delay(1000);
+
+  delay(100);
   loop_counter++;
 }

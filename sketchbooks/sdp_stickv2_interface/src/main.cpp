@@ -178,7 +178,14 @@ void loop()
         std::vector<SDPData> data;
         data.push_back(SDPData(num_of_target));
         send_sdp_data_packet(packet_description, data);
+        clear_sprite(sprite_status);
+        sprite_status.printf("Send SDP packet: %d\n", num_of_target);
         Serial.printf("Send SDP packet: %d\n", num_of_target);
+      }
+      else
+      {
+        clear_sprite(sprite_status);
+        sprite_status.println("Failed to read data.");
       }
       last_read_stamp = millis();
     }
