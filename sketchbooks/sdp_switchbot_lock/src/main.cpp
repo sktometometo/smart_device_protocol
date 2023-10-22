@@ -26,7 +26,7 @@ SDPInterfaceDescription interface_description_control = std::make_tuple(packet_d
 
 // Lock Status
 std::string packet_description_status = "Key status";
-std::string serialization_format_status = "s";
+std::string serialization_format_status = "?";
 std::vector<SDPData> body_status;
 
 // UWB
@@ -55,6 +55,7 @@ void get_bot_status_and_update_buf()
             "{\"command\":\"get_device_status\"," +
             "\"device_id\":\"" + switchbot_device_id + "\"}\n",
         5000);
+    Serial.printf("Response for get_device_status: %s\n", result.c_str());
     DeserializationError error = deserializeJson(result_json, result);
     if (error or (result_json.containsKey("success") and not result_json["success"].as<bool>()))
     {
@@ -208,8 +209,6 @@ void setup()
 
 void loop()
 {
-    delay(5000);
-
     // Run dummy callback if Serial available
     if (Serial.available())
     {
@@ -260,7 +259,7 @@ void loop()
     }
 
     // Get switchbot status
-    if (loop_counter % 50 == 0)
+    if (loop_counter % 10 == 0)
     {
         get_bot_status_and_update_buf();
     }
@@ -274,6 +273,8 @@ void loop()
     {
         Serial.printf("Failed to send SDP data packet for uwb\n");
     }
+
+    clear_recv_buf(5000);
 
     loop_counter++;
 }

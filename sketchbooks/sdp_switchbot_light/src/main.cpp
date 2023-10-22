@@ -191,6 +191,8 @@ void setup()
         20000);
     Serial.printf("Response for wifi config: %s\n", ret.c_str());
 
+    delay(3000);
+
     // Switchbot Client Configuration
     Serial.printf("Switchbot Client Configuration\n");
     ret = send_serial_command(
@@ -200,6 +202,8 @@ void setup()
             "\"secret\":\"" + switchbot_secret + "\"}\n",
         5000);
     Serial.printf("Response for switchbot config: %s\n", ret.c_str());
+
+    delay(3000);
 
     // Get device status
     ret = send_serial_command(
