@@ -120,8 +120,8 @@ class DataFrame(BaseFrame):
         self._content = content
 
     def __repr__(self):
-        output = f"packet_description: {self._packet_description}\n"
-        output += f"serialization_format: {self._serialization_format}\n"
+        output = f"packet_description: [{self._packet_description}]\n"
+        output += f"serialization_format: [{self._serialization_format}]\n"
         output += f"content: {self._content}"
         return output
 
