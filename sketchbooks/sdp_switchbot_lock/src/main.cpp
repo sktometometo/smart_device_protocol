@@ -42,6 +42,9 @@ String switchbot_device_id = "";
 String switchbot_token = "";
 String switchbot_secret = "";
 
+// Status retrieve iteration
+int status_retrieve_iteration = 100;
+
 // Other
 std::vector<SDPData> data;
 StaticJsonDocument<1024> result_json;
@@ -97,6 +100,16 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
     switchbot_secret = doc["switchbot_secret"].as<String>();
     switchbot_device_id = doc["switchbot_device_id"].as<String>();
     uwb_id = doc["uwb_id"].as<int>();
+
+    if (not doc.containsKey("status_retrieve_iteration"))
+    {
+        status_retrieve_iteration = 100;
+    }
+    else
+    {
+        status_retrieve_iteration = doc["status_retrieve_iteration"].as<int>();
+    }
+
     return true;
 }
 
@@ -128,6 +141,7 @@ void callback_for_switch_control(const uint8_t *mac_address, const std::vector<S
         Serial.printf("Response: %s\n", ret.c_str());
     }
     Serial.printf("Lock Control Command Done\n");
+    delay(5000);
     get_bot_status_and_update_buf();
 }
 
@@ -259,7 +273,7 @@ void loop()
     }
 
     // Get switchbot status
-    if (loop_counter % 10 == 0)
+    if (loop_counter % status_retrieve_iteration == 0)
     {
         get_bot_status_and_update_buf();
     }
