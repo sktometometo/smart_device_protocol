@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
+#include "geometry_msgs/Twist.h"
 #include "geometry_msgs/Pose.h"
 #include "std_msgs/Header.h"
-#include "geometry_msgs/Twist.h"
 
 namespace gazebo_msgs
 {
@@ -27,7 +27,7 @@ static const char GETMODELSTATE[] = "gazebo_msgs/GetModelState";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_model_name = strlen(this->model_name);
@@ -43,7 +43,7 @@ static const char GETMODELSTATE[] = "gazebo_msgs/GetModelState";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_model_name;
@@ -67,8 +67,8 @@ static const char GETMODELSTATE[] = "gazebo_msgs/GetModelState";
      return offset;
     }
 
-    virtual const char * getType() override { return GETMODELSTATE; };
-    virtual const char * getMD5() override { return "19d412713cefe4a67437e17a951e759e"; };
+    const char * getType(){ return GETMODELSTATE; };
+    const char * getMD5(){ return "19d412713cefe4a67437e17a951e759e"; };
 
   };
 
@@ -95,7 +95,7 @@ static const char GETMODELSTATE[] = "gazebo_msgs/GetModelState";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -116,7 +116,7 @@ static const char GETMODELSTATE[] = "gazebo_msgs/GetModelState";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -142,8 +142,8 @@ static const char GETMODELSTATE[] = "gazebo_msgs/GetModelState";
      return offset;
     }
 
-    virtual const char * getType() override { return GETMODELSTATE; };
-    virtual const char * getMD5() override { return "ccd51739bb00f0141629e87b792e92b9"; };
+    const char * getType(){ return GETMODELSTATE; };
+    const char * getMD5(){ return "ccd51739bb00f0141629e87b792e92b9"; };
 
   };
 

@@ -45,11 +45,11 @@ namespace rosgraph_msgs
       file(""),
       function(""),
       line(0),
-      topics_length(0), st_topics(), topics(nullptr)
+      topics_length(0), topics(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -100,7 +100,7 @@ namespace rosgraph_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -176,8 +176,8 @@ namespace rosgraph_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "rosgraph_msgs/Log"; };
-    virtual const char * getMD5() override { return "acffd30cd6b6de30f120938c17c593fb"; };
+    const char * getType(){ return "rosgraph_msgs/Log"; };
+    const char * getMD5(){ return "acffd30cd6b6de30f120938c17c593fb"; };
 
   };
 

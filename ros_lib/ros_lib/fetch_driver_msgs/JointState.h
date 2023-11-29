@@ -41,7 +41,7 @@ namespace fetch_driver_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -114,7 +114,7 @@ namespace fetch_driver_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -197,8 +197,8 @@ namespace fetch_driver_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "fetch_driver_msgs/JointState"; };
-    virtual const char * getMD5() override { return "20cf035aa8e1812b6fd2af53c6aa178a"; };
+    const char * getType(){ return "fetch_driver_msgs/JointState"; };
+    const char * getMD5(){ return "20cf035aa8e1812b6fd2af53c6aa178a"; };
 
   };
 

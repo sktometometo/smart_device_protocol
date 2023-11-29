@@ -27,7 +27,7 @@ namespace std_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->seq >> (8 * 0)) & 0xFF;
@@ -53,7 +53,7 @@ namespace std_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->seq =  ((uint32_t) (*(inbuffer + offset)));
@@ -83,8 +83,8 @@ namespace std_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "std_msgs/Header"; };
-    virtual const char * getMD5() override { return "2176decaecbce78abc3b96ef049fabed"; };
+    const char * getType(){ return "std_msgs/Header"; };
+    const char * getMD5(){ return "2176decaecbce78abc3b96ef049fabed"; };
 
   };
 

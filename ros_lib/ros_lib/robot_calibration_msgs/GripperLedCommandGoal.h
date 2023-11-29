@@ -20,7 +20,7 @@ namespace robot_calibration_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->led_code >> (8 * 0)) & 0xFF;
@@ -28,7 +28,7 @@ namespace robot_calibration_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->led_code =  ((uint8_t) (*(inbuffer + offset)));
@@ -36,8 +36,8 @@ namespace robot_calibration_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "robot_calibration_msgs/GripperLedCommandGoal"; };
-    virtual const char * getMD5() override { return "11513917910062a2ca72ae2699b68556"; };
+    const char * getType(){ return "robot_calibration_msgs/GripperLedCommandGoal"; };
+    const char * getMD5(){ return "11513917910062a2ca72ae2699b68556"; };
 
   };
 

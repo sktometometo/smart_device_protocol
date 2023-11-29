@@ -21,7 +21,7 @@ static const char PUBLISHERS[] = "rosapi/Publishers";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_topic = strlen(this->topic);
@@ -32,7 +32,7 @@ static const char PUBLISHERS[] = "rosapi/Publishers";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_topic;
@@ -47,8 +47,8 @@ static const char PUBLISHERS[] = "rosapi/Publishers";
      return offset;
     }
 
-    virtual const char * getType() override { return PUBLISHERS; };
-    virtual const char * getMD5() override { return "d8f94bae31b356b24d0427f80426d0c3"; };
+    const char * getType(){ return PUBLISHERS; };
+    const char * getMD5(){ return "d8f94bae31b356b24d0427f80426d0c3"; };
 
   };
 
@@ -61,11 +61,11 @@ static const char PUBLISHERS[] = "rosapi/Publishers";
       _publishers_type * publishers;
 
     PublishersResponse():
-      publishers_length(0), st_publishers(), publishers(nullptr)
+      publishers_length(0), publishers(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->publishers_length >> (8 * 0)) & 0xFF;
@@ -83,7 +83,7 @@ static const char PUBLISHERS[] = "rosapi/Publishers";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t publishers_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -109,8 +109,8 @@ static const char PUBLISHERS[] = "rosapi/Publishers";
      return offset;
     }
 
-    virtual const char * getType() override { return PUBLISHERS; };
-    virtual const char * getMD5() override { return "167d8030c4ca4018261dff8ae5083dc8"; };
+    const char * getType(){ return PUBLISHERS; };
+    const char * getMD5(){ return "167d8030c4ca4018261dff8ae5083dc8"; };
 
   };
 

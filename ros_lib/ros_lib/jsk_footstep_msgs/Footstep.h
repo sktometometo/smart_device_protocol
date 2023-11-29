@@ -52,7 +52,7 @@ namespace jsk_footstep_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->leg >> (8 * 0)) & 0xFF;
@@ -98,7 +98,7 @@ namespace jsk_footstep_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->leg =  ((uint8_t) (*(inbuffer + offset)));
@@ -146,8 +146,8 @@ namespace jsk_footstep_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_footstep_msgs/Footstep"; };
-    virtual const char * getMD5() override { return "d890b275b63a90fe5f22a21e9a879971"; };
+    const char * getType(){ return "jsk_footstep_msgs/Footstep"; };
+    const char * getMD5(){ return "d890b275b63a90fe5f22a21e9a879971"; };
 
   };
 

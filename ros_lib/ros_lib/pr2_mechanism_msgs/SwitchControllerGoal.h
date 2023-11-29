@@ -22,12 +22,12 @@ namespace pr2_mechanism_msgs
       _stop_controllers_type * stop_controllers;
 
     SwitchControllerGoal():
-      start_controllers_length(0), st_start_controllers(), start_controllers(nullptr),
-      stop_controllers_length(0), st_stop_controllers(), stop_controllers(nullptr)
+      start_controllers_length(0), start_controllers(NULL),
+      stop_controllers_length(0), stop_controllers(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->start_controllers_length >> (8 * 0)) & 0xFF;
@@ -57,7 +57,7 @@ namespace pr2_mechanism_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t start_controllers_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -103,8 +103,8 @@ namespace pr2_mechanism_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_mechanism_msgs/SwitchControllerGoal"; };
-    virtual const char * getMD5() override { return "c3f1879cbb2d6cd8732c0e031574dde5"; };
+    const char * getType(){ return "pr2_mechanism_msgs/SwitchControllerGoal"; };
+    const char * getMD5(){ return "c3f1879cbb2d6cd8732c0e031574dde5"; };
 
   };
 

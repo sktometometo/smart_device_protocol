@@ -22,22 +22,22 @@ static const char CHECKCIRCLE[] = "jsk_recognition_msgs/CheckCircle";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->point.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->point.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKCIRCLE; };
-    virtual const char * getMD5() override { return "a7c84ff13976aa04656e56e300124444"; };
+    const char * getType(){ return CHECKCIRCLE; };
+    const char * getMD5(){ return "a7c84ff13976aa04656e56e300124444"; };
 
   };
 
@@ -58,7 +58,7 @@ static const char CHECKCIRCLE[] = "jsk_recognition_msgs/CheckCircle";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -86,7 +86,7 @@ static const char CHECKCIRCLE[] = "jsk_recognition_msgs/CheckCircle";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -120,8 +120,8 @@ static const char CHECKCIRCLE[] = "jsk_recognition_msgs/CheckCircle";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKCIRCLE; };
-    virtual const char * getMD5() override { return "94ed41c732187b6ea58431df72ab10b2"; };
+    const char * getType(){ return CHECKCIRCLE; };
+    const char * getMD5(){ return "94ed41c732187b6ea58431df72ab10b2"; };
 
   };
 

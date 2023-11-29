@@ -23,11 +23,11 @@ namespace geographic_msgs
 
     GeoPath():
       header(),
-      poses_length(0), st_poses(), poses(nullptr)
+      poses_length(0), poses(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace geographic_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace geographic_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "geographic_msgs/GeoPath"; };
-    virtual const char * getMD5() override { return "1476008e63041203a89257cfad97308f"; };
+    const char * getType(){ return "geographic_msgs/GeoPath"; };
+    const char * getMD5(){ return "1476008e63041203a89257cfad97308f"; };
 
   };
 

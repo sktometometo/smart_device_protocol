@@ -29,12 +29,12 @@ namespace moveit_msgs
     MotionSequenceResponse():
       error_code(),
       sequence_start(),
-      planned_trajectories_length(0), st_planned_trajectories(), planned_trajectories(nullptr),
+      planned_trajectories_length(0), planned_trajectories(NULL),
       planning_time(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->error_code.serialize(outbuffer + offset);
@@ -51,7 +51,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->error_code.deserialize(inbuffer + offset);
@@ -72,8 +72,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/MotionSequenceResponse"; };
-    virtual const char * getMD5() override { return "6c3d81f7909577545c3c382f38a163e2"; };
+    const char * getType(){ return "moveit_msgs/MotionSequenceResponse"; };
+    const char * getMD5(){ return "6c3d81f7909577545c3c382f38a163e2"; };
 
   };
 

@@ -37,14 +37,14 @@ namespace nmea_msgs
       message_id(""),
       auto_manual_mode(""),
       fix_mode(0),
-      sv_ids_length(0), st_sv_ids(), sv_ids(nullptr),
+      sv_ids_length(0), sv_ids(NULL),
       pdop(0),
       hdop(0),
       vdop(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -102,7 +102,7 @@ namespace nmea_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -175,8 +175,8 @@ namespace nmea_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "nmea_msgs/Gpgsa"; };
-    virtual const char * getMD5() override { return "94a6ef4a36d322374b16097a5d03433e"; };
+    const char * getType(){ return "nmea_msgs/Gpgsa"; };
+    const char * getMD5(){ return "94a6ef4a36d322374b16097a5d03433e"; };
 
   };
 

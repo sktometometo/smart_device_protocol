@@ -23,11 +23,11 @@ namespace robot_calibration_msgs
 
     ExtendedCameraInfo():
       camera_info(),
-      parameters_length(0), st_parameters(), parameters(nullptr)
+      parameters_length(0), parameters(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->camera_info.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace robot_calibration_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->camera_info.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace robot_calibration_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "robot_calibration_msgs/ExtendedCameraInfo"; };
-    virtual const char * getMD5() override { return "d35c5c887e3d90c7f6f9c5a697f44485"; };
+    const char * getType(){ return "robot_calibration_msgs/ExtendedCameraInfo"; };
+    const char * getMD5(){ return "d35c5c887e3d90c7f6f9c5a697f44485"; };
 
   };
 

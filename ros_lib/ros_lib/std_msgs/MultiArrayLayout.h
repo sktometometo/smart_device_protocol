@@ -21,12 +21,12 @@ namespace std_msgs
       _data_offset_type data_offset;
 
     MultiArrayLayout():
-      dim_length(0), st_dim(), dim(nullptr),
+      dim_length(0), dim(NULL),
       data_offset(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->dim_length >> (8 * 0)) & 0xFF;
@@ -45,7 +45,7 @@ namespace std_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t dim_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -68,8 +68,8 @@ namespace std_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "std_msgs/MultiArrayLayout"; };
-    virtual const char * getMD5() override { return "0fed2a11c13e11c5571b4e2a995a91a3"; };
+    const char * getType(){ return "std_msgs/MultiArrayLayout"; };
+    const char * getMD5(){ return "0fed2a11c13e11c5571b4e2a995a91a3"; };
 
   };
 

@@ -19,11 +19,11 @@ static const char SETLABELS[] = "jsk_recognition_msgs/SetLabels";
       _labels_type * labels;
 
     SetLabelsRequest():
-      labels_length(0), st_labels(), labels(nullptr)
+      labels_length(0), labels(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->labels_length >> (8 * 0)) & 0xFF;
@@ -50,7 +50,7 @@ static const char SETLABELS[] = "jsk_recognition_msgs/SetLabels";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t labels_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -82,8 +82,8 @@ static const char SETLABELS[] = "jsk_recognition_msgs/SetLabels";
      return offset;
     }
 
-    virtual const char * getType() override { return SETLABELS; };
-    virtual const char * getMD5() override { return "59c228f541cab5b727a29411b8f17b33"; };
+    const char * getType(){ return SETLABELS; };
+    const char * getMD5(){ return "59c228f541cab5b727a29411b8f17b33"; };
 
   };
 
@@ -98,7 +98,7 @@ static const char SETLABELS[] = "jsk_recognition_msgs/SetLabels";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -111,7 +111,7 @@ static const char SETLABELS[] = "jsk_recognition_msgs/SetLabels";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -125,8 +125,8 @@ static const char SETLABELS[] = "jsk_recognition_msgs/SetLabels";
      return offset;
     }
 
-    virtual const char * getType() override { return SETLABELS; };
-    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    const char * getType(){ return SETLABELS; };
+    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

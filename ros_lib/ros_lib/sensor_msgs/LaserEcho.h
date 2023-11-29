@@ -18,11 +18,11 @@ namespace sensor_msgs
       _echoes_type * echoes;
 
     LaserEcho():
-      echoes_length(0), st_echoes(), echoes(nullptr)
+      echoes_length(0), echoes(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->echoes_length >> (8 * 0)) & 0xFF;
@@ -45,7 +45,7 @@ namespace sensor_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t echoes_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -73,8 +73,8 @@ namespace sensor_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "sensor_msgs/LaserEcho"; };
-    virtual const char * getMD5() override { return "8bc5ae449b200fba4d552b4225586696"; };
+    const char * getType(){ return "sensor_msgs/LaserEcho"; };
+    const char * getMD5(){ return "8bc5ae449b200fba4d552b4225586696"; };
 
   };
 

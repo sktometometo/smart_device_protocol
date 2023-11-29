@@ -26,12 +26,12 @@ namespace app_manager
 
     ClientApp():
       client_type(""),
-      manager_data_length(0), st_manager_data(), manager_data(nullptr),
-      app_data_length(0), st_app_data(), app_data(nullptr)
+      manager_data_length(0), manager_data(NULL),
+      app_data_length(0), app_data(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_client_type = strlen(this->client_type);
@@ -58,7 +58,7 @@ namespace app_manager
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_client_type;
@@ -97,8 +97,8 @@ namespace app_manager
      return offset;
     }
 
-    virtual const char * getType() override { return "app_manager/ClientApp"; };
-    virtual const char * getMD5() override { return "0a8112672c3fbf73cb62ec78d67e41bb"; };
+    const char * getType(){ return "app_manager/ClientApp"; };
+    const char * getMD5(){ return "0a8112672c3fbf73cb62ec78d67e41bb"; };
 
   };
 

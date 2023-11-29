@@ -27,7 +27,7 @@ namespace pr2_mechanism_controllers
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -46,7 +46,7 @@ namespace pr2_mechanism_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -70,8 +70,8 @@ namespace pr2_mechanism_controllers
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_mechanism_controllers/TrackLinkCmd"; };
-    virtual const char * getMD5() override { return "08ccfe603e4e21c792896712c3b72de2"; };
+    const char * getType(){ return "pr2_mechanism_controllers/TrackLinkCmd"; };
+    const char * getMD5(){ return "08ccfe603e4e21c792896712c3b72de2"; };
 
   };
 

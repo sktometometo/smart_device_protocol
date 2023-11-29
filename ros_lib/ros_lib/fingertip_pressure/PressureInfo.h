@@ -19,11 +19,11 @@ namespace fingertip_pressure
       _sensor_type * sensor;
 
     PressureInfo():
-      sensor_length(0), st_sensor(), sensor(nullptr)
+      sensor_length(0), sensor(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->sensor_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace fingertip_pressure
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t sensor_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace fingertip_pressure
      return offset;
     }
 
-    virtual const char * getType() override { return "fingertip_pressure/PressureInfo"; };
-    virtual const char * getMD5() override { return "a11fc5bae3534aa023741e378743af5b"; };
+    const char * getType(){ return "fingertip_pressure/PressureInfo"; };
+    const char * getMD5(){ return "a11fc5bae3534aa023741e378743af5b"; };
 
   };
 

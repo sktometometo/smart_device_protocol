@@ -19,20 +19,20 @@ static const char GETJOINTSTATE[] = "jsk_interactive_marker/GetJointState";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return GETJOINTSTATE; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return GETJOINTSTATE; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -47,22 +47,22 @@ static const char GETJOINTSTATE[] = "jsk_interactive_marker/GetJointState";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->joint_state.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->joint_state.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETJOINTSTATE; };
-    virtual const char * getMD5() override { return "9ca061465ef0ed08771ed240c43789f5"; };
+    const char * getType(){ return GETJOINTSTATE; };
+    const char * getMD5(){ return "9ca061465ef0ed08771ed240c43789f5"; };
 
   };
 

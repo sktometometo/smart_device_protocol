@@ -20,7 +20,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -33,7 +33,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -47,8 +47,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/BlinkResult"; };
-    virtual const char * getMD5() override { return "53e041b81450f9247036f13b3c0bf822"; };
+    const char * getType(){ return "naoqi_bridge_msgs/BlinkResult"; };
+    const char * getMD5(){ return "53e041b81450f9247036f13b3c0bf822"; };
 
   };
 

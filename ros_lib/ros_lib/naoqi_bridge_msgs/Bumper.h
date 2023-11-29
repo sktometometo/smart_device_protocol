@@ -28,7 +28,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->bumper >> (8 * 0)) & 0xFF;
@@ -38,7 +38,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->bumper =  ((uint8_t) (*(inbuffer + offset)));
@@ -48,8 +48,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/Bumper"; };
-    virtual const char * getMD5() override { return "89965a81ab868825f18d59365e28ddaf"; };
+    const char * getType(){ return "naoqi_bridge_msgs/Bumper"; };
+    const char * getMD5(){ return "89965a81ab868825f18d59365e28ddaf"; };
 
   };
 

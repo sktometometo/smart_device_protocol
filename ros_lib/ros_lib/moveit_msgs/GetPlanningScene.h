@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/PlanningSceneComponents.h"
 #include "moveit_msgs/PlanningScene.h"
+#include "moveit_msgs/PlanningSceneComponents.h"
 
 namespace moveit_msgs
 {
@@ -23,22 +23,22 @@ static const char GETPLANNINGSCENE[] = "moveit_msgs/GetPlanningScene";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->components.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->components.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETPLANNINGSCENE; };
-    virtual const char * getMD5() override { return "d81da6c0e5e015646a4efe344f33d7dc"; };
+    const char * getType(){ return GETPLANNINGSCENE; };
+    const char * getMD5(){ return "d81da6c0e5e015646a4efe344f33d7dc"; };
 
   };
 
@@ -53,22 +53,22 @@ static const char GETPLANNINGSCENE[] = "moveit_msgs/GetPlanningScene";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->scene.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->scene.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETPLANNINGSCENE; };
-    virtual const char * getMD5() override { return "532b54e7c502b73178625025da63b084"; };
+    const char * getType(){ return GETPLANNINGSCENE; };
+    const char * getMD5(){ return "532b54e7c502b73178625025da63b084"; };
 
   };
 

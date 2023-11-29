@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "sensor_msgs/JointState.h"
 #include "geometry_msgs/PoseStamped.h"
+#include "sensor_msgs/JointState.h"
 
 namespace jsk_recognition_msgs
 {
@@ -26,7 +26,7 @@ static const char CHECKCOLLISION[] = "jsk_recognition_msgs/CheckCollision";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->joint.serialize(outbuffer + offset);
@@ -34,7 +34,7 @@ static const char CHECKCOLLISION[] = "jsk_recognition_msgs/CheckCollision";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->joint.deserialize(inbuffer + offset);
@@ -42,8 +42,8 @@ static const char CHECKCOLLISION[] = "jsk_recognition_msgs/CheckCollision";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKCOLLISION; };
-    virtual const char * getMD5() override { return "2bfa8f4c4d92353b38f908fbabfac432"; };
+    const char * getType(){ return CHECKCOLLISION; };
+    const char * getMD5(){ return "2bfa8f4c4d92353b38f908fbabfac432"; };
 
   };
 
@@ -58,7 +58,7 @@ static const char CHECKCOLLISION[] = "jsk_recognition_msgs/CheckCollision";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -71,7 +71,7 @@ static const char CHECKCOLLISION[] = "jsk_recognition_msgs/CheckCollision";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -85,8 +85,8 @@ static const char CHECKCOLLISION[] = "jsk_recognition_msgs/CheckCollision";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKCOLLISION; };
-    virtual const char * getMD5() override { return "eb13ac1f1354ccecb7941ee8fa2192e8"; };
+    const char * getType(){ return CHECKCOLLISION; };
+    const char * getMD5(){ return "eb13ac1f1354ccecb7941ee8fa2192e8"; };
 
   };
 

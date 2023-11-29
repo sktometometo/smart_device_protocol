@@ -18,20 +18,20 @@ static const char QUERYCALIBRATIONSTATE[] = "control_msgs/QueryCalibrationState"
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return QUERYCALIBRATIONSTATE; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return QUERYCALIBRATIONSTATE; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -46,7 +46,7 @@ static const char QUERYCALIBRATIONSTATE[] = "control_msgs/QueryCalibrationState"
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -59,7 +59,7 @@ static const char QUERYCALIBRATIONSTATE[] = "control_msgs/QueryCalibrationState"
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -73,8 +73,8 @@ static const char QUERYCALIBRATIONSTATE[] = "control_msgs/QueryCalibrationState"
      return offset;
     }
 
-    virtual const char * getType() override { return QUERYCALIBRATIONSTATE; };
-    virtual const char * getMD5() override { return "28af3beedcb84986b8e470dc5470507d"; };
+    const char * getType(){ return QUERYCALIBRATIONSTATE; };
+    const char * getMD5(){ return "28af3beedcb84986b8e470dc5470507d"; };
 
   };
 

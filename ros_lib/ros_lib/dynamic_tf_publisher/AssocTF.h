@@ -28,7 +28,7 @@ static const char ASSOCTF[] = "dynamic_tf_publisher/AssocTF";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -45,7 +45,7 @@ static const char ASSOCTF[] = "dynamic_tf_publisher/AssocTF";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -70,8 +70,8 @@ static const char ASSOCTF[] = "dynamic_tf_publisher/AssocTF";
      return offset;
     }
 
-    virtual const char * getType() override { return ASSOCTF; };
-    virtual const char * getMD5() override { return "984a9f3f6741b2b5568909b82fec6355"; };
+    const char * getType(){ return ASSOCTF; };
+    const char * getMD5(){ return "984a9f3f6741b2b5568909b82fec6355"; };
 
   };
 
@@ -83,20 +83,20 @@ static const char ASSOCTF[] = "dynamic_tf_publisher/AssocTF";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return ASSOCTF; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return ASSOCTF; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

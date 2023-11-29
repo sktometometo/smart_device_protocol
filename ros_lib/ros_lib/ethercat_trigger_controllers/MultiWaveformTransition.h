@@ -26,7 +26,7 @@ namespace ethercat_trigger_controllers
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->time);
@@ -43,7 +43,7 @@ namespace ethercat_trigger_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->time));
@@ -64,8 +64,8 @@ namespace ethercat_trigger_controllers
      return offset;
     }
 
-    virtual const char * getType() override { return "ethercat_trigger_controllers/MultiWaveformTransition"; };
-    virtual const char * getMD5() override { return "bdd47e5d1c3d77473af2df9833a0608a"; };
+    const char * getType(){ return "ethercat_trigger_controllers/MultiWaveformTransition"; };
+    const char * getMD5(){ return "bdd47e5d1c3d77473af2df9833a0608a"; };
 
   };
 

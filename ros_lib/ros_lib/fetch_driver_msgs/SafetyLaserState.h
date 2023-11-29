@@ -32,7 +32,7 @@ namespace fetch_driver_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->monitoring_case >> (8 * 0)) & 0xFF;
@@ -68,7 +68,7 @@ namespace fetch_driver_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->monitoring_case =  ((uint8_t) (*(inbuffer + offset)));
@@ -108,8 +108,8 @@ namespace fetch_driver_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "fetch_driver_msgs/SafetyLaserState"; };
-    virtual const char * getMD5() override { return "3ba0845be197d9f4b6e251e9c720cc5e"; };
+    const char * getType(){ return "fetch_driver_msgs/SafetyLaserState"; };
+    const char * getMD5(){ return "3ba0845be197d9f4b6e251e9c720cc5e"; };
 
   };
 

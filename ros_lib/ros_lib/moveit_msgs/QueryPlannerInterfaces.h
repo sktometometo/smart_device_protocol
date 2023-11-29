@@ -19,20 +19,20 @@ static const char QUERYPLANNERINTERFACES[] = "moveit_msgs/QueryPlannerInterfaces
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return QUERYPLANNERINTERFACES; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return QUERYPLANNERINTERFACES; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -45,11 +45,11 @@ static const char QUERYPLANNERINTERFACES[] = "moveit_msgs/QueryPlannerInterfaces
       _planner_interfaces_type * planner_interfaces;
 
     QueryPlannerInterfacesResponse():
-      planner_interfaces_length(0), st_planner_interfaces(), planner_interfaces(nullptr)
+      planner_interfaces_length(0), planner_interfaces(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->planner_interfaces_length >> (8 * 0)) & 0xFF;
@@ -63,7 +63,7 @@ static const char QUERYPLANNERINTERFACES[] = "moveit_msgs/QueryPlannerInterfaces
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t planner_interfaces_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -81,8 +81,8 @@ static const char QUERYPLANNERINTERFACES[] = "moveit_msgs/QueryPlannerInterfaces
      return offset;
     }
 
-    virtual const char * getType() override { return QUERYPLANNERINTERFACES; };
-    virtual const char * getMD5() override { return "5876081117e7cad85cc165e937798753"; };
+    const char * getType(){ return QUERYPLANNERINTERFACES; };
+    const char * getMD5(){ return "5876081117e7cad85cc165e937798753"; };
 
   };
 

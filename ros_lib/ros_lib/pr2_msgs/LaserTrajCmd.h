@@ -34,14 +34,14 @@ namespace pr2_msgs
     LaserTrajCmd():
       header(),
       profile(""),
-      position_length(0), st_position(), position(nullptr),
-      time_from_start_length(0), st_time_from_start(), time_from_start(nullptr),
+      position_length(0), position(NULL),
+      time_from_start_length(0), time_from_start(NULL),
       max_velocity(0),
       max_acceleration(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -80,7 +80,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -131,8 +131,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/LaserTrajCmd"; };
-    virtual const char * getMD5() override { return "68a1665e9079049dce55a0384cb2e9b5"; };
+    const char * getType(){ return "pr2_msgs/LaserTrajCmd"; };
+    const char * getMD5(){ return "68a1665e9079049dce55a0384cb2e9b5"; };
 
   };
 

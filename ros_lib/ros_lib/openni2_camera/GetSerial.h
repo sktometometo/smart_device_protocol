@@ -18,20 +18,20 @@ static const char GETSERIAL[] = "openni2_camera/GetSerial";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return GETSERIAL; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return GETSERIAL; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -46,7 +46,7 @@ static const char GETSERIAL[] = "openni2_camera/GetSerial";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_serial = strlen(this->serial);
@@ -57,7 +57,7 @@ static const char GETSERIAL[] = "openni2_camera/GetSerial";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_serial;
@@ -72,8 +72,8 @@ static const char GETSERIAL[] = "openni2_camera/GetSerial";
      return offset;
     }
 
-    virtual const char * getType() override { return GETSERIAL; };
-    virtual const char * getMD5() override { return "fca40cf463282a80db4e2037c8a61741"; };
+    const char * getType(){ return GETSERIAL; };
+    const char * getMD5(){ return "fca40cf463282a80db4e2037c8a61741"; };
 
   };
 

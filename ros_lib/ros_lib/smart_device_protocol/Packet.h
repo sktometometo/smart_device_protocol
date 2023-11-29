@@ -1,5 +1,5 @@
-#ifndef _ROS_SMART_DEVICE_PROTOCOL_Packet_h
-#define _ROS_SMART_DEVICE_PROTOCOL_Packet_h
+#ifndef _ROS_smart_device_protocol_Packet_h
+#define _ROS_smart_device_protocol_Packet_h
 
 #include <stdint.h>
 #include <string.h>
@@ -37,12 +37,12 @@ namespace smart_device_protocol
       enum { PACKET_TYPE_DATA =  82 };
 
     Packet():
-      mac_address_length(0), st_mac_address(), mac_address(nullptr),
-      data_length(0), st_data(), data(nullptr)
+      mac_address_length(0), mac_address(NULL),
+      data_length(0), data(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->mac_address_length >> (8 * 0)) & 0xFF;
@@ -66,7 +66,7 @@ namespace smart_device_protocol
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t mac_address_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -98,8 +98,8 @@ namespace smart_device_protocol
      return offset;
     }
 
-    virtual const char * getType() override { return "smart_device_protocol/Packet"; };
-    virtual const char * getMD5() override { return "dbab45830b3b1d11bc00c2acc0192a63"; };
+    const char * getType(){ return "smart_device_protocol/Packet"; };
+    const char * getMD5(){ return "dbab45830b3b1d11bc00c2acc0192a63"; };
 
   };
 

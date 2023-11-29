@@ -27,7 +27,7 @@ static const char DETECT[] = "posedetection_msgs/Detect";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->image.serialize(outbuffer + offset);
@@ -35,7 +35,7 @@ static const char DETECT[] = "posedetection_msgs/Detect";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->image.deserialize(inbuffer + offset);
@@ -43,8 +43,8 @@ static const char DETECT[] = "posedetection_msgs/Detect";
      return offset;
     }
 
-    virtual const char * getType() override { return DETECT; };
-    virtual const char * getMD5() override { return "bfee1901edaf2aa4d9f0844a03ff634f"; };
+    const char * getType(){ return DETECT; };
+    const char * getMD5(){ return "bfee1901edaf2aa4d9f0844a03ff634f"; };
 
   };
 
@@ -59,22 +59,22 @@ static const char DETECT[] = "posedetection_msgs/Detect";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->object_detection.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->object_detection.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return DETECT; };
-    virtual const char * getMD5() override { return "7b25cb2a35e9a4692af3117eeddab11b"; };
+    const char * getType(){ return DETECT; };
+    const char * getMD5(){ return "7b25cb2a35e9a4692af3117eeddab11b"; };
 
   };
 

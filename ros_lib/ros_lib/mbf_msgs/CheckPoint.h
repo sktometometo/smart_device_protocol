@@ -27,7 +27,7 @@ static const char CHECKPOINT[] = "mbf_msgs/CheckPoint";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->point.serialize(outbuffer + offset);
@@ -36,7 +36,7 @@ static const char CHECKPOINT[] = "mbf_msgs/CheckPoint";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->point.deserialize(inbuffer + offset);
@@ -45,8 +45,8 @@ static const char CHECKPOINT[] = "mbf_msgs/CheckPoint";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKPOINT; };
-    virtual const char * getMD5() override { return "36e9c2f425eee0a2ebd8c4b0aae9f573"; };
+    const char * getType(){ return CHECKPOINT; };
+    const char * getMD5(){ return "36e9c2f425eee0a2ebd8c4b0aae9f573"; };
 
   };
 
@@ -69,7 +69,7 @@ static const char CHECKPOINT[] = "mbf_msgs/CheckPoint";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->state >> (8 * 0)) & 0xFF;
@@ -82,7 +82,7 @@ static const char CHECKPOINT[] = "mbf_msgs/CheckPoint";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->state =  ((uint8_t) (*(inbuffer + offset)));
@@ -95,8 +95,8 @@ static const char CHECKPOINT[] = "mbf_msgs/CheckPoint";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKPOINT; };
-    virtual const char * getMD5() override { return "d74139e1f7169aa4fb64b44c3a698692"; };
+    const char * getType(){ return CHECKPOINT; };
+    const char * getMD5(){ return "d74139e1f7169aa4fb64b44c3a698692"; };
 
   };
 

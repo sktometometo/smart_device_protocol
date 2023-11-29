@@ -70,19 +70,19 @@ namespace moveit_msgs
       pose(),
       id(""),
       type(),
-      primitives_length(0), st_primitives(), primitives(nullptr),
-      primitive_poses_length(0), st_primitive_poses(), primitive_poses(nullptr),
-      meshes_length(0), st_meshes(), meshes(nullptr),
-      mesh_poses_length(0), st_mesh_poses(), mesh_poses(nullptr),
-      planes_length(0), st_planes(), planes(nullptr),
-      plane_poses_length(0), st_plane_poses(), plane_poses(nullptr),
-      subframe_names_length(0), st_subframe_names(), subframe_names(nullptr),
-      subframe_poses_length(0), st_subframe_poses(), subframe_poses(nullptr),
+      primitives_length(0), primitives(NULL),
+      primitive_poses_length(0), primitive_poses(NULL),
+      meshes_length(0), meshes(NULL),
+      mesh_poses_length(0), mesh_poses(NULL),
+      planes_length(0), planes(NULL),
+      plane_poses_length(0), plane_poses(NULL),
+      subframe_names_length(0), subframe_names(NULL),
+      subframe_poses_length(0), subframe_poses(NULL),
       operation(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -171,7 +171,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -301,8 +301,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/CollisionObject"; };
-    virtual const char * getMD5() override { return "dbba710596087da521c07564160dfccb"; };
+    const char * getType(){ return "moveit_msgs/CollisionObject"; };
+    const char * getMD5(){ return "dbba710596087da521c07564160dfccb"; };
 
   };
 

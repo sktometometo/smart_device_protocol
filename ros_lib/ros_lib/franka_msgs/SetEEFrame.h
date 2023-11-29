@@ -20,7 +20,7 @@ static const char SETEEFRAME[] = "franka_msgs/SetEEFrame";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       for( uint32_t i = 0; i < 16; i++){
@@ -29,7 +29,7 @@ static const char SETEEFRAME[] = "franka_msgs/SetEEFrame";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       for( uint32_t i = 0; i < 16; i++){
@@ -38,8 +38,8 @@ static const char SETEEFRAME[] = "franka_msgs/SetEEFrame";
      return offset;
     }
 
-    virtual const char * getType() override { return SETEEFRAME; };
-    virtual const char * getMD5() override { return "cddf0858e7d540f5bcee9d813a7550a2"; };
+    const char * getType(){ return SETEEFRAME; };
+    const char * getMD5(){ return "cddf0858e7d540f5bcee9d813a7550a2"; };
 
   };
 
@@ -57,7 +57,7 @@ static const char SETEEFRAME[] = "franka_msgs/SetEEFrame";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -75,7 +75,7 @@ static const char SETEEFRAME[] = "franka_msgs/SetEEFrame";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -98,8 +98,8 @@ static const char SETEEFRAME[] = "franka_msgs/SetEEFrame";
      return offset;
     }
 
-    virtual const char * getType() override { return SETEEFRAME; };
-    virtual const char * getMD5() override { return "45872d25d65c97743cc71afc6d4e884d"; };
+    const char * getType(){ return SETEEFRAME; };
+    const char * getMD5(){ return "45872d25d65c97743cc71afc6d4e884d"; };
 
   };
 

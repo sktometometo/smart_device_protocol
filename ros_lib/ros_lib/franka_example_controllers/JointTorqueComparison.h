@@ -26,7 +26,7 @@ namespace franka_example_controllers
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       for( uint32_t i = 0; i < 7; i++){
@@ -42,7 +42,7 @@ namespace franka_example_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       for( uint32_t i = 0; i < 7; i++){
@@ -58,8 +58,8 @@ namespace franka_example_controllers
      return offset;
     }
 
-    virtual const char * getType() override { return "franka_example_controllers/JointTorqueComparison"; };
-    virtual const char * getMD5() override { return "6c09db90263c92a2e4e4d736f67bc033"; };
+    const char * getType(){ return "franka_example_controllers/JointTorqueComparison"; };
+    const char * getMD5(){ return "6c09db90263c92a2e4e4d736f67bc033"; };
 
   };
 

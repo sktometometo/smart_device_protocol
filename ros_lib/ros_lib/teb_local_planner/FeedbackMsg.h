@@ -28,13 +28,13 @@ namespace teb_local_planner
 
     FeedbackMsg():
       header(),
-      trajectories_length(0), st_trajectories(), trajectories(nullptr),
+      trajectories_length(0), trajectories(NULL),
       selected_trajectory_idx(0),
       obstacles_msg()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -53,7 +53,7 @@ namespace teb_local_planner
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -76,8 +76,8 @@ namespace teb_local_planner
      return offset;
     }
 
-    virtual const char * getType() override { return "teb_local_planner/FeedbackMsg"; };
-    virtual const char * getMD5() override { return "e8086148d3a39de24ca2cc423f1e94e6"; };
+    const char * getType(){ return "teb_local_planner/FeedbackMsg"; };
+    const char * getMD5(){ return "e8086148d3a39de24ca2cc423f1e94e6"; };
 
   };
 

@@ -24,14 +24,14 @@ namespace pr2_mechanism_controllers
       _residual_type residual;
 
     DebugInfo():
-      timing_length(0), st_timing(), timing(nullptr),
+      timing_length(0), timing(NULL),
       sequence(0),
       input_valid(0),
       residual(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->timing_length >> (8 * 0)) & 0xFF;
@@ -63,7 +63,7 @@ namespace pr2_mechanism_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t timing_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -101,8 +101,8 @@ namespace pr2_mechanism_controllers
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_mechanism_controllers/DebugInfo"; };
-    virtual const char * getMD5() override { return "6281356ce897e33da024b8eb319460f2"; };
+    const char * getType(){ return "pr2_mechanism_controllers/DebugInfo"; };
+    const char * getMD5(){ return "6281356ce897e33da024b8eb319460f2"; };
 
   };
 

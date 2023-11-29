@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "geometry_msgs/Pose.h"
 #include "trajectory_msgs/JointTrajectory.h"
+#include "geometry_msgs/Pose.h"
 
 namespace gazebo_msgs
 {
@@ -35,7 +35,7 @@ static const char SETJOINTTRAJECTORY[] = "gazebo_msgs/SetJointTrajectory";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_model_name = strlen(this->model_name);
@@ -62,7 +62,7 @@ static const char SETJOINTTRAJECTORY[] = "gazebo_msgs/SetJointTrajectory";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_model_name;
@@ -95,8 +95,8 @@ static const char SETJOINTTRAJECTORY[] = "gazebo_msgs/SetJointTrajectory";
      return offset;
     }
 
-    virtual const char * getType() override { return SETJOINTTRAJECTORY; };
-    virtual const char * getMD5() override { return "649dd2eba5ffd358069238825f9f85ab"; };
+    const char * getType(){ return SETJOINTTRAJECTORY; };
+    const char * getMD5(){ return "649dd2eba5ffd358069238825f9f85ab"; };
 
   };
 
@@ -114,7 +114,7 @@ static const char SETJOINTTRAJECTORY[] = "gazebo_msgs/SetJointTrajectory";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -132,7 +132,7 @@ static const char SETJOINTTRAJECTORY[] = "gazebo_msgs/SetJointTrajectory";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -155,8 +155,8 @@ static const char SETJOINTTRAJECTORY[] = "gazebo_msgs/SetJointTrajectory";
      return offset;
     }
 
-    virtual const char * getType() override { return SETJOINTTRAJECTORY; };
-    virtual const char * getMD5() override { return "2ec6f3eff0161f4257b808b12bc830c2"; };
+    const char * getType(){ return SETJOINTTRAJECTORY; };
+    const char * getMD5(){ return "2ec6f3eff0161f4257b808b12bc830c2"; };
 
   };
 

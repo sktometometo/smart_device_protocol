@@ -27,7 +27,7 @@ namespace jsk_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->point_cloud.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->point_cloud.deserialize(inbuffer + offset);
@@ -49,8 +49,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/SlicedPointCloud"; };
-    virtual const char * getMD5() override { return "37376a48b034bf543f8cfd86844487c7"; };
+    const char * getType(){ return "jsk_recognition_msgs/SlicedPointCloud"; };
+    const char * getMD5(){ return "37376a48b034bf543f8cfd86844487c7"; };
 
   };
 

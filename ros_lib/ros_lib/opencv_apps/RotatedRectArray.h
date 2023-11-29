@@ -19,11 +19,11 @@ namespace opencv_apps
       _rects_type * rects;
 
     RotatedRectArray():
-      rects_length(0), st_rects(), rects(nullptr)
+      rects_length(0), rects(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->rects_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t rects_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/RotatedRectArray"; };
-    virtual const char * getMD5() override { return "a27e397ed2b5b1a633561d324f64d2a6"; };
+    const char * getType(){ return "opencv_apps/RotatedRectArray"; };
+    const char * getMD5(){ return "a27e397ed2b5b1a633561d324f64d2a6"; };
 
   };
 

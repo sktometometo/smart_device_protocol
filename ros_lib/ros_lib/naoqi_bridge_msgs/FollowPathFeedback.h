@@ -20,7 +20,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->index >> (8 * 0)) & 0xFF;
@@ -31,7 +31,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->index =  ((uint32_t) (*(inbuffer + offset)));
@@ -42,8 +42,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/FollowPathFeedback"; };
-    virtual const char * getMD5() override { return "ad7b979103dbd563a352ef5270716728"; };
+    const char * getType(){ return "naoqi_bridge_msgs/FollowPathFeedback"; };
+    const char * getMD5(){ return "ad7b979103dbd563a352ef5270716728"; };
 
   };
 

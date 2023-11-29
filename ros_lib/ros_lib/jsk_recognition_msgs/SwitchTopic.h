@@ -24,7 +24,7 @@ static const char SWITCHTOPIC[] = "jsk_recognition_msgs/SwitchTopic";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_camera_info = strlen(this->camera_info);
@@ -40,7 +40,7 @@ static const char SWITCHTOPIC[] = "jsk_recognition_msgs/SwitchTopic";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_camera_info;
@@ -64,8 +64,8 @@ static const char SWITCHTOPIC[] = "jsk_recognition_msgs/SwitchTopic";
      return offset;
     }
 
-    virtual const char * getType() override { return SWITCHTOPIC; };
-    virtual const char * getMD5() override { return "e4a276b5a9b7b8fd97441d0fd991bdb9"; };
+    const char * getType(){ return SWITCHTOPIC; };
+    const char * getMD5(){ return "e4a276b5a9b7b8fd97441d0fd991bdb9"; };
 
   };
 
@@ -77,20 +77,20 @@ static const char SWITCHTOPIC[] = "jsk_recognition_msgs/SwitchTopic";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return SWITCHTOPIC; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return SWITCHTOPIC; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

@@ -20,20 +20,20 @@ namespace driver_base
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return "driver_base/SensorLevels"; };
-    virtual const char * getMD5() override { return "6322637bee96d5489db6e2127c47602c"; };
+    const char * getType(){ return "driver_base/SensorLevels"; };
+    const char * getMD5(){ return "6322637bee96d5489db6e2127c47602c"; };
 
   };
 

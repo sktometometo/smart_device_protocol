@@ -35,7 +35,7 @@ namespace wifi_ddwrt
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_macattr = strlen(this->macattr);
@@ -91,7 +91,7 @@ namespace wifi_ddwrt
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_macattr;
@@ -159,8 +159,8 @@ namespace wifi_ddwrt
      return offset;
     }
 
-    virtual const char * getType() override { return "wifi_ddwrt/Network"; };
-    virtual const char * getMD5() override { return "b0854419660dc197dd94305843bee07f"; };
+    const char * getType(){ return "wifi_ddwrt/Network"; };
+    const char * getMD5(){ return "b0854419660dc197dd94305843bee07f"; };
 
   };
 

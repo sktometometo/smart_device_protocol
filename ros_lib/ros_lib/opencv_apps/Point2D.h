@@ -23,7 +23,7 @@ namespace opencv_apps
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->x);
@@ -31,7 +31,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->x));
@@ -39,8 +39,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/Point2D"; };
-    virtual const char * getMD5() override { return "209f516d3eb691f0663e25cb750d67c1"; };
+    const char * getType(){ return "opencv_apps/Point2D"; };
+    const char * getMD5(){ return "209f516d3eb691f0663e25cb750d67c1"; };
 
   };
 

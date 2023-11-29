@@ -29,7 +29,7 @@ namespace nmea_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->prn >> (8 * 0)) & 0xFF;
@@ -49,7 +49,7 @@ namespace nmea_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->prn =  ((uint8_t) (*(inbuffer + offset)));
@@ -70,8 +70,8 @@ namespace nmea_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "nmea_msgs/GpgsvSatellite"; };
-    virtual const char * getMD5() override { return "d862f2ce05a26a83264a8add99c7b668"; };
+    const char * getType(){ return "nmea_msgs/GpgsvSatellite"; };
+    const char * getMD5(){ return "d862f2ce05a26a83264a8add99c7b668"; };
 
   };
 

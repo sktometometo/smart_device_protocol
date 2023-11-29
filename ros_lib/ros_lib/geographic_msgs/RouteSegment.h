@@ -29,11 +29,11 @@ namespace geographic_msgs
       id(),
       start(),
       end(),
-      props_length(0), st_props(), props(nullptr)
+      props_length(0), props(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->id.serialize(outbuffer + offset);
@@ -50,7 +50,7 @@ namespace geographic_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->id.deserialize(inbuffer + offset);
@@ -71,8 +71,8 @@ namespace geographic_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "geographic_msgs/RouteSegment"; };
-    virtual const char * getMD5() override { return "8583d1e2ddf1891c3934a5d2ed9a799c"; };
+    const char * getType(){ return "geographic_msgs/RouteSegment"; };
+    const char * getMD5(){ return "8583d1e2ddf1891c3934a5d2ed9a799c"; };
 
   };
 

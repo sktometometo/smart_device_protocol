@@ -24,7 +24,7 @@ namespace rospy_tutorials
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -36,7 +36,7 @@ namespace rospy_tutorials
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -52,8 +52,8 @@ namespace rospy_tutorials
      return offset;
     }
 
-    virtual const char * getType() override { return "rospy_tutorials/HeaderString"; };
-    virtual const char * getMD5() override { return "c99a9440709e4d4a9716d55b8270d5e7"; };
+    const char * getType(){ return "rospy_tutorials/HeaderString"; };
+    const char * getMD5(){ return "c99a9440709e4d4a9716d55b8270d5e7"; };
 
   };
 

@@ -23,11 +23,11 @@ namespace apriltag_ros
 
     AprilTagDetectionArray():
       header(),
-      detections_length(0), st_detections(), detections(nullptr)
+      detections_length(0), detections(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace apriltag_ros
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace apriltag_ros
      return offset;
     }
 
-    virtual const char * getType() override { return "apriltag_ros/AprilTagDetectionArray"; };
-    virtual const char * getMD5() override { return "2b6c03434883a5c9897c13b5594dbd91"; };
+    const char * getType(){ return "apriltag_ros/AprilTagDetectionArray"; };
+    const char * getMD5(){ return "2b6c03434883a5c9897c13b5594dbd91"; };
 
   };
 

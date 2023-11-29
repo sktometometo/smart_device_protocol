@@ -23,11 +23,11 @@ namespace teb_local_planner
 
     TrajectoryMsg():
       header(),
-      trajectory_length(0), st_trajectory(), trajectory(nullptr)
+      trajectory_length(0), trajectory(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace teb_local_planner
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace teb_local_planner
      return offset;
     }
 
-    virtual const char * getType() override { return "teb_local_planner/TrajectoryMsg"; };
-    virtual const char * getMD5() override { return "9dfdc1e62b3eb03a32af2423c5b7a0dd"; };
+    const char * getType(){ return "teb_local_planner/TrajectoryMsg"; };
+    const char * getMD5(){ return "9dfdc1e62b3eb03a32af2423c5b7a0dd"; };
 
   };
 

@@ -28,7 +28,7 @@ namespace jsk_footstep_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->goal_footstep.serialize(outbuffer + offset);
@@ -46,7 +46,7 @@ namespace jsk_footstep_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->goal_footstep.deserialize(inbuffer + offset);
@@ -64,8 +64,8 @@ namespace jsk_footstep_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_footstep_msgs/PlanFootstepsGoal"; };
-    virtual const char * getMD5() override { return "68011023a311776030c53b8ca437fae1"; };
+    const char * getType(){ return "jsk_footstep_msgs/PlanFootstepsGoal"; };
+    const char * getMD5(){ return "68011023a311776030c53b8ca437fae1"; };
 
   };
 

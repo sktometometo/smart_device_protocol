@@ -45,11 +45,11 @@ namespace pr2_msgs
       average_charge(0),
       message(""),
       last_controller_update(),
-      battery_length(0), st_battery(), battery(nullptr)
+      battery_length(0), battery(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -119,7 +119,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -199,8 +199,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/BatteryServer2"; };
-    virtual const char * getMD5() override { return "5f2cec7d06c312d756189db96c1f3819"; };
+    const char * getType(){ return "pr2_msgs/BatteryServer2"; };
+    const char * getMD5(){ return "5f2cec7d06c312d756189db96c1f3819"; };
 
   };
 

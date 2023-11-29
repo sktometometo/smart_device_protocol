@@ -35,7 +35,7 @@ namespace control_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->target.serialize(outbuffer + offset);
@@ -59,7 +59,7 @@ namespace control_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->target.deserialize(inbuffer + offset);
@@ -87,8 +87,8 @@ namespace control_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "control_msgs/PointHeadGoal"; };
-    virtual const char * getMD5() override { return "8b92b1cd5e06c8a94c917dc3209a4c1d"; };
+    const char * getType(){ return "control_msgs/PointHeadGoal"; };
+    const char * getMD5(){ return "8b92b1cd5e06c8a94c917dc3209a4c1d"; };
 
   };
 

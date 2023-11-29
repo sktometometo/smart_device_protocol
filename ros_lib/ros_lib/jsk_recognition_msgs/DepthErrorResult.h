@@ -39,7 +39,7 @@ namespace jsk_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -96,7 +96,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -157,8 +157,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/DepthErrorResult"; };
-    virtual const char * getMD5() override { return "cebbb2d000457fe5d971a29ee02ffb16"; };
+    const char * getType(){ return "jsk_recognition_msgs/DepthErrorResult"; };
+    const char * getMD5(){ return "cebbb2d000457fe5d971a29ee02ffb16"; };
 
   };
 

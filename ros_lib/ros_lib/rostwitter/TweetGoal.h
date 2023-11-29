@@ -35,7 +35,7 @@ namespace rostwitter
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -74,7 +74,7 @@ namespace rostwitter
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -124,8 +124,8 @@ namespace rostwitter
      return offset;
     }
 
-    virtual const char * getType() override { return "rostwitter/TweetGoal"; };
-    virtual const char * getMD5() override { return "577f0283150a250e0ca629c7c0d07aa9"; };
+    const char * getType(){ return "rostwitter/TweetGoal"; };
+    const char * getMD5(){ return "577f0283150a250e0ca629c7c0d07aa9"; };
 
   };
 

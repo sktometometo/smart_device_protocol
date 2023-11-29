@@ -19,11 +19,11 @@ namespace robot_controllers_msgs
       _state_diff_type * state_diff;
 
     QueryControllerStatesFeedback():
-      state_diff_length(0), st_state_diff(), state_diff(nullptr)
+      state_diff_length(0), state_diff(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->state_diff_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace robot_controllers_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t state_diff_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace robot_controllers_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "robot_controllers_msgs/QueryControllerStatesFeedback"; };
-    virtual const char * getMD5() override { return "884ebbcebb33b2855209539dadfa0dc6"; };
+    const char * getType(){ return "robot_controllers_msgs/QueryControllerStatesFeedback"; };
+    const char * getMD5(){ return "884ebbcebb33b2855209539dadfa0dc6"; };
 
   };
 

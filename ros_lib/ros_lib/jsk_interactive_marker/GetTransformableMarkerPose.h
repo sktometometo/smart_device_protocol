@@ -22,7 +22,7 @@ static const char GETTRANSFORMABLEMARKERPOSE[] = "jsk_interactive_marker/GetTran
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_target_name = strlen(this->target_name);
@@ -33,7 +33,7 @@ static const char GETTRANSFORMABLEMARKERPOSE[] = "jsk_interactive_marker/GetTran
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_target_name;
@@ -48,8 +48,8 @@ static const char GETTRANSFORMABLEMARKERPOSE[] = "jsk_interactive_marker/GetTran
      return offset;
     }
 
-    virtual const char * getType() override { return GETTRANSFORMABLEMARKERPOSE; };
-    virtual const char * getMD5() override { return "2008933b3c7227647cbe00c74682331a"; };
+    const char * getType(){ return GETTRANSFORMABLEMARKERPOSE; };
+    const char * getMD5(){ return "2008933b3c7227647cbe00c74682331a"; };
 
   };
 
@@ -64,22 +64,22 @@ static const char GETTRANSFORMABLEMARKERPOSE[] = "jsk_interactive_marker/GetTran
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->pose_stamped.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->pose_stamped.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETTRANSFORMABLEMARKERPOSE; };
-    virtual const char * getMD5() override { return "a6cf8bca3220fd47abb2c1783444110d"; };
+    const char * getType(){ return GETTRANSFORMABLEMARKERPOSE; };
+    const char * getMD5(){ return "a6cf8bca3220fd47abb2c1783444110d"; };
 
   };
 

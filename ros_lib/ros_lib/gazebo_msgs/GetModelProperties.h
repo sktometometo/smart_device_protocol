@@ -21,7 +21,7 @@ static const char GETMODELPROPERTIES[] = "gazebo_msgs/GetModelProperties";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_model_name = strlen(this->model_name);
@@ -32,7 +32,7 @@ static const char GETMODELPROPERTIES[] = "gazebo_msgs/GetModelProperties";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_model_name;
@@ -47,8 +47,8 @@ static const char GETMODELPROPERTIES[] = "gazebo_msgs/GetModelProperties";
      return offset;
     }
 
-    virtual const char * getType() override { return GETMODELPROPERTIES; };
-    virtual const char * getMD5() override { return "ea31c8eab6fc401383cf528a7c0984ba"; };
+    const char * getType(){ return GETMODELPROPERTIES; };
+    const char * getMD5(){ return "ea31c8eab6fc401383cf528a7c0984ba"; };
 
   };
 
@@ -85,17 +85,17 @@ static const char GETMODELPROPERTIES[] = "gazebo_msgs/GetModelProperties";
     GetModelPropertiesResponse():
       parent_model_name(""),
       canonical_body_name(""),
-      body_names_length(0), st_body_names(), body_names(nullptr),
-      geom_names_length(0), st_geom_names(), geom_names(nullptr),
-      joint_names_length(0), st_joint_names(), joint_names(nullptr),
-      child_model_names_length(0), st_child_model_names(), child_model_names(nullptr),
+      body_names_length(0), body_names(NULL),
+      geom_names_length(0), geom_names(NULL),
+      joint_names_length(0), joint_names(NULL),
+      child_model_names_length(0), child_model_names(NULL),
       is_static(0),
       success(0),
       status_message("")
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_parent_model_name = strlen(this->parent_model_name);
@@ -178,7 +178,7 @@ static const char GETMODELPROPERTIES[] = "gazebo_msgs/GetModelProperties";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_parent_model_name;
@@ -307,8 +307,8 @@ static const char GETMODELPROPERTIES[] = "gazebo_msgs/GetModelProperties";
      return offset;
     }
 
-    virtual const char * getType() override { return GETMODELPROPERTIES; };
-    virtual const char * getMD5() override { return "b7f370938ef77b464b95f1bab3ec5028"; };
+    const char * getType(){ return GETMODELPROPERTIES; };
+    const char * getMD5(){ return "b7f370938ef77b464b95f1bab3ec5028"; };
 
   };
 

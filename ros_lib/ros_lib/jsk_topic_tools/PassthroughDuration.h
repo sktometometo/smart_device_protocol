@@ -22,7 +22,7 @@ static const char PASSTHROUGHDURATION[] = "jsk_topic_tools/PassthroughDuration";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->duration.sec >> (8 * 0)) & 0xFF;
@@ -38,7 +38,7 @@ static const char PASSTHROUGHDURATION[] = "jsk_topic_tools/PassthroughDuration";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->duration.sec =  ((uint32_t) (*(inbuffer + offset)));
@@ -54,8 +54,8 @@ static const char PASSTHROUGHDURATION[] = "jsk_topic_tools/PassthroughDuration";
      return offset;
     }
 
-    virtual const char * getType() override { return PASSTHROUGHDURATION; };
-    virtual const char * getMD5() override { return "2aa5b5d494c682527e9e9161e1fa58ac"; };
+    const char * getType(){ return PASSTHROUGHDURATION; };
+    const char * getMD5(){ return "2aa5b5d494c682527e9e9161e1fa58ac"; };
 
   };
 
@@ -67,20 +67,20 @@ static const char PASSTHROUGHDURATION[] = "jsk_topic_tools/PassthroughDuration";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return PASSTHROUGHDURATION; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return PASSTHROUGHDURATION; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

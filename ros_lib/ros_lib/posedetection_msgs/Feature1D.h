@@ -33,14 +33,14 @@ namespace posedetection_msgs
 
     Feature1D():
       header(),
-      lines_length(0), st_lines(), lines(nullptr),
-      descriptors_length(0), st_descriptors(), descriptors(nullptr),
-      confidences_length(0), st_confidences(), confidences(nullptr),
+      lines_length(0), lines(NULL),
+      descriptors_length(0), descriptors(NULL),
+      confidences_length(0), confidences(NULL),
       descriptor_dim(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -99,7 +99,7 @@ namespace posedetection_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -173,8 +173,8 @@ namespace posedetection_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "posedetection_msgs/Feature1D"; };
-    virtual const char * getMD5() override { return "4568f21f2dd0840ca2d658d4d1710f33"; };
+    const char * getType(){ return "posedetection_msgs/Feature1D"; };
+    const char * getMD5(){ return "4568f21f2dd0840ca2d658d4d1710f33"; };
 
   };
 

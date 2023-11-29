@@ -33,11 +33,11 @@ namespace shape_msgs
 
     SolidPrimitive():
       type(0),
-      dimensions_length(0), st_dimensions(), dimensions(nullptr)
+      dimensions_length(0), dimensions(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->type >> (8 * 0)) & 0xFF;
@@ -53,7 +53,7 @@ namespace shape_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->type =  ((uint8_t) (*(inbuffer + offset)));
@@ -73,8 +73,8 @@ namespace shape_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "shape_msgs/SolidPrimitive"; };
-    virtual const char * getMD5() override { return "d8f8cbc74c5ff283fca29569ccefb45d"; };
+    const char * getType(){ return "shape_msgs/SolidPrimitive"; };
+    const char * getMD5(){ return "d8f8cbc74c5ff283fca29569ccefb45d"; };
 
   };
 

@@ -4,10 +4,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
+#include "moveit_msgs/RobotState.h"
+#include "moveit_msgs/CostSource.h"
 #include "moveit_msgs/ContactInformation.h"
 #include "moveit_msgs/Constraints.h"
-#include "moveit_msgs/CostSource.h"
-#include "moveit_msgs/RobotState.h"
 #include "moveit_msgs/ConstraintEvalResult.h"
 
 namespace moveit_msgs
@@ -32,7 +32,7 @@ static const char GETSTATEVALIDITY[] = "moveit_msgs/GetStateValidity";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->robot_state.serialize(outbuffer + offset);
@@ -45,7 +45,7 @@ static const char GETSTATEVALIDITY[] = "moveit_msgs/GetStateValidity";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->robot_state.deserialize(inbuffer + offset);
@@ -62,8 +62,8 @@ static const char GETSTATEVALIDITY[] = "moveit_msgs/GetStateValidity";
      return offset;
     }
 
-    virtual const char * getType() override { return GETSTATEVALIDITY; };
-    virtual const char * getMD5() override { return "a82b6cce5fd6d63051640aef60a848b1"; };
+    const char * getType(){ return GETSTATEVALIDITY; };
+    const char * getMD5(){ return "a82b6cce5fd6d63051640aef60a848b1"; };
 
   };
 
@@ -87,13 +87,13 @@ static const char GETSTATEVALIDITY[] = "moveit_msgs/GetStateValidity";
 
     GetStateValidityResponse():
       valid(0),
-      contacts_length(0), st_contacts(), contacts(nullptr),
-      cost_sources_length(0), st_cost_sources(), cost_sources(nullptr),
-      constraint_result_length(0), st_constraint_result(), constraint_result(nullptr)
+      contacts_length(0), contacts(NULL),
+      cost_sources_length(0), cost_sources(NULL),
+      constraint_result_length(0), constraint_result(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -130,7 +130,7 @@ static const char GETSTATEVALIDITY[] = "moveit_msgs/GetStateValidity";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -180,8 +180,8 @@ static const char GETSTATEVALIDITY[] = "moveit_msgs/GetStateValidity";
      return offset;
     }
 
-    virtual const char * getType() override { return GETSTATEVALIDITY; };
-    virtual const char * getMD5() override { return "e326fb22b7448f29c0e726d9270d9929"; };
+    const char * getType(){ return GETSTATEVALIDITY; };
+    const char * getMD5(){ return "e326fb22b7448f29c0e726d9270d9929"; };
 
   };
 

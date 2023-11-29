@@ -32,7 +32,7 @@ namespace jsk_gui_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -82,7 +82,7 @@ namespace jsk_gui_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -135,8 +135,8 @@ namespace jsk_gui_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_gui_msgs/Touch"; };
-    virtual const char * getMD5() override { return "d96a284d39fcc410f375ac68fd380177"; };
+    const char * getType(){ return "jsk_gui_msgs/Touch"; };
+    const char * getMD5(){ return "d96a284d39fcc410f375ac68fd380177"; };
 
   };
 

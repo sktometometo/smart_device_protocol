@@ -27,7 +27,7 @@ static const char MONGODELETEMSG[] = "mongodb_store_msgs/MongoDeleteMsg";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_database = strlen(this->database);
@@ -48,7 +48,7 @@ static const char MONGODELETEMSG[] = "mongodb_store_msgs/MongoDeleteMsg";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_database;
@@ -81,8 +81,8 @@ static const char MONGODELETEMSG[] = "mongodb_store_msgs/MongoDeleteMsg";
      return offset;
     }
 
-    virtual const char * getType() override { return MONGODELETEMSG; };
-    virtual const char * getMD5() override { return "8db26da88c264ed1aced8ce3427e0db0"; };
+    const char * getType(){ return MONGODELETEMSG; };
+    const char * getMD5(){ return "8db26da88c264ed1aced8ce3427e0db0"; };
 
   };
 
@@ -97,7 +97,7 @@ static const char MONGODELETEMSG[] = "mongodb_store_msgs/MongoDeleteMsg";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -110,7 +110,7 @@ static const char MONGODELETEMSG[] = "mongodb_store_msgs/MongoDeleteMsg";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -124,8 +124,8 @@ static const char MONGODELETEMSG[] = "mongodb_store_msgs/MongoDeleteMsg";
      return offset;
     }
 
-    virtual const char * getType() override { return MONGODELETEMSG; };
-    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    const char * getType(){ return MONGODELETEMSG; };
+    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

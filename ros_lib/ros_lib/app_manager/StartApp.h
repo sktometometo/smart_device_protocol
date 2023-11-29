@@ -23,11 +23,11 @@ static const char STARTAPP[] = "app_manager/StartApp";
 
     StartAppRequest():
       name(""),
-      args_length(0), st_args(), args(nullptr)
+      args_length(0), args(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -46,7 +46,7 @@ static const char STARTAPP[] = "app_manager/StartApp";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -73,8 +73,8 @@ static const char STARTAPP[] = "app_manager/StartApp";
      return offset;
     }
 
-    virtual const char * getType() override { return STARTAPP; };
-    virtual const char * getMD5() override { return "fcc3fd7d3a99df15b4752d0b8160ea6c"; };
+    const char * getType(){ return STARTAPP; };
+    const char * getMD5(){ return "fcc3fd7d3a99df15b4752d0b8160ea6c"; };
 
   };
 
@@ -98,7 +98,7 @@ static const char STARTAPP[] = "app_manager/StartApp";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -131,7 +131,7 @@ static const char STARTAPP[] = "app_manager/StartApp";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -174,8 +174,8 @@ static const char STARTAPP[] = "app_manager/StartApp";
      return offset;
     }
 
-    virtual const char * getType() override { return STARTAPP; };
-    virtual const char * getMD5() override { return "29589baf2876ff624d4cb5688c12265e"; };
+    const char * getType(){ return STARTAPP; };
+    const char * getMD5(){ return "29589baf2876ff624d4cb5688c12265e"; };
 
   };
 

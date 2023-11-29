@@ -47,7 +47,7 @@ namespace gazebo_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -81,7 +81,7 @@ namespace gazebo_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -116,8 +116,8 @@ namespace gazebo_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "gazebo_msgs/ODEPhysics"; };
-    virtual const char * getMD5() override { return "667d56ddbd547918c32d1934503dc335"; };
+    const char * getType(){ return "gazebo_msgs/ODEPhysics"; };
+    const char * getMD5(){ return "667d56ddbd547918c32d1934503dc335"; };
 
   };
 

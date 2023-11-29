@@ -26,12 +26,12 @@ namespace pr2_msgs
 
     PressureState():
       header(),
-      l_finger_tip_length(0), st_l_finger_tip(), l_finger_tip(nullptr),
-      r_finger_tip_length(0), st_r_finger_tip(), r_finger_tip(nullptr)
+      l_finger_tip_length(0), l_finger_tip(NULL),
+      r_finger_tip_length(0), r_finger_tip(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -68,7 +68,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -115,8 +115,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/PressureState"; };
-    virtual const char * getMD5() override { return "756fb3b75fa8884524fd0789a78eb04b"; };
+    const char * getType(){ return "pr2_msgs/PressureState"; };
+    const char * getMD5(){ return "756fb3b75fa8884524fd0789a78eb04b"; };
 
   };
 

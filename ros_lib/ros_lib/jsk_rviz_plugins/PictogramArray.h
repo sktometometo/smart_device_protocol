@@ -23,11 +23,11 @@ namespace jsk_rviz_plugins
 
     PictogramArray():
       header(),
-      pictograms_length(0), st_pictograms(), pictograms(nullptr)
+      pictograms_length(0), pictograms(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace jsk_rviz_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace jsk_rviz_plugins
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_rviz_plugins/PictogramArray"; };
-    virtual const char * getMD5() override { return "bfdafbfcdf121aed91dae673b47ae3fe"; };
+    const char * getType(){ return "jsk_rviz_plugins/PictogramArray"; };
+    const char * getMD5(){ return "bfdafbfcdf121aed91dae673b47ae3fe"; };
 
   };
 

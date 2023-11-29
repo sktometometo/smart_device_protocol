@@ -43,15 +43,15 @@ namespace gazebo_msgs
       info(""),
       collision1_name(""),
       collision2_name(""),
-      wrenches_length(0), st_wrenches(), wrenches(nullptr),
+      wrenches_length(0), wrenches(NULL),
       total_wrench(),
-      contact_positions_length(0), st_contact_positions(), contact_positions(nullptr),
-      contact_normals_length(0), st_contact_normals(), contact_normals(nullptr),
-      depths_length(0), st_depths(), depths(nullptr)
+      contact_positions_length(0), contact_positions(NULL),
+      contact_normals_length(0), contact_normals(NULL),
+      depths_length(0), depths(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_info = strlen(this->info);
@@ -105,7 +105,7 @@ namespace gazebo_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_info;
@@ -187,8 +187,8 @@ namespace gazebo_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "gazebo_msgs/ContactState"; };
-    virtual const char * getMD5() override { return "48c0ffb054b8c444f870cecea1ee50d9"; };
+    const char * getType(){ return "gazebo_msgs/ContactState"; };
+    const char * getMD5(){ return "48c0ffb054b8c444f870cecea1ee50d9"; };
 
   };
 

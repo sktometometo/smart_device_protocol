@@ -21,22 +21,22 @@ namespace jsk_footstep_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->feedback.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->feedback.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_footstep_msgs/PlanFootstepsFeedback"; };
-    virtual const char * getMD5() override { return "5f4757afbf7a130712f963e49c7f5f00"; };
+    const char * getType(){ return "jsk_footstep_msgs/PlanFootstepsFeedback"; };
+    const char * getMD5(){ return "5f4757afbf7a130712f963e49c7f5f00"; };
 
   };
 

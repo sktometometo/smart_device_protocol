@@ -18,20 +18,20 @@ static const char GETSTRING[] = "naoqi_bridge_msgs/GetString";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return GETSTRING; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return GETSTRING; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -46,7 +46,7 @@ static const char GETSTRING[] = "naoqi_bridge_msgs/GetString";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_data = strlen(this->data);
@@ -57,7 +57,7 @@ static const char GETSTRING[] = "naoqi_bridge_msgs/GetString";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_data;
@@ -72,8 +72,8 @@ static const char GETSTRING[] = "naoqi_bridge_msgs/GetString";
      return offset;
     }
 
-    virtual const char * getType() override { return GETSTRING; };
-    virtual const char * getMD5() override { return "992ce8a1687cec8c8bd883ec73ca41d1"; };
+    const char * getType(){ return GETSTRING; };
+    const char * getMD5(){ return "992ce8a1687cec8c8bd883ec73ca41d1"; };
 
   };
 

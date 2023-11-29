@@ -39,12 +39,12 @@ namespace naoqi_bridge_msgs
     AudioBuffer():
       header(),
       frequency(0),
-      channelMap_length(0), st_channelMap(), channelMap(nullptr),
-      data_length(0), st_data(), data(nullptr)
+      channelMap_length(0), channelMap(NULL),
+      data_length(0), data(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -78,7 +78,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -121,8 +121,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/AudioBuffer"; };
-    virtual const char * getMD5() override { return "50f300aa63f3c1b2f3d3173329165316"; };
+    const char * getType(){ return "naoqi_bridge_msgs/AudioBuffer"; };
+    const char * getMD5(){ return "50f300aa63f3c1b2f3d3173329165316"; };
 
   };
 

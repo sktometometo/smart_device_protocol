@@ -25,7 +25,7 @@ static const char SETLOAD[] = "franka_msgs/SetLoad";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->mass);
@@ -38,7 +38,7 @@ static const char SETLOAD[] = "franka_msgs/SetLoad";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->mass));
@@ -51,8 +51,8 @@ static const char SETLOAD[] = "franka_msgs/SetLoad";
      return offset;
     }
 
-    virtual const char * getType() override { return SETLOAD; };
-    virtual const char * getMD5() override { return "0bcbb33b081d0f0b2611ae00474a91d6"; };
+    const char * getType(){ return SETLOAD; };
+    const char * getMD5(){ return "0bcbb33b081d0f0b2611ae00474a91d6"; };
 
   };
 
@@ -70,7 +70,7 @@ static const char SETLOAD[] = "franka_msgs/SetLoad";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -88,7 +88,7 @@ static const char SETLOAD[] = "franka_msgs/SetLoad";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -111,8 +111,8 @@ static const char SETLOAD[] = "franka_msgs/SetLoad";
      return offset;
     }
 
-    virtual const char * getType() override { return SETLOAD; };
-    virtual const char * getMD5() override { return "45872d25d65c97743cc71afc6d4e884d"; };
+    const char * getType(){ return SETLOAD; };
+    const char * getMD5(){ return "45872d25d65c97743cc71afc6d4e884d"; };
 
   };
 

@@ -52,7 +52,7 @@ namespace view_controller_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->interpolation_mode >> (8 * 0)) & 0xFF;
@@ -94,7 +94,7 @@ namespace view_controller_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->interpolation_mode =  ((uint8_t) (*(inbuffer + offset)));
@@ -142,8 +142,8 @@ namespace view_controller_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "view_controller_msgs/CameraPlacement"; };
-    virtual const char * getMD5() override { return "38be6efe15caa86e2c835dd05ab88393"; };
+    const char * getType(){ return "view_controller_msgs/CameraPlacement"; };
+    const char * getMD5(){ return "38be6efe15caa86e2c835dd05ab88393"; };
 
   };
 

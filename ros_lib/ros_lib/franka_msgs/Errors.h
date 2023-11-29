@@ -140,7 +140,7 @@ namespace franka_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -433,7 +433,7 @@ namespace franka_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -767,8 +767,8 @@ namespace franka_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "franka_msgs/Errors"; };
-    virtual const char * getMD5() override { return "082e9a670c96d8bc64b53e32777458e7"; };
+    const char * getType(){ return "franka_msgs/Errors"; };
+    const char * getMD5(){ return "082e9a670c96d8bc64b53e32777458e7"; };
 
   };
 

@@ -21,7 +21,7 @@ static const char SUBSCRIBERS[] = "rosapi/Subscribers";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_topic = strlen(this->topic);
@@ -32,7 +32,7 @@ static const char SUBSCRIBERS[] = "rosapi/Subscribers";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_topic;
@@ -47,8 +47,8 @@ static const char SUBSCRIBERS[] = "rosapi/Subscribers";
      return offset;
     }
 
-    virtual const char * getType() override { return SUBSCRIBERS; };
-    virtual const char * getMD5() override { return "d8f94bae31b356b24d0427f80426d0c3"; };
+    const char * getType(){ return SUBSCRIBERS; };
+    const char * getMD5(){ return "d8f94bae31b356b24d0427f80426d0c3"; };
 
   };
 
@@ -61,11 +61,11 @@ static const char SUBSCRIBERS[] = "rosapi/Subscribers";
       _subscribers_type * subscribers;
 
     SubscribersResponse():
-      subscribers_length(0), st_subscribers(), subscribers(nullptr)
+      subscribers_length(0), subscribers(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->subscribers_length >> (8 * 0)) & 0xFF;
@@ -83,7 +83,7 @@ static const char SUBSCRIBERS[] = "rosapi/Subscribers";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t subscribers_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -109,8 +109,8 @@ static const char SUBSCRIBERS[] = "rosapi/Subscribers";
      return offset;
     }
 
-    virtual const char * getType() override { return SUBSCRIBERS; };
-    virtual const char * getMD5() override { return "22418cab5ba9531d8c2b738b4e56153b"; };
+    const char * getType(){ return SUBSCRIBERS; };
+    const char * getMD5(){ return "22418cab5ba9531d8c2b738b4e56153b"; };
 
   };
 

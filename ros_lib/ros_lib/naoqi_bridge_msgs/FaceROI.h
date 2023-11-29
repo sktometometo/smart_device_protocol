@@ -35,7 +35,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -101,7 +101,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -173,8 +173,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/FaceROI"; };
-    virtual const char * getMD5() override { return "a9f6bf2f53b2585ecc0ff57bd4a21df4"; };
+    const char * getType(){ return "naoqi_bridge_msgs/FaceROI"; };
+    const char * getMD5(){ return "a9f6bf2f53b2585ecc0ff57bd4a21df4"; };
 
   };
 

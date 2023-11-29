@@ -22,22 +22,22 @@ static const char SETDATUM[] = "robot_localization/SetDatum";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->geo_pose.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->geo_pose.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return SETDATUM; };
-    virtual const char * getMD5() override { return "fe903ca95d0210defda73a1629604439"; };
+    const char * getType(){ return SETDATUM; };
+    const char * getMD5(){ return "fe903ca95d0210defda73a1629604439"; };
 
   };
 
@@ -49,20 +49,20 @@ static const char SETDATUM[] = "robot_localization/SetDatum";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return SETDATUM; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return SETDATUM; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

@@ -23,7 +23,7 @@ namespace jsk_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -49,7 +49,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -77,8 +77,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/SparseOccupancyGridCell"; };
-    virtual const char * getMD5() override { return "a5179e922852f82ee6322db1f097ab64"; };
+    const char * getType(){ return "jsk_recognition_msgs/SparseOccupancyGridCell"; };
+    const char * getMD5(){ return "a5179e922852f82ee6322db1f097ab64"; };
 
   };
 

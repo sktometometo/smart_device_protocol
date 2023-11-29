@@ -20,7 +20,7 @@ static const char SETJOINTIMPEDANCE[] = "franka_msgs/SetJointImpedance";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       for( uint32_t i = 0; i < 7; i++){
@@ -29,7 +29,7 @@ static const char SETJOINTIMPEDANCE[] = "franka_msgs/SetJointImpedance";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       for( uint32_t i = 0; i < 7; i++){
@@ -38,8 +38,8 @@ static const char SETJOINTIMPEDANCE[] = "franka_msgs/SetJointImpedance";
      return offset;
     }
 
-    virtual const char * getType() override { return SETJOINTIMPEDANCE; };
-    virtual const char * getMD5() override { return "45e5482efb638f20554d876158c68e96"; };
+    const char * getType(){ return SETJOINTIMPEDANCE; };
+    const char * getMD5(){ return "45e5482efb638f20554d876158c68e96"; };
 
   };
 
@@ -57,7 +57,7 @@ static const char SETJOINTIMPEDANCE[] = "franka_msgs/SetJointImpedance";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -75,7 +75,7 @@ static const char SETJOINTIMPEDANCE[] = "franka_msgs/SetJointImpedance";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -98,8 +98,8 @@ static const char SETJOINTIMPEDANCE[] = "franka_msgs/SetJointImpedance";
      return offset;
     }
 
-    virtual const char * getType() override { return SETJOINTIMPEDANCE; };
-    virtual const char * getMD5() override { return "45872d25d65c97743cc71afc6d4e884d"; };
+    const char * getType(){ return SETJOINTIMPEDANCE; };
+    const char * getMD5(){ return "45872d25d65c97743cc71afc6d4e884d"; };
 
   };
 

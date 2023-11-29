@@ -34,14 +34,14 @@ namespace fingertip_pressure
 
     PressureInfoElement():
       frame_id(""),
-      center_length(0), st_center(), center(nullptr),
-      halfside1_length(0), st_halfside1(), halfside1(nullptr),
-      halfside2_length(0), st_halfside2(), halfside2(nullptr),
-      force_per_unit_length(0), st_force_per_unit(), force_per_unit(nullptr)
+      center_length(0), center(NULL),
+      halfside1_length(0), halfside1(NULL),
+      halfside2_length(0), halfside2(NULL),
+      force_per_unit_length(0), force_per_unit(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_frame_id = strlen(this->frame_id);
@@ -84,7 +84,7 @@ namespace fingertip_pressure
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_frame_id;
@@ -147,8 +147,8 @@ namespace fingertip_pressure
      return offset;
     }
 
-    virtual const char * getType() override { return "fingertip_pressure/PressureInfoElement"; };
-    virtual const char * getMD5() override { return "1cb486bb542ab85e1ff8d84fe9cc899f"; };
+    const char * getType(){ return "fingertip_pressure/PressureInfoElement"; };
+    const char * getMD5(){ return "1cb486bb542ab85e1ff8d84fe9cc899f"; };
 
   };
 

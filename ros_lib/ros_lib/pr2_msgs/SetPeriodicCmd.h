@@ -23,22 +23,22 @@ static const char SETPERIODICCMD[] = "pr2_msgs/SetPeriodicCmd";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->command.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->command.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return SETPERIODICCMD; };
-    virtual const char * getMD5() override { return "d4deedcc194c4a77110f7228904ee733"; };
+    const char * getType(){ return SETPERIODICCMD; };
+    const char * getMD5(){ return "d4deedcc194c4a77110f7228904ee733"; };
 
   };
 
@@ -53,7 +53,7 @@ static const char SETPERIODICCMD[] = "pr2_msgs/SetPeriodicCmd";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->start_time.sec >> (8 * 0)) & 0xFF;
@@ -69,7 +69,7 @@ static const char SETPERIODICCMD[] = "pr2_msgs/SetPeriodicCmd";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->start_time.sec =  ((uint32_t) (*(inbuffer + offset)));
@@ -85,8 +85,8 @@ static const char SETPERIODICCMD[] = "pr2_msgs/SetPeriodicCmd";
      return offset;
     }
 
-    virtual const char * getType() override { return SETPERIODICCMD; };
-    virtual const char * getMD5() override { return "3888666920054f1ef39d2df7a5d94b02"; };
+    const char * getType(){ return SETPERIODICCMD; };
+    const char * getMD5(){ return "3888666920054f1ef39d2df7a5d94b02"; };
 
   };
 

@@ -25,7 +25,7 @@ namespace people_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -33,7 +33,7 @@ namespace people_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -41,8 +41,8 @@ namespace people_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "people_msgs/PersonStamped"; };
-    virtual const char * getMD5() override { return "4a352a8b709eb9fec941a4f0f42651e7"; };
+    const char * getType(){ return "people_msgs/PersonStamped"; };
+    const char * getMD5(){ return "4a352a8b709eb9fec941a4f0f42651e7"; };
 
   };
 

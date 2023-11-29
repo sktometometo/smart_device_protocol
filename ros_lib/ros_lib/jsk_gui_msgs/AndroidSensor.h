@@ -35,7 +35,7 @@ namespace jsk_gui_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->accel_x);
@@ -47,7 +47,7 @@ namespace jsk_gui_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->accel_x));
@@ -59,8 +59,8 @@ namespace jsk_gui_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_gui_msgs/AndroidSensor"; };
-    virtual const char * getMD5() override { return "d832dbe3be7e7f061d963f2188f1a407"; };
+    const char * getType(){ return "jsk_gui_msgs/AndroidSensor"; };
+    const char * getMD5(){ return "d832dbe3be7e7f061d963f2188f1a407"; };
 
   };
 

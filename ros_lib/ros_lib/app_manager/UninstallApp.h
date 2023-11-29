@@ -21,7 +21,7 @@ static const char UNINSTALLAPP[] = "app_manager/UninstallApp";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -32,7 +32,7 @@ static const char UNINSTALLAPP[] = "app_manager/UninstallApp";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -47,8 +47,8 @@ static const char UNINSTALLAPP[] = "app_manager/UninstallApp";
      return offset;
     }
 
-    virtual const char * getType() override { return UNINSTALLAPP; };
-    virtual const char * getMD5() override { return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
+    const char * getType(){ return UNINSTALLAPP; };
+    const char * getMD5(){ return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
 
   };
 
@@ -66,7 +66,7 @@ static const char UNINSTALLAPP[] = "app_manager/UninstallApp";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -84,7 +84,7 @@ static const char UNINSTALLAPP[] = "app_manager/UninstallApp";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -107,8 +107,8 @@ static const char UNINSTALLAPP[] = "app_manager/UninstallApp";
      return offset;
     }
 
-    virtual const char * getType() override { return UNINSTALLAPP; };
-    virtual const char * getMD5() override { return "335f3f18ef026f9358ef38ecb7785332"; };
+    const char * getType(){ return UNINSTALLAPP; };
+    const char * getMD5(){ return "335f3f18ef026f9358ef38ecb7785332"; };
 
   };
 

@@ -26,7 +26,7 @@ namespace std_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_label = strlen(this->label);
@@ -47,7 +47,7 @@ namespace std_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_label;
@@ -72,8 +72,8 @@ namespace std_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "std_msgs/MultiArrayDimension"; };
-    virtual const char * getMD5() override { return "4cd0c83a8683deae40ecdac60e53bfa8"; };
+    const char * getType(){ return "std_msgs/MultiArrayDimension"; };
+    const char * getMD5(){ return "4cd0c83a8683deae40ecdac60e53bfa8"; };
 
   };
 

@@ -19,11 +19,11 @@ namespace opencv_apps
       _points_type * points;
 
     Contour():
-      points_length(0), st_points(), points(nullptr)
+      points_length(0), points(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->points_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t points_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/Contour"; };
-    virtual const char * getMD5() override { return "8f02263beef99aa03117a577a3eb879d"; };
+    const char * getType(){ return "opencv_apps/Contour"; };
+    const char * getMD5(){ return "8f02263beef99aa03117a577a3eb879d"; };
 
   };
 

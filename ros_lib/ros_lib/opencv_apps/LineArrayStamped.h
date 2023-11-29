@@ -23,11 +23,11 @@ namespace opencv_apps
 
     LineArrayStamped():
       header(),
-      lines_length(0), st_lines(), lines(nullptr)
+      lines_length(0), lines(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/LineArrayStamped"; };
-    virtual const char * getMD5() override { return "8ad5d104256b4f6774479453d1118f74"; };
+    const char * getType(){ return "opencv_apps/LineArrayStamped"; };
+    const char * getMD5(){ return "8ad5d104256b4f6774479453d1118f74"; };
 
   };
 

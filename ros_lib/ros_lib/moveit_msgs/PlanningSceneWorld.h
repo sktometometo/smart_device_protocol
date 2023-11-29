@@ -22,12 +22,12 @@ namespace moveit_msgs
       _octomap_type octomap;
 
     PlanningSceneWorld():
-      collision_objects_length(0), st_collision_objects(), collision_objects(nullptr),
+      collision_objects_length(0), collision_objects(NULL),
       octomap()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->collision_objects_length >> (8 * 0)) & 0xFF;
@@ -42,7 +42,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t collision_objects_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -61,8 +61,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/PlanningSceneWorld"; };
-    virtual const char * getMD5() override { return "79457311445f53d410ab4e3781de8447"; };
+    const char * getType(){ return "moveit_msgs/PlanningSceneWorld"; };
+    const char * getMD5(){ return "79457311445f53d410ab4e3781de8447"; };
 
   };
 

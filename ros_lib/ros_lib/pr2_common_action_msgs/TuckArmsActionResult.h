@@ -29,7 +29,7 @@ namespace pr2_common_action_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace pr2_common_action_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace pr2_common_action_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_common_action_msgs/TuckArmsActionResult"; };
-    virtual const char * getMD5() override { return "a151ea69df95c9525872b19d347d7f8e"; };
+    const char * getType(){ return "pr2_common_action_msgs/TuckArmsActionResult"; };
+    const char * getMD5(){ return "a151ea69df95c9525872b19d347d7f8e"; };
 
   };
 

@@ -40,7 +40,7 @@ namespace tf2_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_target_frame = strlen(this->target_frame);
@@ -98,7 +98,7 @@ namespace tf2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_target_frame;
@@ -169,8 +169,8 @@ namespace tf2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "tf2_msgs/LookupTransformGoal"; };
-    virtual const char * getMD5() override { return "35e3720468131d675a18bb6f3e5f22f8"; };
+    const char * getType(){ return "tf2_msgs/LookupTransformGoal"; };
+    const char * getMD5(){ return "35e3720468131d675a18bb6f3e5f22f8"; };
 
   };
 

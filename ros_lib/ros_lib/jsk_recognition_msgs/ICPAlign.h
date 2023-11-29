@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "sensor_msgs/PointCloud2.h"
 #include "jsk_recognition_msgs/ICPResult.h"
+#include "sensor_msgs/PointCloud2.h"
 
 namespace jsk_recognition_msgs
 {
@@ -26,7 +26,7 @@ static const char ICPALIGN[] = "jsk_recognition_msgs/ICPAlign";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->reference_cloud.serialize(outbuffer + offset);
@@ -34,7 +34,7 @@ static const char ICPALIGN[] = "jsk_recognition_msgs/ICPAlign";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->reference_cloud.deserialize(inbuffer + offset);
@@ -42,8 +42,8 @@ static const char ICPALIGN[] = "jsk_recognition_msgs/ICPAlign";
      return offset;
     }
 
-    virtual const char * getType() override { return ICPALIGN; };
-    virtual const char * getMD5() override { return "3e0df534693afbbecb9cc87944720695"; };
+    const char * getType(){ return ICPALIGN; };
+    const char * getMD5(){ return "3e0df534693afbbecb9cc87944720695"; };
 
   };
 
@@ -58,22 +58,22 @@ static const char ICPALIGN[] = "jsk_recognition_msgs/ICPAlign";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->result.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->result.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return ICPALIGN; };
-    virtual const char * getMD5() override { return "a511a876c2be142caffd78741c68e4cf"; };
+    const char * getType(){ return ICPALIGN; };
+    const char * getMD5(){ return "a511a876c2be142caffd78741c68e4cf"; };
 
   };
 

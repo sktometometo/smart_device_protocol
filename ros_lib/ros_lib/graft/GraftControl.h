@@ -36,7 +36,7 @@ namespace graft
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -47,7 +47,7 @@ namespace graft
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -58,8 +58,8 @@ namespace graft
      return offset;
     }
 
-    virtual const char * getType() override { return "graft/GraftControl"; };
-    virtual const char * getMD5() override { return "f41b0858f042a487e729d7efdbffed39"; };
+    const char * getType(){ return "graft/GraftControl"; };
+    const char * getMD5(){ return "f41b0858f042a487e729d7efdbffed39"; };
 
   };
 

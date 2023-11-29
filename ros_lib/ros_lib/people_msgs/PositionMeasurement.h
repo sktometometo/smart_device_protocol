@@ -39,7 +39,7 @@ namespace people_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -68,7 +68,7 @@ namespace people_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -106,8 +106,8 @@ namespace people_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "people_msgs/PositionMeasurement"; };
-    virtual const char * getMD5() override { return "54fa938b4ec28728e01575b79eb0ec7c"; };
+    const char * getType(){ return "people_msgs/PositionMeasurement"; };
+    const char * getMD5(){ return "54fa938b4ec28728e01575b79eb0ec7c"; };
 
   };
 

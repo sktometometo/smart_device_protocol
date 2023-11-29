@@ -28,11 +28,11 @@ namespace mbf_msgs
       target_pose(),
       controller(""),
       planner(""),
-      recovery_behaviors_length(0), st_recovery_behaviors(), recovery_behaviors(nullptr)
+      recovery_behaviors_length(0), recovery_behaviors(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->target_pose.serialize(outbuffer + offset);
@@ -61,7 +61,7 @@ namespace mbf_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->target_pose.deserialize(inbuffer + offset);
@@ -106,8 +106,8 @@ namespace mbf_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "mbf_msgs/MoveBaseGoal"; };
-    virtual const char * getMD5() override { return "722601faf59588c53b718bb090b96808"; };
+    const char * getType(){ return "mbf_msgs/MoveBaseGoal"; };
+    const char * getMD5(){ return "722601faf59588c53b718bb090b96808"; };
 
   };
 

@@ -31,7 +31,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -48,7 +48,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -66,8 +66,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/StatusChangeStamped"; };
-    virtual const char * getMD5() override { return "631ab2246eca82d839e3a99b76567775"; };
+    const char * getType(){ return "naoqi_bridge_msgs/StatusChangeStamped"; };
+    const char * getMD5(){ return "631ab2246eca82d839e3a99b76567775"; };
 
   };
 

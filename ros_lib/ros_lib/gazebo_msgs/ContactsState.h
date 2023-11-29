@@ -23,11 +23,11 @@ namespace gazebo_msgs
 
     ContactsState():
       header(),
-      states_length(0), st_states(), states(nullptr)
+      states_length(0), states(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace gazebo_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace gazebo_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "gazebo_msgs/ContactsState"; };
-    virtual const char * getMD5() override { return "acbcb1601a8e525bf72509f18e6f668d"; };
+    const char * getType(){ return "gazebo_msgs/ContactsState"; };
+    const char * getMD5(){ return "acbcb1601a8e525bf72509f18e6f668d"; };
 
   };
 

@@ -20,22 +20,22 @@ namespace pr2_gripper_sensor_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->fingertip_force);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->fingertip_force));
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_gripper_sensor_msgs/PR2GripperForceServoCommand"; };
-    virtual const char * getMD5() override { return "dd4b2a0dfafa27b67d2002841f544379"; };
+    const char * getType(){ return "pr2_gripper_sensor_msgs/PR2GripperForceServoCommand"; };
+    const char * getMD5(){ return "dd4b2a0dfafa27b67d2002841f544379"; };
 
   };
 

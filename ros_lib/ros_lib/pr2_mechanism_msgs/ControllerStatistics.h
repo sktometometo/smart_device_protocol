@@ -43,7 +43,7 @@ namespace pr2_mechanism_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -121,7 +121,7 @@ namespace pr2_mechanism_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -205,8 +205,8 @@ namespace pr2_mechanism_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_mechanism_msgs/ControllerStatistics"; };
-    virtual const char * getMD5() override { return "6d15d137eea402018e3c7c8dbecd4b95"; };
+    const char * getType(){ return "pr2_mechanism_msgs/ControllerStatistics"; };
+    const char * getMD5(){ return "6d15d137eea402018e3c7c8dbecd4b95"; };
 
   };
 

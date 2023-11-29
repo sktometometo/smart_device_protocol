@@ -31,7 +31,7 @@ namespace gazebo_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_link_name = strlen(this->link_name);
@@ -49,7 +49,7 @@ namespace gazebo_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_link_name;
@@ -75,8 +75,8 @@ namespace gazebo_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "gazebo_msgs/LinkState"; };
-    virtual const char * getMD5() override { return "0818ebbf28ce3a08d48ab1eaa7309ebe"; };
+    const char * getType(){ return "gazebo_msgs/LinkState"; };
+    const char * getMD5(){ return "0818ebbf28ce3a08d48ab1eaa7309ebe"; };
 
   };
 

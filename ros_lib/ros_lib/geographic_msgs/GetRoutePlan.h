@@ -29,7 +29,7 @@ static const char GETROUTEPLAN[] = "geographic_msgs/GetRoutePlan";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->network.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ static const char GETROUTEPLAN[] = "geographic_msgs/GetRoutePlan";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->network.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ static const char GETROUTEPLAN[] = "geographic_msgs/GetRoutePlan";
      return offset;
     }
 
-    virtual const char * getType() override { return GETROUTEPLAN; };
-    virtual const char * getMD5() override { return "e56ac34268c6d575dabb30f42da4a47a"; };
+    const char * getType(){ return GETROUTEPLAN; };
+    const char * getMD5(){ return "e56ac34268c6d575dabb30f42da4a47a"; };
 
   };
 
@@ -69,7 +69,7 @@ static const char GETROUTEPLAN[] = "geographic_msgs/GetRoutePlan";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -88,7 +88,7 @@ static const char GETROUTEPLAN[] = "geographic_msgs/GetRoutePlan";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -112,8 +112,8 @@ static const char GETROUTEPLAN[] = "geographic_msgs/GetRoutePlan";
      return offset;
     }
 
-    virtual const char * getType() override { return GETROUTEPLAN; };
-    virtual const char * getMD5() override { return "28ee54f0ccb2ab28b46048ebc6fa5aff"; };
+    const char * getType(){ return GETROUTEPLAN; };
+    const char * getMD5(){ return "28ee54f0ccb2ab28b46048ebc6fa5aff"; };
 
   };
 

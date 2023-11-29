@@ -45,19 +45,19 @@ namespace moveit_msgs
     PlaceGoal():
       group_name(""),
       attached_object_name(""),
-      place_locations_length(0), st_place_locations(), place_locations(nullptr),
+      place_locations_length(0), place_locations(NULL),
       place_eef(0),
       support_surface_name(""),
       allow_gripper_support_collision(0),
       path_constraints(),
       planner_id(""),
-      allowed_touch_objects_length(0), st_allowed_touch_objects(), allowed_touch_objects(nullptr),
+      allowed_touch_objects_length(0), allowed_touch_objects(NULL),
       allowed_planning_time(0),
       planning_options()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_group_name = strlen(this->group_name);
@@ -120,7 +120,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_group_name;
@@ -213,8 +213,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/PlaceGoal"; };
-    virtual const char * getMD5() override { return "b5ff24625cebec440c18cd2e1d833764"; };
+    const char * getType(){ return "moveit_msgs/PlaceGoal"; };
+    const char * getMD5(){ return "b5ff24625cebec440c18cd2e1d833764"; };
 
   };
 

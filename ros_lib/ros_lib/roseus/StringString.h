@@ -21,7 +21,7 @@ static const char STRINGSTRING[] = "roseus/StringString";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_str = strlen(this->str);
@@ -32,7 +32,7 @@ static const char STRINGSTRING[] = "roseus/StringString";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_str;
@@ -47,8 +47,8 @@ static const char STRINGSTRING[] = "roseus/StringString";
      return offset;
     }
 
-    virtual const char * getType() override { return STRINGSTRING; };
-    virtual const char * getMD5() override { return "994972b6e03928b2476860ce6c4c8e17"; };
+    const char * getType(){ return STRINGSTRING; };
+    const char * getMD5(){ return "994972b6e03928b2476860ce6c4c8e17"; };
 
   };
 
@@ -63,7 +63,7 @@ static const char STRINGSTRING[] = "roseus/StringString";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_str = strlen(this->str);
@@ -74,7 +74,7 @@ static const char STRINGSTRING[] = "roseus/StringString";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_str;
@@ -89,8 +89,8 @@ static const char STRINGSTRING[] = "roseus/StringString";
      return offset;
     }
 
-    virtual const char * getType() override { return STRINGSTRING; };
-    virtual const char * getMD5() override { return "994972b6e03928b2476860ce6c4c8e17"; };
+    const char * getType(){ return STRINGSTRING; };
+    const char * getMD5(){ return "994972b6e03928b2476860ce6c4c8e17"; };
 
   };
 

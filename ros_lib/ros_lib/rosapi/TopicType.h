@@ -21,7 +21,7 @@ static const char TOPICTYPE[] = "rosapi/TopicType";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_topic = strlen(this->topic);
@@ -32,7 +32,7 @@ static const char TOPICTYPE[] = "rosapi/TopicType";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_topic;
@@ -47,8 +47,8 @@ static const char TOPICTYPE[] = "rosapi/TopicType";
      return offset;
     }
 
-    virtual const char * getType() override { return TOPICTYPE; };
-    virtual const char * getMD5() override { return "d8f94bae31b356b24d0427f80426d0c3"; };
+    const char * getType(){ return TOPICTYPE; };
+    const char * getMD5(){ return "d8f94bae31b356b24d0427f80426d0c3"; };
 
   };
 
@@ -63,7 +63,7 @@ static const char TOPICTYPE[] = "rosapi/TopicType";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_type = strlen(this->type);
@@ -74,7 +74,7 @@ static const char TOPICTYPE[] = "rosapi/TopicType";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_type;
@@ -89,8 +89,8 @@ static const char TOPICTYPE[] = "rosapi/TopicType";
      return offset;
     }
 
-    virtual const char * getType() override { return TOPICTYPE; };
-    virtual const char * getMD5() override { return "dc67331de85cf97091b7d45e5c64ab75"; };
+    const char * getType(){ return TOPICTYPE; };
+    const char * getMD5(){ return "dc67331de85cf97091b7d45e5c64ab75"; };
 
   };
 

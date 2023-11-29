@@ -19,11 +19,11 @@ namespace opencv_apps
       _faces_type * faces;
 
     FaceArray():
-      faces_length(0), st_faces(), faces(nullptr)
+      faces_length(0), faces(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->faces_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t faces_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/FaceArray"; };
-    virtual const char * getMD5() override { return "3ae7a36ff47d72f5dd1d764612b2b3c8"; };
+    const char * getType(){ return "opencv_apps/FaceArray"; };
+    const char * getMD5(){ return "3ae7a36ff47d72f5dd1d764612b2b3c8"; };
 
   };
 

@@ -26,7 +26,7 @@ namespace jsk_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->min_value);
@@ -39,7 +39,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->min_value));
@@ -52,8 +52,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/HistogramWithRangeBin"; };
-    virtual const char * getMD5() override { return "a7fe6c3021fcba2c6357f3db21601551"; };
+    const char * getType(){ return "jsk_recognition_msgs/HistogramWithRangeBin"; };
+    const char * getMD5(){ return "a7fe6c3021fcba2c6357f3db21601551"; };
 
   };
 

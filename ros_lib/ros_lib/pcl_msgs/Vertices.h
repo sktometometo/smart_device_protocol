@@ -18,11 +18,11 @@ namespace pcl_msgs
       _vertices_type * vertices;
 
     Vertices():
-      vertices_length(0), st_vertices(), vertices(nullptr)
+      vertices_length(0), vertices(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->vertices_length >> (8 * 0)) & 0xFF;
@@ -40,7 +40,7 @@ namespace pcl_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t vertices_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -62,8 +62,8 @@ namespace pcl_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pcl_msgs/Vertices"; };
-    virtual const char * getMD5() override { return "39bd7b1c23763ddd1b882b97cb7cfe11"; };
+    const char * getType(){ return "pcl_msgs/Vertices"; };
+    const char * getMD5(){ return "39bd7b1c23763ddd1b882b97cb7cfe11"; };
 
   };
 

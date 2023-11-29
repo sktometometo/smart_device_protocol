@@ -48,7 +48,7 @@ namespace roseus
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       for( uint32_t i = 0; i < 3; i++){
@@ -179,7 +179,7 @@ namespace roseus
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       for( uint32_t i = 0; i < 3; i++){
@@ -316,8 +316,8 @@ namespace roseus
      return offset;
     }
 
-    virtual const char * getType() override { return "roseus/FixedArray"; };
-    virtual const char * getMD5() override { return "6b30ccf11bc7409743664778a763a8c9"; };
+    const char * getType(){ return "roseus/FixedArray"; };
+    const char * getMD5(){ return "6b30ccf11bc7409743664778a763a8c9"; };
 
   };
 

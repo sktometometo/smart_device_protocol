@@ -18,20 +18,20 @@ static const char ENVIRONMENTLOCK[] = "jsk_recognition_msgs/EnvironmentLock";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return ENVIRONMENTLOCK; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return ENVIRONMENTLOCK; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -46,7 +46,7 @@ static const char ENVIRONMENTLOCK[] = "jsk_recognition_msgs/EnvironmentLock";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->environment_id >> (8 * 0)) & 0xFF;
@@ -57,7 +57,7 @@ static const char ENVIRONMENTLOCK[] = "jsk_recognition_msgs/EnvironmentLock";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->environment_id =  ((uint32_t) (*(inbuffer + offset)));
@@ -68,8 +68,8 @@ static const char ENVIRONMENTLOCK[] = "jsk_recognition_msgs/EnvironmentLock";
      return offset;
     }
 
-    virtual const char * getType() override { return ENVIRONMENTLOCK; };
-    virtual const char * getMD5() override { return "109afc0d3bd22aa461d45c8ef5ab6d75"; };
+    const char * getType(){ return ENVIRONMENTLOCK; };
+    const char * getMD5(){ return "109afc0d3bd22aa461d45c8ef5ab6d75"; };
 
   };
 

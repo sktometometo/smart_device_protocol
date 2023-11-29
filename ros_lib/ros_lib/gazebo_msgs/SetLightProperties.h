@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "std_msgs/ColorRGBA.h"
-#include "geometry_msgs/Pose.h"
 #include "geometry_msgs/Vector3.h"
+#include "geometry_msgs/Pose.h"
+#include "std_msgs/ColorRGBA.h"
 
 namespace gazebo_msgs
 {
@@ -48,7 +48,7 @@ static const char SETLIGHTPROPERTIES[] = "gazebo_msgs/SetLightProperties";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_light_name = strlen(this->light_name);
@@ -73,7 +73,7 @@ static const char SETLIGHTPROPERTIES[] = "gazebo_msgs/SetLightProperties";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_light_name;
@@ -103,8 +103,8 @@ static const char SETLIGHTPROPERTIES[] = "gazebo_msgs/SetLightProperties";
      return offset;
     }
 
-    virtual const char * getType() override { return SETLIGHTPROPERTIES; };
-    virtual const char * getMD5() override { return "10d953f2306aec18460eb80dd94fdd47"; };
+    const char * getType(){ return SETLIGHTPROPERTIES; };
+    const char * getMD5(){ return "10d953f2306aec18460eb80dd94fdd47"; };
 
   };
 
@@ -122,7 +122,7 @@ static const char SETLIGHTPROPERTIES[] = "gazebo_msgs/SetLightProperties";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -140,7 +140,7 @@ static const char SETLIGHTPROPERTIES[] = "gazebo_msgs/SetLightProperties";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -163,8 +163,8 @@ static const char SETLIGHTPROPERTIES[] = "gazebo_msgs/SetLightProperties";
      return offset;
     }
 
-    virtual const char * getType() override { return SETLIGHTPROPERTIES; };
-    virtual const char * getMD5() override { return "2ec6f3eff0161f4257b808b12bc830c2"; };
+    const char * getType(){ return SETLIGHTPROPERTIES; };
+    const char * getMD5(){ return "2ec6f3eff0161f4257b808b12bc830c2"; };
 
   };
 

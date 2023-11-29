@@ -21,22 +21,22 @@ namespace object_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->recognized_objects.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->recognized_objects.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return "object_recognition_msgs/ObjectRecognitionResult"; };
-    virtual const char * getMD5() override { return "868e41288f9f8636e2b6c51f1af6aa9c"; };
+    const char * getType(){ return "object_recognition_msgs/ObjectRecognitionResult"; };
+    const char * getMD5(){ return "868e41288f9f8636e2b6c51f1af6aa9c"; };
 
   };
 

@@ -29,7 +29,7 @@ namespace franka_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->action_goal.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace franka_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->action_goal.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace franka_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "franka_msgs/ErrorRecoveryAction"; };
-    virtual const char * getMD5() override { return "d5a016b49f278075666fbc901debbd08"; };
+    const char * getType(){ return "franka_msgs/ErrorRecoveryAction"; };
+    const char * getMD5(){ return "d5a016b49f278075666fbc901debbd08"; };
 
   };
 

@@ -21,7 +21,7 @@ static const char SETUTMZONE[] = "robot_localization/SetUTMZone";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_utm_zone = strlen(this->utm_zone);
@@ -32,7 +32,7 @@ static const char SETUTMZONE[] = "robot_localization/SetUTMZone";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_utm_zone;
@@ -47,8 +47,8 @@ static const char SETUTMZONE[] = "robot_localization/SetUTMZone";
      return offset;
     }
 
-    virtual const char * getType() override { return SETUTMZONE; };
-    virtual const char * getMD5() override { return "893fd74d45efde020666acda18d3cccc"; };
+    const char * getType(){ return SETUTMZONE; };
+    const char * getMD5(){ return "893fd74d45efde020666acda18d3cccc"; };
 
   };
 
@@ -60,20 +60,20 @@ static const char SETUTMZONE[] = "robot_localization/SetUTMZone";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return SETUTMZONE; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return SETUTMZONE; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

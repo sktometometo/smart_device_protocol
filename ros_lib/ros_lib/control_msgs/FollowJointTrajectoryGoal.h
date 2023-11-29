@@ -30,13 +30,13 @@ namespace control_msgs
 
     FollowJointTrajectoryGoal():
       trajectory(),
-      path_tolerance_length(0), st_path_tolerance(), path_tolerance(nullptr),
-      goal_tolerance_length(0), st_goal_tolerance(), goal_tolerance(nullptr),
+      path_tolerance_length(0), path_tolerance(NULL),
+      goal_tolerance_length(0), goal_tolerance(NULL),
       goal_time_tolerance()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->trajectory.serialize(outbuffer + offset);
@@ -69,7 +69,7 @@ namespace control_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->trajectory.deserialize(inbuffer + offset);
@@ -110,8 +110,8 @@ namespace control_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "control_msgs/FollowJointTrajectoryGoal"; };
-    virtual const char * getMD5() override { return "69636787b6ecbde4d61d711979bc7ecb"; };
+    const char * getType(){ return "control_msgs/FollowJointTrajectoryGoal"; };
+    const char * getMD5(){ return "69636787b6ecbde4d61d711979bc7ecb"; };
 
   };
 

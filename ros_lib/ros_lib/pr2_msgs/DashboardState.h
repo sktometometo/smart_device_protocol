@@ -45,7 +45,7 @@ namespace pr2_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->motors_halted.serialize(outbuffer + offset);
@@ -83,7 +83,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->motors_halted.deserialize(inbuffer + offset);
@@ -125,8 +125,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/DashboardState"; };
-    virtual const char * getMD5() override { return "db0cd0d535d75e0f6257b20c403e87f5"; };
+    const char * getType(){ return "pr2_msgs/DashboardState"; };
+    const char * getMD5(){ return "db0cd0d535d75e0f6257b20c403e87f5"; };
 
   };
 

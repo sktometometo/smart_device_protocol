@@ -21,11 +21,11 @@ namespace mongodb_store_msgs
 
     SerialisedMessage():
       type(""),
-      msg_length(0), st_msg(), msg(nullptr)
+      msg_length(0), msg(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_type = strlen(this->type);
@@ -45,7 +45,7 @@ namespace mongodb_store_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_type;
@@ -73,8 +73,8 @@ namespace mongodb_store_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "mongodb_store_msgs/SerialisedMessage"; };
-    virtual const char * getMD5() override { return "42f77e70b6ff70f99d1597d836874cfc"; };
+    const char * getType(){ return "mongodb_store_msgs/SerialisedMessage"; };
+    const char * getMD5(){ return "42f77e70b6ff70f99d1597d836874cfc"; };
 
   };
 

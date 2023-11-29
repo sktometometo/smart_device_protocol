@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "visualization_msgs/Marker.h"
 #include "geometry_msgs/PoseStamped.h"
+#include "visualization_msgs/Marker.h"
 
 namespace jsk_interactive_marker
 {
@@ -27,11 +27,11 @@ static const char MARKERSETPOSE[] = "jsk_interactive_marker/MarkerSetPose";
     MarkerSetPoseRequest():
       marker_name(""),
       pose(),
-      markers_length(0), st_markers(), markers(nullptr)
+      markers_length(0), markers(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_marker_name = strlen(this->marker_name);
@@ -51,7 +51,7 @@ static const char MARKERSETPOSE[] = "jsk_interactive_marker/MarkerSetPose";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_marker_name;
@@ -79,8 +79,8 @@ static const char MARKERSETPOSE[] = "jsk_interactive_marker/MarkerSetPose";
      return offset;
     }
 
-    virtual const char * getType() override { return MARKERSETPOSE; };
-    virtual const char * getMD5() override { return "ad9cd9afd2203415fba0c5648ca2decb"; };
+    const char * getType(){ return MARKERSETPOSE; };
+    const char * getMD5(){ return "ad9cd9afd2203415fba0c5648ca2decb"; };
 
   };
 
@@ -95,22 +95,22 @@ static const char MARKERSETPOSE[] = "jsk_interactive_marker/MarkerSetPose";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->pose.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->pose.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return MARKERSETPOSE; };
-    virtual const char * getMD5() override { return "3f8930d968a3e84d471dff917bb1cdae"; };
+    const char * getType(){ return MARKERSETPOSE; };
+    const char * getMD5(){ return "3f8930d968a3e84d471dff917bb1cdae"; };
 
   };
 

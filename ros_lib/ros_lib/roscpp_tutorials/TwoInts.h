@@ -24,7 +24,7 @@ static const char TWOINTS[] = "roscpp_tutorials/TwoInts";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -58,7 +58,7 @@ static const char TWOINTS[] = "roscpp_tutorials/TwoInts";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -94,8 +94,8 @@ static const char TWOINTS[] = "roscpp_tutorials/TwoInts";
      return offset;
     }
 
-    virtual const char * getType() override { return TWOINTS; };
-    virtual const char * getMD5() override { return "36d09b846be0b371c5f190354dd3153e"; };
+    const char * getType(){ return TWOINTS; };
+    const char * getMD5(){ return "36d09b846be0b371c5f190354dd3153e"; };
 
   };
 
@@ -110,7 +110,7 @@ static const char TWOINTS[] = "roscpp_tutorials/TwoInts";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -130,7 +130,7 @@ static const char TWOINTS[] = "roscpp_tutorials/TwoInts";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -151,8 +151,8 @@ static const char TWOINTS[] = "roscpp_tutorials/TwoInts";
      return offset;
     }
 
-    virtual const char * getType() override { return TWOINTS; };
-    virtual const char * getMD5() override { return "b88405221c77b1878a3cbbfff53428d7"; };
+    const char * getType(){ return TWOINTS; };
+    const char * getMD5(){ return "b88405221c77b1878a3cbbfff53428d7"; };
 
   };
 

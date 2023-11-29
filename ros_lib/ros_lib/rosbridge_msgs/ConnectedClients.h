@@ -19,11 +19,11 @@ namespace rosbridge_msgs
       _clients_type * clients;
 
     ConnectedClients():
-      clients_length(0), st_clients(), clients(nullptr)
+      clients_length(0), clients(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->clients_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace rosbridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t clients_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace rosbridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "rosbridge_msgs/ConnectedClients"; };
-    virtual const char * getMD5() override { return "d0d53b0c0aa23aa7e4cf52f49bca4b69"; };
+    const char * getType(){ return "rosbridge_msgs/ConnectedClients"; };
+    const char * getMD5(){ return "d0d53b0c0aa23aa7e4cf52f49bca4b69"; };
 
   };
 

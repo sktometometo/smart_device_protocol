@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "mongodb_store_msgs/StringPairList.h"
 #include "mongodb_store_msgs/SerialisedMessage.h"
+#include "mongodb_store_msgs/StringPairList.h"
 
 namespace mongodb_store_msgs
 {
@@ -41,7 +41,7 @@ static const char MONGOUPDATEMSG[] = "mongodb_store_msgs/MongoUpdateMsg";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_database = strlen(this->database);
@@ -68,7 +68,7 @@ static const char MONGOUPDATEMSG[] = "mongodb_store_msgs/MongoUpdateMsg";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_database;
@@ -104,8 +104,8 @@ static const char MONGOUPDATEMSG[] = "mongodb_store_msgs/MongoUpdateMsg";
      return offset;
     }
 
-    virtual const char * getType() override { return MONGOUPDATEMSG; };
-    virtual const char * getMD5() override { return "5d87a90aa8c3d8f4cf31305f10951711"; };
+    const char * getType(){ return MONGOUPDATEMSG; };
+    const char * getMD5(){ return "5d87a90aa8c3d8f4cf31305f10951711"; };
 
   };
 
@@ -123,7 +123,7 @@ static const char MONGOUPDATEMSG[] = "mongodb_store_msgs/MongoUpdateMsg";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_id = strlen(this->id);
@@ -141,7 +141,7 @@ static const char MONGOUPDATEMSG[] = "mongodb_store_msgs/MongoUpdateMsg";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_id;
@@ -164,8 +164,8 @@ static const char MONGOUPDATEMSG[] = "mongodb_store_msgs/MongoUpdateMsg";
      return offset;
     }
 
-    virtual const char * getType() override { return MONGOUPDATEMSG; };
-    virtual const char * getMD5() override { return "eb98d6e8d810388b13fa8e5a365eec6a"; };
+    const char * getType(){ return MONGOUPDATEMSG; };
+    const char * getMD5(){ return "eb98d6e8d810388b13fa8e5a365eec6a"; };
 
   };
 

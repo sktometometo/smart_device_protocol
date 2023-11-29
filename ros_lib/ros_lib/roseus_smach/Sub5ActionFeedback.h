@@ -29,7 +29,7 @@ namespace roseus_smach
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace roseus_smach
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace roseus_smach
      return offset;
     }
 
-    virtual const char * getType() override { return "roseus_smach/Sub5ActionFeedback"; };
-    virtual const char * getMD5() override { return "ce7bcc860ef310bc2edbb3a3a2388663"; };
+    const char * getType(){ return "roseus_smach/Sub5ActionFeedback"; };
+    const char * getMD5(){ return "ce7bcc860ef310bc2edbb3a3a2388663"; };
 
   };
 

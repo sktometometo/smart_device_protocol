@@ -41,7 +41,7 @@ namespace jsk_interactive_marker
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -62,7 +62,7 @@ namespace jsk_interactive_marker
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -91,8 +91,8 @@ namespace jsk_interactive_marker
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_interactive_marker/MoveModel"; };
-    virtual const char * getMD5() override { return "61edcddd6ca50e876e68d4fcf06c90f6"; };
+    const char * getType(){ return "jsk_interactive_marker/MoveModel"; };
+    const char * getMD5(){ return "61edcddd6ca50e876e68d4fcf06c90f6"; };
 
   };
 

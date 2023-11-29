@@ -24,11 +24,11 @@ namespace moveit_msgs
     PlannerInterfaceDescription():
       name(""),
       pipeline_id(""),
-      planner_ids_length(0), st_planner_ids(), planner_ids(nullptr)
+      planner_ids_length(0), planner_ids(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -56,7 +56,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -100,8 +100,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/PlannerInterfaceDescription"; };
-    virtual const char * getMD5() override { return "3b93afb00ba165a83730c4eb03cd1ab7"; };
+    const char * getType(){ return "moveit_msgs/PlannerInterfaceDescription"; };
+    const char * getMD5(){ return "3b93afb00ba165a83730c4eb03cd1ab7"; };
 
   };
 

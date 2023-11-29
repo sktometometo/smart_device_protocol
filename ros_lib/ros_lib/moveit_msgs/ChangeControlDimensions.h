@@ -36,7 +36,7 @@ static const char CHANGECONTROLDIMENSIONS[] = "moveit_msgs/ChangeControlDimensio
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -84,7 +84,7 @@ static const char CHANGECONTROLDIMENSIONS[] = "moveit_msgs/ChangeControlDimensio
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -138,8 +138,8 @@ static const char CHANGECONTROLDIMENSIONS[] = "moveit_msgs/ChangeControlDimensio
      return offset;
     }
 
-    virtual const char * getType() override { return CHANGECONTROLDIMENSIONS; };
-    virtual const char * getMD5() override { return "64c0dd6d519e78f5ce2626b06dab34c1"; };
+    const char * getType(){ return CHANGECONTROLDIMENSIONS; };
+    const char * getMD5(){ return "64c0dd6d519e78f5ce2626b06dab34c1"; };
 
   };
 
@@ -154,7 +154,7 @@ static const char CHANGECONTROLDIMENSIONS[] = "moveit_msgs/ChangeControlDimensio
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -167,7 +167,7 @@ static const char CHANGECONTROLDIMENSIONS[] = "moveit_msgs/ChangeControlDimensio
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -181,8 +181,8 @@ static const char CHANGECONTROLDIMENSIONS[] = "moveit_msgs/ChangeControlDimensio
      return offset;
     }
 
-    virtual const char * getType() override { return CHANGECONTROLDIMENSIONS; };
-    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    const char * getType(){ return CHANGECONTROLDIMENSIONS; };
+    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

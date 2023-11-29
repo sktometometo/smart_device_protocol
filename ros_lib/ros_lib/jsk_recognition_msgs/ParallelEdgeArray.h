@@ -23,11 +23,11 @@ namespace jsk_recognition_msgs
 
     ParallelEdgeArray():
       header(),
-      edge_groups_length(0), st_edge_groups(), edge_groups(nullptr)
+      edge_groups_length(0), edge_groups(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/ParallelEdgeArray"; };
-    virtual const char * getMD5() override { return "7c8ef4f5976c55fb32293ceaa19a1189"; };
+    const char * getType(){ return "jsk_recognition_msgs/ParallelEdgeArray"; };
+    const char * getMD5(){ return "7c8ef4f5976c55fb32293ceaa19a1189"; };
 
   };
 

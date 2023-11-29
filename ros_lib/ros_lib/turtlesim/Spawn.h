@@ -30,7 +30,7 @@ static const char SPAWN[] = "turtlesim/Spawn";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -71,7 +71,7 @@ static const char SPAWN[] = "turtlesim/Spawn";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -119,8 +119,8 @@ static const char SPAWN[] = "turtlesim/Spawn";
      return offset;
     }
 
-    virtual const char * getType() override { return SPAWN; };
-    virtual const char * getMD5() override { return "57f001c49ab7b11d699f8606c1f4f7ff"; };
+    const char * getType(){ return SPAWN; };
+    const char * getMD5(){ return "57f001c49ab7b11d699f8606c1f4f7ff"; };
 
   };
 
@@ -135,7 +135,7 @@ static const char SPAWN[] = "turtlesim/Spawn";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -146,7 +146,7 @@ static const char SPAWN[] = "turtlesim/Spawn";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -161,8 +161,8 @@ static const char SPAWN[] = "turtlesim/Spawn";
      return offset;
     }
 
-    virtual const char * getType() override { return SPAWN; };
-    virtual const char * getMD5() override { return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
+    const char * getType(){ return SPAWN; };
+    const char * getMD5(){ return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
 
   };
 

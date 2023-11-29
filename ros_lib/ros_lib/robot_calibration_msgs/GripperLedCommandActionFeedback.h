@@ -29,7 +29,7 @@ namespace robot_calibration_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace robot_calibration_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace robot_calibration_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "robot_calibration_msgs/GripperLedCommandActionFeedback"; };
-    virtual const char * getMD5() override { return "aae20e09065c3809e8a8e87c4c8953fd"; };
+    const char * getType(){ return "robot_calibration_msgs/GripperLedCommandActionFeedback"; };
+    const char * getMD5(){ return "aae20e09065c3809e8a8e87c4c8953fd"; };
 
   };
 

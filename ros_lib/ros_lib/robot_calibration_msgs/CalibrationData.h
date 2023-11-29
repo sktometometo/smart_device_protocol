@@ -23,11 +23,11 @@ namespace robot_calibration_msgs
 
     CalibrationData():
       joint_states(),
-      observations_length(0), st_observations(), observations(nullptr)
+      observations_length(0), observations(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->joint_states.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace robot_calibration_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->joint_states.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace robot_calibration_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "robot_calibration_msgs/CalibrationData"; };
-    virtual const char * getMD5() override { return "a9a1a8b53ea9e13de6dae25608004191"; };
+    const char * getType(){ return "robot_calibration_msgs/CalibrationData"; };
+    const char * getMD5(){ return "a9a1a8b53ea9e13de6dae25608004191"; };
 
   };
 

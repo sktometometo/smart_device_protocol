@@ -19,20 +19,20 @@ static const char GETBODYROI[] = "naoqi_bridge_msgs/GetBodyROI";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return GETBODYROI; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return GETBODYROI; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -45,11 +45,11 @@ static const char GETBODYROI[] = "naoqi_bridge_msgs/GetBodyROI";
       _bodies_type * bodies;
 
     GetBodyROIResponse():
-      bodies_length(0), st_bodies(), bodies(nullptr)
+      bodies_length(0), bodies(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->bodies_length >> (8 * 0)) & 0xFF;
@@ -63,7 +63,7 @@ static const char GETBODYROI[] = "naoqi_bridge_msgs/GetBodyROI";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t bodies_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -81,8 +81,8 @@ static const char GETBODYROI[] = "naoqi_bridge_msgs/GetBodyROI";
      return offset;
     }
 
-    virtual const char * getType() override { return GETBODYROI; };
-    virtual const char * getMD5() override { return "ecc2963facbb989a955948135b6e21fd"; };
+    const char * getType(){ return GETBODYROI; };
+    const char * getMD5(){ return "ecc2963facbb989a955948135b6e21fd"; };
 
   };
 

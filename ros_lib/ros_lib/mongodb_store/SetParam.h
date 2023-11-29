@@ -21,7 +21,7 @@ static const char SETPARAM[] = "mongodb_store/SetParam";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_param = strlen(this->param);
@@ -32,7 +32,7 @@ static const char SETPARAM[] = "mongodb_store/SetParam";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_param;
@@ -47,8 +47,8 @@ static const char SETPARAM[] = "mongodb_store/SetParam";
      return offset;
     }
 
-    virtual const char * getType() override { return SETPARAM; };
-    virtual const char * getMD5() override { return "eb04b7504512676dca105ab8842899a4"; };
+    const char * getType(){ return SETPARAM; };
+    const char * getMD5(){ return "eb04b7504512676dca105ab8842899a4"; };
 
   };
 
@@ -63,7 +63,7 @@ static const char SETPARAM[] = "mongodb_store/SetParam";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -76,7 +76,7 @@ static const char SETPARAM[] = "mongodb_store/SetParam";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -90,8 +90,8 @@ static const char SETPARAM[] = "mongodb_store/SetParam";
      return offset;
     }
 
-    virtual const char * getType() override { return SETPARAM; };
-    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    const char * getType(){ return SETPARAM; };
+    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

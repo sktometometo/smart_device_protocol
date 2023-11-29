@@ -32,14 +32,14 @@ namespace control_msgs
 
     JointJog():
       header(),
-      joint_names_length(0), st_joint_names(), joint_names(nullptr),
-      displacements_length(0), st_displacements(), displacements(nullptr),
-      velocities_length(0), st_velocities(), velocities(nullptr),
+      joint_names_length(0), joint_names(NULL),
+      displacements_length(0), displacements(NULL),
+      velocities_length(0), velocities(NULL),
       duration(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -75,7 +75,7 @@ namespace control_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -127,8 +127,8 @@ namespace control_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "control_msgs/JointJog"; };
-    virtual const char * getMD5() override { return "1685da700c8c2e1254afc92a5fb89c96"; };
+    const char * getType(){ return "control_msgs/JointJog"; };
+    const char * getMD5(){ return "1685da700c8c2e1254afc92a5fb89c96"; };
 
   };
 

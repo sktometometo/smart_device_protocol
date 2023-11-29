@@ -30,14 +30,14 @@ namespace naoqi_bridge_msgs
 
     JointAnglesWithSpeed():
       header(),
-      joint_names_length(0), st_joint_names(), joint_names(nullptr),
-      joint_angles_length(0), st_joint_angles(), joint_angles(nullptr),
+      joint_names_length(0), joint_names(NULL),
+      joint_angles_length(0), joint_angles(NULL),
       speed(0),
       relative(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -85,7 +85,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -147,8 +147,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/JointAnglesWithSpeed"; };
-    virtual const char * getMD5() override { return "052ca11f74a00ad6745dfff6ebc2b4d8"; };
+    const char * getType(){ return "naoqi_bridge_msgs/JointAnglesWithSpeed"; };
+    const char * getMD5(){ return "052ca11f74a00ad6745dfff6ebc2b4d8"; };
 
   };
 

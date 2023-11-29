@@ -25,7 +25,7 @@ static const char EUCLIDEANSEGMENT[] = "jsk_perception/EuclideanSegment";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->input.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ static const char EUCLIDEANSEGMENT[] = "jsk_perception/EuclideanSegment";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->input.deserialize(inbuffer + offset);
@@ -60,8 +60,8 @@ static const char EUCLIDEANSEGMENT[] = "jsk_perception/EuclideanSegment";
      return offset;
     }
 
-    virtual const char * getType() override { return EUCLIDEANSEGMENT; };
-    virtual const char * getMD5() override { return "116dd66bdc82f46d7b7414ce880ea794"; };
+    const char * getType(){ return EUCLIDEANSEGMENT; };
+    const char * getMD5(){ return "116dd66bdc82f46d7b7414ce880ea794"; };
 
   };
 
@@ -74,11 +74,11 @@ static const char EUCLIDEANSEGMENT[] = "jsk_perception/EuclideanSegment";
       _output_type * output;
 
     EuclideanSegmentResponse():
-      output_length(0), st_output(), output(nullptr)
+      output_length(0), output(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->output_length >> (8 * 0)) & 0xFF;
@@ -92,7 +92,7 @@ static const char EUCLIDEANSEGMENT[] = "jsk_perception/EuclideanSegment";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t output_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -110,8 +110,8 @@ static const char EUCLIDEANSEGMENT[] = "jsk_perception/EuclideanSegment";
      return offset;
     }
 
-    virtual const char * getType() override { return EUCLIDEANSEGMENT; };
-    virtual const char * getMD5() override { return "6db5ac8d8316fdb3e0c62197115f87cd"; };
+    const char * getType(){ return EUCLIDEANSEGMENT; };
+    const char * getMD5(){ return "6db5ac8d8316fdb3e0c62197115f87cd"; };
 
   };
 

@@ -26,13 +26,13 @@ namespace opencv_apps
 
     Face():
       face(),
-      eyes_length(0), st_eyes(), eyes(nullptr),
+      eyes_length(0), eyes(NULL),
       label(""),
       confidence(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->face.serialize(outbuffer + offset);
@@ -53,7 +53,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->face.deserialize(inbuffer + offset);
@@ -82,8 +82,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/Face"; };
-    virtual const char * getMD5() override { return "a1a50e747b0ca7822ce8611c3ffa7a02"; };
+    const char * getType(){ return "opencv_apps/Face"; };
+    const char * getMD5(){ return "a1a50e747b0ca7822ce8611c3ffa7a02"; };
 
   };
 

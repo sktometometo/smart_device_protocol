@@ -23,13 +23,13 @@ namespace ethercat_hardware
       _missed_samples_type missed_samples;
 
     RawFTData():
-      samples_length(0), st_samples(), samples(nullptr),
+      samples_length(0), samples(NULL),
       sample_count(0),
       missed_samples(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->samples_length >> (8 * 0)) & 0xFF;
@@ -71,7 +71,7 @@ namespace ethercat_hardware
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t samples_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -119,8 +119,8 @@ namespace ethercat_hardware
      return offset;
     }
 
-    virtual const char * getType() override { return "ethercat_hardware/RawFTData"; };
-    virtual const char * getMD5() override { return "85f5ed45095367bfb8fb2e57954c0b89"; };
+    const char * getType(){ return "ethercat_hardware/RawFTData"; };
+    const char * getMD5(){ return "85f5ed45095367bfb8fb2e57954c0b89"; };
 
   };
 

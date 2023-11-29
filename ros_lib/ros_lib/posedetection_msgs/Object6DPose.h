@@ -27,7 +27,7 @@ namespace posedetection_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->pose.serialize(outbuffer + offset);
@@ -49,7 +49,7 @@ namespace posedetection_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->pose.deserialize(inbuffer + offset);
@@ -76,8 +76,8 @@ namespace posedetection_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "posedetection_msgs/Object6DPose"; };
-    virtual const char * getMD5() override { return "68aad97d55c4f9555772eee1814bb3c7"; };
+    const char * getType(){ return "posedetection_msgs/Object6DPose"; };
+    const char * getMD5(){ return "68aad97d55c4f9555772eee1814bb3c7"; };
 
   };
 

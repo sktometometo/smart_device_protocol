@@ -26,7 +26,7 @@ namespace pr2_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -64,7 +64,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -104,8 +104,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/BatteryState"; };
-    virtual const char * getMD5() override { return "00e9f996c2fc26700fd25abcd8422db0"; };
+    const char * getType(){ return "pr2_msgs/BatteryState"; };
+    const char * getMD5(){ return "00e9f996c2fc26700fd25abcd8422db0"; };
 
   };
 

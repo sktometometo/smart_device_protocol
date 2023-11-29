@@ -66,12 +66,12 @@ namespace visualization_msgs
       filled(0),
       fill_color(),
       lifetime(),
-      points_length(0), st_points(), points(nullptr),
-      outline_colors_length(0), st_outline_colors(), outline_colors(nullptr)
+      points_length(0), points(NULL),
+      outline_colors_length(0), outline_colors(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -154,7 +154,7 @@ namespace visualization_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -253,8 +253,8 @@ namespace visualization_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "visualization_msgs/ImageMarker"; };
-    virtual const char * getMD5() override { return "1de93c67ec8858b831025a08fbf1b35c"; };
+    const char * getType(){ return "visualization_msgs/ImageMarker"; };
+    const char * getMD5(){ return "1de93c67ec8858b831025a08fbf1b35c"; };
 
   };
 

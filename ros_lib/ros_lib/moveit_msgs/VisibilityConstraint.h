@@ -45,7 +45,7 @@ namespace moveit_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->target_radius);
@@ -69,7 +69,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->target_radius));
@@ -94,8 +94,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/VisibilityConstraint"; };
-    virtual const char * getMD5() override { return "62cda903bfe31ff2e5fcdc3810d577ad"; };
+    const char * getType(){ return "moveit_msgs/VisibilityConstraint"; };
+    const char * getMD5(){ return "62cda903bfe31ff2e5fcdc3810d577ad"; };
 
   };
 
