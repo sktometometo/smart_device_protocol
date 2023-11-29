@@ -103,7 +103,18 @@ class DeviceDictSDPInterface(SDPInterface):
     @property
     def device_interfaces(self):
         return self._device_interfaces
-
+    
+    def send(self, target: Union[Tuple, str], frame: Union[DataFrame, MetaFrame], num_trial=1):
+        if isinstance(target, str):
+            for src_address, device_interface in self._device_interfaces.items():
+                if device_interface["device_name"] == target:
+                    target_address = src_address
+                    break
+            else:
+                raise ValueError(f"Unknown device name: {target}")
+        else:
+            target_address = target
+        super().send(target_address, frame, num_trial)
 
 class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
     def __init__(
