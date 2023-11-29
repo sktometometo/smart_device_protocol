@@ -1,12 +1,12 @@
+import struct
+from typing import Callable, Dict, List, Optional, Tuple, Union
+
 import rospy
 
-import struct
-from typing import Callable, Union, List, Tuple, Optional, Dict
-
-from esp_now_ros.sdp_frames import MetaFrame, DataFrame, BaseFrame
 from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterface
-from esp_now_ros.packet_parser import parse_packet_as_v2
 from esp_now_ros.msg import Packet
+from esp_now_ros.packet_parser import parse_packet_as_v2
+from esp_now_ros.sdp_frames import BaseFrame, DataFrame, MetaFrame
 
 
 class SDPInterface:
@@ -103,8 +103,10 @@ class DeviceDictSDPInterface(SDPInterface):
     @property
     def device_interfaces(self):
         return self._device_interfaces
-    
-    def send(self, target: Union[Tuple, str], frame: Union[DataFrame, MetaFrame], num_trial=1):
+
+    def send(
+        self, target: Union[Tuple, str], frame: Union[DataFrame, MetaFrame], num_trial=1
+    ):
         if isinstance(target, str):
             for src_address, device_interface in self._device_interfaces.items():
                 if device_interface["device_name"] == target:
@@ -115,6 +117,7 @@ class DeviceDictSDPInterface(SDPInterface):
         else:
             target_address = target
         super().send(target_address, frame, num_trial)
+
 
 class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
     def __init__(
