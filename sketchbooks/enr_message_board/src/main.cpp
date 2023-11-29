@@ -7,7 +7,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-#include <esp_now_ros/Packet.h>
+#include <smart_device_protocol/Packet.h>
 
 #include "sdp/sdp.h"
 #include "utils/config_loader.h"
@@ -34,7 +34,7 @@ int loop_counter = 0;
 void OnDataRecvV1(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
   uint8_t packet_type = get_packet_type(data);
-  if (packet_type == esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
+  if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
   {
     auto m = Message(data);
     message_board.push_back(m);

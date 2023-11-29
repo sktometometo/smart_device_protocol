@@ -9,7 +9,7 @@
 
 #include <ArduinoJson.h>
 
-#include <esp_now_ros/Packet.h>
+#include <smart_device_protocol/Packet.h>
 
 #include "sdp/packet_creator.h"
 

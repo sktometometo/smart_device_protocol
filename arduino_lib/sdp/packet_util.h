@@ -1,5 +1,5 @@
-#ifndef ESP_NOW_ROS_PACKET_UTIL_H__
-#define ESP_NOW_ROS_PACKET_UTIL_H__
+#ifndef SMART_DEVICE_PROTOCOL_PACKET_UTIL_H__
+#define SMART_DEVICE_PROTOCOL_PACKET_UTIL_H__
 
 #include <variant>
 #include <vector>
@@ -86,4 +86,4 @@ bool is_consistent_serialization_format(const std::string &serialization_format,
     return true;
 }
 
-#endif // ESP_NOW_ROS_PACKET_UTIL_H__
+#endif // SMART_DEVICE_PROTOCOL_PACKET_UTIL_H__

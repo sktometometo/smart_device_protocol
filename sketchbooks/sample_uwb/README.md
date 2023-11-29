@@ -1,4 +1,4 @@
-# esp_now_ros
+# smart_device_protocol
 
 Support
 

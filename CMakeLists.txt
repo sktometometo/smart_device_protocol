@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(esp_now_ros)
+project(smart_device_protocol)
 
 find_package(catkin REQUIRED COMPONENTS message_generation catkin_virtualenv std_msgs)
 

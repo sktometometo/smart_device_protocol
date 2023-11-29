@@ -1,12 +1,12 @@
-#ifndef _ROS_esp_now_ros_Packet_h
-#define _ROS_esp_now_ros_Packet_h
+#ifndef _ROS_SMART_DEVICE_PROTOCOL_Packet_h
+#define _ROS_SMART_DEVICE_PROTOCOL_Packet_h
 
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
 
-namespace esp_now_ros
+namespace smart_device_protocol
 {
 
   class Packet : public ros::Msg
@@ -98,7 +98,7 @@ namespace esp_now_ros
      return offset;
     }
 
-    virtual const char * getType() override { return "esp_now_ros/Packet"; };
+    virtual const char * getType() override { return "smart_device_protocol/Packet"; };
     virtual const char * getMD5() override { return "dbab45830b3b1d11bc00c2acc0192a63"; };
 
   };

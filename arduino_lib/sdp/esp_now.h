@@ -4,7 +4,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-#include <esp_now_ros/Packet.h>
+#include <smart_device_protocol/Packet.h>
 
 bool init_esp_now(uint8_t *mac_address, esp_now_recv_cb_t callback_receive)
 {

@@ -5,13 +5,13 @@
 <div align="center">
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Black formatting](https://github.com/sktometometo/esp_now_ros/actions/workflows/python_black.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/python_black.yml)
-[![ROS build workflow](https://github.com/sktometometo/esp_now_ros/actions/workflows/catkin_build.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/catkin_build.yml)
-[![PlatformIO Build Workflow](https://github.com/sktometometo/esp_now_ros/actions/workflows/platformio.yml/badge.svg)](https://github.com/sktometometo/esp_now_ros/actions/workflows/platformio.yml)
+[![Black formatting](https://github.com/sktometometo/smart_device_protocol/actions/workflows/python_black.yml/badge.svg)](https://github.com/sktometometo/smart_device_protocol/actions/workflows/python_black.yml)
+[![ROS build workflow](https://github.com/sktometometo/smart_device_protocol/actions/workflows/catkin_build.yml/badge.svg)](https://github.com/sktometometo/smart_device_protocol/actions/workflows/catkin_build.yml)
+[![PlatformIO Build Workflow](https://github.com/sktometometo/smart_device_protocol/actions/workflows/platformio.yml/badge.svg)](https://github.com/sktometometo/smart_device_protocol/actions/workflows/platformio.yml)
 
 </div>
 
-# esp_now_ros
+# smart_device_protocol
 
 The Smart Device Protocol (SDP) Repository.
 
@@ -46,7 +46,7 @@ First, clone this repository to your catkin workspace and build it.
 
   ```bash
   cd ~/catkin_ws/src
-  git clone https://github.com/sktometometo/esp_now_ros.git
+  git clone https://github.com/sktometometo/smart_device_protocol.git
   cd ..
   catkin build
   ```
@@ -106,7 +106,7 @@ Then, connect M5Stack-Core2 to your PC. You can check which port is connected to
 So let's build firmware and burn it to M5Stack-Core2
 
   ```bash
-  roscd esp_now_ros/sketchbooks/smart_device_protocol_interface/
+  roscd smart_device_protocol/sketchbooks/smart_device_protocol_interface/
   pio run -e m5stack-core2 --target upload --upload-port /dev/ttyACM0
   ```
 
@@ -118,7 +118,7 @@ We will use [sdp_example](./sketchbooks/sdp_example/).
 Connect M5Stack-Fire to your PC and burn firmware to it.
 
   ```bash
-  roscd esp_now_ros/sketchbooks/sdp_example/
+  roscd smart_device_protocol/sketchbooks/sdp_example/
   pio run -e m5stack-fire --target upload --upload-port /dev/ttyACM0
   ```
   
@@ -127,7 +127,7 @@ Connect M5Stack-Fire to your PC and burn firmware to it.
 After step 2, you can run Smart Device Protocol interface node.
 
   ```bash
-  roslaunch esp_now_ros demo.launch port:=/dev/ttyACM0
+  roslaunch smart_device_protocol demo.launch port:=/dev/ttyACM0
   ```
 
 with this, you can see topics below.
@@ -135,16 +135,16 @@ with this, you can see topics below.
   ```bash
   $ rostopic list
   /diagnostics
-  /esp_now_ros/recv
-  /esp_now_ros/send
+  /smart_device_protocol/recv
+  /smart_device_protocol/send
   /rosout
   /rosout_agg
   ```
 
-You can send a ESP-NOW (which is the bottom of Smart Device Protocol) packet directly by sending ROS a message to `/esp_now_ros/send` topic.
+You can send a ESP-NOW (which is the bottom of Smart Device Protocol) packet directly by sending ROS a message to `/smart_device_protocol/send` topic.
 
   ```bash
-  rostopic pub -1 /esp_now_ros/send esp_now_ros/Packet "mac_address: [255, 255, 255, 255, 255, 255]
+  rostopic pub -1 /smart_device_protocol/send smart_device_protocol/Packet "mac_address: [255, 255, 255, 255, 255, 255]
   data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
   ```
 
@@ -154,7 +154,7 @@ Now you can communicate with smart devices, wearable devices, and robots via Sma
 You can run an example of Smart Device Protocol Interface node.
 
   ```bash
-  rosrun esp_now_ros sdp_v2_packet_printer.py
+  rosrun smart_device_protocol sdp_v2_packet_printer.py
   ```
 
 With this command, you can see Smart Device Protocol packets from other devices.
@@ -190,7 +190,7 @@ There are some examples of Smart Device Protocol Interface Device. For more deta
 If you update ros_lib for Arduino, you have to update `ros_lib` directory in [this directory](./ros_lib/).
 
   ```bash
-  cd ~/catkin_ws/src/esp_now_ros/ros_lib
+  cd ~/catkin_ws/src/smart_device_protocol/ros_lib
   rm -rf ros_lib
   rosrun rosserial_arduino make_libraries.py .
   ```

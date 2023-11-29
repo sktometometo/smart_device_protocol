@@ -2,7 +2,7 @@
 
 import rospy
 
-from esp_now_ros.smart_device_protocol_interface import SDPInterface
+from smart_device_protocol.smart_device_protocol_interface import SDPInterface
 
 
 def callback(src_address, frame):

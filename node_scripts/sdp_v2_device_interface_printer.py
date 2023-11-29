@@ -2,7 +2,7 @@
 
 import rospy
 
-from esp_now_ros.smart_device_protocol_interface import DeviceDictSDPInterface
+from smart_device_protocol.smart_device_protocol_interface import DeviceDictSDPInterface
 
 
 if __name__ == "__main__":

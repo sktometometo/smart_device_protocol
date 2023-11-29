@@ -4,14 +4,14 @@
  * SDP (Smart Device Protocol) Library
  *
  * To use these functions, you need to include the following libraries:
- * - esp_now_ros/Packet.h
+ * - smart_device_protocol/Packet.h
  */
 
 #include <esp_system.h>
 #include <esp_now.h>
 #include <WiFi.h>
 
-#include <esp_now_ros/Packet.h>
+#include <smart_device_protocol/Packet.h>
 
 #include "sdp/esp_now.h"
 #include "sdp/packet_creator.h"
@@ -69,7 +69,7 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
     {
         entry(mac_addr, data, data_len);
     }
-    if (packet_type == esp_now_ros::Packet::PACKET_TYPE_DATA)
+    if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_DATA)
     {
         auto packet = parse_packet_as_data_packet(data);
         SDPInterfaceDescription packet_description_and_serialization_format = std::get<0>(packet);
@@ -91,7 +91,7 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
             }
         }
     }
-    else if (packet_type == esp_now_ros::Packet::PACKET_TYPE_META)
+    else if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_META)
     {
         auto packet = parse_packet_as_meta_packet(data);
         std::string device_name = std::get<0>(packet);

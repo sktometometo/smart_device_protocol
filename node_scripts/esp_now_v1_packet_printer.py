@@ -2,8 +2,8 @@
 
 import rospy
 
-from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterface
-from esp_now_ros.packet_parser import parse_packet
+from smart_device_protocol.smart_device_protocol_interface import ESPNOWROSInterface
+from smart_device_protocol.packet_parser import parse_packet
 
 
 def callback(src_address, data):

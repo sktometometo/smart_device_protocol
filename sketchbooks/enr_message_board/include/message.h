@@ -1,7 +1,7 @@
 #include <variant>
 #include <vector>
 
-#include <esp_now_ros/Packet.h>
+#include <smart_device_protocol/Packet.h>
 
 #include "sdp/packet_creator.h"
 #include "sdp/packet_parser.h"
@@ -24,14 +24,14 @@ public:
     strncpy(this->source_name, "None", 64);
     this->deadline = 0;
 
-    if (get_packet_type(data) == esp_now_ros::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
+    if (get_packet_type(data) == smart_device_protocol::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
     {
       uint16_t packet_type;
       uint64_t timeout_duration;
       parse_packet_as_message_board_data_packet(data, packet_type, source_name, timeout_duration, message);
       this->deadline = millis() + timeout_duration;
     }
-    else if (get_packet_type(data) == esp_now_ros::Packet::PACKET_TYPE_DATA)
+    else if (get_packet_type(data) == smart_device_protocol::Packet::PACKET_TYPE_DATA)
     {
       auto ret = parse_packet_as_data_packet(data);
       SDPInterfaceDescription packet_description_and_serialization_format = std::get<0>(ret);

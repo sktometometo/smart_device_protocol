@@ -55,4 +55,4 @@ jobs:
       run: |
         source /opt/ros/noetic/setup.bash
         cd ${CATKIN_WS}
-        catkin run_tests esp_now_ros -v
+        catkin run_tests smart_device_protocol -v

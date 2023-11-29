@@ -11,8 +11,8 @@
 
 // ROS
 #include "ros/node_handle.h"
-#include <esp_now_ros/Packet.h>
-#include <esp_now_ros/UWBDistance.h>
+#include <smart_device_protocol/Packet.h>
+#include <smart_device_protocol/UWBDistance.h>
 #if defined(M5STACKATOMS3)
 #include "ArduinoAtomS3Hardware.h"
 #else
@@ -23,7 +23,7 @@
 #include "sdp/esp_now.h"
 #include "devices/uwb_module_util.h"
 
-void messageCb(const esp_now_ros::Packet&);
+void messageCb(const smart_device_protocol::Packet &);
 
 // ESP-NOW
 uint8_t device_mac_address[6] = { 0 };
@@ -36,14 +36,14 @@ int8_t uwb_serial_tx_pin = 2;
 bool uwb_initialized = false;
 
 // ROSSerial
-esp_now_ros::Packet msg_recv_packet;
-esp_now_ros::UWBDistance msg_uwb;
+smart_device_protocol::Packet msg_recv_packet;
+smart_device_protocol::UWBDistance msg_uwb;
 ros::NodeHandle_<ArduinoHardware> nh;
-ros::Publisher publisher("/esp_now_ros/recv", &msg_recv_packet);
-ros::Publisher publisher_uwb("/esp_now_ros/uwb", &msg_uwb);
-ros::Subscriber<esp_now_ros::Packet> subscriber("/esp_now_ros/send", &messageCb);
+ros::Publisher publisher("/smart_device_protocol/recv", &msg_recv_packet);
+ros::Publisher publisher_uwb("/smart_device_protocol/uwb", &msg_uwb);
+ros::Subscriber<smart_device_protocol::Packet> subscriber("/smart_device_protocol/send", &messageCb);
 
-void messageCb(const esp_now_ros::Packet& msg)
+void messageCb(const smart_device_protocol::Packet &msg)
 {
   if (msg.mac_address_length != 6)
   {
