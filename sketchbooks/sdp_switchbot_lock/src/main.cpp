@@ -219,6 +219,14 @@ void setup()
             "{\"command\":\"get_device_config\"}\n",
         5000);
     Serial.printf("Response for get_device_status: %s\n", ret.c_str());
+
+    // LCD print
+    M5.lcd.println("=== Device Configuration ===");
+    M5.lcd.printf("device_name: %s\n", device_name.c_str());
+    M5.lcd.printf("wifi_ssid: %s\n", wifi_ssid.c_str());
+    M5.lcd.printf("switchbot_device_id: %s\n", switchbot_device_id.c_str());
+    M5.lcd.printf("uwb_id: %d\n", uwb_id);
+    M5.lcd.println("============================");
 }
 
 void loop()
