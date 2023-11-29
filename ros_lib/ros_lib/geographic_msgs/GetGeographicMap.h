@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "geographic_msgs/BoundingBox.h"
 #include "geographic_msgs/GeographicMap.h"
+#include "geographic_msgs/BoundingBox.h"
 
 namespace geographic_msgs
 {
@@ -26,7 +26,7 @@ static const char GETGEOGRAPHICMAP[] = "geographic_msgs/GetGeographicMap";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_url = strlen(this->url);
@@ -38,7 +38,7 @@ static const char GETGEOGRAPHICMAP[] = "geographic_msgs/GetGeographicMap";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_url;
@@ -54,8 +54,8 @@ static const char GETGEOGRAPHICMAP[] = "geographic_msgs/GetGeographicMap";
      return offset;
     }
 
-    virtual const char * getType() override { return GETGEOGRAPHICMAP; };
-    virtual const char * getMD5() override { return "505cc89008cb1745810d2ee4ea646d6e"; };
+    const char * getType(){ return GETGEOGRAPHICMAP; };
+    const char * getMD5(){ return "505cc89008cb1745810d2ee4ea646d6e"; };
 
   };
 
@@ -76,7 +76,7 @@ static const char GETGEOGRAPHICMAP[] = "geographic_msgs/GetGeographicMap";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -95,7 +95,7 @@ static const char GETGEOGRAPHICMAP[] = "geographic_msgs/GetGeographicMap";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -119,8 +119,8 @@ static const char GETGEOGRAPHICMAP[] = "geographic_msgs/GetGeographicMap";
      return offset;
     }
 
-    virtual const char * getType() override { return GETGEOGRAPHICMAP; };
-    virtual const char * getMD5() override { return "0910332806c65953a4f4252eb780811a"; };
+    const char * getType(){ return GETGEOGRAPHICMAP; };
+    const char * getMD5(){ return "0910332806c65953a4f4252eb780811a"; };
 
   };
 

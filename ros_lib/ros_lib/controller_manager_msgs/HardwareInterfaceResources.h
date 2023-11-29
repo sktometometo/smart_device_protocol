@@ -21,11 +21,11 @@ namespace controller_manager_msgs
 
     HardwareInterfaceResources():
       hardware_interface(""),
-      resources_length(0), st_resources(), resources(nullptr)
+      resources_length(0), resources(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_hardware_interface = strlen(this->hardware_interface);
@@ -48,7 +48,7 @@ namespace controller_manager_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_hardware_interface;
@@ -83,8 +83,8 @@ namespace controller_manager_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "controller_manager_msgs/HardwareInterfaceResources"; };
-    virtual const char * getMD5() override { return "f25b55cbf1d1f76e82e5ec9e83f76258"; };
+    const char * getType(){ return "controller_manager_msgs/HardwareInterfaceResources"; };
+    const char * getMD5(){ return "f25b55cbf1d1f76e82e5ec9e83f76258"; };
 
   };
 

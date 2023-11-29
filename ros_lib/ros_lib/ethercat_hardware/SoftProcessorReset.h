@@ -24,7 +24,7 @@ static const char SOFTPROCESSORRESET[] = "ethercat_hardware/SoftProcessorReset";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_actuator_name = strlen(this->actuator_name);
@@ -40,7 +40,7 @@ static const char SOFTPROCESSORRESET[] = "ethercat_hardware/SoftProcessorReset";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_actuator_name;
@@ -64,8 +64,8 @@ static const char SOFTPROCESSORRESET[] = "ethercat_hardware/SoftProcessorReset";
      return offset;
     }
 
-    virtual const char * getType() override { return SOFTPROCESSORRESET; };
-    virtual const char * getMD5() override { return "777be25d71e9e85e62fa14223ffddb6b"; };
+    const char * getType(){ return SOFTPROCESSORRESET; };
+    const char * getMD5(){ return "777be25d71e9e85e62fa14223ffddb6b"; };
 
   };
 
@@ -83,7 +83,7 @@ static const char SOFTPROCESSORRESET[] = "ethercat_hardware/SoftProcessorReset";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -101,7 +101,7 @@ static const char SOFTPROCESSORRESET[] = "ethercat_hardware/SoftProcessorReset";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -124,8 +124,8 @@ static const char SOFTPROCESSORRESET[] = "ethercat_hardware/SoftProcessorReset";
      return offset;
     }
 
-    virtual const char * getType() override { return SOFTPROCESSORRESET; };
-    virtual const char * getMD5() override { return "d006c48be24db1173a071ca9af4c8179"; };
+    const char * getType(){ return SOFTPROCESSORRESET; };
+    const char * getMD5(){ return "d006c48be24db1173a071ca9af4c8179"; };
 
   };
 

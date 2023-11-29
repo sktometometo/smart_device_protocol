@@ -21,22 +21,22 @@ namespace grasping_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->object.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->object.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return "grasping_msgs/FindGraspableObjectsFeedback"; };
-    virtual const char * getMD5() override { return "64c6bfc02f7e1c6e2d2473d1c1329ec7"; };
+    const char * getType(){ return "grasping_msgs/FindGraspableObjectsFeedback"; };
+    const char * getMD5(){ return "64c6bfc02f7e1c6e2d2473d1c1329ec7"; };
 
   };
 

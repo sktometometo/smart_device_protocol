@@ -22,7 +22,7 @@ static const char BREAKERCOMMAND[] = "power_msgs/BreakerCommand";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -35,7 +35,7 @@ static const char BREAKERCOMMAND[] = "power_msgs/BreakerCommand";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -49,8 +49,8 @@ static const char BREAKERCOMMAND[] = "power_msgs/BreakerCommand";
      return offset;
     }
 
-    virtual const char * getType() override { return BREAKERCOMMAND; };
-    virtual const char * getMD5() override { return "8c1211af706069c994c06e00eb59ac9e"; };
+    const char * getType(){ return BREAKERCOMMAND; };
+    const char * getMD5(){ return "8c1211af706069c994c06e00eb59ac9e"; };
 
   };
 
@@ -65,22 +65,22 @@ static const char BREAKERCOMMAND[] = "power_msgs/BreakerCommand";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->status.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->status.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return BREAKERCOMMAND; };
-    virtual const char * getMD5() override { return "5cda044252165071cdad9c3098df0594"; };
+    const char * getType(){ return BREAKERCOMMAND; };
+    const char * getMD5(){ return "5cda044252165071cdad9c3098df0594"; };
 
   };
 

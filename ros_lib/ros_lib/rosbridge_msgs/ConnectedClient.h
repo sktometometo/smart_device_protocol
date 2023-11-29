@@ -24,7 +24,7 @@ namespace rosbridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_ip_address = strlen(this->ip_address);
@@ -45,7 +45,7 @@ namespace rosbridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_ip_address;
@@ -70,8 +70,8 @@ namespace rosbridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "rosbridge_msgs/ConnectedClient"; };
-    virtual const char * getMD5() override { return "7f2187ce389b39b2b3bb2a3957e54c04"; };
+    const char * getType(){ return "rosbridge_msgs/ConnectedClient"; };
+    const char * getMD5(){ return "7f2187ce389b39b2b3bb2a3957e54c04"; };
 
   };
 

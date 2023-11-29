@@ -22,11 +22,11 @@ namespace robot_calibration_msgs
 
     CaptureConfig():
       joint_states(),
-      features_length(0), st_features(), features(nullptr)
+      features_length(0), features(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->joint_states.serialize(outbuffer + offset);
@@ -45,7 +45,7 @@ namespace robot_calibration_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->joint_states.deserialize(inbuffer + offset);
@@ -72,8 +72,8 @@ namespace robot_calibration_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "robot_calibration_msgs/CaptureConfig"; };
-    virtual const char * getMD5() override { return "f347b595aa5cb3d9820e25d6d41f25cd"; };
+    const char * getType(){ return "robot_calibration_msgs/CaptureConfig"; };
+    const char * getMD5(){ return "f347b595aa5cb3d9820e25d6d41f25cd"; };
 
   };
 

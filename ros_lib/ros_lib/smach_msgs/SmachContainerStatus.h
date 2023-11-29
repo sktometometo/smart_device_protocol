@@ -33,14 +33,14 @@ namespace smach_msgs
     SmachContainerStatus():
       header(),
       path(""),
-      initial_states_length(0), st_initial_states(), initial_states(nullptr),
-      active_states_length(0), st_active_states(), active_states(nullptr),
+      initial_states_length(0), initial_states(NULL),
+      active_states_length(0), active_states(NULL),
       local_data(""),
       info("")
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -86,7 +86,7 @@ namespace smach_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -160,8 +160,8 @@ namespace smach_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "smach_msgs/SmachContainerStatus"; };
-    virtual const char * getMD5() override { return "5ba2bb79ac19e3842d562a191f2a675b"; };
+    const char * getType(){ return "smach_msgs/SmachContainerStatus"; };
+    const char * getMD5(){ return "5ba2bb79ac19e3842d562a191f2a675b"; };
 
   };
 

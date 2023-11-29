@@ -27,11 +27,11 @@ namespace geographic_msgs
     GeographicMapChanges():
       header(),
       diffs(),
-      deletes_length(0), st_deletes(), deletes(nullptr)
+      deletes_length(0), deletes(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -47,7 +47,7 @@ namespace geographic_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -67,8 +67,8 @@ namespace geographic_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "geographic_msgs/GeographicMapChanges"; };
-    virtual const char * getMD5() override { return "4fd027f54298203ec12aa1c4b20e6cb8"; };
+    const char * getType(){ return "geographic_msgs/GeographicMapChanges"; };
+    const char * getMD5(){ return "4fd027f54298203ec12aa1c4b20e6cb8"; };
 
   };
 

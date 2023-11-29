@@ -31,14 +31,14 @@ namespace robot_calibration_msgs
 
     Observation():
       sensor_name(""),
-      features_length(0), st_features(), features(nullptr),
+      features_length(0), features(NULL),
       ext_camera_info(),
       cloud(),
       image()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_sensor_name = strlen(this->sensor_name);
@@ -60,7 +60,7 @@ namespace robot_calibration_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_sensor_name;
@@ -90,8 +90,8 @@ namespace robot_calibration_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "robot_calibration_msgs/Observation"; };
-    virtual const char * getMD5() override { return "b5e5b7c2eb5f83de33806b676db440c9"; };
+    const char * getType(){ return "robot_calibration_msgs/Observation"; };
+    const char * getMD5(){ return "b5e5b7c2eb5f83de33806b676db440c9"; };
 
   };
 

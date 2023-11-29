@@ -21,22 +21,22 @@ namespace roseus
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->name.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->name.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return "roseus/TestName"; };
-    virtual const char * getMD5() override { return "70bc7fd92cd8428f6a02d7d0df4d9b80"; };
+    const char * getType(){ return "roseus/TestName"; };
+    const char * getMD5(){ return "70bc7fd92cd8428f6a02d7d0df4d9b80"; };
 
   };
 

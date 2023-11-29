@@ -23,7 +23,7 @@ namespace jsk_topic_tools
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_topic_name = strlen(this->topic_name);
@@ -35,7 +35,7 @@ namespace jsk_topic_tools
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_topic_name;
@@ -51,8 +51,8 @@ namespace jsk_topic_tools
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_topic_tools/TopicInfo"; };
-    virtual const char * getMD5() override { return "78edf14defd72c2fcd29e4fad0165ea9"; };
+    const char * getType(){ return "jsk_topic_tools/TopicInfo"; };
+    const char * getMD5(){ return "78edf14defd72c2fcd29e4fad0165ea9"; };
 
   };
 

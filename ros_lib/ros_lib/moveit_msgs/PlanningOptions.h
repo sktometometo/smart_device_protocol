@@ -42,7 +42,7 @@ namespace moveit_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->planning_scene_diff.serialize(outbuffer + offset);
@@ -92,7 +92,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->planning_scene_diff.deserialize(inbuffer + offset);
@@ -147,8 +147,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/PlanningOptions"; };
-    virtual const char * getMD5() override { return "3134e041c806c7c2ff59948db4d57835"; };
+    const char * getType(){ return "moveit_msgs/PlanningOptions"; };
+    const char * getMD5(){ return "3134e041c806c7c2ff59948db4d57835"; };
 
   };
 

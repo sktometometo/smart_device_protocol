@@ -46,7 +46,7 @@ namespace fetch_driver_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -62,7 +62,7 @@ namespace fetch_driver_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -78,8 +78,8 @@ namespace fetch_driver_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "fetch_driver_msgs/Gyro"; };
-    virtual const char * getMD5() override { return "7e55d268dcc35aae7026f0428ed61292"; };
+    const char * getType(){ return "fetch_driver_msgs/Gyro"; };
+    const char * getMD5(){ return "7e55d268dcc35aae7026f0428ed61292"; };
 
   };
 

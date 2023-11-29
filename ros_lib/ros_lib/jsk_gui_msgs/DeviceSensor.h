@@ -32,7 +32,7 @@ namespace jsk_gui_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->temperature);
@@ -43,7 +43,7 @@ namespace jsk_gui_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->temperature));
@@ -54,8 +54,8 @@ namespace jsk_gui_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_gui_msgs/DeviceSensor"; };
-    virtual const char * getMD5() override { return "d3861ba768b988b4c249337d4dc6552d"; };
+    const char * getType(){ return "jsk_gui_msgs/DeviceSensor"; };
+    const char * getMD5(){ return "d3861ba768b988b4c249337d4dc6552d"; };
 
   };
 

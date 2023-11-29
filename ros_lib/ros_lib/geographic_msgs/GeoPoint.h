@@ -26,7 +26,7 @@ namespace geographic_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->latitude);
@@ -35,7 +35,7 @@ namespace geographic_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->latitude));
@@ -44,8 +44,8 @@ namespace geographic_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "geographic_msgs/GeoPoint"; };
-    virtual const char * getMD5() override { return "c48027a852aeff972be80478ff38e81a"; };
+    const char * getType(){ return "geographic_msgs/GeoPoint"; };
+    const char * getMD5(){ return "c48027a852aeff972be80478ff38e81a"; };
 
   };
 

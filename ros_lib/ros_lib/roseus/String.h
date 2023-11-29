@@ -20,7 +20,7 @@ namespace roseus
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_data = strlen(this->data);
@@ -31,7 +31,7 @@ namespace roseus
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_data;
@@ -46,8 +46,8 @@ namespace roseus
      return offset;
     }
 
-    virtual const char * getType() override { return "roseus/String"; };
-    virtual const char * getMD5() override { return "992ce8a1687cec8c8bd883ec73ca41d1"; };
+    const char * getType(){ return "roseus/String"; };
+    const char * getMD5(){ return "992ce8a1687cec8c8bd883ec73ca41d1"; };
 
   };
 

@@ -23,7 +23,7 @@ namespace mbf_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_behavior = strlen(this->behavior);
@@ -36,7 +36,7 @@ namespace mbf_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_behavior;
@@ -53,8 +53,8 @@ namespace mbf_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "mbf_msgs/RecoveryGoal"; };
-    virtual const char * getMD5() override { return "ce28884316a172b85e57b78a84014451"; };
+    const char * getType(){ return "mbf_msgs/RecoveryGoal"; };
+    const char * getMD5(){ return "ce28884316a172b85e57b78a84014451"; };
 
   };
 

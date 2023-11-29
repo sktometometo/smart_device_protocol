@@ -23,11 +23,11 @@ namespace pr2_msgs
 
     AccelerometerState():
       header(),
-      samples_length(0), st_samples(), samples(nullptr)
+      samples_length(0), samples(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/AccelerometerState"; };
-    virtual const char * getMD5() override { return "26492e97ed8c13252c4a85592d3e93fd"; };
+    const char * getType(){ return "pr2_msgs/AccelerometerState"; };
+    const char * getMD5(){ return "26492e97ed8c13252c4a85592d3e93fd"; };
 
   };
 

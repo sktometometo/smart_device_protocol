@@ -35,11 +35,11 @@ namespace diagnostic_msgs
       name(""),
       message(""),
       hardware_id(""),
-      values_length(0), st_values(), values(nullptr)
+      values_length(0), values(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -75,7 +75,7 @@ namespace diagnostic_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -128,8 +128,8 @@ namespace diagnostic_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "diagnostic_msgs/DiagnosticStatus"; };
-    virtual const char * getMD5() override { return "d0ce08bc6e5ba34c7754f563a9cabaf1"; };
+    const char * getType(){ return "diagnostic_msgs/DiagnosticStatus"; };
+    const char * getMD5(){ return "d0ce08bc6e5ba34c7754f563a9cabaf1"; };
 
   };
 

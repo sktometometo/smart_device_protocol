@@ -28,12 +28,12 @@ namespace jsk_recognition_msgs
 
     HumanSkeletonArray():
       header(),
-      human_ids_length(0), st_human_ids(), human_ids(nullptr),
-      skeletons_length(0), st_skeletons(), skeletons(nullptr)
+      human_ids_length(0), human_ids(NULL),
+      skeletons_length(0), skeletons(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -56,7 +56,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -87,8 +87,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/HumanSkeletonArray"; };
-    virtual const char * getMD5() override { return "4013ce44abe9aafa9055e095797a9d50"; };
+    const char * getType(){ return "jsk_recognition_msgs/HumanSkeletonArray"; };
+    const char * getMD5(){ return "4013ce44abe9aafa9055e095797a9d50"; };
 
   };
 

@@ -37,7 +37,7 @@ namespace sensor_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -60,7 +60,7 @@ namespace sensor_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -87,8 +87,8 @@ namespace sensor_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "sensor_msgs/PointField"; };
-    virtual const char * getMD5() override { return "268eacb2962780ceac86cbd17e328150"; };
+    const char * getType(){ return "sensor_msgs/PointField"; };
+    const char * getMD5(){ return "268eacb2962780ceac86cbd17e328150"; };
 
   };
 

@@ -29,7 +29,7 @@ namespace control_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -50,7 +50,7 @@ namespace control_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -76,8 +76,8 @@ namespace control_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "control_msgs/FollowJointTrajectoryResult"; };
-    virtual const char * getMD5() override { return "493383b18409bfb604b4e26c676401d2"; };
+    const char * getType(){ return "control_msgs/FollowJointTrajectoryResult"; };
+    const char * getMD5(){ return "493383b18409bfb604b4e26c676401d2"; };
 
   };
 

@@ -20,7 +20,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_say = strlen(this->say);
@@ -31,7 +31,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_say;
@@ -46,8 +46,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/SpeechWithFeedbackGoal"; };
-    virtual const char * getMD5() override { return "331898fd34308d7c3706d43ca7f6e377"; };
+    const char * getType(){ return "naoqi_bridge_msgs/SpeechWithFeedbackGoal"; };
+    const char * getMD5(){ return "331898fd34308d7c3706d43ca7f6e377"; };
 
   };
 

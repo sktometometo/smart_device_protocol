@@ -24,7 +24,7 @@ static const char SETLOGGERLEVEL[] = "roscpp/SetLoggerLevel";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_logger = strlen(this->logger);
@@ -40,7 +40,7 @@ static const char SETLOGGERLEVEL[] = "roscpp/SetLoggerLevel";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_logger;
@@ -64,8 +64,8 @@ static const char SETLOGGERLEVEL[] = "roscpp/SetLoggerLevel";
      return offset;
     }
 
-    virtual const char * getType() override { return SETLOGGERLEVEL; };
-    virtual const char * getMD5() override { return "51da076440d78ca1684d36c868df61ea"; };
+    const char * getType(){ return SETLOGGERLEVEL; };
+    const char * getMD5(){ return "51da076440d78ca1684d36c868df61ea"; };
 
   };
 
@@ -77,20 +77,20 @@ static const char SETLOGGERLEVEL[] = "roscpp/SetLoggerLevel";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return SETLOGGERLEVEL; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return SETLOGGERLEVEL; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

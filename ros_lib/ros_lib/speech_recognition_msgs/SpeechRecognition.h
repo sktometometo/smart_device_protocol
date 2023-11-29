@@ -39,7 +39,7 @@ static const char SPEECHRECOGNITION[] = "speech_recognition_msgs/SpeechRecogniti
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->vocabulary.serialize(outbuffer + offset);
@@ -79,7 +79,7 @@ static const char SPEECHRECOGNITION[] = "speech_recognition_msgs/SpeechRecogniti
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->vocabulary.deserialize(inbuffer + offset);
@@ -126,8 +126,8 @@ static const char SPEECHRECOGNITION[] = "speech_recognition_msgs/SpeechRecogniti
      return offset;
     }
 
-    virtual const char * getType() override { return SPEECHRECOGNITION; };
-    virtual const char * getMD5() override { return "af5602408bd36e4d9a80cde6f4453023"; };
+    const char * getType(){ return SPEECHRECOGNITION; };
+    const char * getMD5(){ return "af5602408bd36e4d9a80cde6f4453023"; };
 
   };
 
@@ -142,22 +142,22 @@ static const char SPEECHRECOGNITION[] = "speech_recognition_msgs/SpeechRecogniti
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->result.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->result.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return SPEECHRECOGNITION; };
-    virtual const char * getMD5() override { return "46fe009ac10a19a0e861b8792ad42e0b"; };
+    const char * getType(){ return SPEECHRECOGNITION; };
+    const char * getMD5(){ return "46fe009ac10a19a0e861b8792ad42e0b"; };
 
   };
 

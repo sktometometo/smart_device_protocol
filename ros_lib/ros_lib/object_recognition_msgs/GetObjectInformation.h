@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "object_recognition_msgs/ObjectType.h"
 #include "object_recognition_msgs/ObjectInformation.h"
+#include "object_recognition_msgs/ObjectType.h"
 
 namespace object_recognition_msgs
 {
@@ -23,22 +23,22 @@ static const char GETOBJECTINFORMATION[] = "object_recognition_msgs/GetObjectInf
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->type.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->type.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETOBJECTINFORMATION; };
-    virtual const char * getMD5() override { return "0d72b69e80da0fe473b0bdcdd7a28d4d"; };
+    const char * getType(){ return GETOBJECTINFORMATION; };
+    const char * getMD5(){ return "0d72b69e80da0fe473b0bdcdd7a28d4d"; };
 
   };
 
@@ -53,22 +53,22 @@ static const char GETOBJECTINFORMATION[] = "object_recognition_msgs/GetObjectInf
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->information.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->information.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETOBJECTINFORMATION; };
-    virtual const char * getMD5() override { return "a62c5d1c41e250373b3e8e912a13a9cb"; };
+    const char * getType(){ return GETOBJECTINFORMATION; };
+    const char * getMD5(){ return "a62c5d1c41e250373b3e8e912a13a9cb"; };
 
   };
 

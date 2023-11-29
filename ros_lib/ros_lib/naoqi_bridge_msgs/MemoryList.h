@@ -33,13 +33,13 @@ namespace naoqi_bridge_msgs
 
     MemoryList():
       header(),
-      strings_length(0), st_strings(), strings(nullptr),
-      ints_length(0), st_ints(), ints(nullptr),
-      floats_length(0), st_floats(), floats(nullptr)
+      strings_length(0), strings(NULL),
+      ints_length(0), ints(NULL),
+      floats_length(0), floats(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -70,7 +70,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -113,8 +113,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/MemoryList"; };
-    virtual const char * getMD5() override { return "7222936d1c205b51fbfdb13e468998ad"; };
+    const char * getType(){ return "naoqi_bridge_msgs/MemoryList"; };
+    const char * getMD5(){ return "7222936d1c205b51fbfdb13e468998ad"; };
 
   };
 

@@ -68,7 +68,7 @@ namespace ethercat_hardware
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->timestamp);
@@ -101,7 +101,7 @@ namespace ethercat_hardware
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->timestamp));
@@ -135,8 +135,8 @@ namespace ethercat_hardware
      return offset;
     }
 
-    virtual const char * getType() override { return "ethercat_hardware/MotorTraceSample"; };
-    virtual const char * getMD5() override { return "3734a66334bc2033448f9c561d39c5e0"; };
+    const char * getType(){ return "ethercat_hardware/MotorTraceSample"; };
+    const char * getMD5(){ return "3734a66334bc2033448f9c561d39c5e0"; };
 
   };
 

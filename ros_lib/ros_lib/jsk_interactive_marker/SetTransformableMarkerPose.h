@@ -25,7 +25,7 @@ static const char SETTRANSFORMABLEMARKERPOSE[] = "jsk_interactive_marker/SetTran
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_target_name = strlen(this->target_name);
@@ -37,7 +37,7 @@ static const char SETTRANSFORMABLEMARKERPOSE[] = "jsk_interactive_marker/SetTran
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_target_name;
@@ -53,8 +53,8 @@ static const char SETTRANSFORMABLEMARKERPOSE[] = "jsk_interactive_marker/SetTran
      return offset;
     }
 
-    virtual const char * getType() override { return SETTRANSFORMABLEMARKERPOSE; };
-    virtual const char * getMD5() override { return "e19607b29b4528e87feff290fe261191"; };
+    const char * getType(){ return SETTRANSFORMABLEMARKERPOSE; };
+    const char * getMD5(){ return "e19607b29b4528e87feff290fe261191"; };
 
   };
 
@@ -66,20 +66,20 @@ static const char SETTRANSFORMABLEMARKERPOSE[] = "jsk_interactive_marker/SetTran
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return SETTRANSFORMABLEMARKERPOSE; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return SETTRANSFORMABLEMARKERPOSE; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

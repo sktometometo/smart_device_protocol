@@ -73,24 +73,24 @@ namespace roseus
       _string_data_type * string_data;
 
     VariableArray():
-      float32_data_length(0), st_float32_data(), float32_data(nullptr),
-      float64_data_length(0), st_float64_data(), float64_data(nullptr),
-      int16_data_length(0), st_int16_data(), int16_data(nullptr),
-      int32_data_length(0), st_int32_data(), int32_data(nullptr),
-      int64_data_length(0), st_int64_data(), int64_data(nullptr),
-      int8_data_length(0), st_int8_data(), int8_data(nullptr),
-      uint16_data_length(0), st_uint16_data(), uint16_data(nullptr),
-      uint32_data_length(0), st_uint32_data(), uint32_data(nullptr),
-      uint64_data_length(0), st_uint64_data(), uint64_data(nullptr),
-      uint8_data_length(0), st_uint8_data(), uint8_data(nullptr),
-      bool_data_length(0), st_bool_data(), bool_data(nullptr),
-      time_data_length(0), st_time_data(), time_data(nullptr),
-      duration_data_length(0), st_duration_data(), duration_data(nullptr),
-      string_data_length(0), st_string_data(), string_data(nullptr)
+      float32_data_length(0), float32_data(NULL),
+      float64_data_length(0), float64_data(NULL),
+      int16_data_length(0), int16_data(NULL),
+      int32_data_length(0), int32_data(NULL),
+      int64_data_length(0), int64_data(NULL),
+      int8_data_length(0), int8_data(NULL),
+      uint16_data_length(0), uint16_data(NULL),
+      uint32_data_length(0), uint32_data(NULL),
+      uint64_data_length(0), uint64_data(NULL),
+      uint8_data_length(0), uint8_data(NULL),
+      bool_data_length(0), bool_data(NULL),
+      time_data_length(0), time_data(NULL),
+      duration_data_length(0), duration_data(NULL),
+      string_data_length(0), string_data(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->float32_data_length >> (8 * 0)) & 0xFF;
@@ -291,7 +291,7 @@ namespace roseus
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t float32_data_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -554,8 +554,8 @@ namespace roseus
      return offset;
     }
 
-    virtual const char * getType() override { return "roseus/VariableArray"; };
-    virtual const char * getMD5() override { return "aebf8af723dcbdb6782481457d175157"; };
+    const char * getType(){ return "roseus/VariableArray"; };
+    const char * getMD5(){ return "aebf8af723dcbdb6782481457d175157"; };
 
   };
 

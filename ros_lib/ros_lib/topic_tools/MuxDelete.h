@@ -21,7 +21,7 @@ static const char MUXDELETE[] = "topic_tools/MuxDelete";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_topic = strlen(this->topic);
@@ -32,7 +32,7 @@ static const char MUXDELETE[] = "topic_tools/MuxDelete";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_topic;
@@ -47,8 +47,8 @@ static const char MUXDELETE[] = "topic_tools/MuxDelete";
      return offset;
     }
 
-    virtual const char * getType() override { return MUXDELETE; };
-    virtual const char * getMD5() override { return "d8f94bae31b356b24d0427f80426d0c3"; };
+    const char * getType(){ return MUXDELETE; };
+    const char * getMD5(){ return "d8f94bae31b356b24d0427f80426d0c3"; };
 
   };
 
@@ -60,20 +60,20 @@ static const char MUXDELETE[] = "topic_tools/MuxDelete";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return MUXDELETE; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return MUXDELETE; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

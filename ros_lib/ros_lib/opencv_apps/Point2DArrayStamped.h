@@ -23,11 +23,11 @@ namespace opencv_apps
 
     Point2DArrayStamped():
       header(),
-      points_length(0), st_points(), points(nullptr)
+      points_length(0), points(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/Point2DArrayStamped"; };
-    virtual const char * getMD5() override { return "06c8694bd7b07dbc04014c86ef9991a2"; };
+    const char * getType(){ return "opencv_apps/Point2DArrayStamped"; };
+    const char * getMD5(){ return "06c8694bd7b07dbc04014c86ef9991a2"; };
 
   };
 

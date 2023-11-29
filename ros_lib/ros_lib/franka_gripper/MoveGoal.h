@@ -23,7 +23,7 @@ namespace franka_gripper
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->width);
@@ -31,7 +31,7 @@ namespace franka_gripper
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->width));
@@ -39,8 +39,8 @@ namespace franka_gripper
      return offset;
     }
 
-    virtual const char * getType() override { return "franka_gripper/MoveGoal"; };
-    virtual const char * getMD5() override { return "d16050a0fe85f1c2cb8347c99678362e"; };
+    const char * getType(){ return "franka_gripper/MoveGoal"; };
+    const char * getMD5(){ return "d16050a0fe85f1c2cb8347c99678362e"; };
 
   };
 

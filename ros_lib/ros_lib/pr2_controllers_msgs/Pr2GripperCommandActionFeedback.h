@@ -29,7 +29,7 @@ namespace pr2_controllers_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace pr2_controllers_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace pr2_controllers_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_controllers_msgs/Pr2GripperCommandActionFeedback"; };
-    virtual const char * getMD5() override { return "653dff30c045f5e6ff3feb3409f4558d"; };
+    const char * getType(){ return "pr2_controllers_msgs/Pr2GripperCommandActionFeedback"; };
+    const char * getMD5(){ return "653dff30c045f5e6ff3feb3409f4558d"; };
 
   };
 

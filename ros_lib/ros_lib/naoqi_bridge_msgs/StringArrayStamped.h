@@ -22,11 +22,11 @@ namespace naoqi_bridge_msgs
 
     StringArrayStamped():
       header(),
-      data_length(0), st_data(), data(nullptr)
+      data_length(0), data(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -45,7 +45,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -72,8 +72,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/StringArrayStamped"; };
-    virtual const char * getMD5() override { return "17b6e4aa81015d95bcd2b08039bd6bda"; };
+    const char * getType(){ return "naoqi_bridge_msgs/StringArrayStamped"; };
+    const char * getMD5(){ return "17b6e4aa81015d95bcd2b08039bd6bda"; };
 
   };
 

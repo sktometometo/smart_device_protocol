@@ -22,11 +22,11 @@ namespace std_msgs
 
     ByteMultiArray():
       layout(),
-      data_length(0), st_data(), data(nullptr)
+      data_length(0), data(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->layout.serialize(outbuffer + offset);
@@ -47,7 +47,7 @@ namespace std_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->layout.deserialize(inbuffer + offset);
@@ -73,8 +73,8 @@ namespace std_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "std_msgs/ByteMultiArray"; };
-    virtual const char * getMD5() override { return "70ea476cbcfd65ac2f68f3cda1e891fe"; };
+    const char * getType(){ return "std_msgs/ByteMultiArray"; };
+    const char * getMD5(){ return "70ea476cbcfd65ac2f68f3cda1e891fe"; };
 
   };
 

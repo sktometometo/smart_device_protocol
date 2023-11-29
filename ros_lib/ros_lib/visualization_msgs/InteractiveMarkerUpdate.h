@@ -39,13 +39,13 @@ namespace visualization_msgs
       server_id(""),
       seq_num(0),
       type(0),
-      markers_length(0), st_markers(), markers(nullptr),
-      poses_length(0), st_poses(), poses(nullptr),
-      erases_length(0), st_erases(), erases(nullptr)
+      markers_length(0), markers(NULL),
+      poses_length(0), poses(NULL),
+      erases_length(0), erases(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_server_id = strlen(this->server_id);
@@ -95,7 +95,7 @@ namespace visualization_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_server_id;
@@ -165,8 +165,8 @@ namespace visualization_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "visualization_msgs/InteractiveMarkerUpdate"; };
-    virtual const char * getMD5() override { return "710d308d0a9276d65945e92dd30b3946"; };
+    const char * getType(){ return "visualization_msgs/InteractiveMarkerUpdate"; };
+    const char * getMD5(){ return "710d308d0a9276d65945e92dd30b3946"; };
 
   };
 

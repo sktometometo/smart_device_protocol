@@ -37,7 +37,7 @@ namespace actionlib_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->goal_id.serialize(outbuffer + offset);
@@ -51,7 +51,7 @@ namespace actionlib_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->goal_id.deserialize(inbuffer + offset);
@@ -69,8 +69,8 @@ namespace actionlib_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "actionlib_msgs/GoalStatus"; };
-    virtual const char * getMD5() override { return "d388f9b87b3c471f784434d671988d4a"; };
+    const char * getType(){ return "actionlib_msgs/GoalStatus"; };
+    const char * getMD5(){ return "d388f9b87b3c471f784434d671988d4a"; };
 
   };
 

@@ -37,7 +37,7 @@ namespace pr2_gripper_sensor_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->stamp.sec >> (8 * 0)) & 0xFF;
@@ -64,7 +64,7 @@ namespace pr2_gripper_sensor_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->stamp.sec =  ((uint32_t) (*(inbuffer + offset)));
@@ -92,8 +92,8 @@ namespace pr2_gripper_sensor_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_gripper_sensor_msgs/PR2GripperForceServoData"; };
-    virtual const char * getMD5() override { return "d3960eb2ecb6a9b4c27065619e47fd06"; };
+    const char * getType(){ return "pr2_gripper_sensor_msgs/PR2GripperForceServoData"; };
+    const char * getMD5(){ return "d3960eb2ecb6a9b4c27065619e47fd06"; };
 
   };
 

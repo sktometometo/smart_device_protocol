@@ -29,7 +29,7 @@ namespace robot_controllers_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -47,7 +47,7 @@ namespace robot_controllers_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -73,8 +73,8 @@ namespace robot_controllers_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "robot_controllers_msgs/ControllerState"; };
-    virtual const char * getMD5() override { return "af57e70ba1ab402f75604e58ad260b8f"; };
+    const char * getType(){ return "robot_controllers_msgs/ControllerState"; };
+    const char * getMD5(){ return "af57e70ba1ab402f75604e58ad260b8f"; };
 
   };
 

@@ -56,7 +56,7 @@ namespace fetch_driver_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -152,7 +152,7 @@ namespace fetch_driver_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -258,8 +258,8 @@ namespace fetch_driver_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "fetch_driver_msgs/BoardState"; };
-    virtual const char * getMD5() override { return "064739d3117a5b1aac96ad254216e299"; };
+    const char * getType(){ return "fetch_driver_msgs/BoardState"; };
+    const char * getMD5(){ return "064739d3117a5b1aac96ad254216e299"; };
 
   };
 

@@ -25,7 +25,7 @@ namespace jsk_network_tools
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       for( uint32_t i = 0; i < 32; i++){
@@ -49,7 +49,7 @@ namespace jsk_network_tools
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       for( uint32_t i = 0; i < 32; i++){
@@ -75,8 +75,8 @@ namespace jsk_network_tools
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_network_tools/OCS2FC"; };
-    virtual const char * getMD5() override { return "036058ee69589b4817d296161ea7f432"; };
+    const char * getType(){ return "jsk_network_tools/OCS2FC"; };
+    const char * getMD5(){ return "036058ee69589b4817d296161ea7f432"; };
 
   };
 

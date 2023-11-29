@@ -23,7 +23,7 @@ namespace base_local_planner
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -57,7 +57,7 @@ namespace base_local_planner
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -93,8 +93,8 @@ namespace base_local_planner
      return offset;
     }
 
-    virtual const char * getType() override { return "base_local_planner/Position2DInt"; };
-    virtual const char * getMD5() override { return "3b834ede922a0fff22c43585c533b49f"; };
+    const char * getType(){ return "base_local_planner/Position2DInt"; };
+    const char * getMD5(){ return "3b834ede922a0fff22c43585c533b49f"; };
 
   };
 

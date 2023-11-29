@@ -37,7 +37,7 @@ namespace pr2_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -74,7 +74,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -117,8 +117,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/PowerState"; };
-    virtual const char * getMD5() override { return "e6fa46a387cad0b7a80959a21587a6c9"; };
+    const char * getType(){ return "pr2_msgs/PowerState"; };
+    const char * getMD5(){ return "e6fa46a387cad0b7a80959a21587a6c9"; };
 
   };
 

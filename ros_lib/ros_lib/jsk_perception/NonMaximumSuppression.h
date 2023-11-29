@@ -22,12 +22,12 @@ static const char NONMAXIMUMSUPPRESSION[] = "jsk_perception/NonMaximumSuppressio
       _threshold_type threshold;
 
     NonMaximumSuppressionRequest():
-      rect_length(0), st_rect(), rect(nullptr),
+      rect_length(0), rect(NULL),
       threshold(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->rect_length >> (8 * 0)) & 0xFF;
@@ -51,7 +51,7 @@ static const char NONMAXIMUMSUPPRESSION[] = "jsk_perception/NonMaximumSuppressio
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t rect_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -80,8 +80,8 @@ static const char NONMAXIMUMSUPPRESSION[] = "jsk_perception/NonMaximumSuppressio
      return offset;
     }
 
-    virtual const char * getType() override { return NONMAXIMUMSUPPRESSION; };
-    virtual const char * getMD5() override { return "54b7e6632715e9e6592b503a3c881dfc"; };
+    const char * getType(){ return NONMAXIMUMSUPPRESSION; };
+    const char * getMD5(){ return "54b7e6632715e9e6592b503a3c881dfc"; };
 
   };
 
@@ -96,12 +96,12 @@ static const char NONMAXIMUMSUPPRESSION[] = "jsk_perception/NonMaximumSuppressio
       _bbox_count_type bbox_count;
 
     NonMaximumSuppressionResponse():
-      bbox_length(0), st_bbox(), bbox(nullptr),
+      bbox_length(0), bbox(NULL),
       bbox_count(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->bbox_length >> (8 * 0)) & 0xFF;
@@ -129,7 +129,7 @@ static const char NONMAXIMUMSUPPRESSION[] = "jsk_perception/NonMaximumSuppressio
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t bbox_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -162,8 +162,8 @@ static const char NONMAXIMUMSUPPRESSION[] = "jsk_perception/NonMaximumSuppressio
      return offset;
     }
 
-    virtual const char * getType() override { return NONMAXIMUMSUPPRESSION; };
-    virtual const char * getMD5() override { return "8db21435e67f6d13fc94ccbd355f30f1"; };
+    const char * getType(){ return NONMAXIMUMSUPPRESSION; };
+    const char * getMD5(){ return "8db21435e67f6d13fc94ccbd355f30f1"; };
 
   };
 

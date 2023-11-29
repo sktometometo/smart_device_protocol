@@ -51,7 +51,7 @@ namespace pr2_controllers_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -68,7 +68,7 @@ namespace pr2_controllers_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -85,8 +85,8 @@ namespace pr2_controllers_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_controllers_msgs/JointControllerState"; };
-    virtual const char * getMD5() override { return "c0d034a7bf20aeb1c37f3eccb7992b69"; };
+    const char * getType(){ return "pr2_controllers_msgs/JointControllerState"; };
+    const char * getMD5(){ return "c0d034a7bf20aeb1c37f3eccb7992b69"; };
 
   };
 

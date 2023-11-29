@@ -22,22 +22,22 @@ static const char SETMULTIWAVEFORM[] = "ethercat_trigger_controllers/SetMultiWav
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->waveform.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->waveform.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return SETMULTIWAVEFORM; };
-    virtual const char * getMD5() override { return "bfedad8205348a9bcc90e6ae4b778d86"; };
+    const char * getType(){ return SETMULTIWAVEFORM; };
+    const char * getMD5(){ return "bfedad8205348a9bcc90e6ae4b778d86"; };
 
   };
 
@@ -55,7 +55,7 @@ static const char SETMULTIWAVEFORM[] = "ethercat_trigger_controllers/SetMultiWav
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -73,7 +73,7 @@ static const char SETMULTIWAVEFORM[] = "ethercat_trigger_controllers/SetMultiWav
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -96,8 +96,8 @@ static const char SETMULTIWAVEFORM[] = "ethercat_trigger_controllers/SetMultiWav
      return offset;
     }
 
-    virtual const char * getType() override { return SETMULTIWAVEFORM; };
-    virtual const char * getMD5() override { return "2ec6f3eff0161f4257b808b12bc830c2"; };
+    const char * getType(){ return SETMULTIWAVEFORM; };
+    const char * getMD5(){ return "2ec6f3eff0161f4257b808b12bc830c2"; };
 
   };
 

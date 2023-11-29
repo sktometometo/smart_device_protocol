@@ -21,7 +21,7 @@ static const char DELETEPARAM[] = "rosapi/DeleteParam";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -32,7 +32,7 @@ static const char DELETEPARAM[] = "rosapi/DeleteParam";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -47,8 +47,8 @@ static const char DELETEPARAM[] = "rosapi/DeleteParam";
      return offset;
     }
 
-    virtual const char * getType() override { return DELETEPARAM; };
-    virtual const char * getMD5() override { return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
+    const char * getType(){ return DELETEPARAM; };
+    const char * getMD5(){ return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
 
   };
 
@@ -60,20 +60,20 @@ static const char DELETEPARAM[] = "rosapi/DeleteParam";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return DELETEPARAM; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return DELETEPARAM; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

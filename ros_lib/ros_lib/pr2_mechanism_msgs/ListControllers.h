@@ -18,20 +18,20 @@ static const char LISTCONTROLLERS[] = "pr2_mechanism_msgs/ListControllers";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return LISTCONTROLLERS; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return LISTCONTROLLERS; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -48,12 +48,12 @@ static const char LISTCONTROLLERS[] = "pr2_mechanism_msgs/ListControllers";
       _state_type * state;
 
     ListControllersResponse():
-      controllers_length(0), st_controllers(), controllers(nullptr),
-      state_length(0), st_state(), state(nullptr)
+      controllers_length(0), controllers(NULL),
+      state_length(0), state(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->controllers_length >> (8 * 0)) & 0xFF;
@@ -83,7 +83,7 @@ static const char LISTCONTROLLERS[] = "pr2_mechanism_msgs/ListControllers";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t controllers_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -129,8 +129,8 @@ static const char LISTCONTROLLERS[] = "pr2_mechanism_msgs/ListControllers";
      return offset;
     }
 
-    virtual const char * getType() override { return LISTCONTROLLERS; };
-    virtual const char * getMD5() override { return "39c8d39516aed5c7d76284ac06c220e5"; };
+    const char * getType(){ return LISTCONTROLLERS; };
+    const char * getMD5(){ return "39c8d39516aed5c7d76284ac06c220e5"; };
 
   };
 

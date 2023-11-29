@@ -29,7 +29,7 @@ namespace control_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -43,7 +43,7 @@ namespace control_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -61,8 +61,8 @@ namespace control_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "control_msgs/JointTolerance"; };
-    virtual const char * getMD5() override { return "f544fe9c16cf04547e135dd6063ff5be"; };
+    const char * getType(){ return "control_msgs/JointTolerance"; };
+    const char * getMD5(){ return "f544fe9c16cf04547e135dd6063ff5be"; };
 
   };
 

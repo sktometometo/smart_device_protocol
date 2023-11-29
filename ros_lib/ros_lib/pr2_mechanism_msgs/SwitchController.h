@@ -27,13 +27,13 @@ static const char SWITCHCONTROLLER[] = "pr2_mechanism_msgs/SwitchController";
       enum { STRICT = 2 };
 
     SwitchControllerRequest():
-      start_controllers_length(0), st_start_controllers(), start_controllers(nullptr),
-      stop_controllers_length(0), st_stop_controllers(), stop_controllers(nullptr),
+      start_controllers_length(0), start_controllers(NULL),
+      stop_controllers_length(0), stop_controllers(NULL),
       strictness(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->start_controllers_length >> (8 * 0)) & 0xFF;
@@ -73,7 +73,7 @@ static const char SWITCHCONTROLLER[] = "pr2_mechanism_msgs/SwitchController";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t start_controllers_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -130,8 +130,8 @@ static const char SWITCHCONTROLLER[] = "pr2_mechanism_msgs/SwitchController";
      return offset;
     }
 
-    virtual const char * getType() override { return SWITCHCONTROLLER; };
-    virtual const char * getMD5() override { return "434da54adc434a5af5743ed711fd6ba1"; };
+    const char * getType(){ return SWITCHCONTROLLER; };
+    const char * getMD5(){ return "434da54adc434a5af5743ed711fd6ba1"; };
 
   };
 
@@ -146,7 +146,7 @@ static const char SWITCHCONTROLLER[] = "pr2_mechanism_msgs/SwitchController";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -159,7 +159,7 @@ static const char SWITCHCONTROLLER[] = "pr2_mechanism_msgs/SwitchController";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -173,8 +173,8 @@ static const char SWITCHCONTROLLER[] = "pr2_mechanism_msgs/SwitchController";
      return offset;
     }
 
-    virtual const char * getType() override { return SWITCHCONTROLLER; };
-    virtual const char * getMD5() override { return "6f6da3883749771fac40d6deb24a8c02"; };
+    const char * getType(){ return SWITCHCONTROLLER; };
+    const char * getMD5(){ return "6f6da3883749771fac40d6deb24a8c02"; };
 
   };
 

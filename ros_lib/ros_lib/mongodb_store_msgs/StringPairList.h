@@ -19,11 +19,11 @@ namespace mongodb_store_msgs
       _pairs_type * pairs;
 
     StringPairList():
-      pairs_length(0), st_pairs(), pairs(nullptr)
+      pairs_length(0), pairs(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->pairs_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace mongodb_store_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t pairs_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace mongodb_store_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "mongodb_store_msgs/StringPairList"; };
-    virtual const char * getMD5() override { return "50c368c0f345d8de86876a3bada40aad"; };
+    const char * getType(){ return "mongodb_store_msgs/StringPairList"; };
+    const char * getMD5(){ return "50c368c0f345d8de86876a3bada40aad"; };
 
   };
 

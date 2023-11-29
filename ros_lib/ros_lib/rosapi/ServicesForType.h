@@ -21,7 +21,7 @@ static const char SERVICESFORTYPE[] = "rosapi/ServicesForType";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_type = strlen(this->type);
@@ -32,7 +32,7 @@ static const char SERVICESFORTYPE[] = "rosapi/ServicesForType";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_type;
@@ -47,8 +47,8 @@ static const char SERVICESFORTYPE[] = "rosapi/ServicesForType";
      return offset;
     }
 
-    virtual const char * getType() override { return SERVICESFORTYPE; };
-    virtual const char * getMD5() override { return "dc67331de85cf97091b7d45e5c64ab75"; };
+    const char * getType(){ return SERVICESFORTYPE; };
+    const char * getMD5(){ return "dc67331de85cf97091b7d45e5c64ab75"; };
 
   };
 
@@ -61,11 +61,11 @@ static const char SERVICESFORTYPE[] = "rosapi/ServicesForType";
       _services_type * services;
 
     ServicesForTypeResponse():
-      services_length(0), st_services(), services(nullptr)
+      services_length(0), services(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->services_length >> (8 * 0)) & 0xFF;
@@ -83,7 +83,7 @@ static const char SERVICESFORTYPE[] = "rosapi/ServicesForType";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t services_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -109,8 +109,8 @@ static const char SERVICESFORTYPE[] = "rosapi/ServicesForType";
      return offset;
     }
 
-    virtual const char * getType() override { return SERVICESFORTYPE; };
-    virtual const char * getMD5() override { return "e44a7e7bcb900acadbcc28b132378f0c"; };
+    const char * getType(){ return SERVICESFORTYPE; };
+    const char * getMD5(){ return "e44a7e7bcb900acadbcc28b132378f0c"; };
 
   };
 

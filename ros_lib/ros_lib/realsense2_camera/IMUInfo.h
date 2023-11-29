@@ -26,7 +26,7 @@ namespace realsense2_camera
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_frame_id = strlen(this->frame_id);
@@ -46,7 +46,7 @@ namespace realsense2_camera
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_frame_id;
@@ -70,8 +70,8 @@ namespace realsense2_camera
      return offset;
     }
 
-    virtual const char * getType() override { return "realsense2_camera/IMUInfo"; };
-    virtual const char * getMD5() override { return "a02adb3a99530b11ba18a16f40f9512a"; };
+    const char * getType(){ return "realsense2_camera/IMUInfo"; };
+    const char * getMD5(){ return "a02adb3a99530b11ba18a16f40f9512a"; };
 
   };
 

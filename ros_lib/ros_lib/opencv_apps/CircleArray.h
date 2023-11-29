@@ -19,11 +19,11 @@ namespace opencv_apps
       _circles_type * circles;
 
     CircleArray():
-      circles_length(0), st_circles(), circles(nullptr)
+      circles_length(0), circles(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->circles_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t circles_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/CircleArray"; };
-    virtual const char * getMD5() override { return "1970b146e338dd024c765e522039a727"; };
+    const char * getType(){ return "opencv_apps/CircleArray"; };
+    const char * getMD5(){ return "1970b146e338dd024c765e522039a727"; };
 
   };
 

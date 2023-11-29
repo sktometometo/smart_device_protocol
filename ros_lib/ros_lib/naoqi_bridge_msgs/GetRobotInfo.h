@@ -19,20 +19,20 @@ static const char GETROBOTINFO[] = "naoqi_bridge_msgs/GetRobotInfo";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return GETROBOTINFO; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return GETROBOTINFO; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -47,22 +47,22 @@ static const char GETROBOTINFO[] = "naoqi_bridge_msgs/GetRobotInfo";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->info.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->info.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETROBOTINFO; };
-    virtual const char * getMD5() override { return "6a705e4ea65692d6e21188b3537da43d"; };
+    const char * getType(){ return GETROBOTINFO; };
+    const char * getMD5(){ return "6a705e4ea65692d6e21188b3537da43d"; };
 
   };
 

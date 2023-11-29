@@ -33,13 +33,13 @@ namespace pr2_mechanism_msgs
 
     MechanismStatistics():
       header(),
-      actuator_statistics_length(0), st_actuator_statistics(), actuator_statistics(nullptr),
-      joint_statistics_length(0), st_joint_statistics(), joint_statistics(nullptr),
-      controller_statistics_length(0), st_controller_statistics(), controller_statistics(nullptr)
+      actuator_statistics_length(0), actuator_statistics(NULL),
+      joint_statistics_length(0), joint_statistics(NULL),
+      controller_statistics_length(0), controller_statistics(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -70,7 +70,7 @@ namespace pr2_mechanism_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -113,8 +113,8 @@ namespace pr2_mechanism_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_mechanism_msgs/MechanismStatistics"; };
-    virtual const char * getMD5() override { return "b4a99069393681672c01f8c823458e04"; };
+    const char * getType(){ return "pr2_mechanism_msgs/MechanismStatistics"; };
+    const char * getMD5(){ return "b4a99069393681672c01f8c823458e04"; };
 
   };
 

@@ -42,7 +42,7 @@ static const char SETPROFILE[] = "pr2_mechanism_controllers/SetProfile";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->UpperTurnaround);
@@ -56,7 +56,7 @@ static const char SETPROFILE[] = "pr2_mechanism_controllers/SetProfile";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->UpperTurnaround));
@@ -70,8 +70,8 @@ static const char SETPROFILE[] = "pr2_mechanism_controllers/SetProfile";
      return offset;
     }
 
-    virtual const char * getType() override { return SETPROFILE; };
-    virtual const char * getMD5() override { return "309001fc196b0094f23b1ae2bd672fb2"; };
+    const char * getType(){ return SETPROFILE; };
+    const char * getMD5(){ return "309001fc196b0094f23b1ae2bd672fb2"; };
 
   };
 
@@ -86,22 +86,22 @@ static const char SETPROFILE[] = "pr2_mechanism_controllers/SetProfile";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->time);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->time));
      return offset;
     }
 
-    virtual const char * getType() override { return SETPROFILE; };
-    virtual const char * getMD5() override { return "be5310e7aa4c90cdee120add91648cee"; };
+    const char * getType(){ return SETPROFILE; };
+    const char * getMD5(){ return "be5310e7aa4c90cdee120add91648cee"; };
 
   };
 

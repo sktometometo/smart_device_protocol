@@ -18,11 +18,11 @@ namespace jsk_gui_msgs
       _texts_type * texts;
 
     VoiceMessage():
-      texts_length(0), st_texts(), texts(nullptr)
+      texts_length(0), texts(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->texts_length >> (8 * 0)) & 0xFF;
@@ -40,7 +40,7 @@ namespace jsk_gui_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t texts_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -66,8 +66,8 @@ namespace jsk_gui_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_gui_msgs/VoiceMessage"; };
-    virtual const char * getMD5() override { return "8d7dcfb3b46640ccf02177a3f0cf9530"; };
+    const char * getType(){ return "jsk_gui_msgs/VoiceMessage"; };
+    const char * getMD5(){ return "8d7dcfb3b46640ccf02177a3f0cf9530"; };
 
   };
 

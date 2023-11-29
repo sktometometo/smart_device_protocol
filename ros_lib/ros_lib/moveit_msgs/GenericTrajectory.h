@@ -28,12 +28,12 @@ namespace moveit_msgs
 
     GenericTrajectory():
       header(),
-      joint_trajectory_length(0), st_joint_trajectory(), joint_trajectory(nullptr),
-      cartesian_trajectory_length(0), st_cartesian_trajectory(), cartesian_trajectory(nullptr)
+      joint_trajectory_length(0), joint_trajectory(NULL),
+      cartesian_trajectory_length(0), cartesian_trajectory(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -56,7 +56,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -87,8 +87,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/GenericTrajectory"; };
-    virtual const char * getMD5() override { return "d68b5c73072efa2012238a77e49c2c58"; };
+    const char * getType(){ return "moveit_msgs/GenericTrajectory"; };
+    const char * getMD5(){ return "d68b5c73072efa2012238a77e49c2c58"; };
 
   };
 

@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "sensor_msgs/CameraInfo.h"
 #include "apriltag_ros/AprilTagDetectionArray.h"
+#include "sensor_msgs/CameraInfo.h"
 
 namespace apriltag_ros
 {
@@ -29,7 +29,7 @@ static const char ANALYZESINGLEIMAGE[] = "apriltag_ros/AnalyzeSingleImage";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_full_path_where_to_get_image = strlen(this->full_path_where_to_get_image);
@@ -46,7 +46,7 @@ static const char ANALYZESINGLEIMAGE[] = "apriltag_ros/AnalyzeSingleImage";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_full_path_where_to_get_image;
@@ -71,8 +71,8 @@ static const char ANALYZESINGLEIMAGE[] = "apriltag_ros/AnalyzeSingleImage";
      return offset;
     }
 
-    virtual const char * getType() override { return ANALYZESINGLEIMAGE; };
-    virtual const char * getMD5() override { return "ce260db7e8fcb58cbea397e93c5438a4"; };
+    const char * getType(){ return ANALYZESINGLEIMAGE; };
+    const char * getMD5(){ return "ce260db7e8fcb58cbea397e93c5438a4"; };
 
   };
 
@@ -87,22 +87,22 @@ static const char ANALYZESINGLEIMAGE[] = "apriltag_ros/AnalyzeSingleImage";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->tag_detections.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->tag_detections.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return ANALYZESINGLEIMAGE; };
-    virtual const char * getMD5() override { return "252b618af4df2baf843a5edd035f3c2c"; };
+    const char * getType(){ return ANALYZESINGLEIMAGE; };
+    const char * getMD5(){ return "252b618af4df2baf843a5edd035f3c2c"; };
 
   };
 

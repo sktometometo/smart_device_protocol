@@ -40,7 +40,7 @@ static const char AUTHENTICATION[] = "rosauth/Authentication";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_mac = strlen(this->mac);
@@ -91,7 +91,7 @@ static const char AUTHENTICATION[] = "rosauth/Authentication";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_mac;
@@ -162,8 +162,8 @@ static const char AUTHENTICATION[] = "rosauth/Authentication";
      return offset;
     }
 
-    virtual const char * getType() override { return AUTHENTICATION; };
-    virtual const char * getMD5() override { return "cad474945b8be70807460ba22a018b32"; };
+    const char * getType(){ return AUTHENTICATION; };
+    const char * getMD5(){ return "cad474945b8be70807460ba22a018b32"; };
 
   };
 
@@ -178,7 +178,7 @@ static const char AUTHENTICATION[] = "rosauth/Authentication";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -191,7 +191,7 @@ static const char AUTHENTICATION[] = "rosauth/Authentication";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -205,8 +205,8 @@ static const char AUTHENTICATION[] = "rosauth/Authentication";
      return offset;
     }
 
-    virtual const char * getType() override { return AUTHENTICATION; };
-    virtual const char * getMD5() override { return "7eb9cf569b3e4581e3eff49da1ca4f39"; };
+    const char * getType(){ return AUTHENTICATION; };
+    const char * getMD5(){ return "7eb9cf569b3e4581e3eff49da1ca4f39"; };
 
   };
 

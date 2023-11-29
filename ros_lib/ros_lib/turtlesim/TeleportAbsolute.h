@@ -27,7 +27,7 @@ static const char TELEPORTABSOLUTE[] = "turtlesim/TeleportAbsolute";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -63,7 +63,7 @@ static const char TELEPORTABSOLUTE[] = "turtlesim/TeleportAbsolute";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -102,8 +102,8 @@ static const char TELEPORTABSOLUTE[] = "turtlesim/TeleportAbsolute";
      return offset;
     }
 
-    virtual const char * getType() override { return TELEPORTABSOLUTE; };
-    virtual const char * getMD5() override { return "a130bc60ee6513855dc62ea83fcc5b20"; };
+    const char * getType(){ return TELEPORTABSOLUTE; };
+    const char * getMD5(){ return "a130bc60ee6513855dc62ea83fcc5b20"; };
 
   };
 
@@ -115,20 +115,20 @@ static const char TELEPORTABSOLUTE[] = "turtlesim/TeleportAbsolute";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return TELEPORTABSOLUTE; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return TELEPORTABSOLUTE; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

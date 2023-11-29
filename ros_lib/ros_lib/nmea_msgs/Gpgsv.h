@@ -35,11 +35,11 @@ namespace nmea_msgs
       n_msgs(0),
       msg_number(0),
       n_satellites(0),
-      satellites_length(0), st_satellites(), satellites(nullptr)
+      satellites_length(0), satellites(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -65,7 +65,7 @@ namespace nmea_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -99,8 +99,8 @@ namespace nmea_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "nmea_msgs/Gpgsv"; };
-    virtual const char * getMD5() override { return "6f34bebc32fe085313c942a96fd39c77"; };
+    const char * getType(){ return "nmea_msgs/Gpgsv"; };
+    const char * getMD5(){ return "6f34bebc32fe085313c942a96fd39c77"; };
 
   };
 

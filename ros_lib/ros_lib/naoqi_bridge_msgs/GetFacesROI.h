@@ -19,20 +19,20 @@ static const char GETFACESROI[] = "naoqi_bridge_msgs/GetFacesROI";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return GETFACESROI; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return GETFACESROI; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -45,11 +45,11 @@ static const char GETFACESROI[] = "naoqi_bridge_msgs/GetFacesROI";
       _faces_type * faces;
 
     GetFacesROIResponse():
-      faces_length(0), st_faces(), faces(nullptr)
+      faces_length(0), faces(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->faces_length >> (8 * 0)) & 0xFF;
@@ -63,7 +63,7 @@ static const char GETFACESROI[] = "naoqi_bridge_msgs/GetFacesROI";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t faces_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -81,8 +81,8 @@ static const char GETFACESROI[] = "naoqi_bridge_msgs/GetFacesROI";
      return offset;
     }
 
-    virtual const char * getType() override { return GETFACESROI; };
-    virtual const char * getMD5() override { return "7123975ed3d5d1cde8b35e6736592769"; };
+    const char * getType(){ return GETFACESROI; };
+    const char * getMD5(){ return "7123975ed3d5d1cde8b35e6736592769"; };
 
   };
 

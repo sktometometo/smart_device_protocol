@@ -22,22 +22,22 @@ static const char REQUESTMARKEROPERATE[] = "jsk_rviz_plugins/RequestMarkerOperat
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->operate.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->operate.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return REQUESTMARKEROPERATE; };
-    virtual const char * getMD5() override { return "5d5e6dca1cfed7e0be1a8c17221d0619"; };
+    const char * getType(){ return REQUESTMARKEROPERATE; };
+    const char * getMD5(){ return "5d5e6dca1cfed7e0be1a8c17221d0619"; };
 
   };
 
@@ -49,20 +49,20 @@ static const char REQUESTMARKEROPERATE[] = "jsk_rviz_plugins/RequestMarkerOperat
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return REQUESTMARKEROPERATE; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return REQUESTMARKEROPERATE; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

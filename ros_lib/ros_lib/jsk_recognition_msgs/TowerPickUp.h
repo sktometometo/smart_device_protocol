@@ -21,7 +21,7 @@ static const char TOWERPICKUP[] = "jsk_recognition_msgs/TowerPickUp";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -37,7 +37,7 @@ static const char TOWERPICKUP[] = "jsk_recognition_msgs/TowerPickUp";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -54,8 +54,8 @@ static const char TOWERPICKUP[] = "jsk_recognition_msgs/TowerPickUp";
      return offset;
     }
 
-    virtual const char * getType() override { return TOWERPICKUP; };
-    virtual const char * getMD5() override { return "e8bd24109f26b6d833bc4570d67d71c9"; };
+    const char * getType(){ return TOWERPICKUP; };
+    const char * getMD5(){ return "e8bd24109f26b6d833bc4570d67d71c9"; };
 
   };
 
@@ -67,20 +67,20 @@ static const char TOWERPICKUP[] = "jsk_recognition_msgs/TowerPickUp";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return TOWERPICKUP; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return TOWERPICKUP; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

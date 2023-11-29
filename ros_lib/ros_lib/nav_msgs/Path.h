@@ -23,11 +23,11 @@ namespace nav_msgs
 
     Path():
       header(),
-      poses_length(0), st_poses(), poses(nullptr)
+      poses_length(0), poses(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace nav_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace nav_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "nav_msgs/Path"; };
-    virtual const char * getMD5() override { return "6227e2b7e9cce15051f669a5e197bbf7"; };
+    const char * getType(){ return "nav_msgs/Path"; };
+    const char * getMD5(){ return "6227e2b7e9cce15051f669a5e197bbf7"; };
 
   };
 

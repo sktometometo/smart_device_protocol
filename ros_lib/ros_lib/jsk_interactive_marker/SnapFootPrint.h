@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "geometry_msgs/Pose.h"
 #include "geometry_msgs/PoseStamped.h"
+#include "geometry_msgs/Pose.h"
 
 namespace jsk_interactive_marker
 {
@@ -29,7 +29,7 @@ static const char SNAPFOOTPRINT[] = "jsk_interactive_marker/SnapFootPrint";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->input_pose.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ static const char SNAPFOOTPRINT[] = "jsk_interactive_marker/SnapFootPrint";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->input_pose.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ static const char SNAPFOOTPRINT[] = "jsk_interactive_marker/SnapFootPrint";
      return offset;
     }
 
-    virtual const char * getType() override { return SNAPFOOTPRINT; };
-    virtual const char * getMD5() override { return "07fc9b79352f12bc13742f589662de86"; };
+    const char * getType(){ return SNAPFOOTPRINT; };
+    const char * getMD5(){ return "07fc9b79352f12bc13742f589662de86"; };
 
   };
 
@@ -66,7 +66,7 @@ static const char SNAPFOOTPRINT[] = "jsk_interactive_marker/SnapFootPrint";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -80,7 +80,7 @@ static const char SNAPFOOTPRINT[] = "jsk_interactive_marker/SnapFootPrint";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -95,8 +95,8 @@ static const char SNAPFOOTPRINT[] = "jsk_interactive_marker/SnapFootPrint";
      return offset;
     }
 
-    virtual const char * getType() override { return SNAPFOOTPRINT; };
-    virtual const char * getMD5() override { return "a900428084c91b5e6bdb3a3c62cb401d"; };
+    const char * getType(){ return SNAPFOOTPRINT; };
+    const char * getMD5(){ return "a900428084c91b5e6bdb3a3c62cb401d"; };
 
   };
 

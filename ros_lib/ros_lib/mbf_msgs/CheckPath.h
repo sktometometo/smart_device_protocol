@@ -48,7 +48,7 @@ static const char CHECKPATH[] = "mbf_msgs/CheckPath";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->path.serialize(outbuffer + offset);
@@ -108,7 +108,7 @@ static const char CHECKPATH[] = "mbf_msgs/CheckPath";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->path.deserialize(inbuffer + offset);
@@ -173,8 +173,8 @@ static const char CHECKPATH[] = "mbf_msgs/CheckPath";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKPATH; };
-    virtual const char * getMD5() override { return "16f70020b17f5c034724ed8fb518b9f5"; };
+    const char * getType(){ return CHECKPATH; };
+    const char * getMD5(){ return "16f70020b17f5c034724ed8fb518b9f5"; };
 
   };
 
@@ -200,7 +200,7 @@ static const char CHECKPATH[] = "mbf_msgs/CheckPath";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->last_checked >> (8 * 0)) & 0xFF;
@@ -218,7 +218,7 @@ static const char CHECKPATH[] = "mbf_msgs/CheckPath";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->last_checked =  ((uint32_t) (*(inbuffer + offset)));
@@ -236,8 +236,8 @@ static const char CHECKPATH[] = "mbf_msgs/CheckPath";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKPATH; };
-    virtual const char * getMD5() override { return "420eb6a13d128bba3770710452ea1c17"; };
+    const char * getType(){ return CHECKPATH; };
+    const char * getMD5(){ return "420eb6a13d128bba3770710452ea1c17"; };
 
   };
 

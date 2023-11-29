@@ -23,11 +23,11 @@ namespace jsk_recognition_msgs
 
     ContactSensorArray():
       header(),
-      datas_length(0), st_datas(), datas(nullptr)
+      datas_length(0), datas(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/ContactSensorArray"; };
-    virtual const char * getMD5() override { return "c65f16fb3a523c0b77d7e31330b214da"; };
+    const char * getType(){ return "jsk_recognition_msgs/ContactSensorArray"; };
+    const char * getMD5(){ return "c65f16fb3a523c0b77d7e31330b214da"; };
 
   };
 

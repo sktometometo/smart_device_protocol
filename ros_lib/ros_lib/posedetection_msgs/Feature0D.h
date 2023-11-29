@@ -42,17 +42,17 @@ namespace posedetection_msgs
 
     Feature0D():
       header(),
-      positions_length(0), st_positions(), positions(nullptr),
-      scales_length(0), st_scales(), scales(nullptr),
-      orientations_length(0), st_orientations(), orientations(nullptr),
-      confidences_length(0), st_confidences(), confidences(nullptr),
-      descriptors_length(0), st_descriptors(), descriptors(nullptr),
+      positions_length(0), positions(NULL),
+      scales_length(0), scales(NULL),
+      orientations_length(0), orientations(NULL),
+      confidences_length(0), confidences(NULL),
+      descriptors_length(0), descriptors(NULL),
       descriptor_dim(0),
       type("")
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -159,7 +159,7 @@ namespace posedetection_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -296,8 +296,8 @@ namespace posedetection_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "posedetection_msgs/Feature0D"; };
-    virtual const char * getMD5() override { return "fcb3ba42a42cf972f3838cdb171f5e04"; };
+    const char * getType(){ return "posedetection_msgs/Feature0D"; };
+    const char * getMD5(){ return "fcb3ba42a42cf972f3838cdb171f5e04"; };
 
   };
 

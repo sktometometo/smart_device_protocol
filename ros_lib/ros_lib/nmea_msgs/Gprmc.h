@@ -60,7 +60,7 @@ namespace nmea_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -135,7 +135,7 @@ namespace nmea_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -241,8 +241,8 @@ namespace nmea_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "nmea_msgs/Gprmc"; };
-    virtual const char * getMD5() override { return "02533bac67f17457b2e3538525ba1aae"; };
+    const char * getType(){ return "nmea_msgs/Gprmc"; };
+    const char * getMD5(){ return "02533bac67f17457b2e3538525ba1aae"; };
 
   };
 

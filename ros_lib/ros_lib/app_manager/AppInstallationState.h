@@ -23,12 +23,12 @@ namespace app_manager
       _available_apps_type * available_apps;
 
     AppInstallationState():
-      installed_apps_length(0), st_installed_apps(), installed_apps(nullptr),
-      available_apps_length(0), st_available_apps(), available_apps(nullptr)
+      installed_apps_length(0), installed_apps(NULL),
+      available_apps_length(0), available_apps(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->installed_apps_length >> (8 * 0)) & 0xFF;
@@ -50,7 +50,7 @@ namespace app_manager
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t installed_apps_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -80,8 +80,8 @@ namespace app_manager
      return offset;
     }
 
-    virtual const char * getType() override { return "app_manager/AppInstallationState"; };
-    virtual const char * getMD5() override { return "46d45bbda08250199267aff8c0ee8c41"; };
+    const char * getType(){ return "app_manager/AppInstallationState"; };
+    const char * getMD5(){ return "46d45bbda08250199267aff8c0ee8c41"; };
 
   };
 

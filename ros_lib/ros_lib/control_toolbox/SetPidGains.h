@@ -33,7 +33,7 @@ static const char SETPIDGAINS[] = "control_toolbox/SetPidGains";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->p);
@@ -50,7 +50,7 @@ static const char SETPIDGAINS[] = "control_toolbox/SetPidGains";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->p));
@@ -68,8 +68,8 @@ static const char SETPIDGAINS[] = "control_toolbox/SetPidGains";
      return offset;
     }
 
-    virtual const char * getType() override { return SETPIDGAINS; };
-    virtual const char * getMD5() override { return "4a43159879643e60937bf2893b633607"; };
+    const char * getType(){ return SETPIDGAINS; };
+    const char * getMD5(){ return "4a43159879643e60937bf2893b633607"; };
 
   };
 
@@ -81,20 +81,20 @@ static const char SETPIDGAINS[] = "control_toolbox/SetPidGains";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return SETPIDGAINS; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return SETPIDGAINS; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

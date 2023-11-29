@@ -33,7 +33,7 @@ namespace pr2_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -48,7 +48,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -67,8 +67,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/PeriodicCmd"; };
-    virtual const char * getMD5() override { return "95ab7e548e3d4274f83393129dd96c2e"; };
+    const char * getType(){ return "pr2_msgs/PeriodicCmd"; };
+    const char * getMD5(){ return "95ab7e548e3d4274f83393129dd96c2e"; };
 
   };
 

@@ -22,22 +22,22 @@ static const char UPDATEPOINTCLOUDOCTOMAP[] = "moveit_msgs/UpdatePointcloudOctom
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->cloud.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->cloud.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return UPDATEPOINTCLOUDOCTOMAP; };
-    virtual const char * getMD5() override { return "96cec5374164b3b3d1d7ef5d7628a7ed"; };
+    const char * getType(){ return UPDATEPOINTCLOUDOCTOMAP; };
+    const char * getMD5(){ return "96cec5374164b3b3d1d7ef5d7628a7ed"; };
 
   };
 
@@ -52,7 +52,7 @@ static const char UPDATEPOINTCLOUDOCTOMAP[] = "moveit_msgs/UpdatePointcloudOctom
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -65,7 +65,7 @@ static const char UPDATEPOINTCLOUDOCTOMAP[] = "moveit_msgs/UpdatePointcloudOctom
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -79,8 +79,8 @@ static const char UPDATEPOINTCLOUDOCTOMAP[] = "moveit_msgs/UpdatePointcloudOctom
      return offset;
     }
 
-    virtual const char * getType() override { return UPDATEPOINTCLOUDOCTOMAP; };
-    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    const char * getType(){ return UPDATEPOINTCLOUDOCTOMAP; };
+    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

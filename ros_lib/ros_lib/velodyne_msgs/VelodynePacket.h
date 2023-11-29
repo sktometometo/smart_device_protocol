@@ -23,7 +23,7 @@ namespace velodyne_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->stamp.sec >> (8 * 0)) & 0xFF;
@@ -43,7 +43,7 @@ namespace velodyne_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->stamp.sec =  ((uint32_t) (*(inbuffer + offset)));
@@ -63,8 +63,8 @@ namespace velodyne_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "velodyne_msgs/VelodynePacket"; };
-    virtual const char * getMD5() override { return "ae4f90a23256f44e82baa08dd45c3456"; };
+    const char * getType(){ return "velodyne_msgs/VelodynePacket"; };
+    const char * getMD5(){ return "ae4f90a23256f44e82baa08dd45c3456"; };
 
   };
 

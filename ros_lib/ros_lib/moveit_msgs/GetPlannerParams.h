@@ -28,7 +28,7 @@ static const char GETPLANNERPARAMS[] = "moveit_msgs/GetPlannerParams";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_pipeline_id = strlen(this->pipeline_id);
@@ -49,7 +49,7 @@ static const char GETPLANNERPARAMS[] = "moveit_msgs/GetPlannerParams";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_pipeline_id;
@@ -82,8 +82,8 @@ static const char GETPLANNERPARAMS[] = "moveit_msgs/GetPlannerParams";
      return offset;
     }
 
-    virtual const char * getType() override { return GETPLANNERPARAMS; };
-    virtual const char * getMD5() override { return "f5065dceae6a10319c47163ab1012104"; };
+    const char * getType(){ return GETPLANNERPARAMS; };
+    const char * getMD5(){ return "f5065dceae6a10319c47163ab1012104"; };
 
   };
 
@@ -98,22 +98,22 @@ static const char GETPLANNERPARAMS[] = "moveit_msgs/GetPlannerParams";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->params.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->params.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETPLANNERPARAMS; };
-    virtual const char * getMD5() override { return "462b1bd59976ece800f6a48f2b0bf1a2"; };
+    const char * getType(){ return GETPLANNERPARAMS; };
+    const char * getMD5(){ return "462b1bd59976ece800f6a48f2b0bf1a2"; };
 
   };
 

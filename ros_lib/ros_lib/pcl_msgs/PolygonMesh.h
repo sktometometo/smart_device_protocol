@@ -27,11 +27,11 @@ namespace pcl_msgs
     PolygonMesh():
       header(),
       cloud(),
-      polygons_length(0), st_polygons(), polygons(nullptr)
+      polygons_length(0), polygons(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -47,7 +47,7 @@ namespace pcl_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -67,8 +67,8 @@ namespace pcl_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pcl_msgs/PolygonMesh"; };
-    virtual const char * getMD5() override { return "45a5fc6ad2cde8489600a790acc9a38a"; };
+    const char * getType(){ return "pcl_msgs/PolygonMesh"; };
+    const char * getMD5(){ return "45a5fc6ad2cde8489600a790acc9a38a"; };
 
   };
 

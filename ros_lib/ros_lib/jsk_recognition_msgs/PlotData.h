@@ -36,8 +36,8 @@ namespace jsk_recognition_msgs
 
     PlotData():
       header(),
-      xs_length(0), st_xs(), xs(nullptr),
-      ys_length(0), st_ys(), ys(nullptr),
+      xs_length(0), xs(NULL),
+      ys_length(0), ys(NULL),
       type(0),
       label(""),
       fit_line(0),
@@ -45,7 +45,7 @@ namespace jsk_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -110,7 +110,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -191,8 +191,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/PlotData"; };
-    virtual const char * getMD5() override { return "abc388ba2207b305f8695ad025452af4"; };
+    const char * getType(){ return "jsk_recognition_msgs/PlotData"; };
+    const char * getMD5(){ return "abc388ba2207b305f8695ad025452af4"; };
 
   };
 

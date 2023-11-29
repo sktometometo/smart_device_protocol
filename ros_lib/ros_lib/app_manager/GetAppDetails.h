@@ -22,7 +22,7 @@ static const char GETAPPDETAILS[] = "app_manager/GetAppDetails";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -33,7 +33,7 @@ static const char GETAPPDETAILS[] = "app_manager/GetAppDetails";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -48,8 +48,8 @@ static const char GETAPPDETAILS[] = "app_manager/GetAppDetails";
      return offset;
     }
 
-    virtual const char * getType() override { return GETAPPDETAILS; };
-    virtual const char * getMD5() override { return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
+    const char * getType(){ return GETAPPDETAILS; };
+    const char * getMD5(){ return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
 
   };
 
@@ -64,22 +64,22 @@ static const char GETAPPDETAILS[] = "app_manager/GetAppDetails";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->app.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->app.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETAPPDETAILS; };
-    virtual const char * getMD5() override { return "404cd76612a719d24ac22fba2d495de8"; };
+    const char * getType(){ return GETAPPDETAILS; };
+    const char * getMD5(){ return "404cd76612a719d24ac22fba2d495de8"; };
 
   };
 

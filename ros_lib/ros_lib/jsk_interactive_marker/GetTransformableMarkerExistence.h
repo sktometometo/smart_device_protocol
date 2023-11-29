@@ -21,7 +21,7 @@ static const char GETTRANSFORMABLEMARKEREXISTENCE[] = "jsk_interactive_marker/Ge
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_target_name = strlen(this->target_name);
@@ -32,7 +32,7 @@ static const char GETTRANSFORMABLEMARKEREXISTENCE[] = "jsk_interactive_marker/Ge
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_target_name;
@@ -47,8 +47,8 @@ static const char GETTRANSFORMABLEMARKEREXISTENCE[] = "jsk_interactive_marker/Ge
      return offset;
     }
 
-    virtual const char * getType() override { return GETTRANSFORMABLEMARKEREXISTENCE; };
-    virtual const char * getMD5() override { return "2008933b3c7227647cbe00c74682331a"; };
+    const char * getType(){ return GETTRANSFORMABLEMARKEREXISTENCE; };
+    const char * getMD5(){ return "2008933b3c7227647cbe00c74682331a"; };
 
   };
 
@@ -63,7 +63,7 @@ static const char GETTRANSFORMABLEMARKEREXISTENCE[] = "jsk_interactive_marker/Ge
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -76,7 +76,7 @@ static const char GETTRANSFORMABLEMARKEREXISTENCE[] = "jsk_interactive_marker/Ge
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -90,8 +90,8 @@ static const char GETTRANSFORMABLEMARKEREXISTENCE[] = "jsk_interactive_marker/Ge
      return offset;
     }
 
-    virtual const char * getType() override { return GETTRANSFORMABLEMARKEREXISTENCE; };
-    virtual const char * getMD5() override { return "09ae207b2bf8af13a88dd5fd7b14cb66"; };
+    const char * getType(){ return GETTRANSFORMABLEMARKEREXISTENCE; };
+    const char * getMD5(){ return "09ae207b2bf8af13a88dd5fd7b14cb66"; };
 
   };
 

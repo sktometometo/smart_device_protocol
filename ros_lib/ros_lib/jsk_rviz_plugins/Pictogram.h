@@ -56,7 +56,7 @@ namespace jsk_rviz_plugins
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -77,7 +77,7 @@ namespace jsk_rviz_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -102,8 +102,8 @@ namespace jsk_rviz_plugins
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_rviz_plugins/Pictogram"; };
-    virtual const char * getMD5() override { return "29667e5652a8cfdc9c87d2ed97aa7bbc"; };
+    const char * getType(){ return "jsk_rviz_plugins/Pictogram"; };
+    const char * getMD5(){ return "29667e5652a8cfdc9c87d2ed97aa7bbc"; };
 
   };
 

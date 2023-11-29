@@ -23,11 +23,11 @@ namespace jsk_recognition_msgs
 
     LabelArray():
       header(),
-      labels_length(0), st_labels(), labels(nullptr)
+      labels_length(0), labels(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/LabelArray"; };
-    virtual const char * getMD5() override { return "8cdb9aed89bee725ff5ad76b2986927d"; };
+    const char * getType(){ return "jsk_recognition_msgs/LabelArray"; };
+    const char * getMD5(){ return "8cdb9aed89bee725ff5ad76b2986927d"; };
 
   };
 

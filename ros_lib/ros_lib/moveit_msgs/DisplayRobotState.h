@@ -25,12 +25,12 @@ namespace moveit_msgs
 
     DisplayRobotState():
       state(),
-      highlight_links_length(0), st_highlight_links(), highlight_links(nullptr),
+      highlight_links_length(0), highlight_links(NULL),
       hide(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->state.serialize(outbuffer + offset);
@@ -52,7 +52,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->state.deserialize(inbuffer + offset);
@@ -79,8 +79,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/DisplayRobotState"; };
-    virtual const char * getMD5() override { return "61c4e677a6fbbc83f0d5d9df2be85e3c"; };
+    const char * getType(){ return "moveit_msgs/DisplayRobotState"; };
+    const char * getMD5(){ return "61c4e677a6fbbc83f0d5d9df2be85e3c"; };
 
   };
 

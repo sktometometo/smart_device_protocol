@@ -21,22 +21,22 @@ namespace moveit_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->response.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->response.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/MoveGroupSequenceResult"; };
-    virtual const char * getMD5() override { return "3e3d83067566e443fa885c9428941f17"; };
+    const char * getType(){ return "moveit_msgs/MoveGroupSequenceResult"; };
+    const char * getMD5(){ return "3e3d83067566e443fa885c9428941f17"; };
 
   };
 

@@ -48,7 +48,7 @@ namespace power_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -143,7 +143,7 @@ namespace power_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -250,8 +250,8 @@ namespace power_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "power_msgs/BatteryState"; };
-    virtual const char * getMD5() override { return "c7430ea7e5c95a5cba20f69647789404"; };
+    const char * getType(){ return "power_msgs/BatteryState"; };
+    const char * getMD5(){ return "c7430ea7e5c95a5cba20f69647789404"; };
 
   };
 

@@ -23,7 +23,7 @@ namespace pr2_mechanism_controllers
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->distance);
@@ -31,7 +31,7 @@ namespace pr2_mechanism_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->distance));
@@ -39,8 +39,8 @@ namespace pr2_mechanism_controllers
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_mechanism_controllers/Odometer"; };
-    virtual const char * getMD5() override { return "1f1d53743f4592ee455aa3eaf9019457"; };
+    const char * getType(){ return "pr2_mechanism_controllers/Odometer"; };
+    const char * getMD5(){ return "1f1d53743f4592ee455aa3eaf9019457"; };
 
   };
 

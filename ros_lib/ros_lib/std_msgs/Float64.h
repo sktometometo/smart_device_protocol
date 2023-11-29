@@ -20,22 +20,22 @@ namespace std_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->data);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->data));
      return offset;
     }
 
-    virtual const char * getType() override { return "std_msgs/Float64"; };
-    virtual const char * getMD5() override { return "fdb28210bfa9d7c91146260178d9a584"; };
+    const char * getType(){ return "std_msgs/Float64"; };
+    const char * getMD5(){ return "fdb28210bfa9d7c91146260178d9a584"; };
 
   };
 

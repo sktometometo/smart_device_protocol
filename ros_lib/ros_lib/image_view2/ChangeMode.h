@@ -21,7 +21,7 @@ static const char CHANGEMODE[] = "image_view2/ChangeMode";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_mode = strlen(this->mode);
@@ -32,7 +32,7 @@ static const char CHANGEMODE[] = "image_view2/ChangeMode";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_mode;
@@ -47,8 +47,8 @@ static const char CHANGEMODE[] = "image_view2/ChangeMode";
      return offset;
     }
 
-    virtual const char * getType() override { return CHANGEMODE; };
-    virtual const char * getMD5() override { return "e84dc3ad5dc323bb64f0aca01c2d1eef"; };
+    const char * getType(){ return CHANGEMODE; };
+    const char * getMD5(){ return "e84dc3ad5dc323bb64f0aca01c2d1eef"; };
 
   };
 
@@ -60,20 +60,20 @@ static const char CHANGEMODE[] = "image_view2/ChangeMode";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return CHANGEMODE; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return CHANGEMODE; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

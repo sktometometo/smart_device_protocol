@@ -46,7 +46,7 @@ namespace controller_manager_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -129,7 +129,7 @@ namespace controller_manager_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_name;
@@ -222,8 +222,8 @@ namespace controller_manager_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "controller_manager_msgs/ControllerStatistics"; };
-    virtual const char * getMD5() override { return "697780c372c8d8597a1436d0e2ad3ba8"; };
+    const char * getType(){ return "controller_manager_msgs/ControllerStatistics"; };
+    const char * getMD5(){ return "697780c372c8d8597a1436d0e2ad3ba8"; };
 
   };
 

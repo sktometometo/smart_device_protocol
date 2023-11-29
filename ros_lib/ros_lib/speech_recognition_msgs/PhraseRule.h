@@ -21,11 +21,11 @@ namespace speech_recognition_msgs
 
     PhraseRule():
       symbol(""),
-      definition_length(0), st_definition(), definition(nullptr)
+      definition_length(0), definition(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_symbol = strlen(this->symbol);
@@ -48,7 +48,7 @@ namespace speech_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_symbol;
@@ -83,8 +83,8 @@ namespace speech_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "speech_recognition_msgs/PhraseRule"; };
-    virtual const char * getMD5() override { return "8184f0f93fdc3a6768ac26cd56040fdd"; };
+    const char * getType(){ return "speech_recognition_msgs/PhraseRule"; };
+    const char * getMD5(){ return "8184f0f93fdc3a6768ac26cd56040fdd"; };
 
   };
 

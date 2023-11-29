@@ -23,11 +23,11 @@ namespace image_view2
 
     PointArrayStamped():
       header(),
-      points_length(0), st_points(), points(nullptr)
+      points_length(0), points(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace image_view2
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace image_view2
      return offset;
     }
 
-    virtual const char * getType() override { return "image_view2/PointArrayStamped"; };
-    virtual const char * getMD5() override { return "2199cac4695ce1fc0f346db535dda30d"; };
+    const char * getType(){ return "image_view2/PointArrayStamped"; };
+    const char * getMD5(){ return "2199cac4695ce1fc0f346db535dda30d"; };
 
   };
 

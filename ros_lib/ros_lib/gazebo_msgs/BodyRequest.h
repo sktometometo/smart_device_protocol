@@ -21,7 +21,7 @@ static const char BODYREQUEST[] = "gazebo_msgs/BodyRequest";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_body_name = strlen(this->body_name);
@@ -32,7 +32,7 @@ static const char BODYREQUEST[] = "gazebo_msgs/BodyRequest";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_body_name;
@@ -47,8 +47,8 @@ static const char BODYREQUEST[] = "gazebo_msgs/BodyRequest";
      return offset;
     }
 
-    virtual const char * getType() override { return BODYREQUEST; };
-    virtual const char * getMD5() override { return "5eade9afe7f232d78005bd0cafeab755"; };
+    const char * getType(){ return BODYREQUEST; };
+    const char * getMD5(){ return "5eade9afe7f232d78005bd0cafeab755"; };
 
   };
 
@@ -60,20 +60,20 @@ static const char BODYREQUEST[] = "gazebo_msgs/BodyRequest";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return BODYREQUEST; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return BODYREQUEST; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

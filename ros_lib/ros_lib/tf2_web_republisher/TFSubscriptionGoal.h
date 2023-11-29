@@ -26,7 +26,7 @@ namespace tf2_web_republisher
       _rate_type rate;
 
     TFSubscriptionGoal():
-      source_frames_length(0), st_source_frames(), source_frames(nullptr),
+      source_frames_length(0), source_frames(NULL),
       target_frame(""),
       angular_thres(0),
       trans_thres(0),
@@ -34,7 +34,7 @@ namespace tf2_web_republisher
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->source_frames_length >> (8 * 0)) & 0xFF;
@@ -87,7 +87,7 @@ namespace tf2_web_republisher
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t source_frames_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -155,8 +155,8 @@ namespace tf2_web_republisher
      return offset;
     }
 
-    virtual const char * getType() override { return "tf2_web_republisher/TFSubscriptionGoal"; };
-    virtual const char * getMD5() override { return "b2dae39608227a5c1c4a91ad77023a27"; };
+    const char * getType(){ return "tf2_web_republisher/TFSubscriptionGoal"; };
+    const char * getMD5(){ return "b2dae39608227a5c1c4a91ad77023a27"; };
 
   };
 

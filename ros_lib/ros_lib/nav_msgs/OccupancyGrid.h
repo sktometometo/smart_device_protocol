@@ -26,11 +26,11 @@ namespace nav_msgs
     OccupancyGrid():
       header(),
       info(),
-      data_length(0), st_data(), data(nullptr)
+      data_length(0), data(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -52,7 +52,7 @@ namespace nav_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -79,8 +79,8 @@ namespace nav_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "nav_msgs/OccupancyGrid"; };
-    virtual const char * getMD5() override { return "3381f2d731d4076ec5c71b0759edbe4e"; };
+    const char * getType(){ return "nav_msgs/OccupancyGrid"; };
+    const char * getMD5(){ return "3381f2d731d4076ec5c71b0759edbe4e"; };
 
   };
 

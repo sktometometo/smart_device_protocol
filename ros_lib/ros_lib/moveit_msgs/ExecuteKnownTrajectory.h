@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/MoveItErrorCodes.h"
 #include "moveit_msgs/RobotTrajectory.h"
+#include "moveit_msgs/MoveItErrorCodes.h"
 
 namespace moveit_msgs
 {
@@ -26,7 +26,7 @@ static const char EXECUTEKNOWNTRAJECTORY[] = "moveit_msgs/ExecuteKnownTrajectory
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->trajectory.serialize(outbuffer + offset);
@@ -40,7 +40,7 @@ static const char EXECUTEKNOWNTRAJECTORY[] = "moveit_msgs/ExecuteKnownTrajectory
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->trajectory.deserialize(inbuffer + offset);
@@ -55,8 +55,8 @@ static const char EXECUTEKNOWNTRAJECTORY[] = "moveit_msgs/ExecuteKnownTrajectory
      return offset;
     }
 
-    virtual const char * getType() override { return EXECUTEKNOWNTRAJECTORY; };
-    virtual const char * getMD5() override { return "2a3d2a0b337c6a27da4468bb351928e5"; };
+    const char * getType(){ return EXECUTEKNOWNTRAJECTORY; };
+    const char * getMD5(){ return "2a3d2a0b337c6a27da4468bb351928e5"; };
 
   };
 
@@ -71,22 +71,22 @@ static const char EXECUTEKNOWNTRAJECTORY[] = "moveit_msgs/ExecuteKnownTrajectory
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->error_code.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->error_code.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return EXECUTEKNOWNTRAJECTORY; };
-    virtual const char * getMD5() override { return "6a39f41e4bc445a437e9a0cabdd5ef5c"; };
+    const char * getType(){ return EXECUTEKNOWNTRAJECTORY; };
+    const char * getMD5(){ return "6a39f41e4bc445a437e9a0cabdd5ef5c"; };
 
   };
 

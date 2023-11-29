@@ -31,11 +31,11 @@ namespace jsk_hark_msgs
       count(0),
       directions(0),
       data_bytes(0),
-      powers_length(0), st_powers(), powers(nullptr)
+      powers_length(0), powers(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -89,7 +89,7 @@ namespace jsk_hark_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -151,8 +151,8 @@ namespace jsk_hark_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_hark_msgs/HarkPower"; };
-    virtual const char * getMD5() override { return "251c13d7a8be27144a2b24c6f53df705"; };
+    const char * getType(){ return "jsk_hark_msgs/HarkPower"; };
+    const char * getMD5(){ return "251c13d7a8be27144a2b24c6f53df705"; };
 
   };
 

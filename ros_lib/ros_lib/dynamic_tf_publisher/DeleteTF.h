@@ -22,22 +22,22 @@ static const char DELETETF[] = "dynamic_tf_publisher/DeleteTF";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return DELETETF; };
-    virtual const char * getMD5() override { return "d7be0bb39af8fb9129d5a76e6b63a290"; };
+    const char * getType(){ return DELETETF; };
+    const char * getMD5(){ return "d7be0bb39af8fb9129d5a76e6b63a290"; };
 
   };
 
@@ -49,20 +49,20 @@ static const char DELETETF[] = "dynamic_tf_publisher/DeleteTF";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return DELETETF; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return DELETETF; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

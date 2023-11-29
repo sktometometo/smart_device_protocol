@@ -34,7 +34,7 @@ namespace nav_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->map_load_time.sec >> (8 * 0)) & 0xFF;
@@ -71,7 +71,7 @@ namespace nav_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->map_load_time.sec =  ((uint32_t) (*(inbuffer + offset)));
@@ -109,8 +109,8 @@ namespace nav_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "nav_msgs/MapMetaData"; };
-    virtual const char * getMD5() override { return "10cfc8a2818024d3248802c00c95f11b"; };
+    const char * getType(){ return "nav_msgs/MapMetaData"; };
+    const char * getMD5(){ return "10cfc8a2818024d3248802c00c95f11b"; };
 
   };
 

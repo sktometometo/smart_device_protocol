@@ -35,7 +35,7 @@ namespace pr2_common_action_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->pose.serialize(outbuffer + offset);
@@ -64,7 +64,7 @@ namespace pr2_common_action_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->pose.deserialize(inbuffer + offset);
@@ -93,8 +93,8 @@ namespace pr2_common_action_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_common_action_msgs/ArmMoveIKGoal"; };
-    virtual const char * getMD5() override { return "659cdac4f142756518faf4644a34bdda"; };
+    const char * getType(){ return "pr2_common_action_msgs/ArmMoveIKGoal"; };
+    const char * getMD5(){ return "659cdac4f142756518faf4644a34bdda"; };
 
   };
 

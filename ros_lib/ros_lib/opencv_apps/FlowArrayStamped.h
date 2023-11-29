@@ -23,11 +23,11 @@ namespace opencv_apps
 
     FlowArrayStamped():
       header(),
-      flow_length(0), st_flow(), flow(nullptr)
+      flow_length(0), flow(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/FlowArrayStamped"; };
-    virtual const char * getMD5() override { return "b55faf909449963372b92417925b68cc"; };
+    const char * getType(){ return "opencv_apps/FlowArrayStamped"; };
+    const char * getMD5(){ return "b55faf909449963372b92417925b68cc"; };
 
   };
 

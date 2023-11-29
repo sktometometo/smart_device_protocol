@@ -25,11 +25,11 @@ namespace ethercat_trigger_controllers
     MultiWaveform():
       period(0),
       zero_offset(0),
-      transitions_length(0), st_transitions(), transitions(nullptr)
+      transitions_length(0), transitions(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->period);
@@ -45,7 +45,7 @@ namespace ethercat_trigger_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->period));
@@ -65,8 +65,8 @@ namespace ethercat_trigger_controllers
      return offset;
     }
 
-    virtual const char * getType() override { return "ethercat_trigger_controllers/MultiWaveform"; };
-    virtual const char * getMD5() override { return "6a8e166563c159e73f391a302e7b37f6"; };
+    const char * getType(){ return "ethercat_trigger_controllers/MultiWaveform"; };
+    const char * getMD5(){ return "6a8e166563c159e73f391a302e7b37f6"; };
 
   };
 

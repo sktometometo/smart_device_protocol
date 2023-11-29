@@ -39,7 +39,7 @@ namespace view_controller_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->eye.serialize(outbuffer + offset);
@@ -60,7 +60,7 @@ namespace view_controller_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->eye.deserialize(inbuffer + offset);
@@ -81,8 +81,8 @@ namespace view_controller_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "view_controller_msgs/CameraMovement"; };
-    virtual const char * getMD5() override { return "fc7aac4a39426fb5e8b2dbb6e85bfc66"; };
+    const char * getType(){ return "view_controller_msgs/CameraMovement"; };
+    const char * getMD5(){ return "fc7aac4a39426fb5e8b2dbb6e85bfc66"; };
 
   };
 

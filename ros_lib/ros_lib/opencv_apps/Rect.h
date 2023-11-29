@@ -29,7 +29,7 @@ namespace opencv_apps
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->x);
@@ -39,7 +39,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->x));
@@ -49,8 +49,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/Rect"; };
-    virtual const char * getMD5() override { return "7048f28f1f0ef51e102638c86d9a7728"; };
+    const char * getType(){ return "opencv_apps/Rect"; };
+    const char * getMD5(){ return "7048f28f1f0ef51e102638c86d9a7728"; };
 
   };
 

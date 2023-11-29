@@ -18,11 +18,11 @@ namespace mongodb_store_msgs
       _completed_type * completed;
 
     MoveEntriesFeedback():
-      completed_length(0), st_completed(), completed(nullptr)
+      completed_length(0), completed(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->completed_length >> (8 * 0)) & 0xFF;
@@ -40,7 +40,7 @@ namespace mongodb_store_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t completed_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -66,8 +66,8 @@ namespace mongodb_store_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "mongodb_store_msgs/MoveEntriesFeedback"; };
-    virtual const char * getMD5() override { return "a62bad29223cd7da9d6f04397aee5b94"; };
+    const char * getType(){ return "mongodb_store_msgs/MoveEntriesFeedback"; };
+    const char * getMD5(){ return "a62bad29223cd7da9d6f04397aee5b94"; };
 
   };
 

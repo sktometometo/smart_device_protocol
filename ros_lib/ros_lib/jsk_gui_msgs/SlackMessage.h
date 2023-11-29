@@ -27,7 +27,7 @@ namespace jsk_gui_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_channel = strlen(this->channel);
@@ -44,7 +44,7 @@ namespace jsk_gui_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_channel;
@@ -69,8 +69,8 @@ namespace jsk_gui_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_gui_msgs/SlackMessage"; };
-    virtual const char * getMD5() override { return "b68991d3b722980bd0f3eeeeee52635b"; };
+    const char * getType(){ return "jsk_gui_msgs/SlackMessage"; };
+    const char * getMD5(){ return "b68991d3b722980bd0f3eeeeee52635b"; };
 
   };
 

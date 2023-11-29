@@ -50,15 +50,15 @@ namespace fetch_driver_msgs
       ready(0),
       faulted(0),
       runstopped(0),
-      boards_length(0), st_boards(), boards(nullptr),
-      motors_length(0), st_motors(), motors(nullptr),
-      joints_length(0), st_joints(), joints(nullptr),
-      breakers_length(0), st_breakers(), breakers(nullptr),
+      boards_length(0), boards(NULL),
+      motors_length(0), motors(NULL),
+      joints_length(0), joints(NULL),
+      breakers_length(0), breakers(NULL),
       charger()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -119,7 +119,7 @@ namespace fetch_driver_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -199,8 +199,8 @@ namespace fetch_driver_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "fetch_driver_msgs/RobotState"; };
-    virtual const char * getMD5() override { return "c35add7c3f24efcc8e75b26275c2cc63"; };
+    const char * getType(){ return "fetch_driver_msgs/RobotState"; };
+    const char * getMD5(){ return "c35add7c3f24efcc8e75b26275c2cc63"; };
 
   };
 

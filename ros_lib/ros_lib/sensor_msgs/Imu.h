@@ -38,7 +38,7 @@ namespace sensor_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -57,7 +57,7 @@ namespace sensor_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -76,8 +76,8 @@ namespace sensor_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "sensor_msgs/Imu"; };
-    virtual const char * getMD5() override { return "6a62c6daae103f4ff57a132d6f95cec2"; };
+    const char * getType(){ return "sensor_msgs/Imu"; };
+    const char * getMD5(){ return "6a62c6daae103f4ff57a132d6f95cec2"; };
 
   };
 

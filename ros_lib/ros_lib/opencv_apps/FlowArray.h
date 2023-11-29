@@ -19,11 +19,11 @@ namespace opencv_apps
       _flow_type * flow;
 
     FlowArray():
-      flow_length(0), st_flow(), flow(nullptr)
+      flow_length(0), flow(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->flow_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t flow_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/FlowArray"; };
-    virtual const char * getMD5() override { return "fe292dca56eb3673cd698ea9ef841962"; };
+    const char * getType(){ return "opencv_apps/FlowArray"; };
+    const char * getMD5(){ return "fe292dca56eb3673cd698ea9ef841962"; };
 
   };
 

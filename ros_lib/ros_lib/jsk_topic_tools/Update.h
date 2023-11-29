@@ -28,7 +28,7 @@ static const char UPDATE[] = "jsk_topic_tools/Update";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_topic_name = strlen(this->topic_name);
@@ -56,7 +56,7 @@ static const char UPDATE[] = "jsk_topic_tools/Update";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_topic_name;
@@ -89,8 +89,8 @@ static const char UPDATE[] = "jsk_topic_tools/Update";
      return offset;
     }
 
-    virtual const char * getType() override { return UPDATE; };
-    virtual const char * getMD5() override { return "0050acd5c94510531ac3023287e6b559"; };
+    const char * getType(){ return UPDATE; };
+    const char * getMD5(){ return "0050acd5c94510531ac3023287e6b559"; };
 
   };
 
@@ -105,22 +105,22 @@ static const char UPDATE[] = "jsk_topic_tools/Update";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->rate);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->rate));
      return offset;
     }
 
-    virtual const char * getType() override { return UPDATE; };
-    virtual const char * getMD5() override { return "4910f3d55cbb29566b6c8f8f16528adf"; };
+    const char * getType(){ return UPDATE; };
+    const char * getMD5(){ return "4910f3d55cbb29566b6c8f8f16528adf"; };
 
   };
 

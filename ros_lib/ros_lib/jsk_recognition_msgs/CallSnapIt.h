@@ -23,22 +23,22 @@ static const char CALLSNAPIT[] = "jsk_recognition_msgs/CallSnapIt";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->request.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->request.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return CALLSNAPIT; };
-    virtual const char * getMD5() override { return "5bf1ef2f060949ff03f39c08eb7bc6de"; };
+    const char * getType(){ return CALLSNAPIT; };
+    const char * getMD5(){ return "5bf1ef2f060949ff03f39c08eb7bc6de"; };
 
   };
 
@@ -53,22 +53,22 @@ static const char CALLSNAPIT[] = "jsk_recognition_msgs/CallSnapIt";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->transformation.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->transformation.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return CALLSNAPIT; };
-    virtual const char * getMD5() override { return "d787e2767b5ea7b19a81c647df92a8de"; };
+    const char * getType(){ return CALLSNAPIT; };
+    const char * getMD5(){ return "d787e2767b5ea7b19a81c647df92a8de"; };
 
   };
 

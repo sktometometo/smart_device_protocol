@@ -29,7 +29,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->action_goal.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->action_goal.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/RunBehaviorAction"; };
-    virtual const char * getMD5() override { return "a6a26afb8ff0902c5587c8bfbdc46892"; };
+    const char * getType(){ return "naoqi_bridge_msgs/RunBehaviorAction"; };
+    const char * getMD5(){ return "a6a26afb8ff0902c5587c8bfbdc46892"; };
 
   };
 

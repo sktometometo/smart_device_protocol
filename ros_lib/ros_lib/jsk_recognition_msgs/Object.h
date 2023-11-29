@@ -37,14 +37,14 @@ namespace jsk_recognition_msgs
       name(""),
       class_id(0),
       class_name(""),
-      image_resources_length(0), st_image_resources(), image_resources(nullptr),
+      image_resources_length(0), image_resources(NULL),
       mesh_resource(""),
       weight(0),
       dimensions()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -108,7 +108,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -195,8 +195,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/Object"; };
-    virtual const char * getMD5() override { return "57c53e712043df0244b0482d0447adee"; };
+    const char * getType(){ return "jsk_recognition_msgs/Object"; };
+    const char * getMD5(){ return "57c53e712043df0244b0482d0447adee"; };
 
   };
 

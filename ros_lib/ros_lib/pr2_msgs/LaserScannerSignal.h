@@ -24,7 +24,7 @@ namespace pr2_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -41,7 +41,7 @@ namespace pr2_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -59,8 +59,8 @@ namespace pr2_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "pr2_msgs/LaserScannerSignal"; };
-    virtual const char * getMD5() override { return "78f41e618127bce049dd6104d9c31dc5"; };
+    const char * getType(){ return "pr2_msgs/LaserScannerSignal"; };
+    const char * getMD5(){ return "78f41e618127bce049dd6104d9c31dc5"; };
 
   };
 

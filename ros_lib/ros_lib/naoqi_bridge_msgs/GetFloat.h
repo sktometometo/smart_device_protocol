@@ -18,20 +18,20 @@ static const char GETFLOAT[] = "naoqi_bridge_msgs/GetFloat";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return GETFLOAT; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return GETFLOAT; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -49,7 +49,7 @@ static const char GETFLOAT[] = "naoqi_bridge_msgs/GetFloat";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -70,7 +70,7 @@ static const char GETFLOAT[] = "naoqi_bridge_msgs/GetFloat";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -96,8 +96,8 @@ static const char GETFLOAT[] = "naoqi_bridge_msgs/GetFloat";
      return offset;
     }
 
-    virtual const char * getType() override { return GETFLOAT; };
-    virtual const char * getMD5() override { return "3cf398eaca21304d20b13c76cecbddea"; };
+    const char * getType(){ return GETFLOAT; };
+    const char * getMD5(){ return "3cf398eaca21304d20b13c76cecbddea"; };
 
   };
 

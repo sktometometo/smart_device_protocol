@@ -21,22 +21,22 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->goal_position.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->goal_position.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return "naoqi_bridge_msgs/JointAnglesWithSpeedResult"; };
-    virtual const char * getMD5() override { return "1c77b3d9dc137611510fd16c3b792046"; };
+    const char * getType(){ return "naoqi_bridge_msgs/JointAnglesWithSpeedResult"; };
+    const char * getMD5(){ return "1c77b3d9dc137611510fd16c3b792046"; };
 
   };
 

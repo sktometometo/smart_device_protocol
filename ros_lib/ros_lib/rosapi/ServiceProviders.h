@@ -21,7 +21,7 @@ static const char SERVICEPROVIDERS[] = "rosapi/ServiceProviders";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_service = strlen(this->service);
@@ -32,7 +32,7 @@ static const char SERVICEPROVIDERS[] = "rosapi/ServiceProviders";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_service;
@@ -47,8 +47,8 @@ static const char SERVICEPROVIDERS[] = "rosapi/ServiceProviders";
      return offset;
     }
 
-    virtual const char * getType() override { return SERVICEPROVIDERS; };
-    virtual const char * getMD5() override { return "1cbcfa13b08f6d36710b9af8741e6112"; };
+    const char * getType(){ return SERVICEPROVIDERS; };
+    const char * getMD5(){ return "1cbcfa13b08f6d36710b9af8741e6112"; };
 
   };
 
@@ -61,11 +61,11 @@ static const char SERVICEPROVIDERS[] = "rosapi/ServiceProviders";
       _providers_type * providers;
 
     ServiceProvidersResponse():
-      providers_length(0), st_providers(), providers(nullptr)
+      providers_length(0), providers(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->providers_length >> (8 * 0)) & 0xFF;
@@ -83,7 +83,7 @@ static const char SERVICEPROVIDERS[] = "rosapi/ServiceProviders";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t providers_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -109,8 +109,8 @@ static const char SERVICEPROVIDERS[] = "rosapi/ServiceProviders";
      return offset;
     }
 
-    virtual const char * getType() override { return SERVICEPROVIDERS; };
-    virtual const char * getMD5() override { return "945f6849f44f061c178ab393b12c1358"; };
+    const char * getType(){ return SERVICEPROVIDERS; };
+    const char * getMD5(){ return "945f6849f44f061c178ab393b12c1358"; };
 
   };
 

@@ -22,22 +22,22 @@ static const char APPLYPLANNINGSCENE[] = "moveit_msgs/ApplyPlanningScene";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->scene.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->scene.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return APPLYPLANNINGSCENE; };
-    virtual const char * getMD5() override { return "532b54e7c502b73178625025da63b084"; };
+    const char * getType(){ return APPLYPLANNINGSCENE; };
+    const char * getMD5(){ return "532b54e7c502b73178625025da63b084"; };
 
   };
 
@@ -52,7 +52,7 @@ static const char APPLYPLANNINGSCENE[] = "moveit_msgs/ApplyPlanningScene";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -65,7 +65,7 @@ static const char APPLYPLANNINGSCENE[] = "moveit_msgs/ApplyPlanningScene";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -79,8 +79,8 @@ static const char APPLYPLANNINGSCENE[] = "moveit_msgs/ApplyPlanningScene";
      return offset;
     }
 
-    virtual const char * getType() override { return APPLYPLANNINGSCENE; };
-    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    const char * getType(){ return APPLYPLANNINGSCENE; };
+    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

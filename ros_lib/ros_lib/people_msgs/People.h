@@ -23,11 +23,11 @@ namespace people_msgs
 
     People():
       header(),
-      people_length(0), st_people(), people(nullptr)
+      people_length(0), people(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace people_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace people_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "people_msgs/People"; };
-    virtual const char * getMD5() override { return "18722f4b8db20cc2369740732357847b"; };
+    const char * getType(){ return "people_msgs/People"; };
+    const char * getMD5(){ return "18722f4b8db20cc2369740732357847b"; };
 
   };
 

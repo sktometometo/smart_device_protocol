@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/MoveItErrorCodes.h"
-#include "moveit_msgs/RobotState.h"
 #include "moveit_msgs/PositionIKRequest.h"
+#include "moveit_msgs/RobotState.h"
+#include "moveit_msgs/MoveItErrorCodes.h"
 
 namespace moveit_msgs
 {
@@ -24,22 +24,22 @@ static const char GETPOSITIONIK[] = "moveit_msgs/GetPositionIK";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->ik_request.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->ik_request.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return GETPOSITIONIK; };
-    virtual const char * getMD5() override { return "8388b54598336654bca82763f918a740"; };
+    const char * getType(){ return GETPOSITIONIK; };
+    const char * getMD5(){ return "8388b54598336654bca82763f918a740"; };
 
   };
 
@@ -57,7 +57,7 @@ static const char GETPOSITIONIK[] = "moveit_msgs/GetPositionIK";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->solution.serialize(outbuffer + offset);
@@ -65,7 +65,7 @@ static const char GETPOSITIONIK[] = "moveit_msgs/GetPositionIK";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->solution.deserialize(inbuffer + offset);
@@ -73,8 +73,8 @@ static const char GETPOSITIONIK[] = "moveit_msgs/GetPositionIK";
      return offset;
     }
 
-    virtual const char * getType() override { return GETPOSITIONIK; };
-    virtual const char * getMD5() override { return "e86518bd3328ca4065f167ad5ce72802"; };
+    const char * getType(){ return GETPOSITIONIK; };
+    const char * getMD5(){ return "e86518bd3328ca4065f167ad5ce72802"; };
 
   };
 

@@ -23,11 +23,11 @@ namespace jsk_recognition_msgs
 
     PointsArray():
       header(),
-      cloud_list_length(0), st_cloud_list(), cloud_list(nullptr)
+      cloud_list_length(0), cloud_list(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/PointsArray"; };
-    virtual const char * getMD5() override { return "0aa7e57c9da77fc1a0d8277bba5672b1"; };
+    const char * getType(){ return "jsk_recognition_msgs/PointsArray"; };
+    const char * getMD5(){ return "0aa7e57c9da77fc1a0d8277bba5672b1"; };
 
   };
 

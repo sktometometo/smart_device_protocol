@@ -25,12 +25,12 @@ namespace moveit_msgs
 
     DisplayTrajectory():
       model_id(""),
-      trajectory_length(0), st_trajectory(), trajectory(nullptr),
+      trajectory_length(0), trajectory(NULL),
       trajectory_start()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_model_id = strlen(this->model_id);
@@ -50,7 +50,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_model_id;
@@ -78,8 +78,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/DisplayTrajectory"; };
-    virtual const char * getMD5() override { return "41936b74e168ba754279ae683ce3f121"; };
+    const char * getType(){ return "moveit_msgs/DisplayTrajectory"; };
+    const char * getMD5(){ return "41936b74e168ba754279ae683ce3f121"; };
 
   };
 

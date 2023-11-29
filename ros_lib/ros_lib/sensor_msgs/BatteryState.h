@@ -84,14 +84,14 @@ namespace sensor_msgs
       power_supply_health(0),
       power_supply_technology(0),
       present(0),
-      cell_voltage_length(0), st_cell_voltage(), cell_voltage(nullptr),
-      cell_temperature_length(0), st_cell_temperature(), cell_temperature(nullptr),
+      cell_voltage_length(0), cell_voltage(NULL),
+      cell_temperature_length(0), cell_temperature(NULL),
       location(""),
       serial_number("")
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -225,7 +225,7 @@ namespace sensor_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -385,8 +385,8 @@ namespace sensor_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "sensor_msgs/BatteryState"; };
-    virtual const char * getMD5() override { return "4ddae7f048e32fda22cac764685e3974"; };
+    const char * getType(){ return "sensor_msgs/BatteryState"; };
+    const char * getMD5(){ return "4ddae7f048e32fda22cac764685e3974"; };
 
   };
 

@@ -1,5 +1,5 @@
-#ifndef _ROS_SMART_DEVICE_PROTOCOL_UWBDistance_h
-#define _ROS_SMART_DEVICE_PROTOCOL_UWBDistance_h
+#ifndef _ROS_smart_device_protocol_UWBDistance_h
+#define _ROS_smart_device_protocol_UWBDistance_h
 
 #include <stdint.h>
 #include <string.h>
@@ -27,7 +27,7 @@ namespace smart_device_protocol
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -51,7 +51,7 @@ namespace smart_device_protocol
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -77,8 +77,8 @@ namespace smart_device_protocol
      return offset;
     }
 
-    virtual const char * getType() override { return "smart_device_protocol/UWBDistance"; };
-    virtual const char * getMD5() override { return "ae36538b2b731aed9d5d280b17416445"; };
+    const char * getType(){ return "smart_device_protocol/UWBDistance"; };
+    const char * getMD5(){ return "ae36538b2b731aed9d5d280b17416445"; };
 
   };
 

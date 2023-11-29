@@ -19,11 +19,11 @@ namespace visualization_msgs
       _markers_type * markers;
 
     MarkerArray():
-      markers_length(0), st_markers(), markers(nullptr)
+      markers_length(0), markers(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->markers_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace visualization_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t markers_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace visualization_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "visualization_msgs/MarkerArray"; };
-    virtual const char * getMD5() override { return "d155b9ce5188fbaf89745847fd5882d7"; };
+    const char * getType(){ return "visualization_msgs/MarkerArray"; };
+    const char * getMD5(){ return "d155b9ce5188fbaf89745847fd5882d7"; };
 
   };
 

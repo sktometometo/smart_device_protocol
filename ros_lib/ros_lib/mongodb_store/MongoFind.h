@@ -27,7 +27,7 @@ static const char MONGOFIND[] = "mongodb_store/MongoFind";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_db = strlen(this->db);
@@ -48,7 +48,7 @@ static const char MONGOFIND[] = "mongodb_store/MongoFind";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_db;
@@ -81,8 +81,8 @@ static const char MONGOFIND[] = "mongodb_store/MongoFind";
      return offset;
     }
 
-    virtual const char * getType() override { return MONGOFIND; };
-    virtual const char * getMD5() override { return "bfbcacecc78c9fa4f520fc6e13cbb788"; };
+    const char * getType(){ return MONGOFIND; };
+    const char * getMD5(){ return "bfbcacecc78c9fa4f520fc6e13cbb788"; };
 
   };
 
@@ -97,7 +97,7 @@ static const char MONGOFIND[] = "mongodb_store/MongoFind";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_result = strlen(this->result);
@@ -108,7 +108,7 @@ static const char MONGOFIND[] = "mongodb_store/MongoFind";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_result;
@@ -123,8 +123,8 @@ static const char MONGOFIND[] = "mongodb_store/MongoFind";
      return offset;
     }
 
-    virtual const char * getType() override { return MONGOFIND; };
-    virtual const char * getMD5() override { return "c22f2a1ed8654a0b365f1bb3f7ff2c0f"; };
+    const char * getType(){ return MONGOFIND; };
+    const char * getMD5(){ return "c22f2a1ed8654a0b365f1bb3f7ff2c0f"; };
 
   };
 

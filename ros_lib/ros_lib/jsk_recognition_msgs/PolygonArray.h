@@ -31,13 +31,13 @@ namespace jsk_recognition_msgs
 
     PolygonArray():
       header(),
-      polygons_length(0), st_polygons(), polygons(nullptr),
-      labels_length(0), st_labels(), labels(nullptr),
-      likelihood_length(0), st_likelihood(), likelihood(nullptr)
+      polygons_length(0), polygons(NULL),
+      labels_length(0), labels(NULL),
+      likelihood_length(0), likelihood(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -81,7 +81,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -138,8 +138,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/PolygonArray"; };
-    virtual const char * getMD5() override { return "709b37d39871cfdbbfbd5c41cf9bc2be"; };
+    const char * getType(){ return "jsk_recognition_msgs/PolygonArray"; };
+    const char * getMD5(){ return "709b37d39871cfdbbfbd5c41cf9bc2be"; };
 
   };
 

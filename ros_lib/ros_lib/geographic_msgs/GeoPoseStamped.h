@@ -25,7 +25,7 @@ namespace geographic_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -33,7 +33,7 @@ namespace geographic_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -41,8 +41,8 @@ namespace geographic_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "geographic_msgs/GeoPoseStamped"; };
-    virtual const char * getMD5() override { return "cc409c8ed6064d8a846fa207bf3fba6b"; };
+    const char * getType(){ return "geographic_msgs/GeoPoseStamped"; };
+    const char * getMD5(){ return "cc409c8ed6064d8a846fa207bf3fba6b"; };
 
   };
 

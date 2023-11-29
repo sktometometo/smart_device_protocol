@@ -20,11 +20,11 @@ static const char PROJECTEDMAPSINFO[] = "map_msgs/ProjectedMapsInfo";
       _projected_maps_info_type * projected_maps_info;
 
     ProjectedMapsInfoRequest():
-      projected_maps_info_length(0), st_projected_maps_info(), projected_maps_info(nullptr)
+      projected_maps_info_length(0), projected_maps_info(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->projected_maps_info_length >> (8 * 0)) & 0xFF;
@@ -38,7 +38,7 @@ static const char PROJECTEDMAPSINFO[] = "map_msgs/ProjectedMapsInfo";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t projected_maps_info_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -56,8 +56,8 @@ static const char PROJECTEDMAPSINFO[] = "map_msgs/ProjectedMapsInfo";
      return offset;
     }
 
-    virtual const char * getType() override { return PROJECTEDMAPSINFO; };
-    virtual const char * getMD5() override { return "d7980a33202421c8cd74565e57a4d229"; };
+    const char * getType(){ return PROJECTEDMAPSINFO; };
+    const char * getMD5(){ return "d7980a33202421c8cd74565e57a4d229"; };
 
   };
 
@@ -69,20 +69,20 @@ static const char PROJECTEDMAPSINFO[] = "map_msgs/ProjectedMapsInfo";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
      return offset;
     }
 
-    virtual const char * getType() override { return PROJECTEDMAPSINFO; };
-    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
+    const char * getType(){ return PROJECTEDMAPSINFO; };
+    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

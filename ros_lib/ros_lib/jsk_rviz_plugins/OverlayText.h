@@ -53,7 +53,7 @@ namespace jsk_rviz_plugins
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->action >> (8 * 0)) & 0xFF;
@@ -133,7 +133,7 @@ namespace jsk_rviz_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->action =  ((uint8_t) (*(inbuffer + offset)));
@@ -227,8 +227,8 @@ namespace jsk_rviz_plugins
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_rviz_plugins/OverlayText"; };
-    virtual const char * getMD5() override { return "7efc1ed34881f913afcee6ba02aa1242"; };
+    const char * getType(){ return "jsk_rviz_plugins/OverlayText"; };
+    const char * getMD5(){ return "7efc1ed34881f913afcee6ba02aa1242"; };
 
   };
 

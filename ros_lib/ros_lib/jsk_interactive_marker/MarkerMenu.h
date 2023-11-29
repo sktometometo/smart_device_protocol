@@ -71,7 +71,7 @@ namespace jsk_interactive_marker
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       union {
@@ -96,7 +96,7 @@ namespace jsk_interactive_marker
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       union {
@@ -127,8 +127,8 @@ namespace jsk_interactive_marker
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_interactive_marker/MarkerMenu"; };
-    virtual const char * getMD5() override { return "192d3b78eda584051c0d487463f7de74"; };
+    const char * getType(){ return "jsk_interactive_marker/MarkerMenu"; };
+    const char * getMD5(){ return "192d3b78eda584051c0d487463f7de74"; };
 
   };
 

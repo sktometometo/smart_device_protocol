@@ -19,11 +19,11 @@ namespace opencv_apps
       _contours_type * contours;
 
     ContourArray():
-      contours_length(0), st_contours(), contours(nullptr)
+      contours_length(0), contours(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->contours_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t contours_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace opencv_apps
      return offset;
     }
 
-    virtual const char * getType() override { return "opencv_apps/ContourArray"; };
-    virtual const char * getMD5() override { return "fc54374f45559dfed248b316ccf9181d"; };
+    const char * getType(){ return "opencv_apps/ContourArray"; };
+    const char * getMD5(){ return "fc54374f45559dfed248b316ccf9181d"; };
 
   };
 

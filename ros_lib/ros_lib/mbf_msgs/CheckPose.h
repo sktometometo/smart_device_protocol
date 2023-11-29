@@ -42,7 +42,7 @@ static const char CHECKPOSE[] = "mbf_msgs/CheckPose";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->pose.serialize(outbuffer + offset);
@@ -98,7 +98,7 @@ static const char CHECKPOSE[] = "mbf_msgs/CheckPose";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->pose.deserialize(inbuffer + offset);
@@ -159,8 +159,8 @@ static const char CHECKPOSE[] = "mbf_msgs/CheckPose";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKPOSE; };
-    virtual const char * getMD5() override { return "265e0591fcb39074b9d918fb13f423f4"; };
+    const char * getType(){ return CHECKPOSE; };
+    const char * getMD5(){ return "265e0591fcb39074b9d918fb13f423f4"; };
 
   };
 
@@ -183,7 +183,7 @@ static const char CHECKPOSE[] = "mbf_msgs/CheckPose";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->state >> (8 * 0)) & 0xFF;
@@ -196,7 +196,7 @@ static const char CHECKPOSE[] = "mbf_msgs/CheckPose";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       this->state =  ((uint8_t) (*(inbuffer + offset)));
@@ -209,8 +209,8 @@ static const char CHECKPOSE[] = "mbf_msgs/CheckPose";
      return offset;
     }
 
-    virtual const char * getType() override { return CHECKPOSE; };
-    virtual const char * getMD5() override { return "d74139e1f7169aa4fb64b44c3a698692"; };
+    const char * getType(){ return CHECKPOSE; };
+    const char * getMD5(){ return "d74139e1f7169aa4fb64b44c3a698692"; };
 
   };
 

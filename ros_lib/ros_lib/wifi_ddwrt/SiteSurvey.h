@@ -23,11 +23,11 @@ namespace wifi_ddwrt
 
     SiteSurvey():
       header(),
-      networks_length(0), st_networks(), networks(nullptr)
+      networks_length(0), networks(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace wifi_ddwrt
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace wifi_ddwrt
      return offset;
     }
 
-    virtual const char * getType() override { return "wifi_ddwrt/SiteSurvey"; };
-    virtual const char * getMD5() override { return "f1063b16bb121ef190ae5edfe09d94ec"; };
+    const char * getType(){ return "wifi_ddwrt/SiteSurvey"; };
+    const char * getMD5(){ return "f1063b16bb121ef190ae5edfe09d94ec"; };
 
   };
 

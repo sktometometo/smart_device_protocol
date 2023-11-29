@@ -19,7 +19,7 @@ namespace jsk_network_tools
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       for( uint32_t i = 0; i < 17; i++){
@@ -29,7 +29,7 @@ namespace jsk_network_tools
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       for( uint32_t i = 0; i < 17; i++){
@@ -39,8 +39,8 @@ namespace jsk_network_tools
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_network_tools/CompressedAngleVectorPR2"; };
-    virtual const char * getMD5() override { return "41a167b428fc98b1c378a7ba1bae8d54"; };
+    const char * getType(){ return "jsk_network_tools/CompressedAngleVectorPR2"; };
+    const char * getMD5(){ return "41a167b428fc98b1c378a7ba1bae8d54"; };
 
   };
 

@@ -26,11 +26,11 @@ namespace moveit_msgs
     CartesianTrajectory():
       header(),
       tracked_frame(""),
-      points_length(0), st_points(), points(nullptr)
+      points_length(0), points(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -50,7 +50,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -78,8 +78,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "moveit_msgs/CartesianTrajectory"; };
-    virtual const char * getMD5() override { return "4886769850ce858fcceba546fd5c793b"; };
+    const char * getType(){ return "moveit_msgs/CartesianTrajectory"; };
+    const char * getMD5(){ return "4886769850ce858fcceba546fd5c793b"; };
 
   };
 

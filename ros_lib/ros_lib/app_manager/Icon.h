@@ -21,11 +21,11 @@ namespace app_manager
 
     Icon():
       format(""),
-      data_length(0), st_data(), data(nullptr)
+      data_length(0), data(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       uint32_t length_format = strlen(this->format);
@@ -45,7 +45,7 @@ namespace app_manager
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       uint32_t length_format;
@@ -73,8 +73,8 @@ namespace app_manager
      return offset;
     }
 
-    virtual const char * getType() override { return "app_manager/Icon"; };
-    virtual const char * getMD5() override { return "e378a502c24c5aa2af7065d57c580d12"; };
+    const char * getType(){ return "app_manager/Icon"; };
+    const char * getMD5(){ return "e378a502c24c5aa2af7065d57c580d12"; };
 
   };
 

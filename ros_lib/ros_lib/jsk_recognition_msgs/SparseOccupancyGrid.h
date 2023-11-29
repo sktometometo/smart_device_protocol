@@ -30,11 +30,11 @@ namespace jsk_recognition_msgs
       header(),
       origin_pose(),
       resolution(0),
-      columns_length(0), st_columns(), columns(nullptr)
+      columns_length(0), columns(NULL)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -60,7 +60,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -91,8 +91,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/SparseOccupancyGrid"; };
-    virtual const char * getMD5() override { return "497269ddab6058d0d4860f25dc49448f"; };
+    const char * getType(){ return "jsk_recognition_msgs/SparseOccupancyGrid"; };
+    const char * getMD5(){ return "497269ddab6058d0d4860f25dc49448f"; };
 
   };
 

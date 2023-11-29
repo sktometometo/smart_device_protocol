@@ -21,22 +21,22 @@ namespace control_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->trajectory.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->trajectory.deserialize(inbuffer + offset);
      return offset;
     }
 
-    virtual const char * getType() override { return "control_msgs/JointTrajectoryGoal"; };
-    virtual const char * getMD5() override { return "2a0eff76c870e8595636c2a562ca298e"; };
+    const char * getType(){ return "control_msgs/JointTrajectoryGoal"; };
+    const char * getMD5(){ return "2a0eff76c870e8595636c2a562ca298e"; };
 
   };
 

@@ -35,7 +35,7 @@ namespace jsk_recognition_msgs
 
     PlotDataArray():
       header(),
-      data_length(0), st_data(), data(nullptr),
+      data_length(0), data(NULL),
       no_legend(0),
       legend_font_size(0),
       max_x(0),
@@ -45,7 +45,7 @@ namespace jsk_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const override
+    virtual int serialize(unsigned char *outbuffer) const
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -117,7 +117,7 @@ namespace jsk_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer) override
+    virtual int deserialize(unsigned char *inbuffer)
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -199,8 +199,8 @@ namespace jsk_recognition_msgs
      return offset;
     }
 
-    virtual const char * getType() override { return "jsk_recognition_msgs/PlotDataArray"; };
-    virtual const char * getMD5() override { return "e83e9378b374b8436f955a6cd212770a"; };
+    const char * getType(){ return "jsk_recognition_msgs/PlotDataArray"; };
+    const char * getMD5(){ return "e83e9378b374b8436f955a6cd212770a"; };
 
   };
 
