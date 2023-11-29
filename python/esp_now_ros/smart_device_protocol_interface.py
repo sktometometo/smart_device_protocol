@@ -3,10 +3,10 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import rospy
 
-from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterface
-from esp_now_ros.msg import Packet
-from esp_now_ros.packet_parser import parse_packet_as_v2
-from esp_now_ros.sdp_frames import BaseFrame, DataFrame, MetaFrame
+from smart_device_protocol.smart_device_protocol_interface import ESPNOWROSInterface
+from smart_device_protocol.msg import Packet
+from smart_device_protocol.packet_parser import parse_packet_as_v2
+from smart_device_protocol.sdp_frames import BaseFrame, DataFrame, MetaFrame
 
 
 class SDPInterface:
@@ -29,7 +29,7 @@ class SDPInterface:
         """
         self._callback_data = callback_data
         self._callback_meta = callback_meta
-        self._esp_now_ros_interface = ESPNOWROSInterface(self._callback)
+        self._smart_device_protocol_interface = ESPNOWROSInterface(self._callback)
 
     def _callback(self, src_address, data):
         try:
@@ -50,7 +50,7 @@ class SDPInterface:
             data = frame.to_bytes()
         else:
             raise ValueError(f"Unknown frame type: {type(frame)}")
-        self._esp_now_ros_interface.send(target_address, data, num_trial)
+        self._smart_device_protocol_interface.send(target_address, data, num_trial)
 
 
 class DeviceDictSDPInterface(SDPInterface):

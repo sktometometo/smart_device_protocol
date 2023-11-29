@@ -3,7 +3,7 @@
 import unittest
 import rospy
 import rostest
-from esp_now_ros.smart_device_protocol_interface import (
+from smart_device_protocol.smart_device_protocol_interface import (
     DeviceDictSDPInterfaceWithInterfaceCallback,
 )
 
@@ -28,4 +28,4 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    rostest.rosrun("esp_now_ros", "test_sdp_interface", TestCase)
+    rostest.rosrun("smart_device_protocol", "test_sdp_interface", TestCase)

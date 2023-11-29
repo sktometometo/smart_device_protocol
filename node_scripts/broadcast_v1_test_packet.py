@@ -2,8 +2,8 @@
 
 import rospy
 
-from esp_now_ros.esp_now_ros_interface import ESPNOWROSInterface
-from esp_now_ros.packet_generator import create_test_packet
+from smart_device_protocol.smart_device_protocol_interface import ESPNOWROSInterface
+from smart_device_protocol.packet_generator import create_test_packet
 
 if __name__ == "__main__":
     rospy.init_node("broadcast_test_packet")

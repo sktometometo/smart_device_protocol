@@ -2,15 +2,15 @@ import struct
 
 import rospy
 
-from esp_now_ros.msg import Packet
+from smart_device_protocol.msg import Packet
 
 
 class ESPNOWROSInterface:
     def __init__(
         self,
         callback=None,
-        recv_topic="/esp_now_ros/recv",
-        send_topic="/esp_now_ros/send",
+        recv_topic="/smart_device_protocol/recv",
+        send_topic="/smart_device_protocol/send",
     ):
         self.raw_callback = callback
         self.sub = rospy.Subscriber(recv_topic, Packet, self.callback)

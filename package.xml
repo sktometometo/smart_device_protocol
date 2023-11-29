@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>esp_now_ros</name>
+  <name>smart_device_protocol</name>
   <version>0.4.1</version>
-  <description>The esp_now_ros package</description>
+  <description>The smart_device_protocol package</description>
 
   <maintainer email="shinjo@jsk.imi.i.u-tokyo.ac.jp">Koki Shinjo</maintainer>
 

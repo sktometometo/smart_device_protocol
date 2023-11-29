@@ -1,5 +1,5 @@
-#ifndef ESP_NOW_ROS_CONFIG_LOADER_H
-#define ESP_NOW_ROS_CONFIG_LOADER_H
+#ifndef SMART_DEVICE_PROTOCOL_CONFIG_LOADER_H
+#define SMART_DEVICE_PROTOCOL_CONFIG_LOADER_H
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
@@ -25,4 +25,4 @@ bool load_json_from_FS(fs::FS &fs, const String &filename, StaticJsonDocument<N>
     return true;
 }
 
-#endif // ESP_NOW_ROS_CONFIG_LOADER_H
+#endif // SMART_DEVICE_PROTOCOL_CONFIG_LOADER_H

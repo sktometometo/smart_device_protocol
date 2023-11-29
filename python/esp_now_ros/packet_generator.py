@@ -1,6 +1,6 @@
 import struct
 
-from esp_now_ros.msg import Packet
+from smart_device_protocol.msg import Packet
 
 
 # Version 1 of the packet generator

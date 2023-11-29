@@ -1,12 +1,12 @@
-#ifndef ESP_NOW_ROS_PACKET_PARSER_H__
-#define ESP_NOW_ROS_PACKET_PARSER_H__
+#ifndef SMART_DEVICE_PROTOCOL_PACKET_PARSER_H__
+#define SMART_DEVICE_PROTOCOL_PACKET_PARSER_H__
 
 #include <string.h>
 #include <tuple>
 #include <variant>
 #include <vector>
 
-#include <esp_now_ros/Packet.h>
+#include <smart_device_protocol/Packet.h>
 
 #include "sdp/packet_util.h"
 
@@ -116,4 +116,4 @@ void parse_packet_as_message_board_data_packet(const uint8_t *packet, uint16_t &
   strncpy(message, (char *)(packet + 2 + 64 + 8), 64);
 }
 
-#endif // ESP_NOW_ROS_PACKET_PARSER_H__z
+#endif // SMART_DEVICE_PROTOCOL_PACKET_PARSER_H__z

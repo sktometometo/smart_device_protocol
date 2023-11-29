@@ -9,7 +9,7 @@
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 
-#include <esp_now_ros/Packet.h>
+#include <smart_device_protocol/Packet.h>
 
 #include "sdp/packet_creator.h"
 #include "sdp/packet_parser.h"
@@ -45,7 +45,7 @@ char module_name[64];
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
   uint16_t packet_type = get_packet_type(data);
-  if (packet_type == esp_now_ros::Packet::PACKET_TYPE_NAMED_STRING)
+  if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_NAMED_STRING)
   {
     char name[64];
     char temp_module_name[64];

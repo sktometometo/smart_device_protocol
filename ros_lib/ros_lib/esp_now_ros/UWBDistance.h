@@ -1,5 +1,5 @@
-#ifndef _ROS_esp_now_ros_UWBDistance_h
-#define _ROS_esp_now_ros_UWBDistance_h
+#ifndef _ROS_SMART_DEVICE_PROTOCOL_UWBDistance_h
+#define _ROS_SMART_DEVICE_PROTOCOL_UWBDistance_h
 
 #include <stdint.h>
 #include <string.h>
@@ -7,7 +7,7 @@
 #include "ros/msg.h"
 #include "std_msgs/Header.h"
 
-namespace esp_now_ros
+namespace smart_device_protocol
 {
 
   class UWBDistance : public ros::Msg
@@ -77,7 +77,7 @@ namespace esp_now_ros
      return offset;
     }
 
-    virtual const char * getType() override { return "esp_now_ros/UWBDistance"; };
+    virtual const char * getType() override { return "smart_device_protocol/UWBDistance"; };
     virtual const char * getMD5() override { return "ae36538b2b731aed9d5d280b17416445"; };
 
   };

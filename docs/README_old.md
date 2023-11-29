@@ -1,4 +1,4 @@
-# old readme for ESP_NOW_ROS
+# old readme for SMART_DEVICE_PROTOCOL
 
 ## Packet Specification
 

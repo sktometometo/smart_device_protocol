@@ -7,7 +7,7 @@
 #include <Dps310.h>
 #include <ArduinoJson.h>
 
-#include "esp_now_ros/Packet.h"
+#include "smart_device_protocol/Packet.h"
 #include "sdp/sdp.h"
 #include "utils/config_loader.h"
 

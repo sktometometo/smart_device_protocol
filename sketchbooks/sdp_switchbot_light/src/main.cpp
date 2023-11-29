@@ -7,7 +7,7 @@
 
 #include <ArduinoJson.h>
 
-#include <esp_now_ros/Packet.h>
+#include <smart_device_protocol/Packet.h>
 #include "sdp/sdp.h"
 #include "iot_com_util/iot_host_util.h"
 #include "utils/config_loader.h"
