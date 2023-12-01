@@ -50,7 +50,7 @@ jobs:
       run: |
         source /opt/ros/noetic/setup.bash
         cd ${CATKIN_WS}
-        catkin build smart_device_protocol
+        catkin build smart_device_protocol -vi
     - name: run_tests
       run: |
         source /opt/ros/noetic/setup.bash
