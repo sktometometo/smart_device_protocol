@@ -2,7 +2,7 @@
 
 import rospy
 
-from smart_device_protocol.smart_device_protocol_interface import ESPNOWROSInterface
+from smart_device_protocol.esp_now_ros_interface import ESPNOWROSInterface
 from smart_device_protocol.packet_parser import parse_packet
 
 

@@ -3,7 +3,7 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import rospy
 
-from smart_device_protocol.smart_device_protocol_interface import ESPNOWROSInterface
+from smart_device_protocol.esp_now_ros_interface import ESPNOWROSInterface
 from smart_device_protocol.msg import Packet
 from smart_device_protocol.packet_parser import parse_packet_as_v2
 from smart_device_protocol.sdp_frames import BaseFrame, DataFrame, MetaFrame
