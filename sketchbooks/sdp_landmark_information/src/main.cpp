@@ -119,7 +119,6 @@ void setup()
 
   // Display loaded config
   M5.Lcd.printf("UWB ID: %d\n", uwb_id);
-  M5.Lcd.printf("Information: %s\n", data_for_information_data_packet[0].get<std::string>().c_str());
 }
 
 void loop()
