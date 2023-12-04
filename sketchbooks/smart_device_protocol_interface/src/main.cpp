@@ -106,12 +106,6 @@ void setup()
 
   // Rosserial Initialization
   nh.initNode();
-  nh.advertise(publisher);
-  if (uwb_initialized)
-  {
-    nh.advertise(publisher_uwb);
-  }
-  nh.subscribe(subscriber);
   while (not nh.connected())
   {
     delay(1000);
@@ -123,6 +117,19 @@ void setup()
 
   // UWB initialization
   uwb_initialized = initUWB(true, tag_id, Serial2);
+
+  // Subscribe and Publish
+  nh.advertise(publisher);
+  if (uwb_initialized)
+  {
+    nh.advertise(publisher_uwb);
+  }
+  nh.subscribe(subscriber);
+  while (not nh.connected())
+  {
+    delay(1000);
+    nh.spinOnce();
+  }
 
   // ESP-NOW initialization
   if (not init_esp_now(device_mac_address, OnDataRecv))
