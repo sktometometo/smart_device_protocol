@@ -150,7 +150,7 @@ void setup()
 
   // Display
   clear_device_info();
-  print_device_info(device_mac_address, uwb_initialized);
+  print_device_info(device_mac_address, uwb_initialized, tag_id);
   update_lcd();
 }
 
