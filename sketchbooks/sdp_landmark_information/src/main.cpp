@@ -95,6 +95,11 @@ void setup()
   Serial1.begin(115200, SERIAL_8N1, 16, 17);
   bool result = initUWB(false, uwb_id, Serial1);
   data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+  if (result) {
+    M5.lcd.printf("Success for initialization of UWB\n");
+  } else {
+    M5.lcd.printf("Failed to initialize UWB\n");
+  }
 
   // Display MAC address
   M5.Lcd.printf("Name: %s\n", device_name.c_str());
