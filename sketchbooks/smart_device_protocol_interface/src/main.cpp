@@ -138,7 +138,9 @@ void setup()
   nh.loginfo("ESPNow Init Success");
   if (uwb_initialized)
   {
-    nh.loginfo("UWB Init Success");
+    char buf_str[128];
+    sprintf(buf_str, "UWB Init Success. Tag ID: %d", tag_id);
+    nh.loginfo(buf_str);
   }
   else
   {
