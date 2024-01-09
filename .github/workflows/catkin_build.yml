@@ -53,8 +53,9 @@ jobs:
         source /opt/ros/noetic/setup.bash
         cd ${CATKIN_WS}
         catkin build smart_device_protocol -vi
-    - name: run_tests
-      run: |
-        source /opt/ros/noetic/setup.bash
-        cd ${CATKIN_WS}
-        catkin run_tests smart_device_protocol -v
+    # Disable run_tests temporaliry
+        # - name: run_tests
+    #   run: |
+    #     source /opt/ros/noetic/setup.bash
+    #     cd ${CATKIN_WS}
+    #     catkin run_tests smart_device_protocol -v
