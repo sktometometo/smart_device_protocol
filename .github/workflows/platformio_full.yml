@@ -68,6 +68,8 @@ jobs:
         pip3 install pip --upgrade
         pip3 install pyopenssl --upgrade
         pip3 install platformio==6.1.11
+        pip3 uninstall em
+        pip3 install empy==3.3.4    
     - name: Init workspace
       run: |
         source /opt/ros/noetic/setup.bash
