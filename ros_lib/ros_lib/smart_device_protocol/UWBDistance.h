@@ -27,7 +27,7 @@ namespace smart_device_protocol
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -51,7 +51,7 @@ namespace smart_device_protocol
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -77,8 +77,8 @@ namespace smart_device_protocol
      return offset;
     }
 
-    const char * getType(){ return "smart_device_protocol/UWBDistance"; };
-    const char * getMD5(){ return "ae36538b2b731aed9d5d280b17416445"; };
+    virtual const char * getType() override { return "smart_device_protocol/UWBDistance"; };
+    virtual const char * getMD5() override { return "ae36538b2b731aed9d5d280b17416445"; };
 
   };
 

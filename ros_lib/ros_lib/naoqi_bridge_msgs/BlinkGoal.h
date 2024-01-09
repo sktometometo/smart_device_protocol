@@ -28,7 +28,7 @@ namespace naoqi_bridge_msgs
       _blink_rate_sd_type blink_rate_sd;
 
     BlinkGoal():
-      colors_length(0), colors(NULL),
+      colors_length(0), st_colors(), colors(nullptr),
       bg_color(),
       blink_duration(),
       blink_rate_mean(0),
@@ -36,7 +36,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->colors_length >> (8 * 0)) & 0xFF;
@@ -81,7 +81,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t colors_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -132,8 +132,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    const char * getType(){ return "naoqi_bridge_msgs/BlinkGoal"; };
-    const char * getMD5(){ return "5e5d3c2ba9976dc121a0bb6ef7c66d79"; };
+    virtual const char * getType() override { return "naoqi_bridge_msgs/BlinkGoal"; };
+    virtual const char * getMD5() override { return "5e5d3c2ba9976dc121a0bb6ef7c66d79"; };
 
   };
 

@@ -21,22 +21,22 @@ namespace pr2_gripper_sensor_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->rtstate.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->rtstate.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return "pr2_gripper_sensor_msgs/PR2GripperGrabData"; };
-    const char * getMD5(){ return "2c917fd7a48bc8daa7ae36787c8b7a82"; };
+    virtual const char * getType() override { return "pr2_gripper_sensor_msgs/PR2GripperGrabData"; };
+    virtual const char * getMD5() override { return "2c917fd7a48bc8daa7ae36787c8b7a82"; };
 
   };
 

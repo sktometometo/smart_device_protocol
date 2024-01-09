@@ -25,7 +25,7 @@ namespace opencv_apps
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -33,7 +33,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -41,8 +41,8 @@ namespace opencv_apps
      return offset;
     }
 
-    const char * getType(){ return "opencv_apps/FlowStamped"; };
-    const char * getMD5(){ return "b55faf909449963372b92417925b68cc"; };
+    virtual const char * getType() override { return "opencv_apps/FlowStamped"; };
+    virtual const char * getMD5() override { return "b55faf909449963372b92417925b68cc"; };
 
   };
 

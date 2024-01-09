@@ -25,11 +25,11 @@ namespace jsk_network_tools
     SilverhammerInternalBuffer():
       header(),
       seq_id(0),
-      data_length(0), data(NULL)
+      data_length(0), st_data(), data(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -50,7 +50,7 @@ namespace jsk_network_tools
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -75,8 +75,8 @@ namespace jsk_network_tools
      return offset;
     }
 
-    const char * getType(){ return "jsk_network_tools/SilverhammerInternalBuffer"; };
-    const char * getMD5(){ return "b0224c297e0e2b6e1ac36f4f9188136f"; };
+    virtual const char * getType() override { return "jsk_network_tools/SilverhammerInternalBuffer"; };
+    virtual const char * getMD5() override { return "b0224c297e0e2b6e1ac36f4f9188136f"; };
 
   };
 

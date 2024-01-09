@@ -37,9 +37,7 @@
 
 #include "ros/node_handle.h"
 
-#if (defined(ESP8266) or defined(ESP32)) and defined(ROSSERIAL_ARDUINO_BLUETOOTH)
-  #include "ArduinoBluetoothHardware.h"
-#elif (defined(ESP8266) or defined(ESP32) or defined(ROSSERIAL_ARDUINO_TCP)) and not defined(ESP_SERIAL)
+#if defined(ESP8266) or defined(ESP32) or defined(ROSSERIAL_ARDUINO_TCP)
   #include "ArduinoTcpHardware.h"
 #else
   #include "ArduinoHardware.h"

@@ -26,7 +26,7 @@ static const char SETFORCETORQUECOLLISIONBEHAVIOR[] = "franka_msgs/SetForceTorqu
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       for( uint32_t i = 0; i < 7; i++){
@@ -44,7 +44,7 @@ static const char SETFORCETORQUECOLLISIONBEHAVIOR[] = "franka_msgs/SetForceTorqu
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       for( uint32_t i = 0; i < 7; i++){
@@ -62,8 +62,8 @@ static const char SETFORCETORQUECOLLISIONBEHAVIOR[] = "franka_msgs/SetForceTorqu
      return offset;
     }
 
-    const char * getType(){ return SETFORCETORQUECOLLISIONBEHAVIOR; };
-    const char * getMD5(){ return "af37de8897f6124b6b82b8dad5d5a876"; };
+    virtual const char * getType() override { return SETFORCETORQUECOLLISIONBEHAVIOR; };
+    virtual const char * getMD5() override { return "af37de8897f6124b6b82b8dad5d5a876"; };
 
   };
 
@@ -81,7 +81,7 @@ static const char SETFORCETORQUECOLLISIONBEHAVIOR[] = "franka_msgs/SetForceTorqu
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -99,7 +99,7 @@ static const char SETFORCETORQUECOLLISIONBEHAVIOR[] = "franka_msgs/SetForceTorqu
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -122,8 +122,8 @@ static const char SETFORCETORQUECOLLISIONBEHAVIOR[] = "franka_msgs/SetForceTorqu
      return offset;
     }
 
-    const char * getType(){ return SETFORCETORQUECOLLISIONBEHAVIOR; };
-    const char * getMD5(){ return "45872d25d65c97743cc71afc6d4e884d"; };
+    virtual const char * getType() override { return SETFORCETORQUECOLLISIONBEHAVIOR; };
+    virtual const char * getMD5() override { return "45872d25d65c97743cc71afc6d4e884d"; };
 
   };
 

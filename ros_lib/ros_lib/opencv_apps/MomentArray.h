@@ -19,11 +19,11 @@ namespace opencv_apps
       _moments_type * moments;
 
     MomentArray():
-      moments_length(0), moments(NULL)
+      moments_length(0), st_moments(), moments(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->moments_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t moments_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace opencv_apps
      return offset;
     }
 
-    const char * getType(){ return "opencv_apps/MomentArray"; };
-    const char * getMD5(){ return "fb51ddd1dea5da45f56842efe759d448"; };
+    virtual const char * getType() override { return "opencv_apps/MomentArray"; };
+    virtual const char * getMD5() override { return "fb51ddd1dea5da45f56842efe759d448"; };
 
   };
 

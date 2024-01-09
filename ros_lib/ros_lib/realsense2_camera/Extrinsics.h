@@ -25,7 +25,7 @@ namespace realsense2_camera
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace realsense2_camera
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -51,8 +51,8 @@ namespace realsense2_camera
      return offset;
     }
 
-    const char * getType(){ return "realsense2_camera/Extrinsics"; };
-    const char * getMD5(){ return "3627b43073f4cd5dd6dc179a49eda2ad"; };
+    virtual const char * getType() override { return "realsense2_camera/Extrinsics"; };
+    virtual const char * getMD5() override { return "3627b43073f4cd5dd6dc179a49eda2ad"; };
 
   };
 

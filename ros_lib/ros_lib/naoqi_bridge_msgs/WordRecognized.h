@@ -22,12 +22,12 @@ namespace naoqi_bridge_msgs
       _confidence_values_type * confidence_values;
 
     WordRecognized():
-      words_length(0), words(NULL),
-      confidence_values_length(0), confidence_values(NULL)
+      words_length(0), st_words(), words(nullptr),
+      confidence_values_length(0), st_confidence_values(), confidence_values(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->words_length >> (8 * 0)) & 0xFF;
@@ -62,7 +62,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t words_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -110,8 +110,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    const char * getType(){ return "naoqi_bridge_msgs/WordRecognized"; };
-    const char * getMD5(){ return "29134437cd61021f75f35f21b72b7eab"; };
+    virtual const char * getType() override { return "naoqi_bridge_msgs/WordRecognized"; };
+    virtual const char * getMD5() override { return "29134437cd61021f75f35f21b72b7eab"; };
 
   };
 

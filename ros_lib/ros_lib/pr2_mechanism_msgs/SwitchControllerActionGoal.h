@@ -29,7 +29,7 @@ namespace pr2_mechanism_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace pr2_mechanism_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace pr2_mechanism_msgs
      return offset;
     }
 
-    const char * getType(){ return "pr2_mechanism_msgs/SwitchControllerActionGoal"; };
-    const char * getMD5(){ return "c1a50547b620e7c8fc34420b6601a77a"; };
+    virtual const char * getType() override { return "pr2_mechanism_msgs/SwitchControllerActionGoal"; };
+    virtual const char * getMD5() override { return "c1a50547b620e7c8fc34420b6601a77a"; };
 
   };
 

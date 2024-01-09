@@ -22,22 +22,22 @@ static const char SENDFILEPATH[] = "rviz/SendFilePath";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->path.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->path.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return SENDFILEPATH; };
-    const char * getMD5(){ return "8a631822f6e3078667af5e13f8ab06b7"; };
+    virtual const char * getType() override { return SENDFILEPATH; };
+    virtual const char * getMD5() override { return "8a631822f6e3078667af5e13f8ab06b7"; };
 
   };
 
@@ -52,7 +52,7 @@ static const char SENDFILEPATH[] = "rviz/SendFilePath";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -65,7 +65,7 @@ static const char SENDFILEPATH[] = "rviz/SendFilePath";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -79,8 +79,8 @@ static const char SENDFILEPATH[] = "rviz/SendFilePath";
      return offset;
     }
 
-    const char * getType(){ return SENDFILEPATH; };
-    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    virtual const char * getType() override { return SENDFILEPATH; };
+    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

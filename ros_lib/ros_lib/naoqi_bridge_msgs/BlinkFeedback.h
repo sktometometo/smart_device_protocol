@@ -21,22 +21,22 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->last_color.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->last_color.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return "naoqi_bridge_msgs/BlinkFeedback"; };
-    const char * getMD5(){ return "6f1f94fb3eb06412264f6e0c5e72cfab"; };
+    virtual const char * getType() override { return "naoqi_bridge_msgs/BlinkFeedback"; };
+    virtual const char * getMD5() override { return "6f1f94fb3eb06412264f6e0c5e72cfab"; };
 
   };
 

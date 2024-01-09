@@ -24,7 +24,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->trajectory.serialize(outbuffer + offset);
@@ -33,7 +33,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->trajectory.deserialize(inbuffer + offset);
@@ -42,8 +42,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    const char * getType(){ return "naoqi_bridge_msgs/JointTrajectoryGoal"; };
-    const char * getMD5(){ return "7ecdd56459ac4b8e2c210a74dbb66523"; };
+    virtual const char * getType() override { return "naoqi_bridge_msgs/JointTrajectoryGoal"; };
+    virtual const char * getMD5() override { return "7ecdd56459ac4b8e2c210a74dbb66523"; };
 
   };
 

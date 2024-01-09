@@ -34,7 +34,7 @@ static const char SETFULLCOLLISIONBEHAVIOR[] = "franka_msgs/SetFullCollisionBeha
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       for( uint32_t i = 0; i < 7; i++){
@@ -64,7 +64,7 @@ static const char SETFULLCOLLISIONBEHAVIOR[] = "franka_msgs/SetFullCollisionBeha
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       for( uint32_t i = 0; i < 7; i++){
@@ -94,8 +94,8 @@ static const char SETFULLCOLLISIONBEHAVIOR[] = "franka_msgs/SetFullCollisionBeha
      return offset;
     }
 
-    const char * getType(){ return SETFULLCOLLISIONBEHAVIOR; };
-    const char * getMD5(){ return "bc875909c147220ba1720adcd48e47ea"; };
+    virtual const char * getType() override { return SETFULLCOLLISIONBEHAVIOR; };
+    virtual const char * getMD5() override { return "bc875909c147220ba1720adcd48e47ea"; };
 
   };
 
@@ -113,7 +113,7 @@ static const char SETFULLCOLLISIONBEHAVIOR[] = "franka_msgs/SetFullCollisionBeha
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -131,7 +131,7 @@ static const char SETFULLCOLLISIONBEHAVIOR[] = "franka_msgs/SetFullCollisionBeha
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -154,8 +154,8 @@ static const char SETFULLCOLLISIONBEHAVIOR[] = "franka_msgs/SetFullCollisionBeha
      return offset;
     }
 
-    const char * getType(){ return SETFULLCOLLISIONBEHAVIOR; };
-    const char * getMD5(){ return "45872d25d65c97743cc71afc6d4e884d"; };
+    virtual const char * getType() override { return SETFULLCOLLISIONBEHAVIOR; };
+    virtual const char * getMD5() override { return "45872d25d65c97743cc71afc6d4e884d"; };
 
   };
 

@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/Grasp.h"
 #include "moveit_msgs/CollisionObject.h"
+#include "moveit_msgs/Grasp.h"
 #include "moveit_msgs/MoveItErrorCodes.h"
 
 namespace moveit_msgs
@@ -36,13 +36,13 @@ static const char GRASPPLANNING[] = "moveit_msgs/GraspPlanning";
     GraspPlanningRequest():
       group_name(""),
       target(),
-      support_surfaces_length(0), support_surfaces(NULL),
-      candidate_grasps_length(0), candidate_grasps(NULL),
-      movable_obstacles_length(0), movable_obstacles(NULL)
+      support_surfaces_length(0), st_support_surfaces(), support_surfaces(nullptr),
+      candidate_grasps_length(0), st_candidate_grasps(), candidate_grasps(nullptr),
+      movable_obstacles_length(0), st_movable_obstacles(), movable_obstacles(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_group_name = strlen(this->group_name);
@@ -82,7 +82,7 @@ static const char GRASPPLANNING[] = "moveit_msgs/GraspPlanning";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_group_name;
@@ -142,8 +142,8 @@ static const char GRASPPLANNING[] = "moveit_msgs/GraspPlanning";
      return offset;
     }
 
-    const char * getType(){ return GRASPPLANNING; };
-    const char * getMD5(){ return "213bcb2a85f6f966990ab629958810a1"; };
+    virtual const char * getType() override { return GRASPPLANNING; };
+    virtual const char * getMD5() override { return "213bcb2a85f6f966990ab629958810a1"; };
 
   };
 
@@ -158,12 +158,12 @@ static const char GRASPPLANNING[] = "moveit_msgs/GraspPlanning";
       _error_code_type error_code;
 
     GraspPlanningResponse():
-      grasps_length(0), grasps(NULL),
+      grasps_length(0), st_grasps(), grasps(nullptr),
       error_code()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->grasps_length >> (8 * 0)) & 0xFF;
@@ -178,7 +178,7 @@ static const char GRASPPLANNING[] = "moveit_msgs/GraspPlanning";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t grasps_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -197,8 +197,8 @@ static const char GRASPPLANNING[] = "moveit_msgs/GraspPlanning";
      return offset;
     }
 
-    const char * getType(){ return GRASPPLANNING; };
-    const char * getMD5(){ return "b49a22b3918a7c0273d5d32f0149ae9f"; };
+    virtual const char * getType() override { return GRASPPLANNING; };
+    virtual const char * getMD5() override { return "b49a22b3918a7c0273d5d32f0149ae9f"; };
 
   };
 

@@ -26,7 +26,7 @@ namespace jsk_rviz_plugins
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -44,7 +44,7 @@ namespace jsk_rviz_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -67,8 +67,8 @@ namespace jsk_rviz_plugins
      return offset;
     }
 
-    const char * getType(){ return "jsk_rviz_plugins/RecordCommand"; };
-    const char * getMD5(){ return "31931c62eab5500089183eef0161c139"; };
+    virtual const char * getType() override { return "jsk_rviz_plugins/RecordCommand"; };
+    virtual const char * getMD5() override { return "31931c62eab5500089183eef0161c139"; };
 
   };
 

@@ -28,7 +28,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_led_name = strlen(this->led_name);
@@ -50,7 +50,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_led_name;
@@ -76,8 +76,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    const char * getType(){ return "naoqi_bridge_msgs/FadeRGB"; };
-    const char * getMD5(){ return "0df8c8fbe7f1de5f2168d6117ffced08"; };
+    virtual const char * getType() override { return "naoqi_bridge_msgs/FadeRGB"; };
+    virtual const char * getMD5() override { return "0df8c8fbe7f1de5f2168d6117ffced08"; };
 
   };
 

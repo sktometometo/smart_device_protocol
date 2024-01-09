@@ -23,11 +23,11 @@ namespace costmap_converter
 
     ObstacleArrayMsg():
       header(),
-      obstacles_length(0), obstacles(NULL)
+      obstacles_length(0), st_obstacles(), obstacles(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace costmap_converter
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace costmap_converter
      return offset;
     }
 
-    const char * getType(){ return "costmap_converter/ObstacleArrayMsg"; };
-    const char * getMD5(){ return "8a1bdcde72c65ca7d3ce8ebf52d43516"; };
+    virtual const char * getType() override { return "costmap_converter/ObstacleArrayMsg"; };
+    virtual const char * getMD5() override { return "8a1bdcde72c65ca7d3ce8ebf52d43516"; };
 
   };
 

@@ -24,12 +24,12 @@ static const char SETMODELSJOINTSSTATES[] = "pr2_gazebo_plugins/SetModelsJointsS
       _model_joints_states_type * model_joints_states;
 
     SetModelsJointsStatesRequest():
-      model_names_length(0), model_names(NULL),
-      model_joints_states_length(0), model_joints_states(NULL)
+      model_names_length(0), st_model_names(), model_names(nullptr),
+      model_joints_states_length(0), st_model_joints_states(), model_joints_states(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->model_names_length >> (8 * 0)) & 0xFF;
@@ -55,7 +55,7 @@ static const char SETMODELSJOINTSSTATES[] = "pr2_gazebo_plugins/SetModelsJointsS
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t model_names_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -93,8 +93,8 @@ static const char SETMODELSJOINTSSTATES[] = "pr2_gazebo_plugins/SetModelsJointsS
      return offset;
     }
 
-    const char * getType(){ return SETMODELSJOINTSSTATES; };
-    const char * getMD5(){ return "ecf71b483df7b70447575a8231727200"; };
+    virtual const char * getType() override { return SETMODELSJOINTSSTATES; };
+    virtual const char * getMD5() override { return "ecf71b483df7b70447575a8231727200"; };
 
   };
 
@@ -112,7 +112,7 @@ static const char SETMODELSJOINTSSTATES[] = "pr2_gazebo_plugins/SetModelsJointsS
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -130,7 +130,7 @@ static const char SETMODELSJOINTSSTATES[] = "pr2_gazebo_plugins/SetModelsJointsS
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -153,8 +153,8 @@ static const char SETMODELSJOINTSSTATES[] = "pr2_gazebo_plugins/SetModelsJointsS
      return offset;
     }
 
-    const char * getType(){ return SETMODELSJOINTSSTATES; };
-    const char * getMD5(){ return "2ec6f3eff0161f4257b808b12bc830c2"; };
+    virtual const char * getType() override { return SETMODELSJOINTSSTATES; };
+    virtual const char * getMD5() override { return "2ec6f3eff0161f4257b808b12bc830c2"; };
 
   };
 

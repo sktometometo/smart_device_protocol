@@ -21,7 +21,7 @@ static const char GETTYPE[] = "jsk_interactive_marker/GetType";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_target_name = strlen(this->target_name);
@@ -32,7 +32,7 @@ static const char GETTYPE[] = "jsk_interactive_marker/GetType";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_target_name;
@@ -47,8 +47,8 @@ static const char GETTYPE[] = "jsk_interactive_marker/GetType";
      return offset;
     }
 
-    const char * getType(){ return GETTYPE; };
-    const char * getMD5(){ return "2008933b3c7227647cbe00c74682331a"; };
+    virtual const char * getType() override { return GETTYPE; };
+    virtual const char * getMD5() override { return "2008933b3c7227647cbe00c74682331a"; };
 
   };
 
@@ -63,7 +63,7 @@ static const char GETTYPE[] = "jsk_interactive_marker/GetType";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -79,7 +79,7 @@ static const char GETTYPE[] = "jsk_interactive_marker/GetType";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -96,8 +96,8 @@ static const char GETTYPE[] = "jsk_interactive_marker/GetType";
      return offset;
     }
 
-    const char * getType(){ return GETTYPE; };
-    const char * getMD5(){ return "bda37decd5e3814bcc042f341d2e60a1"; };
+    virtual const char * getType() override { return GETTYPE; };
+    virtual const char * getMD5() override { return "bda37decd5e3814bcc042f341d2e60a1"; };
 
   };
 

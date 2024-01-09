@@ -52,20 +52,20 @@ namespace moveit_msgs
       target_name(""),
       group_name(""),
       end_effector(""),
-      possible_grasps_length(0), possible_grasps(NULL),
+      possible_grasps_length(0), st_possible_grasps(), possible_grasps(nullptr),
       support_surface_name(""),
       allow_gripper_support_collision(0),
-      attached_object_touch_links_length(0), attached_object_touch_links(NULL),
+      attached_object_touch_links_length(0), st_attached_object_touch_links(), attached_object_touch_links(nullptr),
       minimize_object_distance(0),
       path_constraints(),
       planner_id(""),
-      allowed_touch_objects_length(0), allowed_touch_objects(NULL),
+      allowed_touch_objects_length(0), st_allowed_touch_objects(), allowed_touch_objects(nullptr),
       allowed_planning_time(0),
       planning_options()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_target_name = strlen(this->target_name);
@@ -145,7 +145,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_target_name;
@@ -267,8 +267,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/PickupGoal"; };
-    const char * getMD5(){ return "3a71f6f9bc6e640594ce6a411ccfe764"; };
+    virtual const char * getType() override { return "moveit_msgs/PickupGoal"; };
+    virtual const char * getMD5() override { return "3a71f6f9bc6e640594ce6a411ccfe764"; };
 
   };
 

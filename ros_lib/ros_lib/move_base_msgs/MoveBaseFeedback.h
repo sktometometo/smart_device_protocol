@@ -21,22 +21,22 @@ namespace move_base_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->base_position.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->base_position.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return "move_base_msgs/MoveBaseFeedback"; };
-    const char * getMD5(){ return "3fb824c456a757373a226f6d08071bf0"; };
+    virtual const char * getType() override { return "move_base_msgs/MoveBaseFeedback"; };
+    virtual const char * getMD5() override { return "3fb824c456a757373a226f6d08071bf0"; };
 
   };
 

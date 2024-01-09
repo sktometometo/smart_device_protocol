@@ -27,11 +27,11 @@ namespace object_recognition_msgs
     Table():
       header(),
       pose(),
-      convex_hull_length(0), convex_hull(NULL)
+      convex_hull_length(0), st_convex_hull(), convex_hull(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -47,7 +47,7 @@ namespace object_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -67,8 +67,8 @@ namespace object_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "object_recognition_msgs/Table"; };
-    const char * getMD5(){ return "39efebc7d51e44bd2d72f2df6c7823a2"; };
+    virtual const char * getType() override { return "object_recognition_msgs/Table"; };
+    virtual const char * getMD5() override { return "39efebc7d51e44bd2d72f2df6c7823a2"; };
 
   };
 

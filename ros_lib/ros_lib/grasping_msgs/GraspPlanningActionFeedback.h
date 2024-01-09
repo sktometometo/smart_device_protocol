@@ -29,7 +29,7 @@ namespace grasping_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace grasping_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace grasping_msgs
      return offset;
     }
 
-    const char * getType(){ return "grasping_msgs/GraspPlanningActionFeedback"; };
-    const char * getMD5(){ return "947765100fcb339c2c35349f12eee057"; };
+    virtual const char * getType() override { return "grasping_msgs/GraspPlanningActionFeedback"; };
+    virtual const char * getMD5() override { return "947765100fcb339c2c35349f12eee057"; };
 
   };
 

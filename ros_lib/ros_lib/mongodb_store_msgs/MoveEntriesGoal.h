@@ -35,7 +35,7 @@ namespace mongodb_store_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_database = strlen(this->database);
@@ -65,7 +65,7 @@ namespace mongodb_store_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_database;
@@ -100,8 +100,8 @@ namespace mongodb_store_msgs
      return offset;
     }
 
-    const char * getType(){ return "mongodb_store_msgs/MoveEntriesGoal"; };
-    const char * getMD5(){ return "48aa6e70c15714ce3dfa1b8f64da4ec6"; };
+    virtual const char * getType() override { return "mongodb_store_msgs/MoveEntriesGoal"; };
+    virtual const char * getMD5() override { return "48aa6e70c15714ce3dfa1b8f64da4ec6"; };
 
   };
 

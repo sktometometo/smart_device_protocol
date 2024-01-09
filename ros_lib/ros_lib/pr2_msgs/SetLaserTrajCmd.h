@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "ros/time.h"
 #include "pr2_msgs/LaserTrajCmd.h"
+#include "ros/time.h"
 
 namespace pr2_msgs
 {
@@ -23,22 +23,22 @@ static const char SETLASERTRAJCMD[] = "pr2_msgs/SetLaserTrajCmd";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->command.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->command.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return SETLASERTRAJCMD; };
-    const char * getMD5(){ return "83f915c37d36f61442c752779261e7d4"; };
+    virtual const char * getType() override { return SETLASERTRAJCMD; };
+    virtual const char * getMD5() override { return "83f915c37d36f61442c752779261e7d4"; };
 
   };
 
@@ -53,7 +53,7 @@ static const char SETLASERTRAJCMD[] = "pr2_msgs/SetLaserTrajCmd";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->start_time.sec >> (8 * 0)) & 0xFF;
@@ -69,7 +69,7 @@ static const char SETLASERTRAJCMD[] = "pr2_msgs/SetLaserTrajCmd";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->start_time.sec =  ((uint32_t) (*(inbuffer + offset)));
@@ -85,8 +85,8 @@ static const char SETLASERTRAJCMD[] = "pr2_msgs/SetLaserTrajCmd";
      return offset;
     }
 
-    const char * getType(){ return SETLASERTRAJCMD; };
-    const char * getMD5(){ return "3888666920054f1ef39d2df7a5d94b02"; };
+    virtual const char * getType() override { return SETLASERTRAJCMD; };
+    virtual const char * getMD5() override { return "3888666920054f1ef39d2df7a5d94b02"; };
 
   };
 

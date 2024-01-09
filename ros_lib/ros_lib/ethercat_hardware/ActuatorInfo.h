@@ -50,7 +50,7 @@ namespace ethercat_hardware
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->id >> (8 * 0)) & 0xFF;
@@ -87,7 +87,7 @@ namespace ethercat_hardware
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->id =  ((uint32_t) (*(inbuffer + offset)));
@@ -140,8 +140,8 @@ namespace ethercat_hardware
      return offset;
     }
 
-    const char * getType(){ return "ethercat_hardware/ActuatorInfo"; };
-    const char * getMD5(){ return "40f44d8ec4380adc0b63713486eecb09"; };
+    virtual const char * getType() override { return "ethercat_hardware/ActuatorInfo"; };
+    virtual const char * getMD5() override { return "40f44d8ec4380adc0b63713486eecb09"; };
 
   };
 

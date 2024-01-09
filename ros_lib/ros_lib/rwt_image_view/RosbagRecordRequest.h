@@ -19,11 +19,11 @@ static const char ROSBAGRECORDREQUEST[] = "rwt_image_view/RosbagRecordRequest";
       _topics_type * topics;
 
     RosbagRecordRequestRequest():
-      topics_length(0), topics(NULL)
+      topics_length(0), st_topics(), topics(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->topics_length >> (8 * 0)) & 0xFF;
@@ -41,7 +41,7 @@ static const char ROSBAGRECORDREQUEST[] = "rwt_image_view/RosbagRecordRequest";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t topics_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -67,8 +67,8 @@ static const char ROSBAGRECORDREQUEST[] = "rwt_image_view/RosbagRecordRequest";
      return offset;
     }
 
-    const char * getType(){ return ROSBAGRECORDREQUEST; };
-    const char * getMD5(){ return "b0eef9a05d4e829092fc2f2c3c2aad3d"; };
+    virtual const char * getType() override { return ROSBAGRECORDREQUEST; };
+    virtual const char * getMD5() override { return "b0eef9a05d4e829092fc2f2c3c2aad3d"; };
 
   };
 
@@ -80,20 +80,20 @@ static const char ROSBAGRECORDREQUEST[] = "rwt_image_view/RosbagRecordRequest";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return ROSBAGRECORDREQUEST; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return ROSBAGRECORDREQUEST; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

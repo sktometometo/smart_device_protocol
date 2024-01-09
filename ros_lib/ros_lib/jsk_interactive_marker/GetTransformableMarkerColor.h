@@ -22,7 +22,7 @@ static const char GETTRANSFORMABLEMARKERCOLOR[] = "jsk_interactive_marker/GetTra
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_target_name = strlen(this->target_name);
@@ -33,7 +33,7 @@ static const char GETTRANSFORMABLEMARKERCOLOR[] = "jsk_interactive_marker/GetTra
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_target_name;
@@ -48,8 +48,8 @@ static const char GETTRANSFORMABLEMARKERCOLOR[] = "jsk_interactive_marker/GetTra
      return offset;
     }
 
-    const char * getType(){ return GETTRANSFORMABLEMARKERCOLOR; };
-    const char * getMD5(){ return "2008933b3c7227647cbe00c74682331a"; };
+    virtual const char * getType() override { return GETTRANSFORMABLEMARKERCOLOR; };
+    virtual const char * getMD5() override { return "2008933b3c7227647cbe00c74682331a"; };
 
   };
 
@@ -64,22 +64,22 @@ static const char GETTRANSFORMABLEMARKERCOLOR[] = "jsk_interactive_marker/GetTra
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->color.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->color.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return GETTRANSFORMABLEMARKERCOLOR; };
-    const char * getMD5(){ return "3e04b62b1b39cd97e873789f0bb130e7"; };
+    virtual const char * getType() override { return GETTRANSFORMABLEMARKERCOLOR; };
+    virtual const char * getMD5() override { return "3e04b62b1b39cd97e873789f0bb130e7"; };
 
   };
 

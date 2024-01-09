@@ -26,7 +26,7 @@ static const char EXECUTEKNOWNTRAJECTORY[] = "moveit_msgs/ExecuteKnownTrajectory
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->trajectory.serialize(outbuffer + offset);
@@ -40,7 +40,7 @@ static const char EXECUTEKNOWNTRAJECTORY[] = "moveit_msgs/ExecuteKnownTrajectory
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->trajectory.deserialize(inbuffer + offset);
@@ -55,8 +55,8 @@ static const char EXECUTEKNOWNTRAJECTORY[] = "moveit_msgs/ExecuteKnownTrajectory
      return offset;
     }
 
-    const char * getType(){ return EXECUTEKNOWNTRAJECTORY; };
-    const char * getMD5(){ return "2a3d2a0b337c6a27da4468bb351928e5"; };
+    virtual const char * getType() override { return EXECUTEKNOWNTRAJECTORY; };
+    virtual const char * getMD5() override { return "2a3d2a0b337c6a27da4468bb351928e5"; };
 
   };
 
@@ -71,22 +71,22 @@ static const char EXECUTEKNOWNTRAJECTORY[] = "moveit_msgs/ExecuteKnownTrajectory
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->error_code.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->error_code.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return EXECUTEKNOWNTRAJECTORY; };
-    const char * getMD5(){ return "6a39f41e4bc445a437e9a0cabdd5ef5c"; };
+    virtual const char * getType() override { return EXECUTEKNOWNTRAJECTORY; };
+    virtual const char * getMD5() override { return "6a39f41e4bc445a437e9a0cabdd5ef5c"; };
 
   };
 

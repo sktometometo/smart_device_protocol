@@ -31,14 +31,14 @@ namespace moveit_msgs
       _default_entry_values_type * default_entry_values;
 
     AllowedCollisionMatrix():
-      entry_names_length(0), entry_names(NULL),
-      entry_values_length(0), entry_values(NULL),
-      default_entry_names_length(0), default_entry_names(NULL),
-      default_entry_values_length(0), default_entry_values(NULL)
+      entry_names_length(0), st_entry_names(), entry_names(nullptr),
+      entry_values_length(0), st_entry_values(), entry_values(nullptr),
+      default_entry_names_length(0), st_default_entry_names(), default_entry_names(nullptr),
+      default_entry_values_length(0), st_default_entry_values(), default_entry_values(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->entry_names_length >> (8 * 0)) & 0xFF;
@@ -90,7 +90,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t entry_names_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -167,8 +167,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/AllowedCollisionMatrix"; };
-    const char * getMD5(){ return "aedce13587eef0d79165a075659c1879"; };
+    virtual const char * getType() override { return "moveit_msgs/AllowedCollisionMatrix"; };
+    virtual const char * getMD5() override { return "aedce13587eef0d79165a075659c1879"; };
 
   };
 

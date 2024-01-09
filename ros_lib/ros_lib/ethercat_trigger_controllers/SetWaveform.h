@@ -36,7 +36,7 @@ static const char SETWAVEFORM[] = "ethercat_trigger_controllers/SetWaveform";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->rep_rate);
@@ -75,7 +75,7 @@ static const char SETWAVEFORM[] = "ethercat_trigger_controllers/SetWaveform";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->rep_rate));
@@ -117,8 +117,8 @@ static const char SETWAVEFORM[] = "ethercat_trigger_controllers/SetWaveform";
      return offset;
     }
 
-    const char * getType(){ return SETWAVEFORM; };
-    const char * getMD5(){ return "988450e1ddd386f3967c381c19b2330c"; };
+    virtual const char * getType() override { return SETWAVEFORM; };
+    virtual const char * getMD5() override { return "988450e1ddd386f3967c381c19b2330c"; };
 
   };
 
@@ -130,20 +130,20 @@ static const char SETWAVEFORM[] = "ethercat_trigger_controllers/SetWaveform";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return SETWAVEFORM; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return SETWAVEFORM; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

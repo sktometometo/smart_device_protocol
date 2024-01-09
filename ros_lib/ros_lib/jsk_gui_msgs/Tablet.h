@@ -37,11 +37,11 @@ namespace jsk_gui_msgs
       hardware_id(""),
       action(),
       sensor(),
-      touches_length(0), touches(NULL)
+      touches_length(0), st_touches(), touches(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -68,7 +68,7 @@ namespace jsk_gui_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -107,8 +107,8 @@ namespace jsk_gui_msgs
      return offset;
     }
 
-    const char * getType(){ return "jsk_gui_msgs/Tablet"; };
-    const char * getMD5(){ return "0bab196c7b214826d8c27d7bd5f924f6"; };
+    virtual const char * getType() override { return "jsk_gui_msgs/Tablet"; };
+    virtual const char * getMD5() override { return "0bab196c7b214826d8c27d7bd5f924f6"; };
 
   };
 

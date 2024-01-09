@@ -18,20 +18,20 @@ static const char GETINSTALLEDBEHAVIORS[] = "naoqi_bridge_msgs/GetInstalledBehav
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return GETINSTALLEDBEHAVIORS; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return GETINSTALLEDBEHAVIORS; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -44,11 +44,11 @@ static const char GETINSTALLEDBEHAVIORS[] = "naoqi_bridge_msgs/GetInstalledBehav
       _behaviors_type * behaviors;
 
     GetInstalledBehaviorsResponse():
-      behaviors_length(0), behaviors(NULL)
+      behaviors_length(0), st_behaviors(), behaviors(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->behaviors_length >> (8 * 0)) & 0xFF;
@@ -66,7 +66,7 @@ static const char GETINSTALLEDBEHAVIORS[] = "naoqi_bridge_msgs/GetInstalledBehav
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t behaviors_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -92,8 +92,8 @@ static const char GETINSTALLEDBEHAVIORS[] = "naoqi_bridge_msgs/GetInstalledBehav
      return offset;
     }
 
-    const char * getType(){ return GETINSTALLEDBEHAVIORS; };
-    const char * getMD5(){ return "715783c8c6eb28fc2e1c05184add75ec"; };
+    virtual const char * getType() override { return GETINSTALLEDBEHAVIORS; };
+    virtual const char * getMD5() override { return "715783c8c6eb28fc2e1c05184add75ec"; };
 
   };
 

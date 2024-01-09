@@ -29,7 +29,7 @@ namespace roseus_smach
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->action_goal.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace roseus_smach
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->action_goal.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace roseus_smach
      return offset;
     }
 
-    const char * getType(){ return "roseus_smach/Multiply10Action"; };
-    const char * getMD5(){ return "649e5cd3d0369bfd72c1f24aed2b51ea"; };
+    virtual const char * getType() override { return "roseus_smach/Multiply10Action"; };
+    virtual const char * getMD5() override { return "649e5cd3d0369bfd72c1f24aed2b51ea"; };
 
   };
 

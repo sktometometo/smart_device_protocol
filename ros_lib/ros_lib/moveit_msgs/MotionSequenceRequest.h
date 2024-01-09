@@ -19,11 +19,11 @@ namespace moveit_msgs
       _items_type * items;
 
     MotionSequenceRequest():
-      items_length(0), items(NULL)
+      items_length(0), st_items(), items(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->items_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t items_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/MotionSequenceRequest"; };
-    const char * getMD5(){ return "5a79e4928bfada4fbc57882982ac6e58"; };
+    virtual const char * getType() override { return "moveit_msgs/MotionSequenceRequest"; };
+    virtual const char * getMD5() override { return "5a79e4928bfada4fbc57882982ac6e58"; };
 
   };
 

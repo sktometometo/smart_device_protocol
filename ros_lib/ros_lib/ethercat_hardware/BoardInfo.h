@@ -50,7 +50,7 @@ namespace ethercat_hardware
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_description = strlen(this->description);
@@ -101,7 +101,7 @@ namespace ethercat_hardware
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_description;
@@ -157,8 +157,8 @@ namespace ethercat_hardware
      return offset;
     }
 
-    const char * getType(){ return "ethercat_hardware/BoardInfo"; };
-    const char * getMD5(){ return "ffcb87ef2725c5fab7d0d8fcd4c7e7bc"; };
+    virtual const char * getType() override { return "ethercat_hardware/BoardInfo"; };
+    virtual const char * getMD5() override { return "ffcb87ef2725c5fab7d0d8fcd4c7e7bc"; };
 
   };
 

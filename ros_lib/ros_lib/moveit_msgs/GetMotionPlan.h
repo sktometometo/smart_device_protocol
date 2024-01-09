@@ -23,22 +23,22 @@ static const char GETMOTIONPLAN[] = "moveit_msgs/GetMotionPlan";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->motion_plan_request.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->motion_plan_request.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return GETMOTIONPLAN; };
-    const char * getMD5(){ return "6a898bcb42d7efc5e6953750994b0c60"; };
+    virtual const char * getType() override { return GETMOTIONPLAN; };
+    virtual const char * getMD5() override { return "6a898bcb42d7efc5e6953750994b0c60"; };
 
   };
 
@@ -53,22 +53,22 @@ static const char GETMOTIONPLAN[] = "moveit_msgs/GetMotionPlan";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->motion_plan_response.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->motion_plan_response.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return GETMOTIONPLAN; };
-    const char * getMD5(){ return "77f9b8913c41b197c8c0674d43a64622"; };
+    virtual const char * getType() override { return GETMOTIONPLAN; };
+    virtual const char * getMD5() override { return "77f9b8913c41b197c8c0674d43a64622"; };
 
   };
 

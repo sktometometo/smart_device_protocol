@@ -37,12 +37,12 @@ namespace smart_device_protocol
       enum { PACKET_TYPE_DATA =  82 };
 
     Packet():
-      mac_address_length(0), mac_address(NULL),
-      data_length(0), data(NULL)
+      mac_address_length(0), st_mac_address(), mac_address(nullptr),
+      data_length(0), st_data(), data(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->mac_address_length >> (8 * 0)) & 0xFF;
@@ -66,7 +66,7 @@ namespace smart_device_protocol
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t mac_address_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -98,8 +98,8 @@ namespace smart_device_protocol
      return offset;
     }
 
-    const char * getType(){ return "smart_device_protocol/Packet"; };
-    const char * getMD5(){ return "dbab45830b3b1d11bc00c2acc0192a63"; };
+    virtual const char * getType() override { return "smart_device_protocol/Packet"; };
+    virtual const char * getMD5() override { return "dbab45830b3b1d11bc00c2acc0192a63"; };
 
   };
 

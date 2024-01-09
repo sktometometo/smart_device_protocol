@@ -4,12 +4,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "moveit_msgs/RobotState.h"
+#include "moveit_msgs/Constraints.h"
 #include "std_msgs/Header.h"
 #include "moveit_msgs/RobotTrajectory.h"
-#include "moveit_msgs/MoveItErrorCodes.h"
-#include "moveit_msgs/Constraints.h"
+#include "moveit_msgs/RobotState.h"
 #include "geometry_msgs/Pose.h"
+#include "moveit_msgs/MoveItErrorCodes.h"
 
 namespace moveit_msgs
 {
@@ -53,7 +53,7 @@ static const char GETCARTESIANPATH[] = "moveit_msgs/GetCartesianPath";
       start_state(),
       group_name(""),
       link_name(""),
-      waypoints_length(0), waypoints(NULL),
+      waypoints_length(0), st_waypoints(), waypoints(nullptr),
       max_step(0),
       jump_threshold(0),
       prismatic_jump_threshold(0),
@@ -65,7 +65,7 @@ static const char GETCARTESIANPATH[] = "moveit_msgs/GetCartesianPath";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -109,7 +109,7 @@ static const char GETCARTESIANPATH[] = "moveit_msgs/GetCartesianPath";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -170,8 +170,8 @@ static const char GETCARTESIANPATH[] = "moveit_msgs/GetCartesianPath";
      return offset;
     }
 
-    const char * getType(){ return GETCARTESIANPATH; };
-    const char * getMD5(){ return "97b21c683d2b97f701099048039a05af"; };
+    virtual const char * getType() override { return GETCARTESIANPATH; };
+    virtual const char * getMD5() override { return "97b21c683d2b97f701099048039a05af"; };
 
   };
 
@@ -195,7 +195,7 @@ static const char GETCARTESIANPATH[] = "moveit_msgs/GetCartesianPath";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->start_state.serialize(outbuffer + offset);
@@ -205,7 +205,7 @@ static const char GETCARTESIANPATH[] = "moveit_msgs/GetCartesianPath";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->start_state.deserialize(inbuffer + offset);
@@ -215,8 +215,8 @@ static const char GETCARTESIANPATH[] = "moveit_msgs/GetCartesianPath";
      return offset;
     }
 
-    const char * getType(){ return GETCARTESIANPATH; };
-    const char * getMD5(){ return "13da68a622269d4097c7ad732fb4a27f"; };
+    virtual const char * getType() override { return GETCARTESIANPATH; };
+    virtual const char * getMD5() override { return "13da68a622269d4097c7ad732fb4a27f"; };
 
   };
 

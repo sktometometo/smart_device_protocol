@@ -41,7 +41,7 @@ namespace moveit_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_joint_name = strlen(this->joint_name);
@@ -77,7 +77,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_joint_name;
@@ -120,8 +120,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/JointLimits"; };
-    const char * getMD5(){ return "8ca618c7329ea46142cbc864a2efe856"; };
+    virtual const char * getType() override { return "moveit_msgs/JointLimits"; };
+    virtual const char * getMD5() override { return "8ca618c7329ea46142cbc864a2efe856"; };
 
   };
 

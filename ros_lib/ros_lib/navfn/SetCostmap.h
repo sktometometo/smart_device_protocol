@@ -23,13 +23,13 @@ static const char SETCOSTMAP[] = "navfn/SetCostmap";
       _width_type width;
 
     SetCostmapRequest():
-      costs_length(0), costs(NULL),
+      costs_length(0), st_costs(), costs(nullptr),
       height(0),
       width(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->costs_length >> (8 * 0)) & 0xFF;
@@ -50,7 +50,7 @@ static const char SETCOSTMAP[] = "navfn/SetCostmap";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t costs_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -75,8 +75,8 @@ static const char SETCOSTMAP[] = "navfn/SetCostmap";
      return offset;
     }
 
-    const char * getType(){ return SETCOSTMAP; };
-    const char * getMD5(){ return "370ec969cdb71f9cde7c7cbe0d752308"; };
+    virtual const char * getType() override { return SETCOSTMAP; };
+    virtual const char * getMD5() override { return "370ec969cdb71f9cde7c7cbe0d752308"; };
 
   };
 
@@ -88,20 +88,20 @@ static const char SETCOSTMAP[] = "navfn/SetCostmap";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return SETCOSTMAP; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return SETCOSTMAP; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

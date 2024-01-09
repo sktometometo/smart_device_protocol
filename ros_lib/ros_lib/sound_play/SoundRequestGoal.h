@@ -21,22 +21,22 @@ namespace sound_play
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->sound_request.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->sound_request.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return "sound_play/SoundRequestGoal"; };
-    const char * getMD5(){ return "3bd5e9e7f60b85cc6f1b7662fe6e1903"; };
+    virtual const char * getType() override { return "sound_play/SoundRequestGoal"; };
+    virtual const char * getMD5() override { return "3bd5e9e7f60b85cc6f1b7662fe6e1903"; };
 
   };
 

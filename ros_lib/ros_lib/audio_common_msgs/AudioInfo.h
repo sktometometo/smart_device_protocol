@@ -32,7 +32,7 @@ namespace audio_common_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->channels >> (8 * 0)) & 0xFF;
@@ -60,7 +60,7 @@ namespace audio_common_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->channels =  ((uint8_t) (*(inbuffer + offset)));
@@ -96,8 +96,8 @@ namespace audio_common_msgs
      return offset;
     }
 
-    const char * getType(){ return "audio_common_msgs/AudioInfo"; };
-    const char * getMD5(){ return "9413d9b7029680d3b1db6ed0ae535f88"; };
+    virtual const char * getType() override { return "audio_common_msgs/AudioInfo"; };
+    virtual const char * getMD5() override { return "9413d9b7029680d3b1db6ed0ae535f88"; };
 
   };
 

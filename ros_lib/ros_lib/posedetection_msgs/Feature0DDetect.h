@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "sensor_msgs/Image.h"
 #include "posedetection_msgs/Feature0D.h"
+#include "sensor_msgs/Image.h"
 
 namespace posedetection_msgs
 {
@@ -23,22 +23,22 @@ static const char FEATURE0DDETECT[] = "posedetection_msgs/Feature0DDetect";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->image.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->image.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return FEATURE0DDETECT; };
-    const char * getMD5(){ return "b13d2865c5af2a64e6e30ab1b56e1dd5"; };
+    virtual const char * getType() override { return FEATURE0DDETECT; };
+    virtual const char * getMD5() override { return "b13d2865c5af2a64e6e30ab1b56e1dd5"; };
 
   };
 
@@ -53,22 +53,22 @@ static const char FEATURE0DDETECT[] = "posedetection_msgs/Feature0DDetect";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->features.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->features.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return FEATURE0DDETECT; };
-    const char * getMD5(){ return "fa5677bbe36e6cfb2be31b9bbea8bcae"; };
+    virtual const char * getType() override { return FEATURE0DDETECT; };
+    virtual const char * getMD5() override { return "fa5677bbe36e6cfb2be31b9bbea8bcae"; };
 
   };
 

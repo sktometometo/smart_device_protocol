@@ -28,7 +28,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->button >> (8 * 0)) & 0xFF;
@@ -38,7 +38,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->button =  ((uint8_t) (*(inbuffer + offset)));
@@ -48,8 +48,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    const char * getType(){ return "naoqi_bridge_msgs/HeadTouch"; };
-    const char * getMD5(){ return "b75165bf9dfed26d50ad4e3162304225"; };
+    virtual const char * getType() override { return "naoqi_bridge_msgs/HeadTouch"; };
+    virtual const char * getMD5() override { return "b75165bf9dfed26d50ad4e3162304225"; };
 
   };
 

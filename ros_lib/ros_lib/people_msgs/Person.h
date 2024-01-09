@@ -35,12 +35,12 @@ namespace people_msgs
       position(),
       velocity(),
       reliability(0),
-      tagnames_length(0), tagnames(NULL),
-      tags_length(0), tags(NULL)
+      tagnames_length(0), st_tagnames(), tagnames(nullptr),
+      tags_length(0), st_tags(), tags(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -78,7 +78,7 @@ namespace people_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -136,8 +136,8 @@ namespace people_msgs
      return offset;
     }
 
-    const char * getType(){ return "people_msgs/Person"; };
-    const char * getMD5(){ return "0b7c0818b76476f3863bd13f4d59f8df"; };
+    virtual const char * getType() override { return "people_msgs/Person"; };
+    virtual const char * getMD5() override { return "0b7c0818b76476f3863bd13f4d59f8df"; };
 
   };
 

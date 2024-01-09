@@ -28,7 +28,7 @@ static const char SAVEROBOTSTATETOWAREHOUSE[] = "moveit_msgs/SaveRobotStateToWar
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -45,7 +45,7 @@ static const char SAVEROBOTSTATETOWAREHOUSE[] = "moveit_msgs/SaveRobotStateToWar
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -70,8 +70,8 @@ static const char SAVEROBOTSTATETOWAREHOUSE[] = "moveit_msgs/SaveRobotStateToWar
      return offset;
     }
 
-    const char * getType(){ return SAVEROBOTSTATETOWAREHOUSE; };
-    const char * getMD5(){ return "0d6079a7122f47626b926754a46037d9"; };
+    virtual const char * getType() override { return SAVEROBOTSTATETOWAREHOUSE; };
+    virtual const char * getMD5() override { return "0d6079a7122f47626b926754a46037d9"; };
 
   };
 
@@ -86,7 +86,7 @@ static const char SAVEROBOTSTATETOWAREHOUSE[] = "moveit_msgs/SaveRobotStateToWar
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -99,7 +99,7 @@ static const char SAVEROBOTSTATETOWAREHOUSE[] = "moveit_msgs/SaveRobotStateToWar
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -113,8 +113,8 @@ static const char SAVEROBOTSTATETOWAREHOUSE[] = "moveit_msgs/SaveRobotStateToWar
      return offset;
     }
 
-    const char * getType(){ return SAVEROBOTSTATETOWAREHOUSE; };
-    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    virtual const char * getType() override { return SAVEROBOTSTATETOWAREHOUSE; };
+    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

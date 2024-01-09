@@ -29,7 +29,7 @@ namespace sound_play
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->action_goal.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace sound_play
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->action_goal.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace sound_play
      return offset;
     }
 
-    const char * getType(){ return "sound_play/SoundRequestAction"; };
-    const char * getMD5(){ return "f990cf5de6a2f8e514e825b2c1f4810b"; };
+    virtual const char * getType() override { return "sound_play/SoundRequestAction"; };
+    virtual const char * getMD5() override { return "f990cf5de6a2f8e514e825b2c1f4810b"; };
 
   };
 

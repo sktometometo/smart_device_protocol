@@ -23,11 +23,11 @@ namespace opencv_apps
 
     CircleArrayStamped():
       header(),
-      circles_length(0), circles(NULL)
+      circles_length(0), st_circles(), circles(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace opencv_apps
      return offset;
     }
 
-    const char * getType(){ return "opencv_apps/CircleArrayStamped"; };
-    const char * getMD5(){ return "430ffa6c2b0a36b7e81feff1ce79c3c4"; };
+    virtual const char * getType() override { return "opencv_apps/CircleArrayStamped"; };
+    virtual const char * getMD5() override { return "430ffa6c2b0a36b7e81feff1ce79c3c4"; };
 
   };
 

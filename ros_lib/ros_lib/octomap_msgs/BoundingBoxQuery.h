@@ -25,7 +25,7 @@ static const char BOUNDINGBOXQUERY[] = "octomap_msgs/BoundingBoxQuery";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->min.serialize(outbuffer + offset);
@@ -33,7 +33,7 @@ static const char BOUNDINGBOXQUERY[] = "octomap_msgs/BoundingBoxQuery";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->min.deserialize(inbuffer + offset);
@@ -41,8 +41,8 @@ static const char BOUNDINGBOXQUERY[] = "octomap_msgs/BoundingBoxQuery";
      return offset;
     }
 
-    const char * getType(){ return BOUNDINGBOXQUERY; };
-    const char * getMD5(){ return "93aa3d73b866f04880927745f4aab303"; };
+    virtual const char * getType() override { return BOUNDINGBOXQUERY; };
+    virtual const char * getMD5() override { return "93aa3d73b866f04880927745f4aab303"; };
 
   };
 
@@ -54,20 +54,20 @@ static const char BOUNDINGBOXQUERY[] = "octomap_msgs/BoundingBoxQuery";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return BOUNDINGBOXQUERY; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return BOUNDINGBOXQUERY; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

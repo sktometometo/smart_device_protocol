@@ -22,7 +22,7 @@ static const char GETINSTALLATIONSTATE[] = "app_manager/GetInstallationState";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -35,7 +35,7 @@ static const char GETINSTALLATIONSTATE[] = "app_manager/GetInstallationState";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -49,8 +49,8 @@ static const char GETINSTALLATIONSTATE[] = "app_manager/GetInstallationState";
      return offset;
     }
 
-    const char * getType(){ return GETINSTALLATIONSTATE; };
-    const char * getMD5(){ return "f7e64723808960ca985ba81f45f1b8a7"; };
+    virtual const char * getType() override { return GETINSTALLATIONSTATE; };
+    virtual const char * getMD5() override { return "f7e64723808960ca985ba81f45f1b8a7"; };
 
   };
 
@@ -67,12 +67,12 @@ static const char GETINSTALLATIONSTATE[] = "app_manager/GetInstallationState";
       _available_apps_type * available_apps;
 
     GetInstallationStateResponse():
-      installed_apps_length(0), installed_apps(NULL),
-      available_apps_length(0), available_apps(NULL)
+      installed_apps_length(0), st_installed_apps(), installed_apps(nullptr),
+      available_apps_length(0), st_available_apps(), available_apps(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->installed_apps_length >> (8 * 0)) & 0xFF;
@@ -94,7 +94,7 @@ static const char GETINSTALLATIONSTATE[] = "app_manager/GetInstallationState";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t installed_apps_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -124,8 +124,8 @@ static const char GETINSTALLATIONSTATE[] = "app_manager/GetInstallationState";
      return offset;
     }
 
-    const char * getType(){ return GETINSTALLATIONSTATE; };
-    const char * getMD5(){ return "46d45bbda08250199267aff8c0ee8c41"; };
+    virtual const char * getType() override { return GETINSTALLATIONSTATE; };
+    virtual const char * getMD5() override { return "46d45bbda08250199267aff8c0ee8c41"; };
 
   };
 

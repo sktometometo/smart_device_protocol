@@ -34,7 +34,7 @@ static const char POWERBOARDCOMMAND2[] = "pr2_power_board/PowerBoardCommand2";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -69,7 +69,7 @@ static const char POWERBOARDCOMMAND2[] = "pr2_power_board/PowerBoardCommand2";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -111,8 +111,8 @@ static const char POWERBOARDCOMMAND2[] = "pr2_power_board/PowerBoardCommand2";
      return offset;
     }
 
-    const char * getType(){ return POWERBOARDCOMMAND2; };
-    const char * getMD5(){ return "a31aee1db4294698375ff2a8cf53fea5"; };
+    virtual const char * getType() override { return POWERBOARDCOMMAND2; };
+    virtual const char * getMD5() override { return "a31aee1db4294698375ff2a8cf53fea5"; };
 
   };
 
@@ -127,7 +127,7 @@ static const char POWERBOARDCOMMAND2[] = "pr2_power_board/PowerBoardCommand2";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -140,7 +140,7 @@ static const char POWERBOARDCOMMAND2[] = "pr2_power_board/PowerBoardCommand2";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -154,8 +154,8 @@ static const char POWERBOARDCOMMAND2[] = "pr2_power_board/PowerBoardCommand2";
      return offset;
     }
 
-    const char * getType(){ return POWERBOARDCOMMAND2; };
-    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    virtual const char * getType() override { return POWERBOARDCOMMAND2; };
+    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

@@ -18,11 +18,11 @@ namespace posedetection_msgs
       _pts_type * pts;
 
     Curve1D():
-      pts_length(0), pts(NULL)
+      pts_length(0), st_pts(), pts(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->pts_length >> (8 * 0)) & 0xFF;
@@ -45,7 +45,7 @@ namespace posedetection_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t pts_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -73,8 +73,8 @@ namespace posedetection_msgs
      return offset;
     }
 
-    const char * getType(){ return "posedetection_msgs/Curve1D"; };
-    const char * getMD5(){ return "e5367ca89dc9a58670f8f288e2c52f5d"; };
+    virtual const char * getType() override { return "posedetection_msgs/Curve1D"; };
+    virtual const char * getMD5() override { return "e5367ca89dc9a58670f8f288e2c52f5d"; };
 
   };
 

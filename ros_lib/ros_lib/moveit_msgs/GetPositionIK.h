@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include "ros/msg.h"
 #include "moveit_msgs/PositionIKRequest.h"
-#include "moveit_msgs/RobotState.h"
 #include "moveit_msgs/MoveItErrorCodes.h"
+#include "moveit_msgs/RobotState.h"
 
 namespace moveit_msgs
 {
@@ -24,22 +24,22 @@ static const char GETPOSITIONIK[] = "moveit_msgs/GetPositionIK";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->ik_request.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->ik_request.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return GETPOSITIONIK; };
-    const char * getMD5(){ return "8388b54598336654bca82763f918a740"; };
+    virtual const char * getType() override { return GETPOSITIONIK; };
+    virtual const char * getMD5() override { return "8388b54598336654bca82763f918a740"; };
 
   };
 
@@ -57,7 +57,7 @@ static const char GETPOSITIONIK[] = "moveit_msgs/GetPositionIK";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->solution.serialize(outbuffer + offset);
@@ -65,7 +65,7 @@ static const char GETPOSITIONIK[] = "moveit_msgs/GetPositionIK";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->solution.deserialize(inbuffer + offset);
@@ -73,8 +73,8 @@ static const char GETPOSITIONIK[] = "moveit_msgs/GetPositionIK";
      return offset;
     }
 
-    const char * getType(){ return GETPOSITIONIK; };
-    const char * getMD5(){ return "e86518bd3328ca4065f167ad5ce72802"; };
+    virtual const char * getType() override { return GETPOSITIONIK; };
+    virtual const char * getMD5() override { return "e86518bd3328ca4065f167ad5ce72802"; };
 
   };
 

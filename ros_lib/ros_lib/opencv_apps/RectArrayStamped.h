@@ -23,11 +23,11 @@ namespace opencv_apps
 
     RectArrayStamped():
       header(),
-      rects_length(0), rects(NULL)
+      rects_length(0), st_rects(), rects(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace opencv_apps
      return offset;
     }
 
-    const char * getType(){ return "opencv_apps/RectArrayStamped"; };
-    const char * getMD5(){ return "f29b08b33e061c73d7d9fc35142631d0"; };
+    virtual const char * getType() override { return "opencv_apps/RectArrayStamped"; };
+    virtual const char * getMD5() override { return "f29b08b33e061c73d7d9fc35142631d0"; };
 
   };
 

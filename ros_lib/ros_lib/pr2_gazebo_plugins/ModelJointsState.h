@@ -27,13 +27,13 @@ namespace pr2_gazebo_plugins
       _joint_positions_type * joint_positions;
 
     ModelJointsState():
-      model_pose_length(0), model_pose(NULL),
-      joint_names_length(0), joint_names(NULL),
-      joint_positions_length(0), joint_positions(NULL)
+      model_pose_length(0), st_model_pose(), model_pose(nullptr),
+      joint_names_length(0), st_joint_names(), joint_names(nullptr),
+      joint_positions_length(0), st_joint_positions(), joint_positions(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->model_pose_length >> (8 * 0)) & 0xFF;
@@ -67,7 +67,7 @@ namespace pr2_gazebo_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t model_pose_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -117,8 +117,8 @@ namespace pr2_gazebo_plugins
      return offset;
     }
 
-    const char * getType(){ return "pr2_gazebo_plugins/ModelJointsState"; };
-    const char * getMD5(){ return "f700a74958b6566fae4cd77fbb80ffd4"; };
+    virtual const char * getType() override { return "pr2_gazebo_plugins/ModelJointsState"; };
+    virtual const char * getMD5() override { return "f700a74958b6566fae4cd77fbb80ffd4"; };
 
   };
 

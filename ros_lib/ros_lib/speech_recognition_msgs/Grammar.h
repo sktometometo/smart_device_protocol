@@ -31,13 +31,13 @@ namespace speech_recognition_msgs
 
     Grammar():
       name(""),
-      rules_length(0), rules(NULL),
-      categories_length(0), categories(NULL),
-      vocabularies_length(0), vocabularies(NULL)
+      rules_length(0), st_rules(), rules(nullptr),
+      categories_length(0), st_categories(), categories(nullptr),
+      vocabularies_length(0), st_vocabularies(), vocabularies(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -76,7 +76,7 @@ namespace speech_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -135,8 +135,8 @@ namespace speech_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "speech_recognition_msgs/Grammar"; };
-    const char * getMD5(){ return "a8653cae3429492cb944a813429e7151"; };
+    virtual const char * getType() override { return "speech_recognition_msgs/Grammar"; };
+    virtual const char * getMD5() override { return "a8653cae3429492cb944a813429e7151"; };
 
   };
 

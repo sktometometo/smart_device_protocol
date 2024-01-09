@@ -22,7 +22,7 @@ static const char GETMARKERDIMENSIONS[] = "jsk_interactive_marker/GetMarkerDimen
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_target_name = strlen(this->target_name);
@@ -33,7 +33,7 @@ static const char GETMARKERDIMENSIONS[] = "jsk_interactive_marker/GetMarkerDimen
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_target_name;
@@ -48,8 +48,8 @@ static const char GETMARKERDIMENSIONS[] = "jsk_interactive_marker/GetMarkerDimen
      return offset;
     }
 
-    const char * getType(){ return GETMARKERDIMENSIONS; };
-    const char * getMD5(){ return "2008933b3c7227647cbe00c74682331a"; };
+    virtual const char * getType() override { return GETMARKERDIMENSIONS; };
+    virtual const char * getMD5() override { return "2008933b3c7227647cbe00c74682331a"; };
 
   };
 
@@ -64,22 +64,22 @@ static const char GETMARKERDIMENSIONS[] = "jsk_interactive_marker/GetMarkerDimen
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->dimensions.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->dimensions.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return GETMARKERDIMENSIONS; };
-    const char * getMD5(){ return "742fb7645b415cf6f633f4bd78cac455"; };
+    virtual const char * getType() override { return GETMARKERDIMENSIONS; };
+    virtual const char * getMD5() override { return "742fb7645b415cf6f633f4bd78cac455"; };
 
   };
 

@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "speech_recognition_msgs/SpeechRecognitionCandidates.h"
-#include "speech_recognition_msgs/Grammar.h"
 #include "speech_recognition_msgs/Vocabulary.h"
+#include "speech_recognition_msgs/Grammar.h"
+#include "speech_recognition_msgs/SpeechRecognitionCandidates.h"
 
 namespace speech_recognition_msgs
 {
@@ -39,7 +39,7 @@ static const char SPEECHRECOGNITION[] = "speech_recognition_msgs/SpeechRecogniti
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->vocabulary.serialize(outbuffer + offset);
@@ -79,7 +79,7 @@ static const char SPEECHRECOGNITION[] = "speech_recognition_msgs/SpeechRecogniti
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->vocabulary.deserialize(inbuffer + offset);
@@ -126,8 +126,8 @@ static const char SPEECHRECOGNITION[] = "speech_recognition_msgs/SpeechRecogniti
      return offset;
     }
 
-    const char * getType(){ return SPEECHRECOGNITION; };
-    const char * getMD5(){ return "af5602408bd36e4d9a80cde6f4453023"; };
+    virtual const char * getType() override { return SPEECHRECOGNITION; };
+    virtual const char * getMD5() override { return "af5602408bd36e4d9a80cde6f4453023"; };
 
   };
 
@@ -142,22 +142,22 @@ static const char SPEECHRECOGNITION[] = "speech_recognition_msgs/SpeechRecogniti
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->result.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->result.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return SPEECHRECOGNITION; };
-    const char * getMD5(){ return "46fe009ac10a19a0e861b8792ad42e0b"; };
+    virtual const char * getType() override { return SPEECHRECOGNITION; };
+    virtual const char * getMD5() override { return "46fe009ac10a19a0e861b8792ad42e0b"; };
 
   };
 

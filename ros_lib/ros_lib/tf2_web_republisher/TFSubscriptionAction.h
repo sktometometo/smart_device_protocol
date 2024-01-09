@@ -29,7 +29,7 @@ namespace tf2_web_republisher
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->action_goal.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace tf2_web_republisher
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->action_goal.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace tf2_web_republisher
      return offset;
     }
 
-    const char * getType(){ return "tf2_web_republisher/TFSubscriptionAction"; };
-    const char * getMD5(){ return "15787ffd6a2492c0022abe990c898794"; };
+    virtual const char * getType() override { return "tf2_web_republisher/TFSubscriptionAction"; };
+    virtual const char * getMD5() override { return "15787ffd6a2492c0022abe990c898794"; };
 
   };
 

@@ -24,7 +24,7 @@ namespace moveit_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_id = strlen(this->id);
@@ -36,7 +36,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_id;
@@ -52,8 +52,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/ObjectColor"; };
-    const char * getMD5(){ return "ec3bd6f103430e64b2ae706a67d8488e"; };
+    virtual const char * getType() override { return "moveit_msgs/ObjectColor"; };
+    virtual const char * getMD5() override { return "ec3bd6f103430e64b2ae706a67d8488e"; };
 
   };
 

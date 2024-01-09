@@ -43,7 +43,7 @@ namespace sound_play
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -83,7 +83,7 @@ namespace sound_play
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -134,8 +134,8 @@ namespace sound_play
      return offset;
     }
 
-    const char * getType(){ return "sound_play/SoundRequest"; };
-    const char * getMD5(){ return "d098ce4a040686259137ece23a625167"; };
+    virtual const char * getType() override { return "sound_play/SoundRequest"; };
+    virtual const char * getMD5() override { return "d098ce4a040686259137ece23a625167"; };
 
   };
 

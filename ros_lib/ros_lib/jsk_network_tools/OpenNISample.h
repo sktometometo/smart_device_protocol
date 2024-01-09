@@ -25,7 +25,7 @@ namespace jsk_network_tools
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->camera__rgb__image_rect_color.serialize(outbuffer + offset);
@@ -33,7 +33,7 @@ namespace jsk_network_tools
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->camera__rgb__image_rect_color.deserialize(inbuffer + offset);
@@ -41,8 +41,8 @@ namespace jsk_network_tools
      return offset;
     }
 
-    const char * getType(){ return "jsk_network_tools/OpenNISample"; };
-    const char * getMD5(){ return "c998c0df481d0ad4598a2534cadda5d1"; };
+    virtual const char * getType() override { return "jsk_network_tools/OpenNISample"; };
+    virtual const char * getMD5() override { return "c998c0df481d0ad4598a2534cadda5d1"; };
 
   };
 

@@ -23,7 +23,7 @@ namespace grasping_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -39,7 +39,7 @@ namespace grasping_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -63,8 +63,8 @@ namespace grasping_msgs
      return offset;
     }
 
-    const char * getType(){ return "grasping_msgs/ObjectProperty"; };
-    const char * getMD5(){ return "bc6ccc4a57f61779c8eaae61e9f422e0"; };
+    virtual const char * getType() override { return "grasping_msgs/ObjectProperty"; };
+    virtual const char * getMD5() override { return "bc6ccc4a57f61779c8eaae61e9f422e0"; };
 
   };
 

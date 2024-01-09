@@ -18,11 +18,11 @@ namespace naoqi_bridge_msgs
       _words_type * words;
 
     SetSpeechVocabularyGoal():
-      words_length(0), words(NULL)
+      words_length(0), st_words(), words(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->words_length >> (8 * 0)) & 0xFF;
@@ -40,7 +40,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t words_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -66,8 +66,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    const char * getType(){ return "naoqi_bridge_msgs/SetSpeechVocabularyGoal"; };
-    const char * getMD5(){ return "2bd0e7dd008cf8f52a5113ba090403b7"; };
+    virtual const char * getType() override { return "naoqi_bridge_msgs/SetSpeechVocabularyGoal"; };
+    virtual const char * getMD5() override { return "2bd0e7dd008cf8f52a5113ba090403b7"; };
 
   };
 

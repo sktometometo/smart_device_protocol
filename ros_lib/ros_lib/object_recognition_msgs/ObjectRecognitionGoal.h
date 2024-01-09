@@ -21,11 +21,11 @@ namespace object_recognition_msgs
 
     ObjectRecognitionGoal():
       use_roi(0),
-      filter_limits_length(0), filter_limits(NULL)
+      filter_limits_length(0), st_filter_limits(), filter_limits(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -55,7 +55,7 @@ namespace object_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -91,8 +91,8 @@ namespace object_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "object_recognition_msgs/ObjectRecognitionGoal"; };
-    const char * getMD5(){ return "49bea2f03a1bba0ad05926e01e3525fa"; };
+    virtual const char * getType() override { return "object_recognition_msgs/ObjectRecognitionGoal"; };
+    virtual const char * getMD5() override { return "49bea2f03a1bba0ad05926e01e3525fa"; };
 
   };
 

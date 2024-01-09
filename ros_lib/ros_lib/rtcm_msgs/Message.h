@@ -22,11 +22,11 @@ namespace rtcm_msgs
 
     Message():
       header(),
-      message_length(0), message(NULL)
+      message_length(0), st_message(), message(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace rtcm_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -62,8 +62,8 @@ namespace rtcm_msgs
      return offset;
     }
 
-    const char * getType(){ return "rtcm_msgs/Message"; };
-    const char * getMD5(){ return "883b1fb65b83ccf75497c21f2d63052d"; };
+    virtual const char * getType() override { return "rtcm_msgs/Message"; };
+    virtual const char * getMD5() override { return "883b1fb65b83ccf75497c21f2d63052d"; };
 
   };
 

@@ -33,14 +33,14 @@ namespace moveit_msgs
       _mesh_poses_type * mesh_poses;
 
     BoundingVolume():
-      primitives_length(0), primitives(NULL),
-      primitive_poses_length(0), primitive_poses(NULL),
-      meshes_length(0), meshes(NULL),
-      mesh_poses_length(0), mesh_poses(NULL)
+      primitives_length(0), st_primitives(), primitives(nullptr),
+      primitive_poses_length(0), st_primitive_poses(), primitive_poses(nullptr),
+      meshes_length(0), st_meshes(), meshes(nullptr),
+      mesh_poses_length(0), st_mesh_poses(), mesh_poses(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->primitives_length >> (8 * 0)) & 0xFF;
@@ -78,7 +78,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t primitives_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -132,8 +132,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/BoundingVolume"; };
-    const char * getMD5(){ return "22db94010f39e9198032cb4a1aeda26e"; };
+    virtual const char * getType() override { return "moveit_msgs/BoundingVolume"; };
+    virtual const char * getMD5() override { return "22db94010f39e9198032cb4a1aeda26e"; };
 
   };
 

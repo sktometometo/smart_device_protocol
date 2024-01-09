@@ -26,11 +26,11 @@ namespace gazebo_msgs
     PerformanceMetrics():
       header(),
       real_time_factor(0),
-      sensors_length(0), sensors(NULL)
+      sensors_length(0), st_sensors(), sensors(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -46,7 +46,7 @@ namespace gazebo_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -66,8 +66,8 @@ namespace gazebo_msgs
      return offset;
     }
 
-    const char * getType(){ return "gazebo_msgs/PerformanceMetrics"; };
-    const char * getMD5(){ return "884f71fd5037b886ec5e126b83c4425a"; };
+    virtual const char * getType() override { return "gazebo_msgs/PerformanceMetrics"; };
+    virtual const char * getMD5() override { return "884f71fd5037b886ec5e126b83c4425a"; };
 
   };
 

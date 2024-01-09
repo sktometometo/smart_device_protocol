@@ -47,7 +47,7 @@ namespace jsk_rviz_plugins
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -100,7 +100,7 @@ namespace jsk_rviz_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -172,8 +172,8 @@ namespace jsk_rviz_plugins
      return offset;
     }
 
-    const char * getType(){ return "jsk_rviz_plugins/TransformableMarkerOperate"; };
-    const char * getMD5(){ return "3f5042567d7e11634fa94e4b5452169c"; };
+    virtual const char * getType() override { return "jsk_rviz_plugins/TransformableMarkerOperate"; };
+    virtual const char * getMD5() override { return "3f5042567d7e11634fa94e4b5452169c"; };
 
   };
 

@@ -19,20 +19,20 @@ static const char GETOCTOMAP[] = "octomap_msgs/GetOctomap";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return GETOCTOMAP; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return GETOCTOMAP; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -47,22 +47,22 @@ static const char GETOCTOMAP[] = "octomap_msgs/GetOctomap";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->map.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->map.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return GETOCTOMAP; };
-    const char * getMD5(){ return "be9d2869d24fe40d6bc21ac21f6bb2c5"; };
+    virtual const char * getType() override { return GETOCTOMAP; };
+    virtual const char * getMD5() override { return "be9d2869d24fe40d6bc21ac21f6bb2c5"; };
 
   };
 

@@ -51,7 +51,7 @@ namespace jsk_network_tools
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -133,7 +133,7 @@ namespace jsk_network_tools
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -234,8 +234,8 @@ namespace jsk_network_tools
      return offset;
     }
 
-    const char * getType(){ return "jsk_network_tools/WifiStatus"; };
-    const char * getMD5(){ return "94da4b64008d69473c62c62019a8c0f6"; };
+    virtual const char * getType() override { return "jsk_network_tools/WifiStatus"; };
+    virtual const char * getMD5() override { return "94da4b64008d69473c62c62019a8c0f6"; };
 
   };
 

@@ -25,7 +25,7 @@ static const char GETSTATE[] = "robot_localization/GetState";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->time_stamp.sec >> (8 * 0)) & 0xFF;
@@ -46,7 +46,7 @@ static const char GETSTATE[] = "robot_localization/GetState";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->time_stamp.sec =  ((uint32_t) (*(inbuffer + offset)));
@@ -71,8 +71,8 @@ static const char GETSTATE[] = "robot_localization/GetState";
      return offset;
     }
 
-    const char * getType(){ return GETSTATE; };
-    const char * getMD5(){ return "853815113280ed7c4ea64ad795f27171"; };
+    virtual const char * getType() override { return GETSTATE; };
+    virtual const char * getMD5() override { return "853815113280ed7c4ea64ad795f27171"; };
 
   };
 
@@ -88,7 +88,7 @@ static const char GETSTATE[] = "robot_localization/GetState";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       for( uint32_t i = 0; i < 15; i++){
@@ -100,7 +100,7 @@ static const char GETSTATE[] = "robot_localization/GetState";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       for( uint32_t i = 0; i < 15; i++){
@@ -112,8 +112,8 @@ static const char GETSTATE[] = "robot_localization/GetState";
      return offset;
     }
 
-    const char * getType(){ return GETSTATE; };
-    const char * getMD5(){ return "8d49e6249cf8371736e3286b16a7ce83"; };
+    virtual const char * getType() override { return GETSTATE; };
+    virtual const char * getMD5() override { return "8d49e6249cf8371736e3286b16a7ce83"; };
 
   };
 

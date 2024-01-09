@@ -25,7 +25,7 @@ static const char MAKENAVPLAN[] = "navfn/MakeNavPlan";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->start.serialize(outbuffer + offset);
@@ -33,7 +33,7 @@ static const char MAKENAVPLAN[] = "navfn/MakeNavPlan";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->start.deserialize(inbuffer + offset);
@@ -41,8 +41,8 @@ static const char MAKENAVPLAN[] = "navfn/MakeNavPlan";
      return offset;
     }
 
-    const char * getType(){ return MAKENAVPLAN; };
-    const char * getMD5(){ return "2fe3126bd5b2d56edd5005220333d4fd"; };
+    virtual const char * getType() override { return MAKENAVPLAN; };
+    virtual const char * getMD5() override { return "2fe3126bd5b2d56edd5005220333d4fd"; };
 
   };
 
@@ -61,11 +61,11 @@ static const char MAKENAVPLAN[] = "navfn/MakeNavPlan";
     MakeNavPlanResponse():
       plan_found(0),
       error_message(""),
-      path_length(0), path(NULL)
+      path_length(0), st_path(), path(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->plan_found >> (8 * 0)) & 0xFF;
@@ -86,7 +86,7 @@ static const char MAKENAVPLAN[] = "navfn/MakeNavPlan";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->plan_found =  ((uint8_t) (*(inbuffer + offset)));
@@ -115,8 +115,8 @@ static const char MAKENAVPLAN[] = "navfn/MakeNavPlan";
      return offset;
     }
 
-    const char * getType(){ return MAKENAVPLAN; };
-    const char * getMD5(){ return "8b8ed7edf1b237dc9ddda8c8ffed5d3a"; };
+    virtual const char * getType() override { return MAKENAVPLAN; };
+    virtual const char * getMD5() override { return "8b8ed7edf1b237dc9ddda8c8ffed5d3a"; };
 
   };
 

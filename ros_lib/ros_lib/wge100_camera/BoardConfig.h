@@ -22,11 +22,11 @@ static const char BOARDCONFIG[] = "wge100_camera/BoardConfig";
 
     BoardConfigRequest():
       serial(0),
-      mac_length(0), mac(NULL)
+      mac_length(0), st_mac(), mac(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->serial >> (8 * 0)) & 0xFF;
@@ -46,7 +46,7 @@ static const char BOARDCONFIG[] = "wge100_camera/BoardConfig";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->serial =  ((uint32_t) (*(inbuffer + offset)));
@@ -70,8 +70,8 @@ static const char BOARDCONFIG[] = "wge100_camera/BoardConfig";
      return offset;
     }
 
-    const char * getType(){ return BOARDCONFIG; };
-    const char * getMD5(){ return "ec9bad54b410ebc79183d761c609dd76"; };
+    virtual const char * getType() override { return BOARDCONFIG; };
+    virtual const char * getMD5() override { return "ec9bad54b410ebc79183d761c609dd76"; };
 
   };
 
@@ -86,7 +86,7 @@ static const char BOARDCONFIG[] = "wge100_camera/BoardConfig";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->success >> (8 * 0)) & 0xFF;
@@ -94,7 +94,7 @@ static const char BOARDCONFIG[] = "wge100_camera/BoardConfig";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->success =  ((uint8_t) (*(inbuffer + offset)));
@@ -102,8 +102,8 @@ static const char BOARDCONFIG[] = "wge100_camera/BoardConfig";
      return offset;
     }
 
-    const char * getType(){ return BOARDCONFIG; };
-    const char * getMD5(){ return "6cca7c80398b8b31af04b80534923f16"; };
+    virtual const char * getType() override { return BOARDCONFIG; };
+    virtual const char * getMD5() override { return "6cca7c80398b8b31af04b80534923f16"; };
 
   };
 

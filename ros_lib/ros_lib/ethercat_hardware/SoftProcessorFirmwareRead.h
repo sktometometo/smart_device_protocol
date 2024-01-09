@@ -24,7 +24,7 @@ static const char SOFTPROCESSORFIRMWAREREAD[] = "ethercat_hardware/SoftProcessor
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_actuator_name = strlen(this->actuator_name);
@@ -40,7 +40,7 @@ static const char SOFTPROCESSORFIRMWAREREAD[] = "ethercat_hardware/SoftProcessor
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_actuator_name;
@@ -64,8 +64,8 @@ static const char SOFTPROCESSORFIRMWAREREAD[] = "ethercat_hardware/SoftProcessor
      return offset;
     }
 
-    const char * getType(){ return SOFTPROCESSORFIRMWAREREAD; };
-    const char * getMD5(){ return "777be25d71e9e85e62fa14223ffddb6b"; };
+    virtual const char * getType() override { return SOFTPROCESSORFIRMWAREREAD; };
+    virtual const char * getMD5() override { return "777be25d71e9e85e62fa14223ffddb6b"; };
 
   };
 
@@ -84,11 +84,11 @@ static const char SOFTPROCESSORFIRMWAREREAD[] = "ethercat_hardware/SoftProcessor
     SoftProcessorFirmwareReadResponse():
       success(0),
       error_msg(""),
-      instructions_length(0), instructions(NULL)
+      instructions_length(0), st_instructions(), instructions(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -118,7 +118,7 @@ static const char SOFTPROCESSORFIRMWAREREAD[] = "ethercat_hardware/SoftProcessor
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -157,8 +157,8 @@ static const char SOFTPROCESSORFIRMWAREREAD[] = "ethercat_hardware/SoftProcessor
      return offset;
     }
 
-    const char * getType(){ return SOFTPROCESSORFIRMWAREREAD; };
-    const char * getMD5(){ return "d36ea5e74d6ac75d45ab5ae553b4d4e6"; };
+    virtual const char * getType() override { return SOFTPROCESSORFIRMWAREREAD; };
+    virtual const char * getMD5() override { return "d36ea5e74d6ac75d45ab5ae553b4d4e6"; };
 
   };
 

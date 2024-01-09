@@ -30,7 +30,7 @@ static const char POWERBOARDCOMMAND[] = "pr2_power_board/PowerBoardCommand";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->serial_number >> (8 * 0)) & 0xFF;
@@ -61,7 +61,7 @@ static const char POWERBOARDCOMMAND[] = "pr2_power_board/PowerBoardCommand";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->serial_number =  ((uint32_t) (*(inbuffer + offset)));
@@ -97,8 +97,8 @@ static const char POWERBOARDCOMMAND[] = "pr2_power_board/PowerBoardCommand";
      return offset;
     }
 
-    const char * getType(){ return POWERBOARDCOMMAND; };
-    const char * getMD5(){ return "9c621f5309bca0033e8eaef81c31500a"; };
+    virtual const char * getType() override { return POWERBOARDCOMMAND; };
+    virtual const char * getMD5() override { return "9c621f5309bca0033e8eaef81c31500a"; };
 
   };
 
@@ -113,7 +113,7 @@ static const char POWERBOARDCOMMAND[] = "pr2_power_board/PowerBoardCommand";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -129,7 +129,7 @@ static const char POWERBOARDCOMMAND[] = "pr2_power_board/PowerBoardCommand";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -146,8 +146,8 @@ static const char POWERBOARDCOMMAND[] = "pr2_power_board/PowerBoardCommand";
      return offset;
     }
 
-    const char * getType(){ return POWERBOARDCOMMAND; };
-    const char * getMD5(){ return "f5697a1e05c2a3e1c23cab49a31319ec"; };
+    virtual const char * getType() override { return POWERBOARDCOMMAND; };
+    virtual const char * getMD5() override { return "f5697a1e05c2a3e1c23cab49a31319ec"; };
 
   };
 

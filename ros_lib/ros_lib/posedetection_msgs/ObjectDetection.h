@@ -23,11 +23,11 @@ namespace posedetection_msgs
 
     ObjectDetection():
       header(),
-      objects_length(0), objects(NULL)
+      objects_length(0), st_objects(), objects(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace posedetection_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace posedetection_msgs
      return offset;
     }
 
-    const char * getType(){ return "posedetection_msgs/ObjectDetection"; };
-    const char * getMD5(){ return "450ee77eda8a92543774df0b858b3605"; };
+    virtual const char * getType() override { return "posedetection_msgs/ObjectDetection"; };
+    virtual const char * getMD5() override { return "450ee77eda8a92543774df0b858b3605"; };
 
   };
 

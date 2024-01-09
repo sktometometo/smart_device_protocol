@@ -29,7 +29,7 @@ namespace fetch_auto_dock_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace fetch_auto_dock_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace fetch_auto_dock_msgs
      return offset;
     }
 
-    const char * getType(){ return "fetch_auto_dock_msgs/UndockActionResult"; };
-    const char * getMD5(){ return "6868978f7aa1c3f7fba76547d2092ae9"; };
+    virtual const char * getType() override { return "fetch_auto_dock_msgs/UndockActionResult"; };
+    virtual const char * getMD5() override { return "6868978f7aa1c3f7fba76547d2092ae9"; };
 
   };
 
