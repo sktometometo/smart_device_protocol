@@ -32,12 +32,12 @@ jobs:
         required-ros-distributions: noetic
     - name: Install catkin tool
       run: sudo apt-get install python3-catkin-tools
-    # - name: Update pip
-    #   run: |
-    #     pip3 install pip --upgrade
-    #     pip3 install pyopenssl --upgrade
-    #     pip3 uninstall em
-    #     pip3 install empy
+    - name: Update pip
+      run: |
+        pip3 install pip --upgrade
+        pip3 install pyopenssl --upgrade
+        pip3 uninstall em
+        pip3 install empy==3.3.4
     - name: Init workspace
       run: |
         source /opt/ros/noetic/setup.bash
