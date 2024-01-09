@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    # Continue other jobs even if this job fails.
+    continue-on-error: true
     strategy:
       matrix:
         target_project:
