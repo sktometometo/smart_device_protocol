@@ -29,7 +29,7 @@ namespace pr2_gripper_sensor_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->action_goal.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace pr2_gripper_sensor_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->action_goal.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace pr2_gripper_sensor_msgs
      return offset;
     }
 
-    const char * getType(){ return "pr2_gripper_sensor_msgs/PR2GripperEventDetectorAction"; };
-    const char * getMD5(){ return "d4e2ee2d04e941280f34bdb366daa9a4"; };
+    virtual const char * getType() override { return "pr2_gripper_sensor_msgs/PR2GripperEventDetectorAction"; };
+    virtual const char * getMD5() override { return "d4e2ee2d04e941280f34bdb366daa9a4"; };
 
   };
 

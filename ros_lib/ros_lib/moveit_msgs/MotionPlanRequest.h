@@ -55,10 +55,10 @@ namespace moveit_msgs
     MotionPlanRequest():
       workspace_parameters(),
       start_state(),
-      goal_constraints_length(0), goal_constraints(NULL),
+      goal_constraints_length(0), st_goal_constraints(), goal_constraints(nullptr),
       path_constraints(),
       trajectory_constraints(),
-      reference_trajectories_length(0), reference_trajectories(NULL),
+      reference_trajectories_length(0), st_reference_trajectories(), reference_trajectories(nullptr),
       pipeline_id(""),
       planner_id(""),
       group_name(""),
@@ -71,7 +71,7 @@ namespace moveit_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->workspace_parameters.serialize(outbuffer + offset);
@@ -131,7 +131,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->workspace_parameters.deserialize(inbuffer + offset);
@@ -216,8 +216,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/MotionPlanRequest"; };
-    const char * getMD5(){ return "83f3d7b1d47a538f7659e0de9dae7980"; };
+    virtual const char * getType() override { return "moveit_msgs/MotionPlanRequest"; };
+    virtual const char * getMD5() override { return "83f3d7b1d47a538f7659e0de9dae7980"; };
 
   };
 

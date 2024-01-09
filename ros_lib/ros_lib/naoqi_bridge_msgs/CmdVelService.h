@@ -22,22 +22,22 @@ static const char CMDVELSERVICE[] = "naoqi_bridge_msgs/CmdVelService";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->twist.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->twist.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return CMDVELSERVICE; };
-    const char * getMD5(){ return "a787b2802160dcc7fe02d089e10afe56"; };
+    virtual const char * getType() override { return CMDVELSERVICE; };
+    virtual const char * getMD5() override { return "a787b2802160dcc7fe02d089e10afe56"; };
 
   };
 
@@ -49,20 +49,20 @@ static const char CMDVELSERVICE[] = "naoqi_bridge_msgs/CmdVelService";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return CMDVELSERVICE; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return CMDVELSERVICE; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

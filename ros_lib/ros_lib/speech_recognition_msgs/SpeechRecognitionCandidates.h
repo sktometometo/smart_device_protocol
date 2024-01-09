@@ -22,12 +22,12 @@ namespace speech_recognition_msgs
       _confidence_type * confidence;
 
     SpeechRecognitionCandidates():
-      transcript_length(0), transcript(NULL),
-      confidence_length(0), confidence(NULL)
+      transcript_length(0), st_transcript(), transcript(nullptr),
+      confidence_length(0), st_confidence(), confidence(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->transcript_length >> (8 * 0)) & 0xFF;
@@ -62,7 +62,7 @@ namespace speech_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t transcript_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -110,8 +110,8 @@ namespace speech_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "speech_recognition_msgs/SpeechRecognitionCandidates"; };
-    const char * getMD5(){ return "8bf91ae2b1d4cbc38dce17013599f915"; };
+    virtual const char * getType() override { return "speech_recognition_msgs/SpeechRecognitionCandidates"; };
+    virtual const char * getMD5() override { return "8bf91ae2b1d4cbc38dce17013599f915"; };
 
   };
 

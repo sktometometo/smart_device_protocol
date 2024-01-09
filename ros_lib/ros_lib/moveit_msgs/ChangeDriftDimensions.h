@@ -40,7 +40,7 @@ static const char CHANGEDRIFTDIMENSIONS[] = "moveit_msgs/ChangeDriftDimensions";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -89,7 +89,7 @@ static const char CHANGEDRIFTDIMENSIONS[] = "moveit_msgs/ChangeDriftDimensions";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -144,8 +144,8 @@ static const char CHANGEDRIFTDIMENSIONS[] = "moveit_msgs/ChangeDriftDimensions";
      return offset;
     }
 
-    const char * getType(){ return CHANGEDRIFTDIMENSIONS; };
-    const char * getMD5(){ return "4a5ce44f94cdee672e699df89b1ebaf1"; };
+    virtual const char * getType() override { return CHANGEDRIFTDIMENSIONS; };
+    virtual const char * getMD5() override { return "4a5ce44f94cdee672e699df89b1ebaf1"; };
 
   };
 
@@ -160,7 +160,7 @@ static const char CHANGEDRIFTDIMENSIONS[] = "moveit_msgs/ChangeDriftDimensions";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -173,7 +173,7 @@ static const char CHANGEDRIFTDIMENSIONS[] = "moveit_msgs/ChangeDriftDimensions";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -187,8 +187,8 @@ static const char CHANGEDRIFTDIMENSIONS[] = "moveit_msgs/ChangeDriftDimensions";
      return offset;
     }
 
-    const char * getType(){ return CHANGEDRIFTDIMENSIONS; };
-    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    virtual const char * getType() override { return CHANGEDRIFTDIMENSIONS; };
+    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

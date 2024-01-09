@@ -29,7 +29,7 @@ namespace mongodb_store_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace mongodb_store_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace mongodb_store_msgs
      return offset;
     }
 
-    const char * getType(){ return "mongodb_store_msgs/MoveEntriesActionGoal"; };
-    const char * getMD5(){ return "8cd0c3d38e1c3ed7bce235f7ebbaf759"; };
+    virtual const char * getType() override { return "mongodb_store_msgs/MoveEntriesActionGoal"; };
+    virtual const char * getMD5() override { return "8cd0c3d38e1c3ed7bce235f7ebbaf759"; };
 
   };
 

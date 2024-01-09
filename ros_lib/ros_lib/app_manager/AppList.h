@@ -23,12 +23,12 @@ namespace app_manager
       _available_apps_type * available_apps;
 
     AppList():
-      running_apps_length(0), running_apps(NULL),
-      available_apps_length(0), available_apps(NULL)
+      running_apps_length(0), st_running_apps(), running_apps(nullptr),
+      available_apps_length(0), st_available_apps(), available_apps(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->running_apps_length >> (8 * 0)) & 0xFF;
@@ -50,7 +50,7 @@ namespace app_manager
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t running_apps_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -80,8 +80,8 @@ namespace app_manager
      return offset;
     }
 
-    const char * getType(){ return "app_manager/AppList"; };
-    const char * getMD5(){ return "8a71ede6bf51909653c7c551f462cb30"; };
+    virtual const char * getType() override { return "app_manager/AppList"; };
+    virtual const char * getMD5() override { return "8a71ede6bf51909653c7c551f462cb30"; };
 
   };
 

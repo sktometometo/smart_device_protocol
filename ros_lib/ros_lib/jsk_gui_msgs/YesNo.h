@@ -21,7 +21,7 @@ static const char YESNO[] = "jsk_gui_msgs/YesNo";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_message = strlen(this->message);
@@ -32,7 +32,7 @@ static const char YESNO[] = "jsk_gui_msgs/YesNo";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_message;
@@ -47,8 +47,8 @@ static const char YESNO[] = "jsk_gui_msgs/YesNo";
      return offset;
     }
 
-    const char * getType(){ return YESNO; };
-    const char * getMD5(){ return "5f003d6bcc824cbd51361d66d8e4f76c"; };
+    virtual const char * getType() override { return YESNO; };
+    virtual const char * getMD5() override { return "5f003d6bcc824cbd51361d66d8e4f76c"; };
 
   };
 
@@ -63,7 +63,7 @@ static const char YESNO[] = "jsk_gui_msgs/YesNo";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -76,7 +76,7 @@ static const char YESNO[] = "jsk_gui_msgs/YesNo";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -90,8 +90,8 @@ static const char YESNO[] = "jsk_gui_msgs/YesNo";
      return offset;
     }
 
-    const char * getType(){ return YESNO; };
-    const char * getMD5(){ return "aa7d186fb6268a501cd4c0c274f480ff"; };
+    virtual const char * getType() override { return YESNO; };
+    virtual const char * getMD5() override { return "aa7d186fb6268a501cd4c0c274f480ff"; };
 
   };
 

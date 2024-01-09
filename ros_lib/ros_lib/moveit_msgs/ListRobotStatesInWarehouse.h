@@ -24,7 +24,7 @@ static const char LISTROBOTSTATESINWAREHOUSE[] = "moveit_msgs/ListRobotStatesInW
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_regex = strlen(this->regex);
@@ -40,7 +40,7 @@ static const char LISTROBOTSTATESINWAREHOUSE[] = "moveit_msgs/ListRobotStatesInW
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_regex;
@@ -64,8 +64,8 @@ static const char LISTROBOTSTATESINWAREHOUSE[] = "moveit_msgs/ListRobotStatesInW
      return offset;
     }
 
-    const char * getType(){ return LISTROBOTSTATESINWAREHOUSE; };
-    const char * getMD5(){ return "6f0970a3ca837e2fc3ed63e314b44b42"; };
+    virtual const char * getType() override { return LISTROBOTSTATESINWAREHOUSE; };
+    virtual const char * getMD5() override { return "6f0970a3ca837e2fc3ed63e314b44b42"; };
 
   };
 
@@ -78,11 +78,11 @@ static const char LISTROBOTSTATESINWAREHOUSE[] = "moveit_msgs/ListRobotStatesInW
       _states_type * states;
 
     ListRobotStatesInWarehouseResponse():
-      states_length(0), states(NULL)
+      states_length(0), st_states(), states(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->states_length >> (8 * 0)) & 0xFF;
@@ -100,7 +100,7 @@ static const char LISTROBOTSTATESINWAREHOUSE[] = "moveit_msgs/ListRobotStatesInW
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t states_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -126,8 +126,8 @@ static const char LISTROBOTSTATESINWAREHOUSE[] = "moveit_msgs/ListRobotStatesInW
      return offset;
     }
 
-    const char * getType(){ return LISTROBOTSTATESINWAREHOUSE; };
-    const char * getMD5(){ return "a8656b247c0429bb79afe0ddb88eb2f5"; };
+    virtual const char * getType() override { return LISTROBOTSTATESINWAREHOUSE; };
+    virtual const char * getMD5() override { return "a8656b247c0429bb79afe0ddb88eb2f5"; };
 
   };
 

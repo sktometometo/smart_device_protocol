@@ -29,7 +29,7 @@ namespace object_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace object_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace object_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "object_recognition_msgs/ObjectRecognitionActionGoal"; };
-    const char * getMD5(){ return "195eff91387a5f42dbd13be53431366b"; };
+    virtual const char * getType() override { return "object_recognition_msgs/ObjectRecognitionActionGoal"; };
+    virtual const char * getMD5() override { return "195eff91387a5f42dbd13be53431366b"; };
 
   };
 

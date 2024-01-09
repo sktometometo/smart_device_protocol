@@ -24,7 +24,7 @@ namespace opencv_apps
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->point.serialize(outbuffer + offset);
@@ -32,7 +32,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->point.deserialize(inbuffer + offset);
@@ -40,8 +40,8 @@ namespace opencv_apps
      return offset;
     }
 
-    const char * getType(){ return "opencv_apps/Flow"; };
-    const char * getMD5(){ return "dd9a9efd88ba39035e78af697593d751"; };
+    virtual const char * getType() override { return "opencv_apps/Flow"; };
+    virtual const char * getMD5() override { return "dd9a9efd88ba39035e78af697593d751"; };
 
   };
 

@@ -29,7 +29,7 @@ static const char ANALYZESINGLEIMAGE[] = "apriltag_ros/AnalyzeSingleImage";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_full_path_where_to_get_image = strlen(this->full_path_where_to_get_image);
@@ -46,7 +46,7 @@ static const char ANALYZESINGLEIMAGE[] = "apriltag_ros/AnalyzeSingleImage";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_full_path_where_to_get_image;
@@ -71,8 +71,8 @@ static const char ANALYZESINGLEIMAGE[] = "apriltag_ros/AnalyzeSingleImage";
      return offset;
     }
 
-    const char * getType(){ return ANALYZESINGLEIMAGE; };
-    const char * getMD5(){ return "ce260db7e8fcb58cbea397e93c5438a4"; };
+    virtual const char * getType() override { return ANALYZESINGLEIMAGE; };
+    virtual const char * getMD5() override { return "ce260db7e8fcb58cbea397e93c5438a4"; };
 
   };
 
@@ -87,22 +87,22 @@ static const char ANALYZESINGLEIMAGE[] = "apriltag_ros/AnalyzeSingleImage";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->tag_detections.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->tag_detections.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return ANALYZESINGLEIMAGE; };
-    const char * getMD5(){ return "252b618af4df2baf843a5edd035f3c2c"; };
+    virtual const char * getType() override { return ANALYZESINGLEIMAGE; };
+    virtual const char * getMD5() override { return "252b618af4df2baf843a5edd035f3c2c"; };
 
   };
 

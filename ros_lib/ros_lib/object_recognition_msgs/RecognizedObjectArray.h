@@ -27,12 +27,12 @@ namespace object_recognition_msgs
 
     RecognizedObjectArray():
       header(),
-      objects_length(0), objects(NULL),
-      cooccurrence_length(0), cooccurrence(NULL)
+      objects_length(0), st_objects(), objects(nullptr),
+      cooccurrence_length(0), st_cooccurrence(), cooccurrence(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -64,7 +64,7 @@ namespace object_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -105,8 +105,8 @@ namespace object_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "object_recognition_msgs/RecognizedObjectArray"; };
-    const char * getMD5(){ return "bad6b1546b9ebcabb49fb3b858d78964"; };
+    virtual const char * getType() override { return "object_recognition_msgs/RecognizedObjectArray"; };
+    virtual const char * getMD5() override { return "bad6b1546b9ebcabb49fb3b858d78964"; };
 
   };
 

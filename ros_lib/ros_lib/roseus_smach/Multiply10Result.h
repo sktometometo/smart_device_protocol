@@ -20,7 +20,7 @@ namespace roseus_smach
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -36,7 +36,7 @@ namespace roseus_smach
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -53,8 +53,8 @@ namespace roseus_smach
      return offset;
     }
 
-    const char * getType(){ return "roseus_smach/Multiply10Result"; };
-    const char * getMD5(){ return "b3087778e93fcd34cc8d65bc54e850d1"; };
+    virtual const char * getType() override { return "roseus_smach/Multiply10Result"; };
+    virtual const char * getMD5() override { return "b3087778e93fcd34cc8d65bc54e850d1"; };
 
   };
 

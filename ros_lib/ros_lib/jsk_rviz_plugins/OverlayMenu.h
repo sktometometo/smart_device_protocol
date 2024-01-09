@@ -33,14 +33,14 @@ namespace jsk_rviz_plugins
     OverlayMenu():
       action(0),
       current_index(0),
-      menus_length(0), menus(NULL),
+      menus_length(0), st_menus(), menus(nullptr),
       title(""),
       bg_color(),
       fg_color()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -80,7 +80,7 @@ namespace jsk_rviz_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -133,8 +133,8 @@ namespace jsk_rviz_plugins
      return offset;
     }
 
-    const char * getType(){ return "jsk_rviz_plugins/OverlayMenu"; };
-    const char * getMD5(){ return "517426ba068ca022d86cf2c56c98889f"; };
+    virtual const char * getType() override { return "jsk_rviz_plugins/OverlayMenu"; };
+    virtual const char * getMD5() override { return "517426ba068ca022d86cf2c56c98889f"; };
 
   };
 

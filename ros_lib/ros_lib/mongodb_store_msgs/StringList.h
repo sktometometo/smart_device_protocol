@@ -18,11 +18,11 @@ namespace mongodb_store_msgs
       _data_type * data;
 
     StringList():
-      data_length(0), data(NULL)
+      data_length(0), st_data(), data(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->data_length >> (8 * 0)) & 0xFF;
@@ -40,7 +40,7 @@ namespace mongodb_store_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t data_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -66,8 +66,8 @@ namespace mongodb_store_msgs
      return offset;
     }
 
-    const char * getType(){ return "mongodb_store_msgs/StringList"; };
-    const char * getMD5(){ return "cce5a364f3a3be12c9722c6dcad2fa94"; };
+    virtual const char * getType() override { return "mongodb_store_msgs/StringList"; };
+    virtual const char * getMD5() override { return "cce5a364f3a3be12c9722c6dcad2fa94"; };
 
   };
 

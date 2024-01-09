@@ -27,11 +27,11 @@ static const char MARKERSETPOSE[] = "jsk_interactive_marker/MarkerSetPose";
     MarkerSetPoseRequest():
       marker_name(""),
       pose(),
-      markers_length(0), markers(NULL)
+      markers_length(0), st_markers(), markers(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_marker_name = strlen(this->marker_name);
@@ -51,7 +51,7 @@ static const char MARKERSETPOSE[] = "jsk_interactive_marker/MarkerSetPose";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_marker_name;
@@ -79,8 +79,8 @@ static const char MARKERSETPOSE[] = "jsk_interactive_marker/MarkerSetPose";
      return offset;
     }
 
-    const char * getType(){ return MARKERSETPOSE; };
-    const char * getMD5(){ return "ad9cd9afd2203415fba0c5648ca2decb"; };
+    virtual const char * getType() override { return MARKERSETPOSE; };
+    virtual const char * getMD5() override { return "ad9cd9afd2203415fba0c5648ca2decb"; };
 
   };
 
@@ -95,22 +95,22 @@ static const char MARKERSETPOSE[] = "jsk_interactive_marker/MarkerSetPose";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->pose.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->pose.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return MARKERSETPOSE; };
-    const char * getMD5(){ return "3f8930d968a3e84d471dff917bb1cdae"; };
+    virtual const char * getType() override { return MARKERSETPOSE; };
+    virtual const char * getMD5() override { return "3f8930d968a3e84d471dff917bb1cdae"; };
 
   };
 

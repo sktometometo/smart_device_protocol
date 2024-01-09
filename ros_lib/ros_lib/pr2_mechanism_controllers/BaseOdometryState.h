@@ -30,13 +30,13 @@ namespace pr2_mechanism_controllers
 
     BaseOdometryState():
       velocity(),
-      wheel_link_names_length(0), wheel_link_names(NULL),
-      drive_constraint_errors_length(0), drive_constraint_errors(NULL),
-      longitudinal_slip_constraint_errors_length(0), longitudinal_slip_constraint_errors(NULL)
+      wheel_link_names_length(0), st_wheel_link_names(), wheel_link_names(nullptr),
+      drive_constraint_errors_length(0), st_drive_constraint_errors(), drive_constraint_errors(nullptr),
+      longitudinal_slip_constraint_errors_length(0), st_longitudinal_slip_constraint_errors(), longitudinal_slip_constraint_errors(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->velocity.serialize(outbuffer + offset);
@@ -71,7 +71,7 @@ namespace pr2_mechanism_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->velocity.deserialize(inbuffer + offset);
@@ -122,8 +122,8 @@ namespace pr2_mechanism_controllers
      return offset;
     }
 
-    const char * getType(){ return "pr2_mechanism_controllers/BaseOdometryState"; };
-    const char * getMD5(){ return "8a483e137ebc37abafa4c26549091dd6"; };
+    virtual const char * getType() override { return "pr2_mechanism_controllers/BaseOdometryState"; };
+    virtual const char * getMD5() override { return "8a483e137ebc37abafa4c26549091dd6"; };
 
   };
 

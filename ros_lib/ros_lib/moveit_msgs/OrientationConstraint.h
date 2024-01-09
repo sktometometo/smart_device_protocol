@@ -45,7 +45,7 @@ namespace moveit_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -64,7 +64,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -87,8 +87,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/OrientationConstraint"; };
-    const char * getMD5(){ return "183479d9281e5b4f23dc584f711d8a64"; };
+    virtual const char * getType() override { return "moveit_msgs/OrientationConstraint"; };
+    virtual const char * getMD5() override { return "183479d9281e5b4f23dc584f711d8a64"; };
 
   };
 

@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "mongodb_store_msgs/SerialisedMessage.h"
 #include "mongodb_store_msgs/StringPairList.h"
+#include "mongodb_store_msgs/SerialisedMessage.h"
 
 namespace mongodb_store_msgs
 {
@@ -32,7 +32,7 @@ static const char MONGOINSERTMSG[] = "mongodb_store_msgs/MongoInsertMsg";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_database = strlen(this->database);
@@ -50,7 +50,7 @@ static const char MONGOINSERTMSG[] = "mongodb_store_msgs/MongoInsertMsg";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_database;
@@ -76,8 +76,8 @@ static const char MONGOINSERTMSG[] = "mongodb_store_msgs/MongoInsertMsg";
      return offset;
     }
 
-    const char * getType(){ return MONGOINSERTMSG; };
-    const char * getMD5(){ return "d071b179071167c692331b5356e30470"; };
+    virtual const char * getType() override { return MONGOINSERTMSG; };
+    virtual const char * getMD5() override { return "d071b179071167c692331b5356e30470"; };
 
   };
 
@@ -92,7 +92,7 @@ static const char MONGOINSERTMSG[] = "mongodb_store_msgs/MongoInsertMsg";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_id = strlen(this->id);
@@ -103,7 +103,7 @@ static const char MONGOINSERTMSG[] = "mongodb_store_msgs/MongoInsertMsg";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_id;
@@ -118,8 +118,8 @@ static const char MONGOINSERTMSG[] = "mongodb_store_msgs/MongoInsertMsg";
      return offset;
     }
 
-    const char * getType(){ return MONGOINSERTMSG; };
-    const char * getMD5(){ return "bbfcda76036ebbe3d36caf7af80b260c"; };
+    virtual const char * getType() override { return MONGOINSERTMSG; };
+    virtual const char * getMD5() override { return "bbfcda76036ebbe3d36caf7af80b260c"; };
 
   };
 

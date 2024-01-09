@@ -29,7 +29,7 @@ namespace pr2_gazebo_plugins
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -45,7 +45,7 @@ namespace pr2_gazebo_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -62,8 +62,8 @@ namespace pr2_gazebo_plugins
      return offset;
     }
 
-    const char * getType(){ return "pr2_gazebo_plugins/PlugCommand"; };
-    const char * getMD5(){ return "852b7035ee3e7fa6390824cf7b7e6dd1"; };
+    virtual const char * getType() override { return "pr2_gazebo_plugins/PlugCommand"; };
+    virtual const char * getMD5() override { return "852b7035ee3e7fa6390824cf7b7e6dd1"; };
 
   };
 

@@ -18,20 +18,20 @@ static const char DEVICEINFO[] = "realsense2_camera/DeviceInfo";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return DEVICEINFO; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return DEVICEINFO; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -61,7 +61,7 @@ static const char DEVICEINFO[] = "realsense2_camera/DeviceInfo";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_device_name = strlen(this->device_name);
@@ -97,7 +97,7 @@ static const char DEVICEINFO[] = "realsense2_camera/DeviceInfo";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_device_name;
@@ -157,8 +157,8 @@ static const char DEVICEINFO[] = "realsense2_camera/DeviceInfo";
      return offset;
     }
 
-    const char * getType(){ return DEVICEINFO; };
-    const char * getMD5(){ return "914e9cfa74a4f66f08c3fe1016943c1b"; };
+    virtual const char * getType() override { return DEVICEINFO; };
+    virtual const char * getMD5() override { return "914e9cfa74a4f66f08c3fe1016943c1b"; };
 
   };
 

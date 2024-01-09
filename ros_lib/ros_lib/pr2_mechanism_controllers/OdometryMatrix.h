@@ -18,11 +18,11 @@ namespace pr2_mechanism_controllers
       _m_type * m;
 
     OdometryMatrix():
-      m_length(0), m(NULL)
+      m_length(0), st_m(), m(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->m_length >> (8 * 0)) & 0xFF;
@@ -36,7 +36,7 @@ namespace pr2_mechanism_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t m_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -54,8 +54,8 @@ namespace pr2_mechanism_controllers
      return offset;
     }
 
-    const char * getType(){ return "pr2_mechanism_controllers/OdometryMatrix"; };
-    const char * getMD5(){ return "1f7818e7ce16454badf1bee936b0ff16"; };
+    virtual const char * getType() override { return "pr2_mechanism_controllers/OdometryMatrix"; };
+    virtual const char * getMD5() override { return "1f7818e7ce16454badf1bee936b0ff16"; };
 
   };
 

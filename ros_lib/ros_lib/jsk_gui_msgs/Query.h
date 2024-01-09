@@ -21,7 +21,7 @@ static const char QUERY[] = "jsk_gui_msgs/Query";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -37,7 +37,7 @@ static const char QUERY[] = "jsk_gui_msgs/Query";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -54,8 +54,8 @@ static const char QUERY[] = "jsk_gui_msgs/Query";
      return offset;
     }
 
-    const char * getType(){ return QUERY; };
-    const char * getMD5(){ return "c5e4a7d59c68f74eabcec876a00216aa"; };
+    virtual const char * getType() override { return QUERY; };
+    virtual const char * getMD5() override { return "c5e4a7d59c68f74eabcec876a00216aa"; };
 
   };
 
@@ -70,7 +70,7 @@ static const char QUERY[] = "jsk_gui_msgs/Query";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_res = strlen(this->res);
@@ -81,7 +81,7 @@ static const char QUERY[] = "jsk_gui_msgs/Query";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_res;
@@ -96,8 +96,8 @@ static const char QUERY[] = "jsk_gui_msgs/Query";
      return offset;
     }
 
-    const char * getType(){ return QUERY; };
-    const char * getMD5(){ return "53af918a2a4a2a182c184142fff49b0c"; };
+    virtual const char * getType() override { return QUERY; };
+    virtual const char * getMD5() override { return "53af918a2a4a2a182c184142fff49b0c"; };
 
   };
 

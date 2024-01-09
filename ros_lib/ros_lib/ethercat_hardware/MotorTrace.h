@@ -34,11 +34,11 @@ namespace ethercat_hardware
       reason(""),
       board_info(),
       actuator_info(),
-      samples_length(0), samples(NULL)
+      samples_length(0), st_samples(), samples(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -60,7 +60,7 @@ namespace ethercat_hardware
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -90,8 +90,8 @@ namespace ethercat_hardware
      return offset;
     }
 
-    const char * getType(){ return "ethercat_hardware/MotorTrace"; };
-    const char * getMD5(){ return "ada0b8b7f00967d292bd5bb4f59d4bd8"; };
+    virtual const char * getType() override { return "ethercat_hardware/MotorTrace"; };
+    virtual const char * getMD5() override { return "ada0b8b7f00967d292bd5bb4f59d4bd8"; };
 
   };
 

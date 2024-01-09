@@ -46,17 +46,17 @@ namespace pr2_mechanism_controllers
 
     BaseControllerState():
       command(),
-      joint_velocity_measured_length(0), joint_velocity_measured(NULL),
-      joint_velocity_commanded_length(0), joint_velocity_commanded(NULL),
-      joint_velocity_error_length(0), joint_velocity_error(NULL),
-      joint_effort_measured_length(0), joint_effort_measured(NULL),
-      joint_effort_commanded_length(0), joint_effort_commanded(NULL),
-      joint_effort_error_length(0), joint_effort_error(NULL),
-      joint_names_length(0), joint_names(NULL)
+      joint_velocity_measured_length(0), st_joint_velocity_measured(), joint_velocity_measured(nullptr),
+      joint_velocity_commanded_length(0), st_joint_velocity_commanded(), joint_velocity_commanded(nullptr),
+      joint_velocity_error_length(0), st_joint_velocity_error(), joint_velocity_error(nullptr),
+      joint_effort_measured_length(0), st_joint_effort_measured(), joint_effort_measured(nullptr),
+      joint_effort_commanded_length(0), st_joint_effort_commanded(), joint_effort_commanded(nullptr),
+      joint_effort_error_length(0), st_joint_effort_error(), joint_effort_error(nullptr),
+      joint_names_length(0), st_joint_names(), joint_names(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->command.serialize(outbuffer + offset);
@@ -123,7 +123,7 @@ namespace pr2_mechanism_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->command.deserialize(inbuffer + offset);
@@ -222,8 +222,8 @@ namespace pr2_mechanism_controllers
      return offset;
     }
 
-    const char * getType(){ return "pr2_mechanism_controllers/BaseControllerState"; };
-    const char * getMD5(){ return "7a488aa492f9175d5fa35e22e56c4b28"; };
+    virtual const char * getType() override { return "pr2_mechanism_controllers/BaseControllerState"; };
+    virtual const char * getMD5() override { return "7a488aa492f9175d5fa35e22e56c4b28"; };
 
   };
 

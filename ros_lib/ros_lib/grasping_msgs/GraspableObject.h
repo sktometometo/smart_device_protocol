@@ -23,11 +23,11 @@ namespace grasping_msgs
 
     GraspableObject():
       object(),
-      grasps_length(0), grasps(NULL)
+      grasps_length(0), st_grasps(), grasps(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->object.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace grasping_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->object.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace grasping_msgs
      return offset;
     }
 
-    const char * getType(){ return "grasping_msgs/GraspableObject"; };
-    const char * getMD5(){ return "ec31ebe9db31c8d3ccab1b66aedd1293"; };
+    virtual const char * getType() override { return "grasping_msgs/GraspableObject"; };
+    virtual const char * getMD5() override { return "ec31ebe9db31c8d3ccab1b66aedd1293"; };
 
   };
 

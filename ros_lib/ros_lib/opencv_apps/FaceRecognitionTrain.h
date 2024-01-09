@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "sensor_msgs/Image.h"
 #include "opencv_apps/Rect.h"
+#include "sensor_msgs/Image.h"
 
 namespace opencv_apps
 {
@@ -29,13 +29,13 @@ static const char FACERECOGNITIONTRAIN[] = "opencv_apps/FaceRecognitionTrain";
       _labels_type * labels;
 
     FaceRecognitionTrainRequest():
-      images_length(0), images(NULL),
-      rects_length(0), rects(NULL),
-      labels_length(0), labels(NULL)
+      images_length(0), st_images(), images(nullptr),
+      rects_length(0), st_rects(), rects(nullptr),
+      labels_length(0), st_labels(), labels(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->images_length >> (8 * 0)) & 0xFF;
@@ -69,7 +69,7 @@ static const char FACERECOGNITIONTRAIN[] = "opencv_apps/FaceRecognitionTrain";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t images_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -119,8 +119,8 @@ static const char FACERECOGNITIONTRAIN[] = "opencv_apps/FaceRecognitionTrain";
      return offset;
     }
 
-    const char * getType(){ return FACERECOGNITIONTRAIN; };
-    const char * getMD5(){ return "ba188b4bf792edbaf69c7f296a16e0ec"; };
+    virtual const char * getType() override { return FACERECOGNITIONTRAIN; };
+    virtual const char * getMD5() override { return "ba188b4bf792edbaf69c7f296a16e0ec"; };
 
   };
 
@@ -138,7 +138,7 @@ static const char FACERECOGNITIONTRAIN[] = "opencv_apps/FaceRecognitionTrain";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -156,7 +156,7 @@ static const char FACERECOGNITIONTRAIN[] = "opencv_apps/FaceRecognitionTrain";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -179,8 +179,8 @@ static const char FACERECOGNITIONTRAIN[] = "opencv_apps/FaceRecognitionTrain";
      return offset;
     }
 
-    const char * getType(){ return FACERECOGNITIONTRAIN; };
-    const char * getMD5(){ return "14d6fca830116fb9833d983a296f00ed"; };
+    virtual const char * getType() override { return FACERECOGNITIONTRAIN; };
+    virtual const char * getMD5() override { return "14d6fca830116fb9833d983a296f00ed"; };
 
   };
 

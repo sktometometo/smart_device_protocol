@@ -19,20 +19,20 @@ static const char LISTAPPS[] = "app_manager/ListApps";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return LISTAPPS; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return LISTAPPS; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -49,12 +49,12 @@ static const char LISTAPPS[] = "app_manager/ListApps";
       _available_apps_type * available_apps;
 
     ListAppsResponse():
-      running_apps_length(0), running_apps(NULL),
-      available_apps_length(0), available_apps(NULL)
+      running_apps_length(0), st_running_apps(), running_apps(nullptr),
+      available_apps_length(0), st_available_apps(), available_apps(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->running_apps_length >> (8 * 0)) & 0xFF;
@@ -76,7 +76,7 @@ static const char LISTAPPS[] = "app_manager/ListApps";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t running_apps_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -106,8 +106,8 @@ static const char LISTAPPS[] = "app_manager/ListApps";
      return offset;
     }
 
-    const char * getType(){ return LISTAPPS; };
-    const char * getMD5(){ return "8a71ede6bf51909653c7c551f462cb30"; };
+    virtual const char * getType() override { return LISTAPPS; };
+    virtual const char * getMD5() override { return "8a71ede6bf51909653c7c551f462cb30"; };
 
   };
 

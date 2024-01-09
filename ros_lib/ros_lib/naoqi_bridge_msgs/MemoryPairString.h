@@ -23,7 +23,7 @@ namespace naoqi_bridge_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_memoryKey = strlen(this->memoryKey);
@@ -39,7 +39,7 @@ namespace naoqi_bridge_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_memoryKey;
@@ -63,8 +63,8 @@ namespace naoqi_bridge_msgs
      return offset;
     }
 
-    const char * getType(){ return "naoqi_bridge_msgs/MemoryPairString"; };
-    const char * getMD5(){ return "b6046f2881035869712dcfeda0628929"; };
+    virtual const char * getType() override { return "naoqi_bridge_msgs/MemoryPairString"; };
+    virtual const char * getMD5() override { return "b6046f2881035869712dcfeda0628929"; };
 
   };
 

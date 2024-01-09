@@ -23,11 +23,11 @@ namespace opencv_apps
 
     FaceArrayStamped():
       header(),
-      faces_length(0), faces(NULL)
+      faces_length(0), st_faces(), faces(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace opencv_apps
      return offset;
     }
 
-    const char * getType(){ return "opencv_apps/FaceArrayStamped"; };
-    const char * getMD5(){ return "a43dedd70c7b2338df14a8f4de0940ef"; };
+    virtual const char * getType() override { return "opencv_apps/FaceArrayStamped"; };
+    virtual const char * getMD5() override { return "a43dedd70c7b2338df14a8f4de0940ef"; };
 
   };
 

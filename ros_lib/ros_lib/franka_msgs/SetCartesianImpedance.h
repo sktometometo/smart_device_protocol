@@ -20,7 +20,7 @@ static const char SETCARTESIANIMPEDANCE[] = "franka_msgs/SetCartesianImpedance";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       for( uint32_t i = 0; i < 6; i++){
@@ -29,7 +29,7 @@ static const char SETCARTESIANIMPEDANCE[] = "franka_msgs/SetCartesianImpedance";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       for( uint32_t i = 0; i < 6; i++){
@@ -38,8 +38,8 @@ static const char SETCARTESIANIMPEDANCE[] = "franka_msgs/SetCartesianImpedance";
      return offset;
     }
 
-    const char * getType(){ return SETCARTESIANIMPEDANCE; };
-    const char * getMD5(){ return "591a43081c539ee56ec83a33587e68c4"; };
+    virtual const char * getType() override { return SETCARTESIANIMPEDANCE; };
+    virtual const char * getMD5() override { return "591a43081c539ee56ec83a33587e68c4"; };
 
   };
 
@@ -57,7 +57,7 @@ static const char SETCARTESIANIMPEDANCE[] = "franka_msgs/SetCartesianImpedance";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -75,7 +75,7 @@ static const char SETCARTESIANIMPEDANCE[] = "franka_msgs/SetCartesianImpedance";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -98,8 +98,8 @@ static const char SETCARTESIANIMPEDANCE[] = "franka_msgs/SetCartesianImpedance";
      return offset;
     }
 
-    const char * getType(){ return SETCARTESIANIMPEDANCE; };
-    const char * getMD5(){ return "45872d25d65c97743cc71afc6d4e884d"; };
+    virtual const char * getType() override { return SETCARTESIANIMPEDANCE; };
+    virtual const char * getMD5() override { return "45872d25d65c97743cc71afc6d4e884d"; };
 
   };
 

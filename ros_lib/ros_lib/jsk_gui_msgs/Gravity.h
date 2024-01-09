@@ -21,22 +21,22 @@ namespace jsk_gui_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->gravity.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->gravity.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return "jsk_gui_msgs/Gravity"; };
-    const char * getMD5(){ return "86facaf836997cbbc4faee170616f59e"; };
+    virtual const char * getType() override { return "jsk_gui_msgs/Gravity"; };
+    virtual const char * getMD5() override { return "86facaf836997cbbc4faee170616f59e"; };
 
   };
 

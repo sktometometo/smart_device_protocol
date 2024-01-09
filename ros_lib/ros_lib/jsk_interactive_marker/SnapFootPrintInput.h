@@ -28,7 +28,7 @@ namespace jsk_interactive_marker
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->input_pose.serialize(outbuffer + offset);
@@ -37,7 +37,7 @@ namespace jsk_interactive_marker
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->input_pose.deserialize(inbuffer + offset);
@@ -46,8 +46,8 @@ namespace jsk_interactive_marker
      return offset;
     }
 
-    const char * getType(){ return "jsk_interactive_marker/SnapFootPrintInput"; };
-    const char * getMD5(){ return "07fc9b79352f12bc13742f589662de86"; };
+    virtual const char * getType() override { return "jsk_interactive_marker/SnapFootPrintInput"; };
+    virtual const char * getMD5() override { return "07fc9b79352f12bc13742f589662de86"; };
 
   };
 

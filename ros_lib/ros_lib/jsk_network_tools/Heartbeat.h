@@ -24,7 +24,7 @@ namespace jsk_network_tools
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -41,7 +41,7 @@ namespace jsk_network_tools
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -59,8 +59,8 @@ namespace jsk_network_tools
      return offset;
     }
 
-    const char * getType(){ return "jsk_network_tools/Heartbeat"; };
-    const char * getMD5(){ return "5dcf7e58d50fbf046c592264dc354dea"; };
+    virtual const char * getType() override { return "jsk_network_tools/Heartbeat"; };
+    virtual const char * getMD5() override { return "5dcf7e58d50fbf046c592264dc354dea"; };
 
   };
 

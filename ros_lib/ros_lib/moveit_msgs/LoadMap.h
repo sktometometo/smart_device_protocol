@@ -21,7 +21,7 @@ static const char LOADMAP[] = "moveit_msgs/LoadMap";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_filename = strlen(this->filename);
@@ -32,7 +32,7 @@ static const char LOADMAP[] = "moveit_msgs/LoadMap";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_filename;
@@ -47,8 +47,8 @@ static const char LOADMAP[] = "moveit_msgs/LoadMap";
      return offset;
     }
 
-    const char * getType(){ return LOADMAP; };
-    const char * getMD5(){ return "030824f52a0628ead956fb9d67e66ae9"; };
+    virtual const char * getType() override { return LOADMAP; };
+    virtual const char * getMD5() override { return "030824f52a0628ead956fb9d67e66ae9"; };
 
   };
 
@@ -63,7 +63,7 @@ static const char LOADMAP[] = "moveit_msgs/LoadMap";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -76,7 +76,7 @@ static const char LOADMAP[] = "moveit_msgs/LoadMap";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -90,8 +90,8 @@ static const char LOADMAP[] = "moveit_msgs/LoadMap";
      return offset;
     }
 
-    const char * getType(){ return LOADMAP; };
-    const char * getMD5(){ return "358e233cde0c8a8bcfea4ce193f8fc15"; };
+    virtual const char * getType() override { return LOADMAP; };
+    virtual const char * getMD5() override { return "358e233cde0c8a8bcfea4ce193f8fc15"; };
 
   };
 

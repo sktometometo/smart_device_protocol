@@ -41,7 +41,7 @@ namespace power_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -104,7 +104,7 @@ namespace power_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -176,8 +176,8 @@ namespace power_msgs
      return offset;
     }
 
-    const char * getType(){ return "power_msgs/BreakerState"; };
-    const char * getMD5(){ return "e8cf206acdcddee3412681363f829642"; };
+    virtual const char * getType() override { return "power_msgs/BreakerState"; };
+    virtual const char * getMD5() override { return "e8cf206acdcddee3412681363f829642"; };
 
   };
 

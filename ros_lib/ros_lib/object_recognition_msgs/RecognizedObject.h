@@ -41,14 +41,14 @@ namespace object_recognition_msgs
       header(),
       type(),
       confidence(0),
-      point_clouds_length(0), point_clouds(NULL),
+      point_clouds_length(0), st_point_clouds(), point_clouds(nullptr),
       bounding_mesh(),
-      bounding_contours_length(0), bounding_contours(NULL),
+      bounding_contours_length(0), st_bounding_contours(), bounding_contours(nullptr),
       pose()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -84,7 +84,7 @@ namespace object_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -129,8 +129,8 @@ namespace object_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "object_recognition_msgs/RecognizedObject"; };
-    const char * getMD5(){ return "f92c4cb29ba11f26c5f7219de97e900d"; };
+    virtual const char * getType() override { return "object_recognition_msgs/RecognizedObject"; };
+    virtual const char * getMD5() override { return "f92c4cb29ba11f26c5f7219de97e900d"; };
 
   };
 

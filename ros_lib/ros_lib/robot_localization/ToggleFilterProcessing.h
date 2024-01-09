@@ -21,7 +21,7 @@ static const char TOGGLEFILTERPROCESSING[] = "robot_localization/ToggleFilterPro
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -34,7 +34,7 @@ static const char TOGGLEFILTERPROCESSING[] = "robot_localization/ToggleFilterPro
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -48,8 +48,8 @@ static const char TOGGLEFILTERPROCESSING[] = "robot_localization/ToggleFilterPro
      return offset;
     }
 
-    const char * getType(){ return TOGGLEFILTERPROCESSING; };
-    const char * getMD5(){ return "74983d2ffe4877de8ae30b7a94625c41"; };
+    virtual const char * getType() override { return TOGGLEFILTERPROCESSING; };
+    virtual const char * getMD5() override { return "74983d2ffe4877de8ae30b7a94625c41"; };
 
   };
 
@@ -64,7 +64,7 @@ static const char TOGGLEFILTERPROCESSING[] = "robot_localization/ToggleFilterPro
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -77,7 +77,7 @@ static const char TOGGLEFILTERPROCESSING[] = "robot_localization/ToggleFilterPro
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -91,8 +91,8 @@ static const char TOGGLEFILTERPROCESSING[] = "robot_localization/ToggleFilterPro
      return offset;
     }
 
-    const char * getType(){ return TOGGLEFILTERPROCESSING; };
-    const char * getMD5(){ return "3a1255d4d998bd4d6585c64639b5ee9a"; };
+    virtual const char * getType() override { return TOGGLEFILTERPROCESSING; };
+    virtual const char * getMD5() override { return "3a1255d4d998bd4d6585c64639b5ee9a"; };
 
   };
 

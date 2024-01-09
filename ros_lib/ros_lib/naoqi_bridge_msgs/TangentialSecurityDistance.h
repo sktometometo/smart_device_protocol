@@ -22,22 +22,22 @@ static const char TANGENTIALSECURITYDISTANCE[] = "naoqi_bridge_msgs/TangentialSe
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->tangential_distance.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->tangential_distance.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return TANGENTIALSECURITYDISTANCE; };
-    const char * getMD5(){ return "b07653f2626a354d4219619fffc76403"; };
+    virtual const char * getType() override { return TANGENTIALSECURITYDISTANCE; };
+    virtual const char * getMD5() override { return "b07653f2626a354d4219619fffc76403"; };
 
   };
 
@@ -49,20 +49,20 @@ static const char TANGENTIALSECURITYDISTANCE[] = "naoqi_bridge_msgs/TangentialSe
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return TANGENTIALSECURITYDISTANCE; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return TANGENTIALSECURITYDISTANCE; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

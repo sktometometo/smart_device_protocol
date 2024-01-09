@@ -22,7 +22,7 @@ static const char TARGETOBJ[] = "posedetection_msgs/TargetObj";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_type = strlen(this->type);
@@ -33,7 +33,7 @@ static const char TARGETOBJ[] = "posedetection_msgs/TargetObj";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_type;
@@ -48,8 +48,8 @@ static const char TARGETOBJ[] = "posedetection_msgs/TargetObj";
      return offset;
     }
 
-    const char * getType(){ return TARGETOBJ; };
-    const char * getMD5(){ return "dc67331de85cf97091b7d45e5c64ab75"; };
+    virtual const char * getType() override { return TARGETOBJ; };
+    virtual const char * getMD5() override { return "dc67331de85cf97091b7d45e5c64ab75"; };
 
   };
 
@@ -64,22 +64,22 @@ static const char TARGETOBJ[] = "posedetection_msgs/TargetObj";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->object_pose.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->object_pose.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return TARGETOBJ; };
-    const char * getMD5(){ return "9e3e0d9a56ba420ae5c3854c1194abf0"; };
+    virtual const char * getType() override { return TARGETOBJ; };
+    virtual const char * getMD5() override { return "9e3e0d9a56ba420ae5c3854c1194abf0"; };
 
   };
 

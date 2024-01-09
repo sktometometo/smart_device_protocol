@@ -29,7 +29,7 @@ namespace robot_controllers_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace robot_controllers_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace robot_controllers_msgs
      return offset;
     }
 
-    const char * getType(){ return "robot_controllers_msgs/QueryControllerStatesActionResult"; };
-    const char * getMD5(){ return "9a8e94275d921606c4552f40989a801e"; };
+    virtual const char * getType() override { return "robot_controllers_msgs/QueryControllerStatesActionResult"; };
+    virtual const char * getMD5() override { return "9a8e94275d921606c4552f40989a801e"; };
 
   };
 

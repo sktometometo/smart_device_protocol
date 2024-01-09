@@ -37,14 +37,14 @@ namespace moveit_msgs
 
     Constraints():
       name(""),
-      joint_constraints_length(0), joint_constraints(NULL),
-      position_constraints_length(0), position_constraints(NULL),
-      orientation_constraints_length(0), orientation_constraints(NULL),
-      visibility_constraints_length(0), visibility_constraints(NULL)
+      joint_constraints_length(0), st_joint_constraints(), joint_constraints(nullptr),
+      position_constraints_length(0), st_position_constraints(), position_constraints(nullptr),
+      orientation_constraints_length(0), st_orientation_constraints(), orientation_constraints(nullptr),
+      visibility_constraints_length(0), st_visibility_constraints(), visibility_constraints(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -87,7 +87,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -150,8 +150,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/Constraints"; };
-    const char * getMD5(){ return "cfd22a10c51e0dc2b28d98772d2b55d5"; };
+    virtual const char * getType() override { return "moveit_msgs/Constraints"; };
+    virtual const char * getMD5() override { return "cfd22a10c51e0dc2b28d98772d2b55d5"; };
 
   };
 

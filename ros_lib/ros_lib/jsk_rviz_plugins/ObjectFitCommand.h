@@ -26,7 +26,7 @@ namespace jsk_rviz_plugins
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -39,7 +39,7 @@ namespace jsk_rviz_plugins
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -53,8 +53,8 @@ namespace jsk_rviz_plugins
      return offset;
     }
 
-    const char * getType(){ return "jsk_rviz_plugins/ObjectFitCommand"; };
-    const char * getMD5(){ return "aaf37eac6a6717d09d438978a4117776"; };
+    virtual const char * getType() override { return "jsk_rviz_plugins/ObjectFitCommand"; };
+    virtual const char * getMD5() override { return "aaf37eac6a6717d09d438978a4117776"; };
 
   };
 

@@ -22,22 +22,22 @@ static const char INDEXREQUEST[] = "jsk_interactive_marker/IndexRequest";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->index.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->index.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return INDEXREQUEST; };
-    const char * getMD5(){ return "e7767d85a4611e638acb5e4f67adbc5a"; };
+    virtual const char * getType() override { return INDEXREQUEST; };
+    virtual const char * getMD5() override { return "e7767d85a4611e638acb5e4f67adbc5a"; };
 
   };
 
@@ -49,20 +49,20 @@ static const char INDEXREQUEST[] = "jsk_interactive_marker/IndexRequest";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return INDEXREQUEST; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return INDEXREQUEST; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

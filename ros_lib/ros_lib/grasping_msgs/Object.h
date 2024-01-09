@@ -54,17 +54,17 @@ namespace grasping_msgs
       header(),
       name(""),
       support_surface(""),
-      properties_length(0), properties(NULL),
+      properties_length(0), st_properties(), properties(nullptr),
       point_cluster(),
-      primitives_length(0), primitives(NULL),
-      primitive_poses_length(0), primitive_poses(NULL),
-      meshes_length(0), meshes(NULL),
-      mesh_poses_length(0), mesh_poses(NULL),
+      primitives_length(0), st_primitives(), primitives(nullptr),
+      primitive_poses_length(0), st_primitive_poses(), primitive_poses(nullptr),
+      meshes_length(0), st_meshes(), meshes(nullptr),
+      mesh_poses_length(0), st_mesh_poses(), mesh_poses(nullptr),
       surface()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -123,7 +123,7 @@ namespace grasping_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -210,8 +210,8 @@ namespace grasping_msgs
      return offset;
     }
 
-    const char * getType(){ return "grasping_msgs/Object"; };
-    const char * getMD5(){ return "0770e300363d18954f6fd25963e4d536"; };
+    virtual const char * getType() override { return "grasping_msgs/Object"; };
+    virtual const char * getMD5() override { return "0770e300363d18954f6fd25963e4d536"; };
 
   };
 

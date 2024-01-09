@@ -30,7 +30,7 @@ namespace move_base_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->pose_stamped.serialize(outbuffer + offset);
@@ -48,7 +48,7 @@ namespace move_base_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->pose_stamped.deserialize(inbuffer + offset);
@@ -70,8 +70,8 @@ namespace move_base_msgs
      return offset;
     }
 
-    const char * getType(){ return "move_base_msgs/RecoveryStatus"; };
-    const char * getMD5(){ return "a2488e0805e1529a31044786ee1a2623"; };
+    virtual const char * getType() override { return "move_base_msgs/RecoveryStatus"; };
+    virtual const char * getMD5() override { return "a2488e0805e1529a31044786ee1a2623"; };
 
   };
 

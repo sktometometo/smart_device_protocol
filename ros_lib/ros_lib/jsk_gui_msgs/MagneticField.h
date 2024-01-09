@@ -21,22 +21,22 @@ namespace jsk_gui_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->magneticfield.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->magneticfield.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return "jsk_gui_msgs/MagneticField"; };
-    const char * getMD5(){ return "a924df7c82a527d1b76508ed8354604b"; };
+    virtual const char * getType() override { return "jsk_gui_msgs/MagneticField"; };
+    virtual const char * getMD5() override { return "a924df7c82a527d1b76508ed8354604b"; };
 
   };
 

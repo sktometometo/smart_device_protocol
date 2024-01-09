@@ -43,7 +43,7 @@ namespace jsk_gui_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_task_name = strlen(this->task_name);
@@ -108,7 +108,7 @@ namespace jsk_gui_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_task_name;
@@ -188,8 +188,8 @@ namespace jsk_gui_msgs
      return offset;
     }
 
-    const char * getType(){ return "jsk_gui_msgs/Action"; };
-    const char * getMD5(){ return "d81dc8475ff89ce7097d2e73ebfc2591"; };
+    virtual const char * getType() override { return "jsk_gui_msgs/Action"; };
+    virtual const char * getMD5() override { return "d81dc8475ff89ce7097d2e73ebfc2591"; };
 
   };
 

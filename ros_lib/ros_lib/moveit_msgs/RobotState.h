@@ -29,12 +29,12 @@ namespace moveit_msgs
     RobotState():
       joint_state(),
       multi_dof_joint_state(),
-      attached_collision_objects_length(0), attached_collision_objects(NULL),
+      attached_collision_objects_length(0), st_attached_collision_objects(), attached_collision_objects(nullptr),
       is_diff(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->joint_state.serialize(outbuffer + offset);
@@ -57,7 +57,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->joint_state.deserialize(inbuffer + offset);
@@ -85,8 +85,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/RobotState"; };
-    const char * getMD5(){ return "968156f4aa4cb4018f1f2293eebcea8f"; };
+    virtual const char * getType() override { return "moveit_msgs/RobotState"; };
+    virtual const char * getMD5() override { return "968156f4aa4cb4018f1f2293eebcea8f"; };
 
   };
 

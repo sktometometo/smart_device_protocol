@@ -18,11 +18,11 @@ namespace moveit_msgs
       _enabled_type * enabled;
 
     AllowedCollisionEntry():
-      enabled_length(0), enabled(NULL)
+      enabled_length(0), st_enabled(), enabled(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->enabled_length >> (8 * 0)) & 0xFF;
@@ -42,7 +42,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t enabled_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -67,8 +67,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/AllowedCollisionEntry"; };
-    const char * getMD5(){ return "90d1ae1850840724bb043562fe3285fc"; };
+    virtual const char * getType() override { return "moveit_msgs/AllowedCollisionEntry"; };
+    virtual const char * getMD5() override { return "90d1ae1850840724bb043562fe3285fc"; };
 
   };
 

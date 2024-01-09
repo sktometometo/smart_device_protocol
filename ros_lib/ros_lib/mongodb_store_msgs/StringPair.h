@@ -23,7 +23,7 @@ namespace mongodb_store_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_first = strlen(this->first);
@@ -39,7 +39,7 @@ namespace mongodb_store_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_first;
@@ -63,8 +63,8 @@ namespace mongodb_store_msgs
      return offset;
     }
 
-    const char * getType(){ return "mongodb_store_msgs/StringPair"; };
-    const char * getMD5(){ return "c0d0db6e21f3fc1eb068f9cc22ba8beb"; };
+    virtual const char * getType() override { return "mongodb_store_msgs/StringPair"; };
+    virtual const char * getMD5() override { return "c0d0db6e21f3fc1eb068f9cc22ba8beb"; };
 
   };
 

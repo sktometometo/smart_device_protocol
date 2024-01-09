@@ -104,17 +104,17 @@ namespace image_view2
       lifetime(),
       arc(0),
       angle(0),
-      points_length(0), points(NULL),
+      points_length(0), st_points(), points(nullptr),
       points3D(),
-      outline_colors_length(0), outline_colors(NULL),
-      frames_length(0), frames(NULL),
+      outline_colors_length(0), st_outline_colors(), outline_colors(nullptr),
+      frames_length(0), st_frames(), frames(nullptr),
       text(""),
       left_up_origin(0),
       ratio_scale(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -263,7 +263,7 @@ namespace image_view2
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -446,8 +446,8 @@ namespace image_view2
      return offset;
     }
 
-    const char * getType(){ return "image_view2/ImageMarker2"; };
-    const char * getMD5(){ return "8efc23e411f94f2c04288719c078c291"; };
+    virtual const char * getType() override { return "image_view2/ImageMarker2"; };
+    virtual const char * getMD5() override { return "8efc23e411f94f2c04288719c078c291"; };
 
   };
 

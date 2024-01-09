@@ -27,12 +27,12 @@ namespace people_msgs
 
     PositionMeasurementArray():
       header(),
-      people_length(0), people(NULL),
-      cooccurrence_length(0), cooccurrence(NULL)
+      people_length(0), st_people(), people(nullptr),
+      cooccurrence_length(0), st_cooccurrence(), cooccurrence(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -64,7 +64,7 @@ namespace people_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -105,8 +105,8 @@ namespace people_msgs
      return offset;
     }
 
-    const char * getType(){ return "people_msgs/PositionMeasurementArray"; };
-    const char * getMD5(){ return "59c860d40aa739ec920eb3ad24ae019e"; };
+    virtual const char * getType() override { return "people_msgs/PositionMeasurementArray"; };
+    virtual const char * getMD5() override { return "59c860d40aa739ec920eb3ad24ae019e"; };
 
   };
 

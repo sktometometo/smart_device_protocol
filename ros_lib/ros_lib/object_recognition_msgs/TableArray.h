@@ -23,11 +23,11 @@ namespace object_recognition_msgs
 
     TableArray():
       header(),
-      tables_length(0), tables(NULL)
+      tables_length(0), st_tables(), tables(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace object_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace object_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "object_recognition_msgs/TableArray"; };
-    const char * getMD5(){ return "d1c853e5acd0ed273eb6682dc01ab428"; };
+    virtual const char * getType() override { return "object_recognition_msgs/TableArray"; };
+    virtual const char * getMD5() override { return "d1c853e5acd0ed273eb6682dc01ab428"; };
 
   };
 

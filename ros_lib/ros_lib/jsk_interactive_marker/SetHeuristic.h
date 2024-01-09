@@ -21,7 +21,7 @@ static const char SETHEURISTIC[] = "jsk_interactive_marker/SetHeuristic";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_heuristic = strlen(this->heuristic);
@@ -32,7 +32,7 @@ static const char SETHEURISTIC[] = "jsk_interactive_marker/SetHeuristic";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_heuristic;
@@ -47,8 +47,8 @@ static const char SETHEURISTIC[] = "jsk_interactive_marker/SetHeuristic";
      return offset;
     }
 
-    const char * getType(){ return SETHEURISTIC; };
-    const char * getMD5(){ return "96bf1327fac533122d937324246cbde4"; };
+    virtual const char * getType() override { return SETHEURISTIC; };
+    virtual const char * getMD5() override { return "96bf1327fac533122d937324246cbde4"; };
 
   };
 
@@ -60,20 +60,20 @@ static const char SETHEURISTIC[] = "jsk_interactive_marker/SetHeuristic";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return SETHEURISTIC; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return SETHEURISTIC; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

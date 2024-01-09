@@ -31,11 +31,11 @@ namespace octomap_msgs
       binary(0),
       id(""),
       resolution(0),
-      data_length(0), data(NULL)
+      data_length(0), st_data(), data(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -69,7 +69,7 @@ namespace octomap_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -113,8 +113,8 @@ namespace octomap_msgs
      return offset;
     }
 
-    const char * getType(){ return "octomap_msgs/Octomap"; };
-    const char * getMD5(){ return "9a45536b45c5e409cd49f04bb2d9999f"; };
+    virtual const char * getType() override { return "octomap_msgs/Octomap"; };
+    virtual const char * getMD5() override { return "9a45536b45c5e409cd49f04bb2d9999f"; };
 
   };
 

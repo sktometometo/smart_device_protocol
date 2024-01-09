@@ -52,17 +52,17 @@ namespace moveit_msgs
       name(""),
       robot_state(),
       robot_model_name(""),
-      fixed_frame_transforms_length(0), fixed_frame_transforms(NULL),
+      fixed_frame_transforms_length(0), st_fixed_frame_transforms(), fixed_frame_transforms(nullptr),
       allowed_collision_matrix(),
-      link_padding_length(0), link_padding(NULL),
-      link_scale_length(0), link_scale(NULL),
-      object_colors_length(0), object_colors(NULL),
+      link_padding_length(0), st_link_padding(), link_padding(nullptr),
+      link_scale_length(0), st_link_scale(), link_scale(nullptr),
+      object_colors_length(0), st_object_colors(), object_colors(nullptr),
       world(),
       is_diff(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -120,7 +120,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -203,8 +203,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/PlanningScene"; };
-    const char * getMD5(){ return "acfc50bcfd6c7b978066bfa7c786002c"; };
+    virtual const char * getType() override { return "moveit_msgs/PlanningScene"; };
+    virtual const char * getMD5() override { return "acfc50bcfd6c7b978066bfa7c786002c"; };
 
   };
 

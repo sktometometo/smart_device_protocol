@@ -31,7 +31,7 @@ namespace mongodb_store_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_database = strlen(this->database);
@@ -49,7 +49,7 @@ namespace mongodb_store_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_database;
@@ -75,8 +75,8 @@ namespace mongodb_store_msgs
      return offset;
     }
 
-    const char * getType(){ return "mongodb_store_msgs/Insert"; };
-    const char * getMD5(){ return "d071b179071167c692331b5356e30470"; };
+    virtual const char * getType() override { return "mongodb_store_msgs/Insert"; };
+    virtual const char * getMD5() override { return "d071b179071167c692331b5356e30470"; };
 
   };
 

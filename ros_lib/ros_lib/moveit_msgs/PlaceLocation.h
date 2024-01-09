@@ -39,11 +39,11 @@ namespace moveit_msgs
       quality(0),
       pre_place_approach(),
       post_place_retreat(),
-      allowed_touch_objects_length(0), allowed_touch_objects(NULL)
+      allowed_touch_objects_length(0), st_allowed_touch_objects(), allowed_touch_objects(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_id = strlen(this->id);
@@ -71,7 +71,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_id;
@@ -111,8 +111,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/PlaceLocation"; };
-    const char * getMD5(){ return "7b53f032c68481686026c3e9223d0713"; };
+    virtual const char * getType() override { return "moveit_msgs/PlaceLocation"; };
+    virtual const char * getMD5() override { return "7b53f032c68481686026c3e9223d0713"; };
 
   };
 

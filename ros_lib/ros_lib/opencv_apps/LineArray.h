@@ -19,11 +19,11 @@ namespace opencv_apps
       _lines_type * lines;
 
     LineArray():
-      lines_length(0), lines(NULL)
+      lines_length(0), st_lines(), lines(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->lines_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t lines_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace opencv_apps
      return offset;
     }
 
-    const char * getType(){ return "opencv_apps/LineArray"; };
-    const char * getMD5(){ return "2b5441933900cc71528395dda29124da"; };
+    virtual const char * getType() override { return "opencv_apps/LineArray"; };
+    virtual const char * getMD5() override { return "2b5441933900cc71528395dda29124da"; };
 
   };
 

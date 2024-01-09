@@ -59,15 +59,15 @@ namespace robot_mechanism_controllers
       xd(),
       xd_desi(),
       F(),
-      tau_pose_length(0), tau_pose(NULL),
-      tau_posture_length(0), tau_posture(NULL),
-      tau_length(0), tau(NULL),
+      tau_pose_length(0), st_tau_pose(), tau_pose(nullptr),
+      tau_posture_length(0), st_tau_posture(), tau_posture(nullptr),
+      tau_length(0), st_tau(), tau(nullptr),
       J(),
       N()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -107,7 +107,7 @@ namespace robot_mechanism_controllers
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -159,8 +159,8 @@ namespace robot_mechanism_controllers
      return offset;
     }
 
-    const char * getType(){ return "robot_mechanism_controllers/JTCartesianControllerState"; };
-    const char * getMD5(){ return "6ecdaa599ea0d27643819ae4cd4c43d0"; };
+    virtual const char * getType() override { return "robot_mechanism_controllers/JTCartesianControllerState"; };
+    virtual const char * getMD5() override { return "6ecdaa599ea0d27643819ae4cd4c43d0"; };
 
   };
 

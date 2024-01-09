@@ -18,20 +18,20 @@ static const char LISTCONTROLLERTYPES[] = "pr2_mechanism_msgs/ListControllerType
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return LISTCONTROLLERTYPES; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return LISTCONTROLLERTYPES; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 
@@ -44,11 +44,11 @@ static const char LISTCONTROLLERTYPES[] = "pr2_mechanism_msgs/ListControllerType
       _types_type * types;
 
     ListControllerTypesResponse():
-      types_length(0), types(NULL)
+      types_length(0), st_types(), types(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->types_length >> (8 * 0)) & 0xFF;
@@ -66,7 +66,7 @@ static const char LISTCONTROLLERTYPES[] = "pr2_mechanism_msgs/ListControllerType
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t types_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -92,8 +92,8 @@ static const char LISTCONTROLLERTYPES[] = "pr2_mechanism_msgs/ListControllerType
      return offset;
     }
 
-    const char * getType(){ return LISTCONTROLLERTYPES; };
-    const char * getMD5(){ return "80aee506387f88339842e9a93044c959"; };
+    virtual const char * getType() override { return LISTCONTROLLERTYPES; };
+    virtual const char * getMD5() override { return "80aee506387f88339842e9a93044c959"; };
 
   };
 

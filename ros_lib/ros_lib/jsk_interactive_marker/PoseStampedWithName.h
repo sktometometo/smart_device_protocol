@@ -24,7 +24,7 @@ namespace jsk_interactive_marker
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -36,7 +36,7 @@ namespace jsk_interactive_marker
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -52,8 +52,8 @@ namespace jsk_interactive_marker
      return offset;
     }
 
-    const char * getType(){ return "jsk_interactive_marker/PoseStampedWithName"; };
-    const char * getMD5(){ return "8377dd3ee630b796499a6be053df1d41"; };
+    virtual const char * getType() override { return "jsk_interactive_marker/PoseStampedWithName"; };
+    virtual const char * getMD5() override { return "8377dd3ee630b796499a6be053df1d41"; };
 
   };
 

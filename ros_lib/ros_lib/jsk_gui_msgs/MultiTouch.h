@@ -19,11 +19,11 @@ namespace jsk_gui_msgs
       _touches_type * touches;
 
     MultiTouch():
-      touches_length(0), touches(NULL)
+      touches_length(0), st_touches(), touches(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->touches_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace jsk_gui_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t touches_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace jsk_gui_msgs
      return offset;
     }
 
-    const char * getType(){ return "jsk_gui_msgs/MultiTouch"; };
-    const char * getMD5(){ return "9f4a309588ef669e69a71aa5601ea65e"; };
+    virtual const char * getType() override { return "jsk_gui_msgs/MultiTouch"; };
+    virtual const char * getMD5() override { return "9f4a309588ef669e69a71aa5601ea65e"; };
 
   };
 

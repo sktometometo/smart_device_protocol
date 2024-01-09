@@ -23,7 +23,7 @@ namespace app_manager
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_key = strlen(this->key);
@@ -39,7 +39,7 @@ namespace app_manager
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_key;
@@ -63,8 +63,8 @@ namespace app_manager
      return offset;
     }
 
-    const char * getType(){ return "app_manager/KeyValue"; };
-    const char * getMD5(){ return "cf57fdc6617a881a88c16e768132149c"; };
+    virtual const char * getType() override { return "app_manager/KeyValue"; };
+    virtual const char * getMD5() override { return "cf57fdc6617a881a88c16e768132149c"; };
 
   };
 

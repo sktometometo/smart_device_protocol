@@ -23,7 +23,7 @@ namespace driver_base
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -39,7 +39,7 @@ namespace driver_base
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -63,8 +63,8 @@ namespace driver_base
      return offset;
     }
 
-    const char * getType(){ return "driver_base/ConfigString"; };
-    const char * getMD5(){ return "bc6ccc4a57f61779c8eaae61e9f422e0"; };
+    virtual const char * getType() override { return "driver_base/ConfigString"; };
+    virtual const char * getMD5() override { return "bc6ccc4a57f61779c8eaae61e9f422e0"; };
 
   };
 

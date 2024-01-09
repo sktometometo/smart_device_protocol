@@ -29,7 +29,7 @@ namespace twist_mux_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->action_goal.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace twist_mux_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->action_goal.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace twist_mux_msgs
      return offset;
     }
 
-    const char * getType(){ return "twist_mux_msgs/JoyPriorityAction"; };
-    const char * getMD5(){ return "d5a016b49f278075666fbc901debbd08"; };
+    virtual const char * getType() override { return "twist_mux_msgs/JoyPriorityAction"; };
+    virtual const char * getMD5() override { return "d5a016b49f278075666fbc901debbd08"; };
 
   };
 

@@ -36,7 +36,7 @@ namespace mbf_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->outcome >> (8 * 0)) & 0xFF;
@@ -57,7 +57,7 @@ namespace mbf_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->outcome =  ((uint32_t) (*(inbuffer + offset)));
@@ -86,8 +86,8 @@ namespace mbf_msgs
      return offset;
     }
 
-    const char * getType(){ return "mbf_msgs/RecoveryResult"; };
-    const char * getMD5(){ return "41d522f528f315af4a6c19e2fde7a3d0"; };
+    virtual const char * getType() override { return "mbf_msgs/RecoveryResult"; };
+    virtual const char * getMD5() override { return "41d522f528f315af4a6c19e2fde7a3d0"; };
 
   };
 

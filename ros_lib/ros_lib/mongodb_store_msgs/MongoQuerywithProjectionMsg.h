@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "mongodb_store_msgs/SerialisedMessage.h"
 #include "mongodb_store_msgs/StringPairList.h"
+#include "mongodb_store_msgs/SerialisedMessage.h"
 
 namespace mongodb_store_msgs
 {
@@ -48,7 +48,7 @@ static const char MONGOQUERYWITHPROJECTIONMSG[] = "mongodb_store_msgs/MongoQuery
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_database = strlen(this->database);
@@ -83,7 +83,7 @@ static const char MONGOQUERYWITHPROJECTIONMSG[] = "mongodb_store_msgs/MongoQuery
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_database;
@@ -131,8 +131,8 @@ static const char MONGOQUERYWITHPROJECTIONMSG[] = "mongodb_store_msgs/MongoQuery
      return offset;
     }
 
-    const char * getType(){ return MONGOQUERYWITHPROJECTIONMSG; };
-    const char * getMD5(){ return "3dce95387658eb89ce25e603efe525cd"; };
+    virtual const char * getType() override { return MONGOQUERYWITHPROJECTIONMSG; };
+    virtual const char * getMD5() override { return "3dce95387658eb89ce25e603efe525cd"; };
 
   };
 
@@ -149,12 +149,12 @@ static const char MONGOQUERYWITHPROJECTIONMSG[] = "mongodb_store_msgs/MongoQuery
       _metas_type * metas;
 
     MongoQuerywithProjectionMsgResponse():
-      messages_length(0), messages(NULL),
-      metas_length(0), metas(NULL)
+      messages_length(0), st_messages(), messages(nullptr),
+      metas_length(0), st_metas(), metas(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->messages_length >> (8 * 0)) & 0xFF;
@@ -176,7 +176,7 @@ static const char MONGOQUERYWITHPROJECTIONMSG[] = "mongodb_store_msgs/MongoQuery
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t messages_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -206,8 +206,8 @@ static const char MONGOQUERYWITHPROJECTIONMSG[] = "mongodb_store_msgs/MongoQuery
      return offset;
     }
 
-    const char * getType(){ return MONGOQUERYWITHPROJECTIONMSG; };
-    const char * getMD5(){ return "f348d453c2d7347807f66360b61cd0ef"; };
+    virtual const char * getType() override { return MONGOQUERYWITHPROJECTIONMSG; };
+    virtual const char * getMD5() override { return "f348d453c2d7347807f66360b61cd0ef"; };
 
   };
 

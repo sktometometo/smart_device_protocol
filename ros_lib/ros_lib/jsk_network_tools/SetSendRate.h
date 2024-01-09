@@ -21,7 +21,7 @@ static const char SETSENDRATE[] = "jsk_network_tools/SetSendRate";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -37,7 +37,7 @@ static const char SETSENDRATE[] = "jsk_network_tools/SetSendRate";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -54,8 +54,8 @@ static const char SETSENDRATE[] = "jsk_network_tools/SetSendRate";
      return offset;
     }
 
-    const char * getType(){ return SETSENDRATE; };
-    const char * getMD5(){ return "d123feed52ffd68fd389a747575f2b84"; };
+    virtual const char * getType() override { return SETSENDRATE; };
+    virtual const char * getMD5() override { return "d123feed52ffd68fd389a747575f2b84"; };
 
   };
 
@@ -70,7 +70,7 @@ static const char SETSENDRATE[] = "jsk_network_tools/SetSendRate";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -83,7 +83,7 @@ static const char SETSENDRATE[] = "jsk_network_tools/SetSendRate";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -97,8 +97,8 @@ static const char SETSENDRATE[] = "jsk_network_tools/SetSendRate";
      return offset;
     }
 
-    const char * getType(){ return SETSENDRATE; };
-    const char * getMD5(){ return "6f6da3883749771fac40d6deb24a8c02"; };
+    virtual const char * getType() override { return SETSENDRATE; };
+    virtual const char * getMD5() override { return "6f6da3883749771fac40d6deb24a8c02"; };
 
   };
 

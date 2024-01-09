@@ -25,7 +25,7 @@ static const char GETROBOTSTATEFROMWAREHOUSE[] = "moveit_msgs/GetRobotStateFromW
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -41,7 +41,7 @@ static const char GETROBOTSTATEFROMWAREHOUSE[] = "moveit_msgs/GetRobotStateFromW
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -65,8 +65,8 @@ static const char GETROBOTSTATEFROMWAREHOUSE[] = "moveit_msgs/GetRobotStateFromW
      return offset;
     }
 
-    const char * getType(){ return GETROBOTSTATEFROMWAREHOUSE; };
-    const char * getMD5(){ return "dab44354403f811c40b84964e068219c"; };
+    virtual const char * getType() override { return GETROBOTSTATEFROMWAREHOUSE; };
+    virtual const char * getMD5() override { return "dab44354403f811c40b84964e068219c"; };
 
   };
 
@@ -81,22 +81,22 @@ static const char GETROBOTSTATEFROMWAREHOUSE[] = "moveit_msgs/GetRobotStateFromW
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->state.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->state.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return GETROBOTSTATEFROMWAREHOUSE; };
-    const char * getMD5(){ return "32b39d3cd2b342c3c43eb44df55f86e0"; };
+    virtual const char * getType() override { return GETROBOTSTATEFROMWAREHOUSE; };
+    virtual const char * getMD5() override { return "32b39d3cd2b342c3c43eb44df55f86e0"; };
 
   };
 

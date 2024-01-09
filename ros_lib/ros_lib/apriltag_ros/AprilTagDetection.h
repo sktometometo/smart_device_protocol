@@ -25,13 +25,13 @@ namespace apriltag_ros
       _pose_type pose;
 
     AprilTagDetection():
-      id_length(0), id(NULL),
-      size_length(0), size(NULL),
+      id_length(0), st_id(), id(nullptr),
+      size_length(0), st_size(), size(nullptr),
       pose()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->id_length >> (8 * 0)) & 0xFF;
@@ -63,7 +63,7 @@ namespace apriltag_ros
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t id_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -104,8 +104,8 @@ namespace apriltag_ros
      return offset;
     }
 
-    const char * getType(){ return "apriltag_ros/AprilTagDetection"; };
-    const char * getMD5(){ return "090173a6e2b6c8fd96ce000fe9378b4e"; };
+    virtual const char * getType() override { return "apriltag_ros/AprilTagDetection"; };
+    virtual const char * getMD5() override { return "090173a6e2b6c8fd96ce000fe9378b4e"; };
 
   };
 

@@ -26,7 +26,7 @@ namespace app_manager
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -47,7 +47,7 @@ namespace app_manager
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -73,8 +73,8 @@ namespace app_manager
      return offset;
     }
 
-    const char * getType(){ return "app_manager/AppStatus"; };
-    const char * getMD5(){ return "4f59466d6810d5e9557e6b8ff75c9437"; };
+    virtual const char * getType() override { return "app_manager/AppStatus"; };
+    virtual const char * getMD5() override { return "4f59466d6810d5e9557e6b8ff75c9437"; };
 
   };
 

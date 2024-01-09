@@ -36,14 +36,14 @@ namespace moveit_msgs
     PlaceResult():
       error_code(),
       trajectory_start(),
-      trajectory_stages_length(0), trajectory_stages(NULL),
-      trajectory_descriptions_length(0), trajectory_descriptions(NULL),
+      trajectory_stages_length(0), st_trajectory_stages(), trajectory_stages(nullptr),
+      trajectory_descriptions_length(0), st_trajectory_descriptions(), trajectory_descriptions(nullptr),
       place_location(),
       planning_time(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->error_code.serialize(outbuffer + offset);
@@ -73,7 +73,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->error_code.deserialize(inbuffer + offset);
@@ -115,8 +115,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/PlaceResult"; };
-    const char * getMD5(){ return "7f9bf644e9dcd62bf446decc8d1a556c"; };
+    virtual const char * getType() override { return "moveit_msgs/PlaceResult"; };
+    virtual const char * getMD5() override { return "7f9bf644e9dcd62bf446decc8d1a556c"; };
 
   };
 

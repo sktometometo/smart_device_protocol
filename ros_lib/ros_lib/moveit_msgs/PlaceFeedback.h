@@ -20,7 +20,7 @@ namespace moveit_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_state = strlen(this->state);
@@ -31,7 +31,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_state;
@@ -46,8 +46,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/PlaceFeedback"; };
-    const char * getMD5(){ return "af6d3a99f0fbeb66d3248fa4b3e675fb"; };
+    virtual const char * getType() override { return "moveit_msgs/PlaceFeedback"; };
+    virtual const char * getMD5() override { return "af6d3a99f0fbeb66d3248fa4b3e675fb"; };
 
   };
 

@@ -46,13 +46,13 @@ namespace moveit_msgs
       avoid_collisions(0),
       ik_link_name(""),
       pose_stamped(),
-      ik_link_names_length(0), ik_link_names(NULL),
-      pose_stamped_vector_length(0), pose_stamped_vector(NULL),
+      ik_link_names_length(0), st_ik_link_names(), ik_link_names(nullptr),
+      pose_stamped_vector_length(0), st_pose_stamped_vector(), pose_stamped_vector(nullptr),
       timeout()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_group_name = strlen(this->group_name);
@@ -108,7 +108,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_group_name;
@@ -185,8 +185,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/PositionIKRequest"; };
-    const char * getMD5(){ return "cb7c3615ee4d29d023dfdc5950af0504"; };
+    virtual const char * getType() override { return "moveit_msgs/PositionIKRequest"; };
+    virtual const char * getMD5() override { return "cb7c3615ee4d29d023dfdc5950af0504"; };
 
   };
 

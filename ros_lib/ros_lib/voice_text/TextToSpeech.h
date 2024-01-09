@@ -24,7 +24,7 @@ static const char TEXTTOSPEECH[] = "voice_text/TextToSpeech";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_text_path = strlen(this->text_path);
@@ -40,7 +40,7 @@ static const char TEXTTOSPEECH[] = "voice_text/TextToSpeech";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_text_path;
@@ -64,8 +64,8 @@ static const char TEXTTOSPEECH[] = "voice_text/TextToSpeech";
      return offset;
     }
 
-    const char * getType(){ return TEXTTOSPEECH; };
-    const char * getMD5(){ return "2313d9c56eb0e0571a953bf2b40316f4"; };
+    virtual const char * getType() override { return TEXTTOSPEECH; };
+    virtual const char * getMD5() override { return "2313d9c56eb0e0571a953bf2b40316f4"; };
 
   };
 
@@ -80,7 +80,7 @@ static const char TEXTTOSPEECH[] = "voice_text/TextToSpeech";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -93,7 +93,7 @@ static const char TEXTTOSPEECH[] = "voice_text/TextToSpeech";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -107,8 +107,8 @@ static const char TEXTTOSPEECH[] = "voice_text/TextToSpeech";
      return offset;
     }
 
-    const char * getType(){ return TEXTTOSPEECH; };
-    const char * getMD5(){ return "6f6da3883749771fac40d6deb24a8c02"; };
+    virtual const char * getType() override { return TEXTTOSPEECH; };
+    virtual const char * getMD5() override { return "6f6da3883749771fac40d6deb24a8c02"; };
 
   };
 

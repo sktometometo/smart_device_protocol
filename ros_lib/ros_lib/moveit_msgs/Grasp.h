@@ -48,11 +48,11 @@ namespace moveit_msgs
       post_grasp_retreat(),
       post_place_retreat(),
       max_contact_force(0),
-      allowed_touch_objects_length(0), allowed_touch_objects(NULL)
+      allowed_touch_objects_length(0), st_allowed_touch_objects(), allowed_touch_objects(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_id = strlen(this->id);
@@ -92,7 +92,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_id;
@@ -145,8 +145,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/Grasp"; };
-    const char * getMD5(){ return "e26c8fb64f589c33c5d5e54bd7b5e4cb"; };
+    virtual const char * getType() override { return "moveit_msgs/Grasp"; };
+    virtual const char * getMD5() override { return "e26c8fb64f589c33c5d5e54bd7b5e4cb"; };
 
   };
 

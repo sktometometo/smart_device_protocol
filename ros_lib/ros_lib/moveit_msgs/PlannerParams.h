@@ -26,13 +26,13 @@ namespace moveit_msgs
       _descriptions_type * descriptions;
 
     PlannerParams():
-      keys_length(0), keys(NULL),
-      values_length(0), values(NULL),
-      descriptions_length(0), descriptions(NULL)
+      keys_length(0), st_keys(), keys(nullptr),
+      values_length(0), st_values(), values(nullptr),
+      descriptions_length(0), st_descriptions(), descriptions(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->keys_length >> (8 * 0)) & 0xFF;
@@ -74,7 +74,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t keys_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -140,8 +140,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/PlannerParams"; };
-    const char * getMD5(){ return "cebdf4927996b9026bcf59a160d64145"; };
+    virtual const char * getType() override { return "moveit_msgs/PlannerParams"; };
+    virtual const char * getMD5() override { return "cebdf4927996b9026bcf59a160d64145"; };
 
   };
 

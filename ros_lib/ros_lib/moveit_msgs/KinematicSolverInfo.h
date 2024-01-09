@@ -27,13 +27,13 @@ namespace moveit_msgs
       _link_names_type * link_names;
 
     KinematicSolverInfo():
-      joint_names_length(0), joint_names(NULL),
-      limits_length(0), limits(NULL),
-      link_names_length(0), link_names(NULL)
+      joint_names_length(0), st_joint_names(), joint_names(nullptr),
+      limits_length(0), st_limits(), limits(nullptr),
+      link_names_length(0), st_link_names(), link_names(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->joint_names_length >> (8 * 0)) & 0xFF;
@@ -71,7 +71,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t joint_names_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -129,8 +129,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/KinematicSolverInfo"; };
-    const char * getMD5(){ return "cc048557c0f9795c392dd80f8bb00489"; };
+    virtual const char * getType() override { return "moveit_msgs/KinematicSolverInfo"; };
+    virtual const char * getMD5() override { return "cc048557c0f9795c392dd80f8bb00489"; };
 
   };
 

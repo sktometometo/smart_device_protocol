@@ -34,7 +34,7 @@ namespace costmap_2d
 
     VoxelGrid():
       header(),
-      data_length(0), data(NULL),
+      data_length(0), st_data(), data(nullptr),
       origin(),
       resolutions(),
       size_x(0),
@@ -43,7 +43,7 @@ namespace costmap_2d
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -79,7 +79,7 @@ namespace costmap_2d
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -119,8 +119,8 @@ namespace costmap_2d
      return offset;
     }
 
-    const char * getType(){ return "costmap_2d/VoxelGrid"; };
-    const char * getMD5(){ return "48a040827e1322073d78ece5a497029c"; };
+    virtual const char * getType() override { return "costmap_2d/VoxelGrid"; };
+    virtual const char * getMD5() override { return "48a040827e1322073d78ece5a497029c"; };
 
   };
 

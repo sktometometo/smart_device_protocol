@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include "ros/msg.h"
 #include "geometry_msgs/PoseStamped.h"
-#include "moveit_msgs/MoveItErrorCodes.h"
 #include "moveit_msgs/RobotState.h"
+#include "moveit_msgs/MoveItErrorCodes.h"
 #include "std_msgs/Header.h"
 
 namespace moveit_msgs
@@ -28,12 +28,12 @@ static const char GETPOSITIONFK[] = "moveit_msgs/GetPositionFK";
 
     GetPositionFKRequest():
       header(),
-      fk_link_names_length(0), fk_link_names(NULL),
+      fk_link_names_length(0), st_fk_link_names(), fk_link_names(nullptr),
       robot_state()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -53,7 +53,7 @@ static const char GETPOSITIONFK[] = "moveit_msgs/GetPositionFK";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -81,8 +81,8 @@ static const char GETPOSITIONFK[] = "moveit_msgs/GetPositionFK";
      return offset;
     }
 
-    const char * getType(){ return GETPOSITIONFK; };
-    const char * getMD5(){ return "0cc2c8039d5792659dd3a5a92f64c5bb"; };
+    virtual const char * getType() override { return GETPOSITIONFK; };
+    virtual const char * getMD5() override { return "0cc2c8039d5792659dd3a5a92f64c5bb"; };
 
   };
 
@@ -101,13 +101,13 @@ static const char GETPOSITIONFK[] = "moveit_msgs/GetPositionFK";
       _error_code_type error_code;
 
     GetPositionFKResponse():
-      pose_stamped_length(0), pose_stamped(NULL),
-      fk_link_names_length(0), fk_link_names(NULL),
+      pose_stamped_length(0), st_pose_stamped(), pose_stamped(nullptr),
+      fk_link_names_length(0), st_fk_link_names(), fk_link_names(nullptr),
       error_code()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->pose_stamped_length >> (8 * 0)) & 0xFF;
@@ -134,7 +134,7 @@ static const char GETPOSITIONFK[] = "moveit_msgs/GetPositionFK";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t pose_stamped_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -173,8 +173,8 @@ static const char GETPOSITIONFK[] = "moveit_msgs/GetPositionFK";
      return offset;
     }
 
-    const char * getType(){ return GETPOSITIONFK; };
-    const char * getMD5(){ return "b5b55b32842bebce6b38ffd6b7885acb"; };
+    virtual const char * getType() override { return GETPOSITIONFK; };
+    virtual const char * getMD5() override { return "b5b55b32842bebce6b38ffd6b7885acb"; };
 
   };
 

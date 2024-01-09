@@ -34,7 +34,7 @@ namespace view_controller_msgs
       enum { FPS =  2  };
 
     CameraTrajectory():
-      trajectory_length(0), trajectory(NULL),
+      trajectory_length(0), st_trajectory(), trajectory(nullptr),
       target_frame(""),
       allow_free_yaw_axis(0),
       mouse_interaction_mode(0),
@@ -44,7 +44,7 @@ namespace view_controller_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->trajectory_length >> (8 * 0)) & 0xFF;
@@ -93,7 +93,7 @@ namespace view_controller_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t trajectory_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -154,8 +154,8 @@ namespace view_controller_msgs
      return offset;
     }
 
-    const char * getType(){ return "view_controller_msgs/CameraTrajectory"; };
-    const char * getMD5(){ return "c56d6e838f60da69466a74c60cf627d7"; };
+    virtual const char * getType() override { return "view_controller_msgs/CameraTrajectory"; };
+    virtual const char * getMD5() override { return "c56d6e838f60da69466a74c60cf627d7"; };
 
   };
 

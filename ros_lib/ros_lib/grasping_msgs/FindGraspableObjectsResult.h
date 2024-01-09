@@ -24,12 +24,12 @@ namespace grasping_msgs
       _support_surfaces_type * support_surfaces;
 
     FindGraspableObjectsResult():
-      objects_length(0), objects(NULL),
-      support_surfaces_length(0), support_surfaces(NULL)
+      objects_length(0), st_objects(), objects(nullptr),
+      support_surfaces_length(0), st_support_surfaces(), support_surfaces(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->objects_length >> (8 * 0)) & 0xFF;
@@ -51,7 +51,7 @@ namespace grasping_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t objects_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -81,8 +81,8 @@ namespace grasping_msgs
      return offset;
     }
 
-    const char * getType(){ return "grasping_msgs/FindGraspableObjectsResult"; };
-    const char * getMD5(){ return "b0e2a5b10c524db813b26378dd6d8559"; };
+    virtual const char * getType() override { return "grasping_msgs/FindGraspableObjectsResult"; };
+    virtual const char * getMD5() override { return "b0e2a5b10c524db813b26378dd6d8559"; };
 
   };
 

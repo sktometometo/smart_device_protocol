@@ -21,7 +21,7 @@ static const char REMOVEPARENTMARKER[] = "jsk_interactive_marker/RemoveParentMar
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_child_marker_name = strlen(this->child_marker_name);
@@ -32,7 +32,7 @@ static const char REMOVEPARENTMARKER[] = "jsk_interactive_marker/RemoveParentMar
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_child_marker_name;
@@ -47,8 +47,8 @@ static const char REMOVEPARENTMARKER[] = "jsk_interactive_marker/RemoveParentMar
      return offset;
     }
 
-    const char * getType(){ return REMOVEPARENTMARKER; };
-    const char * getMD5(){ return "97181b161a4bd485fbd404baffdcfbf4"; };
+    virtual const char * getType() override { return REMOVEPARENTMARKER; };
+    virtual const char * getMD5() override { return "97181b161a4bd485fbd404baffdcfbf4"; };
 
   };
 
@@ -60,20 +60,20 @@ static const char REMOVEPARENTMARKER[] = "jsk_interactive_marker/RemoveParentMar
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return REMOVEPARENTMARKER; };
-    const char * getMD5(){ return "d41d8cd98f00b204e9800998ecf8427e"; };
+    virtual const char * getType() override { return REMOVEPARENTMARKER; };
+    virtual const char * getMD5() override { return "d41d8cd98f00b204e9800998ecf8427e"; };
 
   };
 

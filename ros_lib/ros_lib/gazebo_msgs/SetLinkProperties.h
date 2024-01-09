@@ -49,7 +49,7 @@ static const char SETLINKPROPERTIES[] = "gazebo_msgs/SetLinkProperties";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_link_name = strlen(this->link_name);
@@ -75,7 +75,7 @@ static const char SETLINKPROPERTIES[] = "gazebo_msgs/SetLinkProperties";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_link_name;
@@ -106,8 +106,8 @@ static const char SETLINKPROPERTIES[] = "gazebo_msgs/SetLinkProperties";
      return offset;
     }
 
-    const char * getType(){ return SETLINKPROPERTIES; };
-    const char * getMD5(){ return "68ac74a4be01b165bc305b5ccdc45e91"; };
+    virtual const char * getType() override { return SETLINKPROPERTIES; };
+    virtual const char * getMD5() override { return "68ac74a4be01b165bc305b5ccdc45e91"; };
 
   };
 
@@ -125,7 +125,7 @@ static const char SETLINKPROPERTIES[] = "gazebo_msgs/SetLinkProperties";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -143,7 +143,7 @@ static const char SETLINKPROPERTIES[] = "gazebo_msgs/SetLinkProperties";
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -166,8 +166,8 @@ static const char SETLINKPROPERTIES[] = "gazebo_msgs/SetLinkProperties";
      return offset;
     }
 
-    const char * getType(){ return SETLINKPROPERTIES; };
-    const char * getMD5(){ return "2ec6f3eff0161f4257b808b12bc830c2"; };
+    virtual const char * getType() override { return SETLINKPROPERTIES; };
+    virtual const char * getMD5() override { return "2ec6f3eff0161f4257b808b12bc830c2"; };
 
   };
 

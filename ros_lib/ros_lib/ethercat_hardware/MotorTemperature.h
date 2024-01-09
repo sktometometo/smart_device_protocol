@@ -33,7 +33,7 @@ namespace ethercat_hardware
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->stamp.sec >> (8 * 0)) & 0xFF;
@@ -53,7 +53,7 @@ namespace ethercat_hardware
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->stamp.sec =  ((uint32_t) (*(inbuffer + offset)));
@@ -73,8 +73,8 @@ namespace ethercat_hardware
      return offset;
     }
 
-    const char * getType(){ return "ethercat_hardware/MotorTemperature"; };
-    const char * getMD5(){ return "d8c7239cd096d6f25b75bff6b63f2162"; };
+    virtual const char * getType() override { return "ethercat_hardware/MotorTemperature"; };
+    virtual const char * getMD5() override { return "d8c7239cd096d6f25b75bff6b63f2162"; };
 
   };
 

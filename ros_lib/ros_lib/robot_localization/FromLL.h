@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
-#include "geometry_msgs/Point.h"
 #include "geographic_msgs/GeoPoint.h"
+#include "geometry_msgs/Point.h"
 
 namespace robot_localization
 {
@@ -23,22 +23,22 @@ static const char FROMLL[] = "robot_localization/FromLL";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->ll_point.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->ll_point.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return FROMLL; };
-    const char * getMD5(){ return "191f0513cae6fcb95b63e2ec2e976938"; };
+    virtual const char * getType() override { return FROMLL; };
+    virtual const char * getMD5() override { return "191f0513cae6fcb95b63e2ec2e976938"; };
 
   };
 
@@ -53,22 +53,22 @@ static const char FROMLL[] = "robot_localization/FromLL";
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->map_point.serialize(outbuffer + offset);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->map_point.deserialize(inbuffer + offset);
      return offset;
     }
 
-    const char * getType(){ return FROMLL; };
-    const char * getMD5(){ return "326fc0ec1385c52a253c06e024d9f49e"; };
+    virtual const char * getType() override { return FROMLL; };
+    virtual const char * getMD5() override { return "326fc0ec1385c52a253c06e024d9f49e"; };
 
   };
 

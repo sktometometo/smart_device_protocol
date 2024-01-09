@@ -47,15 +47,15 @@ namespace jsk_interactive_marker
       type(0),
       args(""),
       wait(0),
-      positions_length(0), positions(NULL),
-      velocities_length(0), velocities(NULL),
-      accelerations_length(0), accelerations(NULL),
-      effort_length(0), effort(NULL),
+      positions_length(0), st_positions(), positions(nullptr),
+      velocities_length(0), st_velocities(), velocities(nullptr),
+      accelerations_length(0), st_accelerations(), accelerations(nullptr),
+      effort_length(0), st_effort(), effort(nullptr),
       time_from_start()
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -122,7 +122,7 @@ namespace jsk_interactive_marker
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -211,8 +211,8 @@ namespace jsk_interactive_marker
      return offset;
     }
 
-    const char * getType(){ return "jsk_interactive_marker/JointTrajectoryPointWithType"; };
-    const char * getMD5(){ return "990bd6a1d9e03cc634e576f569783816"; };
+    virtual const char * getType() override { return "jsk_interactive_marker/JointTrajectoryPointWithType"; };
+    virtual const char * getMD5() override { return "990bd6a1d9e03cc634e576f569783816"; };
 
   };
 

@@ -29,7 +29,7 @@ namespace mbf_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace mbf_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace mbf_msgs
      return offset;
     }
 
-    const char * getType(){ return "mbf_msgs/ExePathActionResult"; };
-    const char * getMD5(){ return "c0c371e6e71c834fcf0eea1b2ae047b5"; };
+    virtual const char * getType() override { return "mbf_msgs/ExePathActionResult"; };
+    virtual const char * getMD5() override { return "c0c371e6e71c834fcf0eea1b2ae047b5"; };
 
   };
 

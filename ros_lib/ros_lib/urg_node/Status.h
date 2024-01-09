@@ -40,7 +40,7 @@ namespace urg_node
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->operating_mode >> (8 * 0)) & 0xFF;
@@ -82,7 +82,7 @@ namespace urg_node
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       this->operating_mode =  ((uint16_t) (*(inbuffer + offset)));
@@ -127,8 +127,8 @@ namespace urg_node
      return offset;
     }
 
-    const char * getType(){ return "urg_node/Status"; };
-    const char * getMD5(){ return "b393072b65230b373302bfe803e80784"; };
+    virtual const char * getType() override { return "urg_node/Status"; };
+    virtual const char * getMD5() override { return "b393072b65230b373302bfe803e80784"; };
 
   };
 

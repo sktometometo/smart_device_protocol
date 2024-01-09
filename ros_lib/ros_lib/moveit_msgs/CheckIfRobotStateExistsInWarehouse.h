@@ -24,7 +24,7 @@ static const char CHECKIFROBOTSTATEEXISTSINWAREHOUSE[] = "moveit_msgs/CheckIfRob
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_name = strlen(this->name);
@@ -40,7 +40,7 @@ static const char CHECKIFROBOTSTATEEXISTSINWAREHOUSE[] = "moveit_msgs/CheckIfRob
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_name;
@@ -64,8 +64,8 @@ static const char CHECKIFROBOTSTATEEXISTSINWAREHOUSE[] = "moveit_msgs/CheckIfRob
      return offset;
     }
 
-    const char * getType(){ return CHECKIFROBOTSTATEEXISTSINWAREHOUSE; };
-    const char * getMD5(){ return "dab44354403f811c40b84964e068219c"; };
+    virtual const char * getType() override { return CHECKIFROBOTSTATEEXISTSINWAREHOUSE; };
+    virtual const char * getMD5() override { return "dab44354403f811c40b84964e068219c"; };
 
   };
 
@@ -80,7 +80,7 @@ static const char CHECKIFROBOTSTATEEXISTSINWAREHOUSE[] = "moveit_msgs/CheckIfRob
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       union {
@@ -93,7 +93,7 @@ static const char CHECKIFROBOTSTATEEXISTSINWAREHOUSE[] = "moveit_msgs/CheckIfRob
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       union {
@@ -107,8 +107,8 @@ static const char CHECKIFROBOTSTATEEXISTSINWAREHOUSE[] = "moveit_msgs/CheckIfRob
      return offset;
     }
 
-    const char * getType(){ return CHECKIFROBOTSTATEEXISTSINWAREHOUSE; };
-    const char * getMD5(){ return "e8c90de4adc1219c86af9c2874c0c1b5"; };
+    virtual const char * getType() override { return CHECKIFROBOTSTATEEXISTSINWAREHOUSE; };
+    virtual const char * getMD5() override { return "e8c90de4adc1219c86af9c2874c0c1b5"; };
 
   };
 

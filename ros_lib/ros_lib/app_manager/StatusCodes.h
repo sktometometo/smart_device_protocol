@@ -24,20 +24,20 @@ namespace app_manager
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
      return offset;
     }
 
-    const char * getType(){ return "app_manager/StatusCodes"; };
-    const char * getMD5(){ return "5f286aed2b2ab4b227e7b7185bae624d"; };
+    virtual const char * getType() override { return "app_manager/StatusCodes"; };
+    virtual const char * getMD5() override { return "5f286aed2b2ab4b227e7b7185bae624d"; };
 
   };
 

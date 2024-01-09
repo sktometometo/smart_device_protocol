@@ -24,7 +24,7 @@ namespace opencv_apps
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->center.serialize(outbuffer + offset);
@@ -32,7 +32,7 @@ namespace opencv_apps
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->center.deserialize(inbuffer + offset);
@@ -40,8 +40,8 @@ namespace opencv_apps
      return offset;
     }
 
-    const char * getType(){ return "opencv_apps/Circle"; };
-    const char * getMD5(){ return "4f6847051b4fe493b5af8caad66201d5"; };
+    virtual const char * getType() override { return "opencv_apps/Circle"; };
+    virtual const char * getMD5() override { return "4f6847051b4fe493b5af8caad66201d5"; };
 
   };
 

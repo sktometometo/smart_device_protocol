@@ -29,7 +29,7 @@ namespace fetch_driver_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->action_goal.serialize(outbuffer + offset);
@@ -38,7 +38,7 @@ namespace fetch_driver_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->action_goal.deserialize(inbuffer + offset);
@@ -47,8 +47,8 @@ namespace fetch_driver_msgs
      return offset;
     }
 
-    const char * getType(){ return "fetch_driver_msgs/DisableChargingAction"; };
-    const char * getMD5(){ return "779104bea58517403422a5cae55a1bb1"; };
+    virtual const char * getType() override { return "fetch_driver_msgs/DisableChargingAction"; };
+    virtual const char * getMD5() override { return "779104bea58517403422a5cae55a1bb1"; };
 
   };
 

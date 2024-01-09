@@ -19,11 +19,11 @@ namespace grasping_msgs
       _grasps_type * grasps;
 
     GraspPlanningResult():
-      grasps_length(0), grasps(NULL)
+      grasps_length(0), st_grasps(), grasps(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       *(outbuffer + offset + 0) = (this->grasps_length >> (8 * 0)) & 0xFF;
@@ -37,7 +37,7 @@ namespace grasping_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t grasps_lengthT = ((uint32_t) (*(inbuffer + offset))); 
@@ -55,8 +55,8 @@ namespace grasping_msgs
      return offset;
     }
 
-    const char * getType(){ return "grasping_msgs/GraspPlanningResult"; };
-    const char * getMD5(){ return "8c4083a4efa926cd066c287f905843a3"; };
+    virtual const char * getType() override { return "grasping_msgs/GraspPlanningResult"; };
+    virtual const char * getMD5() override { return "8c4083a4efa926cd066c287f905843a3"; };
 
   };
 

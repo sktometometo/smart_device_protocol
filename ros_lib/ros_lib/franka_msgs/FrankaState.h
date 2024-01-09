@@ -131,7 +131,7 @@ namespace franka_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -264,7 +264,7 @@ namespace franka_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -397,8 +397,8 @@ namespace franka_msgs
      return offset;
     }
 
-    const char * getType(){ return "franka_msgs/FrankaState"; };
-    const char * getMD5(){ return "431567d5df6caf4e4dd7385f25cb71ee"; };
+    virtual const char * getType() override { return "franka_msgs/FrankaState"; };
+    virtual const char * getMD5() override { return "431567d5df6caf4e4dd7385f25cb71ee"; };
 
   };
 

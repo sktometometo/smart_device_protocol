@@ -23,7 +23,7 @@ namespace object_recognition_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_key = strlen(this->key);
@@ -39,7 +39,7 @@ namespace object_recognition_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_key;
@@ -63,8 +63,8 @@ namespace object_recognition_msgs
      return offset;
     }
 
-    const char * getType(){ return "object_recognition_msgs/ObjectType"; };
-    const char * getMD5(){ return "ac757ec5be1998b0167e7efcda79e3cf"; };
+    virtual const char * getType() override { return "object_recognition_msgs/ObjectType"; };
+    virtual const char * getMD5() override { return "ac757ec5be1998b0167e7efcda79e3cf"; };
 
   };
 

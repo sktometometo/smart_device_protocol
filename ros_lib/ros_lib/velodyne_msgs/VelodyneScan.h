@@ -23,11 +23,11 @@ namespace velodyne_msgs
 
     VelodyneScan():
       header(),
-      packets_length(0), packets(NULL)
+      packets_length(0), st_packets(), packets(nullptr)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += this->header.serialize(outbuffer + offset);
@@ -42,7 +42,7 @@ namespace velodyne_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += this->header.deserialize(inbuffer + offset);
@@ -61,8 +61,8 @@ namespace velodyne_msgs
      return offset;
     }
 
-    const char * getType(){ return "velodyne_msgs/VelodyneScan"; };
-    const char * getMD5(){ return "50804fc9533a0e579e6322c04ae70566"; };
+    virtual const char * getType() override { return "velodyne_msgs/VelodyneScan"; };
+    virtual const char * getMD5() override { return "50804fc9533a0e579e6322c04ae70566"; };
 
   };
 

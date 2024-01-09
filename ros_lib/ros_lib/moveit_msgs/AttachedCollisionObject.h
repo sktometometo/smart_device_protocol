@@ -30,13 +30,13 @@ namespace moveit_msgs
     AttachedCollisionObject():
       link_name(""),
       object(),
-      touch_links_length(0), touch_links(NULL),
+      touch_links_length(0), st_touch_links(), touch_links(nullptr),
       detach_posture(),
       weight(0)
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       uint32_t length_link_name = strlen(this->link_name);
@@ -62,7 +62,7 @@ namespace moveit_msgs
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       uint32_t length_link_name;
@@ -100,8 +100,8 @@ namespace moveit_msgs
      return offset;
     }
 
-    const char * getType(){ return "moveit_msgs/AttachedCollisionObject"; };
-    const char * getMD5(){ return "30199ef516f64c8bc1edb1084ce4584e"; };
+    virtual const char * getType() override { return "moveit_msgs/AttachedCollisionObject"; };
+    virtual const char * getMD5() override { return "30199ef516f64c8bc1edb1084ce4584e"; };
 
   };
 

@@ -20,22 +20,22 @@ namespace control_msgs
     {
     }
 
-    virtual int serialize(unsigned char *outbuffer) const
+    virtual int serialize(unsigned char *outbuffer) const override
     {
       int offset = 0;
       offset += serializeAvrFloat64(outbuffer + offset, this->pointing_angle_error);
       return offset;
     }
 
-    virtual int deserialize(unsigned char *inbuffer)
+    virtual int deserialize(unsigned char *inbuffer) override
     {
       int offset = 0;
       offset += deserializeAvrFloat64(inbuffer + offset, &(this->pointing_angle_error));
      return offset;
     }
 
-    const char * getType(){ return "control_msgs/PointHeadFeedback"; };
-    const char * getMD5(){ return "cce80d27fd763682da8805a73316cab4"; };
+    virtual const char * getType() override { return "control_msgs/PointHeadFeedback"; };
+    virtual const char * getMD5() override { return "cce80d27fd763682da8805a73316cab4"; };
 
   };
 
