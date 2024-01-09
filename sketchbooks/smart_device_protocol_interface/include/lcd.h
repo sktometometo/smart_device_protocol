@@ -79,7 +79,7 @@ void update_lcd()
   _update_lcd(lcd, sprite_device_info, sprite_device_status, sprite_device_info);
 }
 
-void print_ros_message_info(const smart_device_protocol::Packet &msg)
+void print_ros_message_info(const smart_device_protocol::Packet& msg)
 {
   sprite_event_info.printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X\n", msg.mac_address[0], msg.mac_address[1],
                            msg.mac_address[2], msg.mac_address[3], msg.mac_address[4], msg.mac_address[5]);
@@ -127,9 +127,11 @@ void update_lcd()
 {
 }
 
-void print_ros_message_info(const smart_device_protocol::Packet &msg) {}
+void print_ros_message_info(const smart_device_protocol::Packet& msg)
+{
+}
 
-void print_device_info(const uint8_t* device_mac_address, bool uwb_enabled)
+void print_device_info(const uint8_t* device_mac_address, bool uwb_enabled, int tag_id)
 {
 }
 
