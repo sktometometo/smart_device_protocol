@@ -26,6 +26,8 @@ jobs:
           - sdp_landmark_information
           - sdp_sesami_host
           - sdp_stickv2_interface
+          - sdp_switchbot_light
+          - sdp_switchbot_lock
           - smart_device_protocol_interface
     env:
       CATKIN_WS: /home/runner/work/catkin_ws
@@ -65,7 +67,7 @@ jobs:
       run: |
         pip3 install pip --upgrade
         pip3 install pyopenssl --upgrade
-        pip3 install platformio
+        pip3 install platformio==6.1.11
     - name: Init workspace
       run: |
         source /opt/ros/noetic/setup.bash
