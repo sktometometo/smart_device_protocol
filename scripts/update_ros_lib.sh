@@ -20,6 +20,7 @@ rosrun rosserial_arduino make_libraries.py .
 cp -r ros_lib/ros $TARGET_DIR/ros_lib/
 cp -r ros_lib/smart_device_protocol $TARGET_DIR/ros_lib/
 cp -r ros_lib/std_msgs $TARGET_DIR/ros_lib/
+cp -r ros_lib/rosserial_msgs $TARGET_DIR/ros_lib/
 cp -r ros_lib/*.h $TARGET_DIR/ros_lib/
 cp -r ros_lib/*.cpp $TARGET_DIR/ros_lib/
 
