@@ -4,7 +4,7 @@ import unittest
 import rospy
 import rostest
 from smart_device_protocol.smart_device_protocol_interface import (
-    DeviceDictSDPInterfaceWithInterfaceCallback,
+    UWBSDPInterface,
 )
 
 
@@ -16,7 +16,7 @@ class TestCase(unittest.TestCase):
     def test_sdp_interface(self):
         self.called = False
         rospy.init_node("test_sdp_interface")
-        sdp_interface = DeviceDictSDPInterfaceWithInterfaceCallback()
+        sdp_interface = UWBSDPInterface()
         sdp_interface.register_callback(("Light status", "?"), self.callback_test)
         rospy.sleep(5)
         self.assertTrue(len(sdp_interface.device_interfaces) > 0)
