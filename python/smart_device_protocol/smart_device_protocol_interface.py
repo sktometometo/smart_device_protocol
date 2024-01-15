@@ -8,7 +8,7 @@ from smart_device_protocol.packet_parser import parse_packet_as_v2
 from smart_device_protocol.sdp_frames import BaseFrame, DataFrame, MetaFrame
 
 
-class BaseSDPInterface:
+class SDPInterface:
     """Smart Device Protocol Interface"""
 
     def __init__(
@@ -52,7 +52,7 @@ class BaseSDPInterface:
         self._smart_device_protocol_interface.send(target_address, data, num_trial)
 
 
-class DeviceDictSDPInterface(BaseSDPInterface):
+class DeviceDictSDPInterface(SDPInterface):
     """Smart Device Protocol Interface with Device Dictionary"""
 
     def __init__(self, callback_data=None, callback_meta=None, timeout: float = 10.0):
@@ -147,7 +147,7 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
         del self._callbacks_data[interface_description]
 
 
-class SDPInterface(DeviceDictSDPInterfaceWithInterfaceCallback):
+class UWBSDPInterface(DeviceDictSDPInterfaceWithInterfaceCallback):
     def __init__(
         self,
         callbacks_data: Dict[
