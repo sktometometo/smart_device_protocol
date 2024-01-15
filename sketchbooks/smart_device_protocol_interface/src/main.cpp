@@ -23,7 +23,7 @@
 #include "sdp/esp_now.h"
 #include "devices/uwb_module_util.h"
 
-void messageCb(const smart_device_protocol::Packet &);
+void messageCb(const smart_device_protocol::Packet&);
 
 // ESP-NOW
 uint8_t device_mac_address[6] = { 0 };
@@ -43,7 +43,7 @@ ros::Publisher publisher("/smart_device_protocol/recv", &msg_recv_packet);
 ros::Publisher publisher_uwb("/smart_device_protocol/uwb", &msg_uwb);
 ros::Subscriber<smart_device_protocol::Packet> subscriber("/smart_device_protocol/send", &messageCb);
 
-void messageCb(const smart_device_protocol::Packet &msg)
+void messageCb(const smart_device_protocol::Packet& msg)
 {
   if (msg.mac_address_length != 6)
   {
@@ -112,11 +112,14 @@ void setup()
     nh.spinOnce();
   }
 
-  int tag_id = 0;
+  int tag_id = -1;
   nh.getParam("~tag_id", &tag_id, 1);
 
   // UWB initialization
-  uwb_initialized = initUWB(true, tag_id, Serial2);
+  if (tag_id != -1)
+  {
+    uwb_initialized = initUWB(true, tag_id, Serial2);
+  }
 
   // Subscribe and Publish
   nh.advertise(publisher);
