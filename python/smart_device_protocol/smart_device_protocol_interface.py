@@ -2,14 +2,13 @@ import struct
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import rospy
-
 from smart_device_protocol.esp_now_ros_interface import ESPNOWROSInterface
-from smart_device_protocol.msg import Packet
+from smart_device_protocol.msg import Packet, UWBDistance
 from smart_device_protocol.packet_parser import parse_packet_as_v2
 from smart_device_protocol.sdp_frames import BaseFrame, DataFrame, MetaFrame
 
 
-class SDPInterface:
+class BaseSDPInterface:
     """Smart Device Protocol Interface"""
 
     def __init__(
@@ -53,7 +52,7 @@ class SDPInterface:
         self._smart_device_protocol_interface.send(target_address, data, num_trial)
 
 
-class DeviceDictSDPInterface(SDPInterface):
+class DeviceDictSDPInterface(BaseSDPInterface):
     """Smart Device Protocol Interface with Device Dictionary"""
 
     def __init__(self, callback_data=None, callback_meta=None, timeout: float = 10.0):
@@ -75,6 +74,8 @@ class DeviceDictSDPInterface(SDPInterface):
         if src_address not in self._device_interfaces:
             self._device_interfaces[src_address] = {}
             self._device_interfaces[src_address]["device_name"] = frame.device_name
+            self._device_interfaces[src_address]["distance"] = None
+            self._device_interfaces[src_address]["uwb_id"] = None
             self._device_interfaces[src_address]["interfaces"] = []
 
         self._device_interfaces[src_address]["last_stamp"] = rospy.Time.now()
@@ -144,3 +145,31 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
 
     def unregister_callback(self, interface_description):
         del self._callbacks_data[interface_description]
+
+
+class SDPInterface(DeviceDictSDPInterfaceWithInterfaceCallback):
+    def __init__(
+        self,
+        callbacks_data: Dict[
+            Tuple[str, str], Callable[[Union[List[int], Tuple[int]], List], None]
+        ] = {},
+        callback_meta=None,
+        timeout: float = 10.0,
+    ):
+        super().__init__(callbacks_data, callback_meta, timeout)
+        self.register_callback(("UWB Station", "i"), self._interface_callback_to_uwb)
+        self.sub = rospy.Subscriber(
+            "/smart_device_protocol/uwb", UWBDistance, self._cb_uwb
+        )
+
+    def _cb_uwb(self, msg: UWBDistance):
+        uwb_id = msg.id
+        distance = msg.distance
+        for src_address, device_interface in self.device_interfaces.items():
+            if device_interface["uwb_id"] == uwb_id:
+                self._device_interfaces[src_address]["distance"] = distance
+                break
+
+    def _interface_callback_to_uwb(self, src_address, frame: DataFrame):
+        if src_address in self._device_interfaces:
+            self._device_interfaces[src_address]["uwb_id"] = frame.content[0]
