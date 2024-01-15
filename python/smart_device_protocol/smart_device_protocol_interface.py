@@ -55,7 +55,7 @@ class SDPInterface:
 class DeviceDictSDPInterface(SDPInterface):
     """Smart Device Protocol Interface with Device Dictionary"""
 
-    def __init__(self, callback_data=None, callback_meta=None, timeout: float = 10.0):
+    def __init__(self, callback_data=None, callback_meta=None, timeout: float = 30.0):
         self._device_interfaces: Dict[Union[List[int], Tuple[int]], Dict] = {}
         self._original_callback_data = callback_data
         self._original_callback_meta = callback_meta
@@ -127,7 +127,7 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
             Tuple[str, str], Callable[[Union[List[int], Tuple[int]], List], None]
         ] = {},
         callback_meta=None,
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ):
         self._callbacks_data = callbacks_data
         self._callback_meta = callback_meta
@@ -154,7 +154,7 @@ class UWBSDPInterface(DeviceDictSDPInterfaceWithInterfaceCallback):
             Tuple[str, str], Callable[[Union[List[int], Tuple[int]], List], None]
         ] = {},
         callback_meta=None,
-        timeout: float = 10.0,
+        timeout: float = 30.0,
     ):
         super().__init__(callbacks_data, callback_meta, timeout)
         self.register_callback(("UWB Station", "i"), self._interface_callback_to_uwb)
