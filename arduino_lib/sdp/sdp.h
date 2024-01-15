@@ -280,9 +280,9 @@ esp_err_t send_sdp_esp_now_packet(const uint8_t *peer_addr, uint8_t *data, int d
     {
         return addStatus;
     }
-    bool success = esp_now_send(peer_addr, data, data_len) == ESP_OK;
+    esp_err_t result = esp_now_send(peer_addr, data, data_len);
     esp_now_del_peer(peer_addr);
-    return success;
+    return result;
 }
 
 esp_err_t broadcast_sdp_esp_now_packet(uint8_t *data, int data_len)
