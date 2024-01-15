@@ -1,7 +1,11 @@
 #include <vector>
 #include <variant>
 
+#if defined(M5STACK_FIRE)
 #include <M5Stack.h>
+#elif defined(M5STACK_CORE2)
+#include <M5Core2.h>
+#endif
 #include <FS.h>
 #include <SPIFFS.h>
 
@@ -138,8 +142,16 @@ void setup()
 {
   M5.begin(true, true, true, false);
   Serial.begin(115200);
+#if defined(M5STACK_FIRE)
   Serial1.begin(115200, SERIAL_8N1, 16, 17);
+#elif defined(M5STACK_CORE2)
+  Serial1.begin(115200, SERIAL_8N1, 33, 32);
+#endif
+#if defined(M5STACK_FIRE)
   Serial2.begin(115200, SERIAL_8N1, 22, 21);
+#elif defined(M5STACK_CORE2)
+  Serial2.begin(115200, SERIAL_8N1, 13, 14);
+#endif
 
   M5.Lcd.printf("SDP SWITCHBOT LOCK HOST\n");
 
