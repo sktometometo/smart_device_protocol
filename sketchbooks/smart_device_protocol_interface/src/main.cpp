@@ -23,10 +23,10 @@
 #include "sdp/esp_now.h"
 #include "devices/uwb_module_util.h"
 
-void messageCb(const smart_device_protocol::Packet&);
+void messageCb(const smart_device_protocol::Packet &);
 
 // ESP-NOW
-uint8_t device_mac_address[6] = { 0 };
+uint8_t device_mac_address[6] = {0};
 uint8_t mac_address_for_msg[6];
 uint8_t buffer_for_msg[256];
 
@@ -43,7 +43,7 @@ ros::Publisher publisher("/smart_device_protocol/recv", &msg_recv_packet);
 ros::Publisher publisher_uwb("/smart_device_protocol/uwb", &msg_uwb);
 ros::Subscriber<smart_device_protocol::Packet> subscriber("/smart_device_protocol/send", &messageCb);
 
-void messageCb(const smart_device_protocol::Packet& msg)
+void messageCb(const smart_device_protocol::Packet &msg)
 {
   if (msg.mac_address_length != 6)
   {
@@ -59,7 +59,7 @@ void messageCb(const smart_device_protocol::Packet& msg)
     peer_temp.peer_addr[i] = msg.mac_address[i];
   }
   esp_err_t add_status = esp_now_add_peer(&peer_temp);
-  esp_err_t result = esp_now_send(peer_temp.peer_addr, (uint8_t*)msg.data, msg.data_length);
+  esp_err_t result = esp_now_send(peer_temp.peer_addr, (uint8_t *)msg.data, msg.data_length);
   esp_err_t del_status = esp_now_del_peer(peer_temp.peer_addr);
 
   // Display
@@ -72,7 +72,7 @@ void messageCb(const smart_device_protocol::Packet& msg)
   nh.logdebug("Subscribe a message and send a packet.");
 }
 
-void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len)
+void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 {
   for (int i = 0; i < 6; i++)
   {
@@ -116,9 +116,13 @@ void setup()
   nh.getParam("~tag_id", &tag_id, 1);
 
   // UWB initialization
-  if (tag_id != -1)
+  if (tag_id < 0)
   {
     uwb_initialized = initUWB(true, tag_id, Serial2);
+  }
+  else
+  {
+    resetUWB(Serial2);
   }
 
   // Subscribe and Publish
