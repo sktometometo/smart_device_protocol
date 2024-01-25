@@ -22,6 +22,8 @@ std::string get_serialization_format(const std::vector<SDPData> &data) {
       }
     } else if (std::holds_alternative<bool>(*itr)) {
       serialization_format += "?";
+    } else {
+      serialization_format += "_";
     }
   }
   return serialization_format;
@@ -29,41 +31,24 @@ std::string get_serialization_format(const std::vector<SDPData> &data) {
 
 bool is_consistent_serialization_format(const std::string &serialization_format,
                                         const std::vector<SDPData> &data) {
-  if (serialization_format.size() != std::vector<SDPData>(data).size()) {
+  std::string estimated_serialization_format = get_serialization_format(data);
+  if (serialization_format.length() != estimated_serialization_format.length()) {
     return false;
   }
-  auto itr = data.begin();
-  int index_sf = 0;
-  while (itr != data.end()) {
-    switch (serialization_format[index_sf]) {
-      case 'i':
-        if (not std::holds_alternative<int32_t>(*itr)) {
-          return false;
-        }
-        break;
-      case 'f':
-        if (not std::holds_alternative<float>(*itr)) {
-          return false;
-        }
-        break;
-      case 'S':
-      case 's':
-        if (not std::holds_alternative<std::string>(*itr)) {
-          return false;
-        }
-        break;
-      case '?':
-      case 'b':
-        if (not std::holds_alternative<bool>(*itr)) {
-          return false;
-        }
-        break;
-      default:
-        return false;
+
+  for (size_t i = 0; i < serialization_format.length(); ++i) {
+    if (serialization_format[i] == 'S' and estimated_serialization_format[i] == 's') {
+      continue;
+    } else if (serialization_format[i] == '?' and estimated_serialization_format[i] == 'b') {
+      continue;
+    } else if (serialization_format[i] == 'b' and estimated_serialization_format[i] == '?') {
+      continue;
     }
-    itr++;
-    index_sf;
+    if (serialization_format[i] != estimated_serialization_format[i]) {
+      return false;
+    }
   }
+
   return true;
 }
 
