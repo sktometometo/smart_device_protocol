@@ -118,7 +118,6 @@ bool _broadcast_sdp_meta_packet(
 void _meta_frame_broadcast_task(void *parameter) {
   for (;;) {
     vTaskDelay(pdMS_TO_TICKS(1000));
-    Serial.println("Broadcasting meta packet");
     for (auto &entry : _sdp_interface_data_callbacks) {
       const SDPInterfaceDescription
           &packet_description_and_serialization_format = std::get<0>(entry);
@@ -236,7 +235,9 @@ bool send_sdp_data_packet(std::string &packet_description,
   if (not ret) {
     return false;
   } else {
-    return broadcast_sdp_esp_now_packet(buf, sizeof(buf)) == ESP_OK;
+    esp_err_t result = broadcast_sdp_esp_now_packet(buf, sizeof(buf));
+    Serial.printf("send_sdp_data_packet: %d\n", result);
+    return result == ESP_OK;
   }
 }
 
@@ -248,9 +249,12 @@ bool send_sdp_data_packet(const SDPInterfaceDescription &interface_description,
   bool ret = generate_data_frame(buf, packet_description.c_str(),
                                  serialization_format.c_str(), body);
   if (not ret) {
+    Serial.println("send_sdp_data_packet: failed to generate data frame");
     return false;
   } else {
-    return broadcast_sdp_esp_now_packet(buf, sizeof(buf)) == ESP_OK;
+    esp_err_t result = broadcast_sdp_esp_now_packet(buf, sizeof(buf));
+    Serial.printf("send_sdp_data_packet: %d\n", result);
+    return result == ESP_OK;
   }
 }
 
