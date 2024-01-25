@@ -1,22 +1,20 @@
+#include <ArduinoJson.h>
+#include <FS.h>
+#include <SPIFFS.h>
+
 #include <vector>
 
 #include "M5Stack.h"
 
-#include <FS.h>
-#include <SPIFFS.h>
-
-#include <ArduinoJson.h>
-
 #define LGFX_M5STACK
 #define LGFX_USE_V1
-#include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
+#include <LovyanGFX.hpp>
 
-#include "sdp/sdp_util.h"
 #include "devices/uwb_module_util.h"
-#include "utils/config_loader.h"
-
 #include "lcd.h"
+#include "sdp/sdp_util.h"
+#include "utils/config_loader.h"
 
 // Device name
 String device_name;
@@ -33,11 +31,13 @@ static LGFX_Sprite sprite_device_status(&lcd);
 // SDPInterface Example
 std::string waypoint_packet_description = "Waypoint";
 std::string waypoint_serialization_format = "sS";
-SDPInterfaceDescription waypoint_interface_description = std::make_tuple(waypoint_packet_description, waypoint_serialization_format);
+SDPInterfaceDescription waypoint_interface_description =
+    std::make_tuple(waypoint_packet_description, waypoint_serialization_format);
 
 std::string uwb_toggle_packet_description = "Turn On/Off UWB";
 std::string uwb_toggle_serialization_format = "?i";
-SDPInterfaceDescription uwb_toggle_interface_description = std::make_tuple(uwb_toggle_packet_description, uwb_toggle_serialization_format);
+SDPInterfaceDescription uwb_toggle_interface_description = std::make_tuple(
+    uwb_toggle_packet_description, uwb_toggle_serialization_format);
 
 // UWB
 int uwb_id = -1;
@@ -52,19 +52,16 @@ String waypoint_description;
 // Other
 std::vector<SDPData> data_waypoint;
 
-bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
-{
+bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
   StaticJsonDocument<1024> doc;
-  if (not load_json_from_FS<1024>(fs, filename, doc))
-  {
+  if (not load_json_from_FS<1024>(fs, filename, doc)) {
     return false;
   }
 
   if (not doc.containsKey("device_name") or
       not doc.containsKey("waypoint_name") or
       not doc.containsKey("waypoint_description") or
-      not doc.containsKey("uwb_id"))
-  {
+      not doc.containsKey("uwb_id")) {
     return false;
   }
 
@@ -75,29 +72,23 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
   return true;
 }
 
-void callback_uwb_toggle(const uint8_t *mac_addr, const std::vector<SDPData> &body)
-{
+void callback_uwb_toggle(const uint8_t *mac_addr,
+                         const std::vector<SDPData> &body) {
   bool uwb_on = std::get<bool>(body[0]);
-  if (uwb_on)
-  {
+  if (uwb_on) {
     uwb_id = std::get<int32_t>(body[1]);
-  }
-  else
-  {
+  } else {
     uwb_id = -1;
   }
 
-  if (uwb_on)
-  {
+  if (uwb_on) {
     Serial.println("Turn On UWB");
     sprite_device_status.println("Turn On UWB");
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
     initUWB(false, uwb_id, Serial2);
     body_uwb.clear();
     body_uwb.push_back(SDPData(uwb_id));
-  }
-  else
-  {
+  } else {
     Serial.println("Turn Off UWB");
     sprite_device_status.println("Turn Off UWB");
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
@@ -106,8 +97,7 @@ void callback_uwb_toggle(const uint8_t *mac_addr, const std::vector<SDPData> &bo
   }
 }
 
-void setup()
-{
+void setup() {
   M5.begin(false, true, true, false);
   Serial.begin(115200);
   Serial2.begin(115200, SERIAL_8N1, 16, 17);
@@ -120,50 +110,42 @@ void setup()
   // Load config from FS
   SPIFFS.begin();
   SD.begin();
-  if (not load_config_from_FS(SD, "/config.json"))
-  {
-    if (not load_config_from_FS(SPIFFS, "/config.json"))
-    {
+  if (not load_config_from_FS(SD, "/config.json")) {
+    if (not load_config_from_FS(SPIFFS, "/config.json")) {
       Serial.println("Failed to load config file");
       sprite_device_info.println("Failed to load config file");
-      update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
-      while (true)
-      {
+      update_lcd(sprite_device_header, sprite_device_info,
+                 sprite_device_status);
+      while (true) {
         delay(1000);
       }
     }
   }
 
   // Initialize SDP
-  if (not init_sdp(mac_address, device_name))
-  {
+  if (not init_sdp(mac_address, device_name)) {
     Serial.println("Failed to initialize SDP");
     sprite_device_info.println("Failed to initialize SDP");
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
-    while (true)
-    {
+    while (true) {
       delay(1000);
     }
-  }
-  else
-  {
+  } else {
     Serial.println("Initialized SDP");
     sprite_device_info.println("Initialized SDP");
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
 
   // subscribe SDP
-  register_sdp_interface_callback(uwb_toggle_interface_description, callback_uwb_toggle);
+  register_sdp_interface_callback(uwb_toggle_interface_description,
+                                  callback_uwb_toggle);
 
   // Initialize UWB
-  if (uwb_id >= 0)
-  {
+  if (uwb_id >= 0) {
     initUWB(false, uwb_id, Serial2);
     body_uwb.clear();
     body_uwb.push_back(SDPData(uwb_id));
-  }
-  else
-  {
+  } else {
     resetUWB(Serial2);
     body_uwb.clear();
   }
@@ -174,36 +156,42 @@ void setup()
                               mac_address[0], mac_address[1], mac_address[2],
                               mac_address[3], mac_address[4], mac_address[5]);
   sprite_device_header.printf("Waypoint Name: %s\n", waypoint_name.c_str());
-  sprite_device_header.printf("Waypoint Description: %s\n", waypoint_description.c_str());
+  sprite_device_header.printf("Waypoint Description: %s\n",
+                              waypoint_description.c_str());
   update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
 
   // Prepare waypoint data
-  data_waypoint.push_back(SDPData(waypoint_name));
-  data_waypoint.push_back(SDPData(waypoint_description));
+  std::string waypoint_name_string = std::string(waypoint_name.c_str());
+  std::string waypoint_description_string =
+      std::string(waypoint_description.c_str());
+  data_waypoint.push_back(SDPData(waypoint_name_string));
+  data_waypoint.push_back(SDPData(waypoint_description_string));
 }
 
-void loop()
-{
+void loop() {
   delay(1000);
 
-  if (uwb_id >= 0)
-  {
-    if (not send_sdp_data_packet(packet_description_uwb, body_uwb))
-    {
+  if (uwb_id >= 0) {
+    if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
       Serial.printf("Failed to send SDP UWB data packet\n");
-      Serial.printf("packet description is %s\n", packet_description_uwb.c_str());
+      Serial.printf("packet description is %s\n",
+                    packet_description_uwb.c_str());
       sprite_device_status.printf("Failed to send SDP UWB data packet\n");
-      sprite_device_status.printf("packet description is %s\n", packet_description_uwb.c_str());
-      update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
+      sprite_device_status.printf("packet description is %s\n",
+                                  packet_description_uwb.c_str());
+      update_lcd(sprite_device_header, sprite_device_info,
+                 sprite_device_status);
     }
   }
 
-  if (not send_sdp_data_packet(waypoint_interface_description, data_waypoint))
-  {
+  if (not send_sdp_data_packet(waypoint_interface_description, data_waypoint)) {
     Serial.printf("Failed to send SDP waypoint interface packet\n");
-    Serial.printf("packet description is %s\n", waypoint_packet_description.c_str());
-    sprite_device_status.printf("Failed to send SDP waypoint interface packet\n");
-    sprite_device_status.printf("packet description is %s\n", waypoint_packet_description.c_str());
+    Serial.printf("packet description is %s\n",
+                  waypoint_packet_description.c_str());
+    sprite_device_status.printf(
+        "Failed to send SDP waypoint interface packet\n");
+    sprite_device_status.printf("packet description is %s\n",
+                                waypoint_packet_description.c_str());
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
 }
