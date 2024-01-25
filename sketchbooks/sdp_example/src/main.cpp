@@ -51,7 +51,7 @@ void setup() {
   update_lcd(sprite_device_info, sprite_send_info, sprite_recieve_info);
 
   // Initialize SDP
-  if (not init_sdp(mac_address, String("test"), 8192)) {
+  if (not init_sdp(mac_address, device_name, 8192)) {
     Serial.println("Failed to initialize SDP");
     sprite_device_info.println("Failed to initialize SDP");
     update_lcd(sprite_device_info, sprite_send_info, sprite_recieve_info);
