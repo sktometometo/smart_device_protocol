@@ -118,6 +118,7 @@ bool _broadcast_sdp_meta_packet(
 void _meta_frame_broadcast_task(void *parameter) {
   for (;;) {
     vTaskDelay(pdMS_TO_TICKS(1000));
+    Serial.println("Broadcasting meta packet");
     for (auto &entry : _sdp_interface_data_callbacks) {
       const SDPInterfaceDescription
           &packet_description_and_serialization_format = std::get<0>(entry);
@@ -129,7 +130,7 @@ void _meta_frame_broadcast_task(void *parameter) {
   }
 }
 
-bool init_sdp(uint8_t *mac_address, const String &device_name) {
+bool init_sdp(uint8_t *mac_address, const String &device_name, int meta_task_stack_size = 16384) {
   if (mac_address != NULL) {
     esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
   }
@@ -139,8 +140,11 @@ bool init_sdp(uint8_t *mac_address, const String &device_name) {
   if (not esp_now_init() == ESP_OK) {
     return false;
   }
-  xTaskCreate(_meta_frame_broadcast_task, "meta_frame_broadcast_task", 16384,
-              NULL, 1, NULL);
+  auto result = xTaskCreate(_meta_frame_broadcast_task, "meta_br_task", meta_task_stack_size, NULL, 1, NULL);
+  if (result != pdPASS) {
+    Serial.printf("xTaskCreate failed: %d\n", result);
+    return false;
+  }
   esp_now_register_recv_cb(_OnDataRecv);
   return true;
 }
