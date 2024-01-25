@@ -29,10 +29,9 @@ static LGFX_Sprite sprite_device_info(&lcd);
 static LGFX_Sprite sprite_device_status(&lcd);
 
 // SDPInterface Example
-std::string waypoint_packet_description = "Waypoint";
+std::string waypoint_packet_description = "Waypoint for nav";
 std::string waypoint_serialization_format = "sS";
-SDPInterfaceDescription waypoint_interface_description =
-    std::make_tuple(waypoint_packet_description, waypoint_serialization_format);
+std::vector<SDPData> body_waypoint;
 
 std::string uwb_toggle_packet_description = "Turn On/Off UWB";
 std::string uwb_toggle_serialization_format = "?i";
@@ -46,11 +45,8 @@ std::string serialization_format_uwb = "i";
 std::vector<SDPData> body_uwb;
 
 // Waypoint interface
-String waypoint_name;
-String waypoint_description;
-
-// Other
-std::vector<SDPData> data_waypoint;
+std::string waypoint_name;
+std::string waypoint_description;
 
 bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
   StaticJsonDocument<1024> doc;
@@ -66,8 +62,8 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
   }
 
   device_name = doc["device_name"].as<String>();
-  waypoint_name = doc["waypoint_name"].as<String>();
-  waypoint_description = doc["waypoint_description"].as<String>();
+  waypoint_name = doc["waypoint_name"].as<std::string>();
+  waypoint_description = doc["waypoint_description"].as<std::string>();
   uwb_id = doc["uwb_id"].as<int>();
   return true;
 }
@@ -83,15 +79,11 @@ void callback_uwb_toggle(const uint8_t *mac_addr,
 
   if (uwb_on) {
     Serial.println("Turn On UWB");
-    sprite_device_status.println("Turn On UWB");
-    update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
     initUWB(false, uwb_id, Serial2);
     body_uwb.clear();
     body_uwb.push_back(SDPData(uwb_id));
   } else {
     Serial.println("Turn Off UWB");
-    sprite_device_status.println("Turn Off UWB");
-    update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
     resetUWB(Serial2);
     body_uwb.clear();
   }
@@ -169,13 +161,17 @@ void setup() {
   update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
 
   // Prepare waypoint data
-  std::string waypoint_name_string = std::string(waypoint_name.c_str());
-  std::string waypoint_description_string =
-      std::string(waypoint_description.c_str());
-  data_waypoint.push_back(SDPData(waypoint_name_string));
-  data_waypoint.push_back(SDPData(waypoint_description_string));
+  body_waypoint.clear();
+  body_waypoint.push_back(SDPData(std::string(waypoint_name.c_str())));
+  body_waypoint.push_back(SDPData(std::string(waypoint_description.c_str())));
+  Serial.printf("Waypoint Name: \"%s\"\n", waypoint_name.c_str());
+  Serial.printf("Waypoint Description: \"%s\"\n", waypoint_description.c_str());
+  sprite_device_info.printf("Waypoint Name: \"%s\"\n", waypoint_name.c_str());
+  sprite_device_info.printf("Waypoint Description: \"%s\"\n",
+                            waypoint_description.c_str());
 
   sprite_device_status.println("Initialized");
+  sprite_device_info.println("Initialized");
   update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
 }
 
@@ -200,7 +196,9 @@ void loop() {
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
 
-  if (send_sdp_data_packet(waypoint_interface_description, data_waypoint)) {
+  delay(1000);
+
+  if (send_sdp_data_packet(waypoint_packet_description, body_waypoint)) {
     Serial.printf("Sent SDP waypoint interface packet\n");
     sprite_device_status.printf("Sent SDP waypoint interface packet\n");
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
@@ -210,4 +208,6 @@ void loop() {
         "Failed to send SDP waypoint interface packet\n");
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
+
+  delay(1000);
 }
