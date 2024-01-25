@@ -60,7 +60,10 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
     return false;
   }
 
-  if (not doc.containsKey("device_name"))
+  if (not doc.containsKey("device_name") or
+      not doc.containsKey("waypoint_name") or
+      not doc.containsKey("waypoint_description") or
+      not doc.containsKey("uwb_id"))
   {
     return false;
   }
@@ -68,10 +71,11 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json")
   device_name = doc["device_name"].as<String>();
   waypoint_name = doc["waypoint_name"].as<String>();
   waypoint_description = doc["waypoint_description"].as<String>();
+  uwb_id = doc["uwb_id"].as<int>();
   return true;
 }
 
-void callback_uwb_toggle(std::vector<SDPData> &body)
+void callback_uwb_toggle(const uint8_t *mac_addr, const std::vector<SDPData> &body)
 {
   bool uwb_on = std::get<bool>(body[0]);
   if (uwb_on)
@@ -110,8 +114,7 @@ void setup()
 
   // Initialize LCD
   init_lcd(lcd, sprite_device_header, sprite_device_info, sprite_device_status);
-  sprite_device_info.println("SDP Waypoint");
-  sprite_device_info.println("Initializing...");
+  sprite_device_status.println("Initializing...");
   update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
 
   // Load config from FS
@@ -132,7 +135,7 @@ void setup()
   }
 
   // Initialize SDP
-  if (not init_sdp(mac_address, String("test")))
+  if (not init_sdp(mac_address, device_name))
   {
     Serial.println("Failed to initialize SDP");
     sprite_device_info.println("Failed to initialize SDP");
@@ -149,13 +152,29 @@ void setup()
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
 
+  // subscribe SDP
+  register_sdp_interface_callback(uwb_toggle_interface_description, callback_uwb_toggle);
+
+  // Initialize UWB
+  if (uwb_id >= 0)
+  {
+    initUWB(false, uwb_id, Serial2);
+    body_uwb.clear();
+    body_uwb.push_back(SDPData(uwb_id));
+  }
+  else
+  {
+    resetUWB(Serial2);
+    body_uwb.clear();
+  }
+
   // Update Info Screen
-  sprite_device_header.printf("Device Name: %s", device_name.c_str());
-  sprite_device_header.printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X",
+  sprite_device_header.printf("Device Name: %s\n", device_name.c_str());
+  sprite_device_header.printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X\n",
                               mac_address[0], mac_address[1], mac_address[2],
                               mac_address[3], mac_address[4], mac_address[5]);
-  sprite_device_header.printf("Waypoint Name: %s", waypoint_name.c_str());
-  sprite_device_header.printf("Waypoint Description: %s", waypoint_description.c_str());
+  sprite_device_header.printf("Waypoint Name: %s\n", waypoint_name.c_str());
+  sprite_device_header.printf("Waypoint Description: %s\n", waypoint_description.c_str());
   update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
 
   // Prepare waypoint data
@@ -171,20 +190,20 @@ void loop()
   {
     if (not send_sdp_data_packet(packet_description_uwb, body_uwb))
     {
-      Serial.printf("Failed to send SDP data packet\n");
+      Serial.printf("Failed to send SDP UWB data packet\n");
       Serial.printf("packet description is %s\n", packet_description_uwb.c_str());
-      sprite_device_info.printf("Failed to send SDP data packet\n");
-      sprite_device_info.printf("packet description is %s\n", packet_description_uwb.c_str());
+      sprite_device_status.printf("Failed to send SDP UWB data packet\n");
+      sprite_device_status.printf("packet description is %s\n", packet_description_uwb.c_str());
       update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
     }
   }
 
   if (not send_sdp_data_packet(waypoint_interface_description, data_waypoint))
   {
-    Serial.printf("Failed to send SDP interface packet\n");
+    Serial.printf("Failed to send SDP waypoint interface packet\n");
     Serial.printf("packet description is %s\n", waypoint_packet_description.c_str());
-    sprite_device_info.printf("Failed to send SDP interface packet\n");
-    sprite_device_info.printf("packet description is %s\n", waypoint_packet_description.c_str());
+    sprite_device_status.printf("Failed to send SDP waypoint interface packet\n");
+    sprite_device_status.printf("packet description is %s\n", waypoint_packet_description.c_str());
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
 }

@@ -1,5 +1,6 @@
 {
     "device_name": "SDP WP 1",
     "waypoint_name": "SDPWP1",
-    "waypoint_description": "SDPWP2,SDPWP3"
+    "waypoint_description": "SDPWP2,SDPWP3",
+    "uwb_id": -1
 }
