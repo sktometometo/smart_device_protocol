@@ -40,7 +40,7 @@ SDPInterfaceDescription uwb_toggle_interface_description = std::make_tuple(
     uwb_toggle_packet_description, uwb_toggle_serialization_format);
 
 // UWB
-int uwb_id = -1;
+int32_t uwb_id = -1;
 std::string packet_description_uwb = "UWB Station";
 std::string serialization_format_uwb = "i";
 std::vector<SDPData> body_uwb;
@@ -123,7 +123,7 @@ void setup() {
   }
 
   // Initialize SDP
-  if (not init_sdp(mac_address, device_name)) {
+  if (not init_sdp(mac_address, device_name, 8192)) {
     Serial.println("Failed to initialize SDP");
     sprite_device_info.println("Failed to initialize SDP");
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
@@ -137,8 +137,16 @@ void setup() {
   }
 
   // subscribe SDP
-  register_sdp_interface_callback(uwb_toggle_interface_description,
-                                  callback_uwb_toggle);
+  if (register_sdp_interface_callback(uwb_toggle_interface_description,
+                                      callback_uwb_toggle)) {
+    Serial.println("Registered UWB toggle callback");
+    sprite_device_info.println("Registered UWB toggle callback");
+    update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
+  } else {
+    Serial.println("Failed to register UWB toggle callback");
+    sprite_device_info.println("Failed to register UWB toggle callback");
+    update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
+  }
 
   // Initialize UWB
   if (uwb_id >= 0) {
@@ -166,32 +174,40 @@ void setup() {
       std::string(waypoint_description.c_str());
   data_waypoint.push_back(SDPData(waypoint_name_string));
   data_waypoint.push_back(SDPData(waypoint_description_string));
+
+  sprite_device_status.println("Initialized");
+  update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
 }
 
 void loop() {
   delay(1000);
 
   if (uwb_id >= 0) {
-    if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
+    if (send_sdp_data_packet(packet_description_uwb, body_uwb)) {
+      Serial.printf("Sent SDP UWB data packet\n");
+      sprite_device_status.printf("Sent SDP UWB data packet\n");
+      update_lcd(sprite_device_header, sprite_device_info,
+                 sprite_device_status);
+    } else {
       Serial.printf("Failed to send SDP UWB data packet\n");
-      Serial.printf("packet description is %s\n",
-                    packet_description_uwb.c_str());
       sprite_device_status.printf("Failed to send SDP UWB data packet\n");
-      sprite_device_status.printf("packet description is %s\n",
-                                  packet_description_uwb.c_str());
       update_lcd(sprite_device_header, sprite_device_info,
                  sprite_device_status);
     }
+  } else {
+    Serial.printf("UWB is off\n");
+    sprite_device_status.printf("UWB is off\n");
+    update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
 
-  if (not send_sdp_data_packet(waypoint_interface_description, data_waypoint)) {
+  if (send_sdp_data_packet(waypoint_interface_description, data_waypoint)) {
+    Serial.printf("Sent SDP waypoint interface packet\n");
+    sprite_device_status.printf("Sent SDP waypoint interface packet\n");
+    update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
+  } else {
     Serial.printf("Failed to send SDP waypoint interface packet\n");
-    Serial.printf("packet description is %s\n",
-                  waypoint_packet_description.c_str());
     sprite_device_status.printf(
         "Failed to send SDP waypoint interface packet\n");
-    sprite_device_status.printf("packet description is %s\n",
-                                waypoint_packet_description.c_str());
     update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
 }

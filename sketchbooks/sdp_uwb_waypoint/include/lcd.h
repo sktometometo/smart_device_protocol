@@ -42,9 +42,10 @@ void update_lcd(LGFX_Sprite &sprite_1, LGFX_Sprite &sprite_2,
 void check_and_scroll(LGFX_Sprite &sprite) {
   int16_t x = sprite.getCursorX();
   int16_t y = sprite.getCursorY();
+  int font_height = sprite.fontHeight();
   while (y >= sprite.height()) {
-    sprite.scroll(0, -8);
-    sprite.setCursor(x, y - 8);
+    sprite.scroll(0, -font_height);
+    sprite.setCursor(x, y - font_height);
     x = sprite.getCursorX();
     y = sprite.getCursorY();
   }
