@@ -129,7 +129,7 @@ void _meta_frame_broadcast_task(void *parameter) {
   }
 }
 
-bool init_sdp(uint8_t *mac_address, const String &device_name) {
+bool init_sdp(uint8_t *mac_address, const String &device_name, int meta_task_stack_size = 16384) {
   if (mac_address != NULL) {
     esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
   }
@@ -139,8 +139,10 @@ bool init_sdp(uint8_t *mac_address, const String &device_name) {
   if (not esp_now_init() == ESP_OK) {
     return false;
   }
-  xTaskCreate(_meta_frame_broadcast_task, "meta_frame_broadcast_task", 16384,
-              NULL, 1, NULL);
+  auto result = xTaskCreate(_meta_frame_broadcast_task, "meta_br_task", meta_task_stack_size, NULL, 1, NULL);
+  if (result != pdPASS) {
+    return false;
+  }
   esp_now_register_recv_cb(_OnDataRecv);
   return true;
 }
@@ -232,7 +234,8 @@ bool send_sdp_data_packet(std::string &packet_description,
   if (not ret) {
     return false;
   } else {
-    return broadcast_sdp_esp_now_packet(buf, sizeof(buf)) == ESP_OK;
+    esp_err_t result = broadcast_sdp_esp_now_packet(buf, sizeof(buf));
+    return result == ESP_OK;
   }
 }
 
@@ -246,7 +249,8 @@ bool send_sdp_data_packet(const SDPInterfaceDescription &interface_description,
   if (not ret) {
     return false;
   } else {
-    return broadcast_sdp_esp_now_packet(buf, sizeof(buf)) == ESP_OK;
+    esp_err_t result = broadcast_sdp_esp_now_packet(buf, sizeof(buf));
+    return result == ESP_OK;
   }
 }
 
