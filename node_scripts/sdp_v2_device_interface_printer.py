@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-
 from smart_device_protocol.smart_device_protocol_interface import DeviceDictSDPInterface
-
 
 if __name__ == "__main__":
     rospy.init_node("smart_device_protocol_device_interface_printer")
