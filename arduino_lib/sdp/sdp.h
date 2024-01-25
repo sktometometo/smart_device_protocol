@@ -141,7 +141,6 @@ bool init_sdp(uint8_t *mac_address, const String &device_name, int meta_task_sta
   }
   auto result = xTaskCreate(_meta_frame_broadcast_task, "meta_br_task", meta_task_stack_size, NULL, 1, NULL);
   if (result != pdPASS) {
-    Serial.printf("xTaskCreate failed: %d\n", result);
     return false;
   }
   esp_now_register_recv_cb(_OnDataRecv);
@@ -236,7 +235,6 @@ bool send_sdp_data_packet(std::string &packet_description,
     return false;
   } else {
     esp_err_t result = broadcast_sdp_esp_now_packet(buf, sizeof(buf));
-    Serial.printf("send_sdp_data_packet: %d\n", result);
     return result == ESP_OK;
   }
 }
@@ -249,11 +247,9 @@ bool send_sdp_data_packet(const SDPInterfaceDescription &interface_description,
   bool ret = generate_data_frame(buf, packet_description.c_str(),
                                  serialization_format.c_str(), body);
   if (not ret) {
-    Serial.println("send_sdp_data_packet: failed to generate data frame");
     return false;
   } else {
     esp_err_t result = broadcast_sdp_esp_now_packet(buf, sizeof(buf));
-    Serial.printf("send_sdp_data_packet: %d\n", result);
     return result == ESP_OK;
   }
 }
