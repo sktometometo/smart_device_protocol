@@ -1,0 +1,24 @@
+name: Clang formatting
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  clang-format-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install Clang Format
+      run: sudo apt-get install -y clang-format
+    - name: Check Clang Format for arduino_lib
+      run: |
+        find arduino_lib -name '*.cpp' -o -name '*.h' | xargs clang-format -i
+        git diff --exit-code
+    - name: Check Clang Format for sketches
+      run: |
+        find arduino_lib -name '*.cpp' -o -name '*.h' | xargs clang-format -i
+        git diff --exit-code
