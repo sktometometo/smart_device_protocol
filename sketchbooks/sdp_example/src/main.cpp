@@ -4,12 +4,11 @@
 
 #define LGFX_M5STACK
 #define LGFX_USE_V1
-#include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
-
-#include "sdp/sdp_util.h"
+#include <LovyanGFX.hpp>
 
 #include "lcd.h"
+#include "sdp/sdp_util.h"
 
 // Device name
 String device_name = "sdp_sample";
@@ -29,8 +28,7 @@ SDPInterfaceDescription sample_interface_description = std::make_tuple<std::stri
 // SDPData Example
 std::vector<SDPData> body_data;
 
-void callback_sdp_sample(std::vector<SDPData> &body)
-{
+void callback_sdp_sample(const uint8_t* address, const std::vector<SDPData>& body) {
   Serial.println("Callback: sdp_sample");
   Serial.printf("Received SDP Data for interface %s\n", std::get<0>(sample_interface_description).c_str());
   clear_sprite(sprite_recieve_info);
@@ -42,8 +40,7 @@ void callback_sdp_sample(std::vector<SDPData> &body)
   body_data[3] = body[3];
 }
 
-void setup()
-{
+void setup() {
   M5.begin(false, true, true, false);
   Serial.begin(115200);
 
@@ -54,22 +51,21 @@ void setup()
   update_lcd(sprite_device_info, sprite_send_info, sprite_recieve_info);
 
   // Initialize SDP
-  if (not init_sdp(mac_address, String("test")))
-  {
+  if (not init_sdp(mac_address, String("test"), 8192)) {
     Serial.println("Failed to initialize SDP");
     sprite_device_info.println("Failed to initialize SDP");
     update_lcd(sprite_device_info, sprite_send_info, sprite_recieve_info);
-    while (true)
-    {
+    while (true) {
       delay(1000);
     }
-  }
-  else
-  {
+  } else {
     Serial.println("Initialized SDP");
     sprite_device_info.println("Initialized SDP");
     update_lcd(sprite_device_info, sprite_send_info, sprite_recieve_info);
   }
+
+  // Register Callback
+  register_sdp_interface_callback(sample_interface_description, callback_sdp_sample);
 
   // Update Info Screen
   sprite_device_info.printf("Device Name: %s", device_name.c_str());
@@ -86,18 +82,14 @@ void setup()
   body_data.push_back(SDPData(true));
 }
 
-void loop()
-{
+void loop() {
   delay(1000);
-  if (not send_sdp_data_packet(sample_interface_description, body_data))
-  {
+  if (not send_sdp_data_packet(sample_interface_description, body_data)) {
     Serial.println("Failed to send SDP Data Body");
     clear_sprite(sprite_send_info);
     sprite_send_info.println("Failed to send SDP Data Body.");
     update_lcd(sprite_device_info, sprite_send_info, sprite_recieve_info);
-  }
-  else
-  {
+  } else {
     Serial.println("Sent SDP Data Body");
     clear_sprite(sprite_send_info);
     sprite_send_info.println("Sent SDP Data Body");
