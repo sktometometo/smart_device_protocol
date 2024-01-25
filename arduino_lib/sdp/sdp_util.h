@@ -3,4 +3,4 @@
 
 #include "sdp/sdp.h"
 
-#endif // SMART_DEVICE_PROTOCOL_SDP_UTIL_H
+#endif  // SMART_DEVICE_PROTOCOL_SDP_UTIL_H
