@@ -205,7 +205,7 @@ class DataFrame(BaseFrame):
                 )
                 content.append(entry)
                 index += 16
-            elif format_specifier == "s":
+            elif format_specifier == "S":
                 entry = (
                     struct.unpack("64s", data[index : index + 64])[0]
                     .decode("utf-8")
