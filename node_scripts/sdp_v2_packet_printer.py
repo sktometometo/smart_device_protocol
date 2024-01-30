@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
 import rospy
-
 from smart_device_protocol.smart_device_protocol_interface import SDPInterface
-from smart_device_protocol.utils import address_tuple_to_str, address_str_to_tuple
+from smart_device_protocol.utils import address_str_to_tuple, address_tuple_to_str
 
 
 class Node:
