@@ -12,9 +12,12 @@
 #include <esp_system.h>
 #include <smart_device_protocol/Packet.h>
 
+#include <map>
+
 #include "sdp/esp_now.h"
 #include "sdp/packet_creator.h"
 #include "sdp/packet_parser.h"
+#include "sdp/sdp_util.h"
 
 typedef void (*sdp_data_if_recv_cb_t)(const uint8_t *mac_addr,
                                       const std::vector<SDPData> &body);
@@ -41,6 +44,9 @@ inline std::vector<
     std::tuple<std::string, std::string, std::vector<SDPInterfaceDescription>>>
     _vector_device_interfaces;
 
+// Address <-> Device name dictionary
+inline std::map<std::string, std::string> _device_name_dictionary;
+
 // Function declarations
 bool _broadcast_sdp_meta_packet(
     const SDPInterfaceDescription &packet_description_and_serialization_format);
@@ -52,18 +58,6 @@ void _get_device_interfaces_callback(
 esp_err_t send_sdp_esp_now_packet(const uint8_t *peer_addr, uint8_t *data,
                                   int data_len);
 esp_err_t broadcast_sdp_esp_now_packet(uint8_t *data, int data_len);
-
-std::string _convert_mac_address(const uint8_t *mac_addr) {
-  if (mac_addr == NULL) {
-    return "";
-  } else {
-    String addr = String(mac_addr[0], 16) + ":" + String(mac_addr[1], 16) +
-                  ":" + String(mac_addr[2], 16) + ":" +
-                  String(mac_addr[3], 16) + ":" + String(mac_addr[4], 16) +
-                  ":" + String(mac_addr[5], 16);
-    return addr.c_str();
-  }
-}
 
 void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   uint8_t packet_type = get_packet_type(data);
@@ -276,6 +270,7 @@ esp_err_t broadcast_sdp_esp_now_packet(uint8_t *data, int data_len) {
 }
 
 // Retrive device interfaces from meta package for given duration
+// Return value is vector of tuple of address, device name, interfaces
 const std::vector<std::tuple<std::string, std::string,
                              std::vector<SDPInterfaceDescription>>> &
 get_sdp_interfaces(unsigned long duration = 3000) {
