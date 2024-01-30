@@ -221,8 +221,24 @@ bool unregister_sdp_esp_now_recv_callback(esp_now_recv_cb_t callback) {
   return false;
 }
 
-bool send_sdp_data_packet(std::string &packet_description,
-                          std::vector<SDPData> &body) {
+bool send_sdp_data_packet(const uint8_t *peer_addr,
+                          const SDPInterfaceDescription &interface_description,
+                          const std::vector<SDPData> &body) {
+  uint8_t buf[240];
+  const std::string &packet_description = std::get<0>(interface_description);
+  const std::string &serialization_format = std::get<1>(interface_description);
+  bool ret = generate_data_frame(buf, packet_description.c_str(),
+                                 serialization_format.c_str(), body);
+  if (not ret) {
+    return false;
+  } else {
+    esp_err_t result = send_sdp_esp_now_packet(peer_addr, buf, sizeof(buf));
+    return result == ESP_OK;
+  }
+}
+
+bool send_sdp_data_packet(const std::string &packet_description,
+                          const std::vector<SDPData> &body) {
   uint8_t buf[240];
   bool ret = generate_data_frame(buf, packet_description.c_str(), body);
   if (not ret) {
@@ -234,7 +250,7 @@ bool send_sdp_data_packet(std::string &packet_description,
 }
 
 bool send_sdp_data_packet(const SDPInterfaceDescription &interface_description,
-                          std::vector<SDPData> &body) {
+                          const std::vector<SDPData> &body) {
   uint8_t buf[240];
   const std::string &packet_description = std::get<0>(interface_description);
   const std::string &serialization_format = std::get<1>(interface_description);
@@ -248,8 +264,8 @@ bool send_sdp_data_packet(const SDPInterfaceDescription &interface_description,
   }
 }
 
-esp_err_t send_sdp_esp_now_packet(const uint8_t *peer_addr, uint8_t *data,
-                                  int data_len) {
+esp_err_t send_sdp_esp_now_packet(const uint8_t *peer_addr, const uint8_t *data,
+                                  const int data_len) {
   esp_now_peer_info_t peer_info;
   memset(&peer_info, 0, sizeof(peer_info));
   for (int i = 0; i < 6; i++) {
@@ -264,7 +280,7 @@ esp_err_t send_sdp_esp_now_packet(const uint8_t *peer_addr, uint8_t *data,
   return result;
 }
 
-esp_err_t broadcast_sdp_esp_now_packet(uint8_t *data, int data_len) {
+esp_err_t broadcast_sdp_esp_now_packet(const uint8_t *data, const int data_len) {
   const uint8_t broadcast_address[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
   return send_sdp_esp_now_packet(broadcast_address, data, data_len);
 }

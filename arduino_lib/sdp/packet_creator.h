@@ -31,7 +31,7 @@ void generate_meta_frame(uint8_t *packet, const char *device_name,
 
 bool generate_data_frame(uint8_t *packet, const char *packet_description,
                          const char *serialization_format,
-                         std::vector<SDPData> &data) {
+                         const std::vector<SDPData> &data) {
   if (not is_consistent_serialization_format(serialization_format, data)) {
     return false;
   }
@@ -90,7 +90,7 @@ bool generate_data_frame(uint8_t *packet, const char *packet_description,
 }
 
 bool generate_data_frame(uint8_t *packet, const char *packet_description,
-                         std::vector<SDPData> &data) {
+                         const std::vector<SDPData> &data) {
   std::string serialization_format = get_serialization_format(data);
   return generate_data_frame(packet, packet_description,
                              serialization_format.c_str(), data);
