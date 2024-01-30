@@ -190,10 +190,6 @@ void loop() {
       update_lcd(sprite_device_header, sprite_device_info,
                  sprite_device_status);
     }
-  } else {
-    Serial.printf("UWB is off\n");
-    sprite_device_status.printf("UWB is off\n");
-    update_lcd(sprite_device_header, sprite_device_info, sprite_device_status);
   }
 
   delay(1000);
