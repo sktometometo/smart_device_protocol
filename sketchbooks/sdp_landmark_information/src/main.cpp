@@ -1,27 +1,24 @@
-#include <vector>
 #include <variant>
+#include <vector>
 
 #if defined(M5STACK_FIRE)
 #include <M5Stack.h>
 #elif defined(M5STACK_CORE2)
 #include <M5Core2.h>
 #endif
+#include <ArduinoJson.h>
 #include <FS.h>
 #include <SPIFFS.h>
-
-#include <ArduinoJson.h>
-
-#include <smart_device_protocol/Packet.h>
-
-#include <sdp/sdp.h>
-#include <utils/config_loader.h>
 #include <devices/uwb_module_util.h>
+#include <sdp/sdp.h>
+#include <smart_device_protocol/Packet.h>
+#include <utils/config_loader.h>
 
 // Device name
 String device_name = "";
 
 // ESP-NOW
-uint8_t mac_address[6] = { 0 };
+uint8_t mac_address[6] = {0};
 
 // SDP Interface
 std::string packet_description_information = "Landmark information";
@@ -38,15 +35,12 @@ std::vector<SDPData> data_for_uwb_data_packet;
 std::vector<SDPData> data;
 int loop_counter = 0;
 
-bool load_config_from_FS(fs::FS& fs, String filename = "/config.json")
-{
+bool load_config_from_FS(fs::FS& fs, String filename = "/config.json") {
   StaticJsonDocument<1024> doc;
-  if (not load_json_from_FS<1024>(fs, filename, doc))
-  {
+  if (not load_json_from_FS<1024>(fs, filename, doc)) {
     return false;
   }
-  if (not doc.containsKey("device_name") or not doc.containsKey("uwb_id") or not doc.containsKey("information"))
-  {
+  if (not doc.containsKey("device_name") or not doc.containsKey("uwb_id") or not doc.containsKey("information")) {
     return false;
   }
 
@@ -58,8 +52,7 @@ bool load_config_from_FS(fs::FS& fs, String filename = "/config.json")
   return true;
 }
 
-void setup()
-{
+void setup() {
   M5.begin(true, true, true, false);
   Serial.begin(115200);
   Serial2.begin(115200, SERIAL_8N1, 22, 21);
@@ -70,26 +63,21 @@ void setup()
   // Load config from FS
   SPIFFS.begin();
   SD.begin();
-  if (not load_config_from_FS(SD, "/config.json"))
-  {
-    if (not load_config_from_FS(SPIFFS, "/config.json"))
-    {
+  if (not load_config_from_FS(SD, "/config.json")) {
+    if (not load_config_from_FS(SPIFFS, "/config.json")) {
       Serial.println("Failed to load config file");
       M5.lcd.printf("Failed to load config file\n");
-      while (true)
-      {
+      while (true) {
         delay(1000);
       }
     }
   }
 
   // Initialization of SDP
-  if (not init_sdp(mac_address, device_name))
-  {
+  if (not init_sdp(mac_address, device_name)) {
     Serial.println("Failed to initialize SDP");
     M5.lcd.printf("Failed to initialize SDP\n");
-    while (true)
-    {
+    while (true) {
       delay(1000);
     }
   }
@@ -101,37 +89,56 @@ void setup()
 #elif defined(M5STACK_CORE2)
   Serial1.begin(115200, SERIAL_8N1, 33, 32);
 #endif
-  bool result = initUWB(false, uwb_id, Serial1);
-  data_for_uwb_data_packet.push_back(SDPData(uwb_id));
-  if (result)
-  {
-    M5.lcd.printf("Success for initialization of UWB\n");
-  }
-  else
-  {
-    M5.lcd.printf("Failed to initialize UWB\n");
+  if (uwb_id > 0) {
+    bool result = initUWB(false, uwb_id, Serial1);
+    data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+    if (result) {
+      M5.lcd.printf("Success for initialization of UWB\n");
+      Serial.println("Success for initialization of UWB");
+    } else {
+      M5.lcd.printf("Failed to initialize UWB\n");
+      Serial.println("Failed to initialize UWB");
+    }
+  } else {
+    resetUWB(Serial1);
+    M5.lcd.printf("UWB is not used\n");
+    Serial.println("UWB is not used");
   }
 
   // Display MAC address
   M5.Lcd.printf("Name: %s\n", device_name.c_str());
   M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
                 mac_address[4], mac_address[5]);
+  Serial.printf("Name: %s\n", device_name.c_str());
+  Serial.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
+                mac_address[4], mac_address[5]);
 
   // Display loaded config
   M5.Lcd.printf("UWB ID: %d\n", uwb_id);
+
+  Serial.println("Initialization completed!");
 }
 
-void loop()
-{
+void loop() {
   delay(5000);
 
-  // Send SDP data packet
-  if (not send_sdp_data_packet(packet_description_information, data_for_information_data_packet))
-  {
-    Serial.println("Failed to send SDP data packet");
+  Serial.println("UWB data content");
+  for (auto itr = data_for_information_data_packet.begin(); itr != data_for_information_data_packet.end(); itr++) {
+    std::string information = std::get<std::string>(*itr);
+    Serial.printf("Information: %s\n", information.c_str());
   }
-  if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet))
-  {
+
+  // Send SDP data packet
+  if (not send_sdp_data_packet(packet_description_information, data_for_information_data_packet)) {
     Serial.println("Failed to send SDP data packet");
+  } else {
+    Serial.println("Success to send SDP data packet");
+  }
+  if (uwb_id > 0) {
+    if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet)) {
+      Serial.println("Failed to send UWB SDP data packet");
+    } else {
+      Serial.println("Success to send UWB SDP data packet");
+    }
   }
 }
