@@ -31,11 +31,37 @@ std::string packet_description_uwb = "UWB Station";
 std::string serialization_format_uwb = "i";
 std::vector<SDPData> data_for_uwb_data_packet;
 
+// UWB Toggle
+std::string packet_description_uwb_toggle = "Turn On/Off UWB";
+std::string serialization_format_uwb_toggle = "?i";
+SDPInterfaceDescription interface_description_uwb_toggle(packet_description_uwb_toggle, serialization_format_uwb_toggle);
+
 // Other
 std::vector<SDPData> data;
 int loop_counter = 0;
 
-bool load_config_from_FS(fs::FS& fs, String filename = "/config.json") {
+void callback_uwb_toggle(const uint8_t *mac_addr,
+                         const std::vector<SDPData> &body) {
+  bool uwb_on = std::get<bool>(body[0]);
+  if (uwb_on) {
+    uwb_id = std::get<int32_t>(body[1]);
+  } else {
+    uwb_id = -1;
+  }
+
+  if (uwb_on) {
+    Serial.println("Turn On UWB");
+    initUWB(false, uwb_id, Serial2);
+    data_for_uwb_data_packet.clear();
+    data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+  } else {
+    Serial.println("Turn Off UWB");
+    resetUWB(Serial2);
+    data_for_uwb_data_packet.clear();
+  }
+}
+
+bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
   StaticJsonDocument<1024> doc;
   if (not load_json_from_FS<1024>(fs, filename, doc)) {
     return false;
@@ -103,6 +129,15 @@ void setup() {
     resetUWB(Serial1);
     M5.lcd.printf("UWB is not used\n");
     Serial.println("UWB is not used");
+  }
+
+  // register UWB toggle
+  if (register_sdp_interface_callback(interface_description_uwb_toggle,
+                                      callback_uwb_toggle)) {
+    Serial.println("Registered UWB toggle callback");
+
+  } else {
+    Serial.println("Failed to register UWB toggle callback");
   }
 
   // Display MAC address
