@@ -55,9 +55,9 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len);
 void _get_device_interfaces_callback(
     const uint8_t *mac_addr, const std::string &device_name,
     const std::vector<SDPInterfaceDescription> &interfaces);
-esp_err_t send_sdp_esp_now_packet(const uint8_t *peer_addr, uint8_t *data,
-                                  int data_len);
-esp_err_t broadcast_sdp_esp_now_packet(uint8_t *data, int data_len);
+esp_err_t send_sdp_esp_now_packet(const uint8_t *peer_addr, const uint8_t *data,
+                                  const int data_len);
+esp_err_t broadcast_sdp_esp_now_packet(const uint8_t *data, const int data_len);
 
 void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   uint8_t packet_type = get_packet_type(data);
