@@ -36,9 +36,56 @@ std::string packet_description_uwb_toggle = "Turn On/Off UWB";
 std::string serialization_format_uwb_toggle = "?i";
 SDPInterfaceDescription interface_description_uwb_toggle(packet_description_uwb_toggle, serialization_format_uwb_toggle);
 
+// Routing plan request
+std::string packet_description_routing_plan_request = "Routing plan req";
+std::string serialization_format_routing_plan_request = "is";
+SDPInterfaceDescription interface_description_routing_plan_request(packet_description_routing_plan_request, serialization_format_routing_plan_request);
+
+// Routing plan response
+std::string packet_description_routing_plan_response = "Routing plan res";
+std::string serialization_format_routing_plan_response = "iS";
+SDPInterfaceDescription interface_description_routing_plan_response(packet_description_routing_plan_response, serialization_format_routing_plan_response);
+
+// Response buffer mac_address -> (request_id, response string)
+std::map<std::string, std::tuple<int32_t, std::string>> _response_buffer;
+
+// Adjacent devices
+std::vector<std::string> adjacent_devices;
+
 // Other
 std::vector<SDPData> data;
 int loop_counter = 0;
+
+void callback_routing_plan_request(const uint8_t *mac_addr,
+                                   const std::vector<SDPData> &body) {
+  int request_id = std::get<int32_t>(body[0]);
+  std::string destination = std::get<std::string>(body[1]);
+  std::string source = _convert_mac_address(mac_addr);
+  std::string result = "";
+  Serial.printf("Routing plan request: %d, %s\n", request_id, destination.c_str());
+  Serial.printf("Source: %s\n", source.c_str());
+  _response_buffer[source] = std::make_tuple(request_id, "");
+  data.clear();
+  data.push_back(SDPData(request_id));
+  data.push_back(SDPData(destination));
+  auto device_interfaces = get_sdp_interfaces();
+  for (auto itr = adjacent_devices.begin(); itr != adjacent_devices.end(); itr++) {
+    if (*itr == source) {
+      continue;
+    }
+    for (auto itr2 = device_interfaces.begin(); itr2 != device_interfaces.end(); itr2++) {
+      if (std::get<1>(*itr2) == *itr) {
+        continue;
+      }
+    }
+  }
+
+  if (not send_sdp_data_packet(packet_description_routing_plan_response, data)) {
+    Serial.println("Failed to send routing plan response");
+  } else {
+    Serial.println("Success to send routing plan response");
+  }
+}
 
 void callback_uwb_toggle(const uint8_t *mac_addr,
                          const std::vector<SDPData> &body) {
@@ -50,7 +97,7 @@ void callback_uwb_toggle(const uint8_t *mac_addr,
   }
 
   if (uwb_on) {
-    Serial.println("Turn On UWB");
+    Serial.printf("Turn On UWB: %d\n", uwb_id);
     initUWB(false, uwb_id, Serial2);
     data_for_uwb_data_packet.clear();
     data_for_uwb_data_packet.push_back(SDPData(uwb_id));
@@ -115,7 +162,7 @@ void setup() {
 #elif defined(M5STACK_CORE2)
   Serial1.begin(115200, SERIAL_8N1, 33, 32);
 #endif
-  if (uwb_id > 0) {
+  if (uwb_id >= 0) {
     bool result = initUWB(false, uwb_id, Serial1);
     data_for_uwb_data_packet.push_back(SDPData(uwb_id));
     if (result) {
@@ -157,7 +204,6 @@ void setup() {
 void loop() {
   delay(5000);
 
-  Serial.println("UWB data content");
   for (auto itr = data_for_information_data_packet.begin(); itr != data_for_information_data_packet.end(); itr++) {
     std::string information = std::get<std::string>(*itr);
     Serial.printf("Information: %s\n", information.c_str());
@@ -169,7 +215,7 @@ void loop() {
   } else {
     Serial.println("Success to send SDP data packet");
   }
-  if (uwb_id > 0) {
+  if (uwb_id >= 0) {
     if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet)) {
       Serial.println("Failed to send UWB SDP data packet");
     } else {
