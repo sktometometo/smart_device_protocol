@@ -28,10 +28,12 @@ jobs:
           - sdp_elevator_status_broadcaster
           - sdp_example
           - sdp_landmark_information
+          - sdp_rpc_example
           - sdp_sesami_host
           - sdp_stickv2_interface
           - sdp_switchbot_light
           - sdp_switchbot_lock
+          - sdp_uwb_waypoint
           - smart_device_protocol_interface
     env:
       CATKIN_WS: /home/runner/work/catkin_ws
