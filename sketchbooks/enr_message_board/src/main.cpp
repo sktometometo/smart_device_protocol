@@ -1,18 +1,15 @@
 
-#include <vector>
-
 #include <M5EPD.h>
-
-#include <esp_system.h>
-#include <esp_now.h>
 #include <WiFi.h>
-
+#include <esp_now.h>
+#include <esp_system.h>
 #include <smart_device_protocol/Packet.h>
 
-#include "sdp/sdp.h"
-#include "utils/config_loader.h"
+#include <vector>
 
 #include "message.h"
+#include "sdp/sdp.h"
+#include "utils/config_loader.h"
 
 // CONFIG
 String device_name = "msg_board";
@@ -31,19 +28,16 @@ std::vector<Message> message_board;
 // Others
 int loop_counter = 0;
 
-void OnDataRecvV1(const uint8_t *mac_addr, const uint8_t *data, int data_len)
-{
+void OnDataRecvV1(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   uint8_t packet_type = get_packet_type(data);
-  if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA)
-  {
+  if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA) {
     auto m = Message(data);
     message_board.push_back(m);
     Serial.printf("Push message from V1 Data\n");
   }
 }
 
-void callback_for_v2(const uint8_t *mac_addr, const std::vector<SDPData> &body)
-{
+void callback_for_v2(const uint8_t *mac_addr, const std::vector<SDPData> &body) {
   std::string source_name = std::get<std::string>(body[0]);
   int32_t duration_until_deletion = std::get<int32_t>(body[1]);
   std::string message = std::get<std::string>(body[2]);
@@ -53,25 +47,21 @@ void callback_for_v2(const uint8_t *mac_addr, const std::vector<SDPData> &body)
   Serial.printf("Push message from V2 Data\n");
 }
 
-void load_config()
-{
+void load_config() {
   StaticJsonDocument<1024> doc;
-  if (not load_json_from_FS<1024>(SD, "/config.json", doc))
-  {
+  if (not load_json_from_FS<1024>(SD, "/config.json", doc)) {
     return;
   }
   if (doc.containsKey("device_name"))
     device_name = doc["device_name"].as<String>();
 }
 
-void clear_canvas(M5EPD_Canvas &canvas)
-{
+void clear_canvas(M5EPD_Canvas &canvas) {
   canvas.clear();
   canvas.setCursor(0, 0);
 }
 
-void init_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Canvas &canvas_message)
-{
+void init_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Canvas &canvas_message) {
   canvas_title.createCanvas(540, 100);
   canvas_status.createCanvas(540, 60);
   canvas_message.createCanvas(540, 800);
@@ -83,15 +73,13 @@ void init_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Can
   clear_canvas(canvas_message);
 }
 
-void update_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Canvas &canvas_message)
-{
+void update_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Canvas &canvas_message) {
   canvas_title.pushCanvas(0, 0, UPDATE_MODE_DU4);
   canvas_status.pushCanvas(0, 100, UPDATE_MODE_DU4);
   canvas_message.pushCanvas(0, 160, UPDATE_MODE_DU4);
 }
 
-void setup()
-{
+void setup() {
   esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
 
   // Init M5Paper
@@ -121,8 +109,7 @@ void setup()
   update_epd(canvas_title, canvas_status, canvas_message);
 }
 
-void loop()
-{
+void loop() {
   Serial.printf("Loop %d\n", loop_counter);
   uint8_t buf[250];
 
@@ -133,30 +120,22 @@ void loop()
   // Show Battery voltage
   uint32_t battery_voltage = M5.getBatteryVoltage();
   clear_canvas(canvas_status);
-  if (loop_counter % 2 == 0)
-  {
+  if (loop_counter % 2 == 0) {
     canvas_status.printf("+ Battery: %u\n", battery_voltage);
-  }
-  else
-  {
+  } else {
     canvas_status.printf("x Battery: %u\n", battery_voltage);
   }
 
   // Shoe messages
   clear_canvas(canvas_message);
-  for (auto m = message_board.begin(); m != message_board.end();)
-  {
-    if (millis() > m->deadline)
-    {
+  for (auto m = message_board.begin(); m != message_board.end();) {
+    if (millis() > m->deadline) {
       m = message_board.erase(m);
-    }
-    else
-    {
+    } else {
       m++;
     }
   }
-  for (auto m = message_board.rbegin(); m != message_board.rend(); m++)
-  {
+  for (auto m = message_board.rbegin(); m != message_board.rend(); m++) {
     canvas_message.println("------------------------------------");
     canvas_message.printf("From: %s\n", m->source_name);
     canvas_message.printf("Duration until deletion(sec): %d\n", (int)((m->deadline - millis()) / 1000));

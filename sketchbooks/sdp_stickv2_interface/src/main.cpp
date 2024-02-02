@@ -1,15 +1,14 @@
+#include <ArduinoJson.h>
 #include <M5Core2.h>
 
-#include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
-#include <ArduinoJson.h>
+#include <LovyanGFX.hpp>
 
-#include "sdp/sdp.h"
-#include "utils/config_loader.h"
 #include "devices/stickv2_util.h"
 #include "devices/uwb_module_util.h"
-
 #include "lcd.h"
+#include "sdp/sdp.h"
+#include "utils/config_loader.h"
 
 // LovyanGFX
 static LGFX lcd;
@@ -33,18 +32,15 @@ String target_class = "person";
 /* UWB */
 int uwb_id = -1;
 
-bool load_config_from_FS(fs::FS &fs, const String &filename)
-{
+bool load_config_from_FS(fs::FS &fs, const String &filename) {
   StaticJsonDocument<1024> doc;
-  if (not load_json_from_FS<1024>(fs, filename, doc))
-  {
+  if (not load_json_from_FS<1024>(fs, filename, doc)) {
     return false;
   }
   if (not doc.containsKey("device_name") or
       not doc.containsKey("uwb_id") or
       not doc.containsKey("threshold") or
-      not doc.containsKey("target_class"))
-  {
+      not doc.containsKey("target_class")) {
     return false;
   }
   device_name = doc["device_name"].as<String>();
@@ -52,15 +48,13 @@ bool load_config_from_FS(fs::FS &fs, const String &filename)
   threashold = doc["threshold"].as<float>();
   target_class = doc["target_class"].as<String>();
 
-  if (doc.containsKey("auto_start"))
-  {
+  if (doc.containsKey("auto_start")) {
     auto_start = doc["auto_start"].as<bool>();
   }
   return true;
 }
 
-void setup()
-{
+void setup() {
   // Initialize
   M5.begin(true, true, true, false);
   Serial1.begin(115200, SERIAL_8N1, 33, 32);
@@ -76,36 +70,30 @@ void setup()
   // Load config
   SD.begin();
   SPIFFS.begin();
-  if (not load_config_from_FS(SD, String("/config.json")))
-  {
-    if (not load_config_from_FS(SPIFFS, String("/config.json")))
-    {
+  if (not load_config_from_FS(SD, String("/config.json"))) {
+    if (not load_config_from_FS(SPIFFS, String("/config.json"))) {
       Serial.println("Failed to load config.");
       sprite_status.println("Failed to load config.");
       update_lcd(lcd, sprite_title, sprite_status, sprite_info);
-      while (true)
-      {
+      while (true) {
         delay(1000);
       }
     }
   }
 
   // UWB Initialization
-  if (not initUWB(false, uwb_id, Serial2))
-  {
+  if (not initUWB(false, uwb_id, Serial2)) {
     Serial.println("UWB Initialization Failed.");
     sprite_status.println("UWB Initialization Failed.");
     update_lcd(lcd, sprite_title, sprite_status, sprite_info);
   }
 
   // SDP Initialization
-  if (not init_sdp(mac_address, device_name.c_str()))
-  {
+  if (not init_sdp(mac_address, device_name.c_str())) {
     Serial.println("SDP Initialization Failed.");
     sprite_status.println("SDP Initialization Failed.");
     update_lcd(lcd, sprite_title, sprite_status, sprite_info);
-    while (true)
-    {
+    while (true) {
       delay(1000);
     }
   }
@@ -122,37 +110,28 @@ void setup()
   update_lcd(lcd, sprite_title, sprite_status, sprite_info);
 }
 
-void loop()
-{
+void loop() {
   auto last_read_stamp = millis();
   StaticJsonDocument<2048> doc;
-  while (true)
-  {
+  while (true) {
     delay(100);
-    if (Serial.available())
-    {
+    if (Serial.available()) {
       String cmd = Serial.readStringUntil('\n');
-      if (cmd == "start")
-      {
+      if (cmd == "start") {
         auto_start = true;
-      }
-      else
-      {
+      } else {
         Serial1.print(cmd);
         String response = Serial1.readStringUntil('\n');
         Serial.printf("Response: %s\n", response.c_str());
       }
     }
-    if (not Serial1.available() and (millis() - last_read_stamp > 10000) and auto_start)
-    {
+    if (not Serial1.available() and (millis() - last_read_stamp > 10000) and auto_start) {
       set_object_recognition_model(Serial1, String("./uploads/models/nanodet_80class"));
       Serial.println("Set objection dection mode.");
       clear_sprite(sprite_info);
       sprite_info.println("Set objection dection mode.");
       last_read_stamp = millis();
-    }
-    else if (Serial1.available())
-    {
+    } else if (Serial1.available()) {
       doc.clear();
       bool success = read_data_from_serial(Serial1, doc);
       String doc_str;
@@ -160,18 +139,15 @@ void loop()
       clear_sprite(sprite_info);
       Serial.printf("Read doc data: %s\n", doc_str.c_str());
       sprite_info.printf("Read doc data: %s\n", doc_str.c_str());
-      if (success and doc.containsKey("num") and doc.containsKey("obj"))
-      {
+      if (success and doc.containsKey("num") and doc.containsKey("obj")) {
         int num_of_target = 0;
         long num_of_objects = doc["num"];
-        for (int i = 0; i < num_of_objects; i++)
-        {
+        for (int i = 0; i < num_of_objects; i++) {
           Serial.printf(" %d th object: %s, %f\n",
                         i,
                         doc["obj"][i]["type"].as<String>().c_str(),
                         doc["obj"][i]["prob"].as<float>());
-          if (doc["obj"][i]["type"] == target_class and doc["obj"][i]["prob"].as<float>() > threashold)
-          {
+          if (doc["obj"][i]["type"] == target_class and doc["obj"][i]["prob"].as<float>() > threashold) {
             ++num_of_target;
           }
         }
@@ -181,9 +157,7 @@ void loop()
         clear_sprite(sprite_status);
         sprite_status.printf("Send SDP packet: %d\n", num_of_target);
         Serial.printf("Send SDP packet: %d\n", num_of_target);
-      }
-      else
-      {
+      } else {
         clear_sprite(sprite_status);
         sprite_status.println("Failed to read data.");
       }
