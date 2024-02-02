@@ -15,6 +15,7 @@ catkin_python_setup()
 add_message_files(
   FILES
   Packet.msg
+  PacketType.msg
   UWBDistance.msg
 )
 
