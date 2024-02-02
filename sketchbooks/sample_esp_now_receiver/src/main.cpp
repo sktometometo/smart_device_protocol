@@ -1,12 +1,12 @@
 #define LGFX_M5STACK
 #define LGFX_USE_V1
 #include <M5Stack.h>
-#include <LovyanGFX.hpp>
-#include <LGFX_AUTODETECT.hpp>
-
-#include <esp_system.h>
-#include <esp_now.h>
 #include <WiFi.h>
+#include <esp_now.h>
+#include <esp_system.h>
+
+#include <LGFX_AUTODETECT.hpp>
+#include <LovyanGFX.hpp>
 
 static LGFX lcd;
 static LGFX_Sprite sprite_device_info(&lcd);
@@ -20,12 +20,12 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   sprite_packet_info.print("Last Packet Recv from: ");
   sprite_packet_info.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
   sprite_packet_info.printf("Last Packet Recv Data(%d) (HEX): ", data_len);
-  for ( int i = 0; i < data_len; i++ ) {
-      sprite_packet_info.printf("%#d ", data[i]);
+  for (int i = 0; i < data_len; i++) {
+    sprite_packet_info.printf("%#d ", data[i]);
   }
   sprite_packet_info.println("");
   sprite_packet_info.printf("Last Packet Recv Data(%d) (string): ", data_len);
-  for ( int i = 0; i < data_len; i++ ) {
+  for (int i = 0; i < data_len; i++) {
     sprite_packet_info.printf("%c", (char)data[i]);
   }
   sprite_packet_info.println("");
@@ -54,14 +54,13 @@ void setup() {
 
   sprite_device_info.println("ESP_NOW broadcast example");
   sprite_device_info.printf(
-          "MAC: %02X:%02X:%02X:%02X:%02X:%02X",
-          mac_address[0],
-          mac_address[1],
-          mac_address[2],
-          mac_address[3],
-          mac_address[4],
-          mac_address[5]
-          );
+      "MAC: %02X:%02X:%02X:%02X:%02X:%02X",
+      mac_address[0],
+      mac_address[1],
+      mac_address[2],
+      mac_address[3],
+      mac_address[4],
+      mac_address[5]);
   sprite_device_info.pushSprite(0, 0);
   sprite_packet_info.pushSprite(0, 50);
 
