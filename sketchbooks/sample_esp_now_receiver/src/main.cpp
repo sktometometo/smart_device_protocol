@@ -50,7 +50,6 @@ void setup() {
   sprite_device_info.setTextSize(1.5, 1.5);
   sprite_packet_info.fillScreen(0xFFFFFF);
   sprite_packet_info.setTextColor(0x000000);
-  //sprite_packet_info.setTextSize(1.5, 1.5)
 
   sprite_device_info.println("ESP_NOW broadcast example");
   sprite_device_info.printf(
