@@ -1,6 +1,6 @@
 #include <LovyanGFX.hpp>
 
-#include "sdp/sdp_util.h"
+#include "sdp/sdp.h"
 
 void init_lcd(LGFX &lcd, LGFX_Sprite &sprite_1, LGFX_Sprite &sprite_2, LGFX_Sprite &sprite_3) {
   lcd.init();
