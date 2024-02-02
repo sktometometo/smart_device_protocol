@@ -117,7 +117,7 @@ void _rpc_meta_frame_broadcast_task(void *parameter) {
 
 void _OnDataRecvRPC(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   int packet_type = get_packet_type(data, data_len);
-  if (packet_type == smart_device_protocol::PACKET_TYPE_DATA) {
+  if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_DATA) {
     auto packet = parse_packet_as_data_packet(data);
     SDPInterfaceDescription interface_description = std::get<0>(packet);
     std::string packet_description = std::get<0>(interface_description);

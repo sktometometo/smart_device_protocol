@@ -2,6 +2,7 @@
 #define SMART_DEVICE_PROTOCOL_PACKET_CREATOR_H__
 
 #include <smart_device_protocol/Packet.h>
+#include <smart_device_protocol/PacketType.h>
 #include <string.h>
 
 #include <variant>
@@ -16,7 +17,7 @@ void generate_meta_frame(uint8_t *packet, const char *device_name,
                          const char *serialization_format_02,
                          const char *packet_description_03,
                          const char *serialization_format_03) {
-  *(uint16_t *)(packet + 0) = smart_device_protocol::Packet::PACKET_TYPE_META;
+  *(uint16_t *)(packet + 0) = smart_device_protocol::PacketType::PACKET_TYPE_META;
   strncpy((char *)(packet + 2), device_name, 20);
   strncpy((char *)(packet + 2 + 20), packet_description_01, 64);
   strncpy((char *)(packet + 2 + 20 + 64), serialization_format_01, 10);
@@ -34,7 +35,7 @@ void generate_rpc_meta_frame(uint8_t *packet, const char *device_name,
                              const char *serialization_format_request,
                              const char *packet_description_response,
                              const char *serialization_format_response) {
-  *(uint16_t *)(packet + 0) = smart_device_protocol::Packet::PACKET_TYPE_RPC_META;
+  *(uint16_t *)(packet + 0) = smart_device_protocol::PacketType::PACKET_TYPE_RPC_META;
   strncpy((char *)(packet + 2), device_name, 20);
   strncpy((char *)(packet + 2 + 20), packet_description_request, 64);
   strncpy((char *)(packet + 2 + 20 + 64), serialization_format_response, 10);
@@ -52,7 +53,7 @@ bool generate_data_frame(uint8_t *packet, const char *packet_description,
   if (strlen(serialization_format) != std::vector<SDPData>(data).size()) {
     return false;
   }
-  *(uint16_t *)(packet + 0) = smart_device_protocol::Packet::PACKET_TYPE_DATA;
+  *(uint16_t *)(packet + 0) = smart_device_protocol::PacketType::PACKET_TYPE_DATA;
   strncpy((char *)(packet + 2), packet_description, 64);
   strncpy((char *)(packet + 2 + 64), serialization_format, 10);
   auto packet_data_p = packet + 2 + 64 + 10;
@@ -114,7 +115,7 @@ bool generate_data_frame(uint8_t *packet, const char *packet_description,
 void create_sensor_enviii_packet(uint8_t *packet, const char *module_name,
                                  int32_t pressure) {
   *(uint16_t *)(packet + 0) =
-      smart_device_protocol::Packet::PACKET_TYPE_SENSOR_ENV_III;
+      smart_device_protocol::PacketType::PACKET_TYPE_SENSOR_ENV_III;
   strncpy((char *)(packet + 2), module_name, 64);
   *(int32_t *)(packet + 2 + 64) = pressure;
 }
@@ -122,7 +123,7 @@ void create_sensor_enviii_packet(uint8_t *packet, const char *module_name,
 void create_sensor_stickv2_packet(uint8_t *packet, uint32_t number_of_person,
                                   const char *place_name) {
   *(uint16_t *)(packet + 0) =
-      smart_device_protocol::Packet::PACKET_TYPE_SENSOR_UNITV2_PERSON_COUNTER;
+      smart_device_protocol::PacketType::PACKET_TYPE_SENSOR_UNITV2_PERSON_COUNTER;
   *(uint32_t *)(packet + 2) = number_of_person;
   strncpy((char *)(packet + 2 + 4), place_name, 64);
 }
@@ -130,7 +131,7 @@ void create_sensor_stickv2_packet(uint8_t *packet, uint32_t number_of_person,
 void create_device_message_board_meta_packet(uint8_t *packet,
                                              const char *module_name) {
   *(uint16_t *)(packet + 0) =
-      smart_device_protocol::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_META;
+      smart_device_protocol::PacketType::PACKET_TYPE_DEVICE_MESSAGE_BOARD_META;
   strncpy((char *)(packet + 2), module_name, 64);
 }
 
@@ -139,7 +140,7 @@ void create_device_message_board_data_packet(uint8_t *packet,
                                              uint64_t timeout_duration,
                                              const char *message) {
   *(uint16_t *)(packet + 0) =
-      smart_device_protocol::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA;
+      smart_device_protocol::PacketType::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA;
   strncpy((char *)(packet + 2), source_name, 64);
   *(uint64_t *)(packet + 2 + 64) = timeout_duration;
   strncpy((char *)(packet + 2 + 64 + 8), message, 64);
