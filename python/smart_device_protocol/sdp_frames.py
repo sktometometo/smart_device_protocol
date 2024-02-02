@@ -1,10 +1,11 @@
 import struct
 from typing import List, Tuple, Union
 
-from smart_device_protocol.msg import Packet
+from smart_device_protocol.msg import Packet, PacketType
 
 PACKET_TYPE_META = Packet.PACKET_TYPE_META
 PACKET_TYPE_DATA = Packet.PACKET_TYPE_DATA
+PACKET_TYPE_RPC_META = PacketType.PACKET_TYPE_RPC_META
 
 
 class BaseFrame:
@@ -80,6 +81,102 @@ class MetaFrame(BaseFrame):
                 )
         return MetaFrame(
             device_name=device_name, interface_descriptions=interface_descriptions
+        )
+
+
+class RPCMetaFrame(BaseFrame):
+    def __init__(
+        self,
+        device_name: str,
+        interface_description_request: Tuple[str, str],
+        interface_description_response: Tuple[str, str],
+    ):
+        self._device_name = device_name
+        self._interface_description_request = interface_description_request
+        self._interface_description_response = interface_description_response
+
+    __hash__ = None
+
+    def __repr__(self):
+        output = f"device_name: {self._device_name}\n"
+        output += "request: ({self._interface_description_request[0]}, {self._interface_description_request[1]})\n"
+        output += "response: ({self._interface_description_response[0]}, {self._interface_description_response[1]})\n"
+        return output
+
+    def __eq__(self, other):
+        if isinstance(other, RPCMetaFrame):
+            return self.__dict__ == other.__dict__
+        return False
+
+    @property
+    def device_name(self):
+        return self._device_name
+
+    @property
+    def interface_description_request(self):
+        return self._interface_description_request
+
+    @property
+    def interface_description_response(self):
+        return self._interface_description_response
+
+    def to_bytes(self) -> bytes:
+        data = struct.pack("<H", PACKET_TYPE_META)
+        data += struct.pack("20s", self._device_name.encode("utf-8"))
+        data += struct.pack(
+            "64s", self.interface_description_request[0].encode("utf-8")
+        )
+        data += struct.pack(
+            "10s", self.interface_description_request[0].encode("utf-8")
+        )
+        data += struct.pack(
+            "64s", self.interface_description_response[0].encode("utf-8")
+        )
+        data += struct.pack(
+            "10s", self.interface_description_response[0].encode("utf-8")
+        )
+        return data
+
+    @staticmethod
+    def from_bytes(data: bytes):
+        packet_type = struct.unpack("<H", data[0:2])[0]
+        if packet_type != PACKET_TYPE_RPC_META:
+            raise ValueError(f"packet type is not RPCMetaFrame: {packet_type}")
+        device_name = (
+            struct.unpack("20s", data[2 : 2 + 20])[0]
+            .decode("utf-8")
+            .replace("\x00", "")
+        )
+        packet_description_request = (
+            struct.unpack("64s", data[22 : 22 + 64])[0]
+            .decode("utf-8")
+            .replace("\x00", "")
+        )
+        serialization_format_request = (
+            struct.unpack("10s", data[22 + 64 : 22 + 64 + 10])[0]
+            .decode("utf-8")
+            .replace("\x00", "")
+        )
+        packet_description_response = (
+            struct.unpack("64s", data[22 + 74 : 22 + 64 + 74])[0]
+            .decode("utf-8")
+            .replace("\x00", "")
+        )
+        serialization_format_response = (
+            struct.unpack("10s", data[22 + 64 + 74 : 22 + 64 + 10 + 74])[0]
+            .decode("utf-8")
+            .replace("\x00", "")
+        )
+        return RPCMetaFrame(
+            device_name=device_name,
+            interface_description_request=(
+                packet_description_request,
+                serialization_format_request,
+            ),
+            interface_description_response=(
+                packet_description_response,
+                serialization_format_response,
+            ),
         )
 
 
