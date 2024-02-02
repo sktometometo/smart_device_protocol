@@ -35,6 +35,7 @@ namespace smart_device_protocol
       enum { PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA =  42 };
       enum { PACKET_TYPE_META =  81 };
       enum { PACKET_TYPE_DATA =  82 };
+      enum { PACKET_TYPE_RPC_META =  83 };
 
     Packet():
       mac_address_length(0), st_mac_address(), mac_address(nullptr),
@@ -99,7 +100,7 @@ namespace smart_device_protocol
     }
 
     virtual const char * getType() override { return "smart_device_protocol/Packet"; };
-    virtual const char * getMD5() override { return "dbab45830b3b1d11bc00c2acc0192a63"; };
+    virtual const char * getMD5() override { return "67d9c59a1ce83e6a42762e0f5d555476"; };
 
   };
 
