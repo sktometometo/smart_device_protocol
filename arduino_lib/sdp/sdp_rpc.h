@@ -13,6 +13,8 @@
  *   - The request id must be unique for each request.
  */
 
+extern inline String _sdp_device_name;
+
 /**
  * Typedefs
  **/
@@ -79,7 +81,10 @@ void _rpc_meta_frame_broadcast_task(void *parameter);
 /**
  * Global variables
  **/
-std::vector<SDPRPCCallbackEntry> _rpc_server_callbacks;  // RPC server callback list
+// RPC server callback list
+std::vector<SDPRPCCallbackEntry> _rpc_server_callbacks;
+// RPC response callback dictionary
+std::map<int32_t, std::tuple<std::string, SDPInterfaceDescription, std::vector<SDPData>>> _rpc_response_callback_dictionary;
 
 /**
  * RPC Library
@@ -99,7 +104,7 @@ bool _broadcast_sdp_rpc_meta_packet(
   std::string request_serialization_format = std::get<1>(interface_request);
   std::string response_packet_description = std::get<0>(interface_response);
   std::string response_serialization_format = std::get<1>(interface_response);
-  generate_rpc_meta_frame(buf, request_packet_description, request_serialization_format, response_packet_description, response_serialization_format);
+  generate_rpc_meta_frame(buf, _sdp_device_name.c_str(), request_packet_description.c_str(), request_serialization_format.c_str(), response_packet_description.c_str(), response_serialization_format.c_str());
   bool success = broadcast_sdp_esp_now_packet(buf, sizeof(buf)) == ESP_OK;
   return success;
 }
@@ -116,7 +121,7 @@ void _rpc_meta_frame_broadcast_task(void *parameter) {
 }
 
 void _OnDataRecvRPC(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
-  int packet_type = get_packet_type(data, data_len);
+  int packet_type = get_packet_type(data);
   if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_DATA) {
     auto packet = parse_packet_as_data_packet(data);
     SDPInterfaceDescription interface_description = std::get<0>(packet);
