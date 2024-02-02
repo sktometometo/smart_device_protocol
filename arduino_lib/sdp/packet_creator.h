@@ -29,6 +29,20 @@ void generate_meta_frame(uint8_t *packet, const char *device_name,
           serialization_format_03, 10);
 }
 
+void generate_rpc_meta_frame(uint8_t *packet, const char *device_name,
+                             const char *packet_description_request,
+                             const char *serialization_format_request,
+                             const char *packet_description_response,
+                             const char *serialization_format_response) {
+  *(uint16_t *)(packet + 0) = smart_device_protocol::Packet::PACKET_TYPE_RPC_META;
+  strncpy((char *)(packet + 2), device_name, 20);
+  strncpy((char *)(packet + 2 + 20), packet_description_request, 64);
+  strncpy((char *)(packet + 2 + 20 + 64), serialization_format_response, 10);
+  strncpy((char *)(packet + 2 + 20 + 64 + 10), packet_description_request, 64);
+  strncpy((char *)(packet + 2 + 20 + 64 + 10 + 64), serialization_format_response,
+          10);
+}
+
 bool generate_data_frame(uint8_t *packet, const char *packet_description,
                          const char *serialization_format,
                          const std::vector<SDPData> &data) {

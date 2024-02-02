@@ -49,6 +49,25 @@ parse_packet_as_meta_packet(const uint8_t *packet) {
                          packet_description_and_serialization_format);
 }
 
+std::tuple<std::string, SDPInterfaceDescription, SDPInterfaceDescription>
+parse_packet_as_rpc_meta_packet(const uint8_t *packet) {
+  std::string device = std::string((char *)(packet + 2), 20);
+  std::string packet_description_request =
+      std::string((char *)(packet + 2 + 20), 64);
+  std::string serialization_format_request =
+      std::string((char *)(packet + 2 + 20 + 64), 10);
+  std::string packet_description_response =
+      std::string((char *)(packet + 2 + 20 + 64 + 10), 64);
+  std::string serialization_format_response =
+      std::string((char *)(packet + 2 + 20 + 64 + 10 + 64), 10);
+
+  return std::make_tuple(device,
+                         std::make_tuple(packet_description_request,
+                                         serialization_format_request),
+                         std::make_tuple(packet_description_response,
+                                         serialization_format_response));
+}
+
 std::tuple<SDPInterfaceDescription, std::vector<SDPData>>
 parse_packet_as_data_packet(const uint8_t *packet) {
   SDPInterfaceDescription packet_description_and_serialization_format =
