@@ -60,6 +60,23 @@ parse_packet_as_rpc_meta_packet(const uint8_t *packet) {
       std::string((char *)(packet + 2 + 20 + 64 + 10), 64);
   std::string serialization_format_response =
       std::string((char *)(packet + 2 + 20 + 64 + 10 + 64), 10);
+  // Remove '\0' characters from strings
+  packet_description_request.erase(
+      std::find(packet_description_request.begin(),
+                packet_description_request.end(), '\0'),
+      packet_description_request.end());
+  serialization_format_request.erase(
+      std::find(serialization_format_request.begin(),
+                serialization_format_request.end(), '\0'),
+      serialization_format_request.end());
+  packet_description_response.erase(
+      std::find(packet_description_response.begin(),
+                packet_description_response.end(), '\0'),
+      packet_description_response.end());
+  serialization_format_response.erase(
+      std::find(serialization_format_response.begin(),
+                serialization_format_response.end(), '\0'),
+      serialization_format_response.end());
 
   return std::make_tuple(device,
                          std::make_tuple(packet_description_request,

@@ -71,7 +71,7 @@ std::vector<std::tuple<std::string, SDPInterfaceDescription, SDPInterfaceDescrip
  * @return true if the request is successful
  * @return false if the request is failed
  */
-bool call_sdp_rpc(const uint8_t *mac_addr, const SDPInterfaceDescription &request_interface, const std::vector<SDPData> &request_body, const SDPInterfaceDescription &response_interface, std::vector<SDPData> &response_body, unsigned long duration = 3000);
+bool call_sdp_rpc(const uint8_t *mac_addr, const SDPInterfaceDescription &request_interface, const std::vector<SDPData> &request_body, const SDPInterfaceDescription &response_interface, std::vector<SDPData> &response_body, unsigned long duration = 5000);
 
 //
 void _OnDataRecvRPC(const uint8_t *mac_addr, const uint8_t *data, int data_len);
@@ -133,7 +133,7 @@ void _OnDataRecvRPC(const uint8_t *mac_addr, const uint8_t *data, int data_len) 
     std::string packet_description = std::get<0>(interface_description);
     std::string serialization_format = std::get<1>(interface_description);
     std::vector<SDPData> body = std::get<1>(packet);
-    std::vector<SDPData> response_body;
+    // Server handler
     for (auto &entry : _rpc_server_callbacks) {
       SDPInterfaceDescription request_interface = std::get<0>(entry);
       std::string request_packet_description = std::get<0>(request_interface);
@@ -143,8 +143,19 @@ void _OnDataRecvRPC(const uint8_t *mac_addr, const uint8_t *data, int data_len) 
       std::string response_serialization_format = std::get<1>(response_interface);
       if (request_packet_description == packet_description and
           request_serialization_format == serialization_format) {
+        std::vector<SDPData> response_body;
         std::get<2>(entry)(mac_addr, body, response_body);
         bool success = send_sdp_data_packet(mac_addr, response_interface, response_body);
+      }
+    }
+    // Client handler
+    for (auto &entry : _rpc_response_callback_dictionary) {
+      std::string mac_addr_str = std::get<0>(entry.second);
+      SDPInterfaceDescription response_interface = std::get<1>(entry.second);
+      std::string response_packet_description = std::get<0>(response_interface);
+      std::string response_serialization_format = std::get<1>(response_interface);
+      if (mac_addr_str == _convert_mac_address(mac_addr) and response_packet_description == packet_description and response_serialization_format == serialization_format) {
+        std::get<2>(entry.second) = body;
       }
     }
   }
@@ -225,8 +236,10 @@ bool call_sdp_rpc(
 
   // Send request
   if (not send_sdp_data_packet(mac_addr, request_interface, request_body)) {
+    Serial.println("Failed to send request");
     return false;
   }
+  Serial.println("Request sent. waiting...");
 
   // Wait for response
   unsigned long start_time = millis();
@@ -244,5 +257,7 @@ bool call_sdp_rpc(
     delay(1);
   }
 
+  // Remove callback
+  _rpc_response_callback_dictionary.erase(request_id);
   return false;
 }
