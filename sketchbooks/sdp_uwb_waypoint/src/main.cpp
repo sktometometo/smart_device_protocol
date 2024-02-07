@@ -13,7 +13,7 @@
 
 #include "devices/uwb_module_util.h"
 #include "lcd.h"
-#include "sdp/sdp_util.h"
+#include "sdp/sdp.h"
 #include "utils/config_loader.h"
 
 // Device name
