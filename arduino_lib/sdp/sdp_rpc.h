@@ -31,7 +31,7 @@ typedef std::tuple<SDPInterfaceDescription, SDPInterfaceDescription, sdp_rpc_cb_
  * @return true if the initialization is successful
  * @return false if the initialization is failed
  */
-bool init_sdp_rpc();
+bool init_sdp_rpc(int task_stack_size = 8192);
 
 /**
  * @brief Register RPC service to the server. The server will call the callback function when the request is received.
@@ -89,10 +89,11 @@ std::map<int32_t, std::tuple<std::string, SDPInterfaceDescription, std::vector<S
 /**
  * RPC Library
  **/
-bool init_sdp_rpc() {
-  auto result = xTaskCreate(_rpc_meta_frame_broadcast_task, "rpc_meta_frame_broadcast_task", 4096, NULL, 5, NULL);
-  return result == pdPASS;
+bool init_sdp_rpc(int task_stack_size) {
+  auto result = xTaskCreate(_rpc_meta_frame_broadcast_task, "rpc_broadcast_task", task_stack_size, NULL, 2, NULL);
+  bool success = result == pdPASS;
   register_sdp_esp_now_recv_callback(_OnDataRecvRPC);
+  return success;
 }
 
 bool _broadcast_sdp_rpc_meta_packet(
@@ -131,11 +132,15 @@ void _OnDataRecvRPC(const uint8_t *mac_addr, const uint8_t *data, int data_len) 
     std::vector<SDPData> response_body;
     for (auto &entry : _rpc_server_callbacks) {
       SDPInterfaceDescription request_interface = std::get<0>(entry);
+      std::string request_packet_description = std::get<0>(request_interface);
+      std::string request_serialization_format = std::get<1>(request_interface);
       SDPInterfaceDescription response_interface = std::get<1>(entry);
-      if (std::get<0>(request_interface) == packet_description and
-          std::get<1>(request_interface) == serialization_format) {
+      std::string response_packet_description = std::get<0>(response_interface);
+      std::string response_serialization_format = std::get<1>(response_interface);
+      if (request_packet_description == packet_description and
+          request_serialization_format == serialization_format) {
         std::get<2>(entry)(mac_addr, body, response_body);
-        send_sdp_data_packet(mac_addr, response_interface, response_body);
+        bool success = send_sdp_data_packet(mac_addr, response_interface, response_body);
       }
     }
   }
@@ -144,6 +149,10 @@ void _OnDataRecvRPC(const uint8_t *mac_addr, const uint8_t *data, int data_len) 
 bool register_rpc_service(const SDPInterfaceDescription &request_description,
                           const SDPInterfaceDescription &response_description,
                           sdp_rpc_cb_t callback) {
+  std::string request_packet_description = std::get<0>(request_description);
+  std::string request_serialization_format = std::get<1>(request_description);
+  std::string response_packet_description = std::get<0>(response_description);
+  std::string response_serialization_format = std::get<1>(response_description);
   _rpc_server_callbacks.push_back(std::make_tuple(request_description, response_description, callback));
   return true;
 }

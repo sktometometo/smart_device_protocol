@@ -38,8 +38,8 @@ void generate_rpc_meta_frame(uint8_t *packet, const char *device_name,
   *(uint16_t *)(packet + 0) = smart_device_protocol::PacketType::PACKET_TYPE_RPC_META;
   strncpy((char *)(packet + 2), device_name, 20);
   strncpy((char *)(packet + 2 + 20), packet_description_request, 64);
-  strncpy((char *)(packet + 2 + 20 + 64), serialization_format_response, 10);
-  strncpy((char *)(packet + 2 + 20 + 64 + 10), packet_description_request, 64);
+  strncpy((char *)(packet + 2 + 20 + 64), serialization_format_request, 10);
+  strncpy((char *)(packet + 2 + 20 + 64 + 10), packet_description_response, 64);
   strncpy((char *)(packet + 2 + 20 + 64 + 10 + 64), serialization_format_response,
           10);
 }
@@ -84,7 +84,7 @@ bool generate_data_frame(uint8_t *packet, const char *packet_description,
       case 's':  // std::holds_alternative<std::string>(*it)
         str = std::get<std::string>(*it);
         if (str.size() > 16) {
-          str.resize(64);
+          str.resize(16);
         }
         for (int i = str.size(); i < 16; ++i) {
           *(char *)(packet_data_p + i) = '\0';
