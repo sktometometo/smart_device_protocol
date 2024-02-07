@@ -77,6 +77,9 @@ bool call_sdp_rpc(const uint8_t *mac_addr, const SDPInterfaceDescription &reques
 void _OnDataRecvRPC(const uint8_t *mac_addr, const uint8_t *data, int data_len);
 bool _broadcast_sdp_rpc_meta_packet(const SDPInterfaceDescription &interface_request, const SDPInterfaceDescription &interface_response);
 void _rpc_meta_frame_broadcast_task(void *parameter);
+void _get_device_interfaces_callback(
+    const uint8_t *mac_addr, const std::string &device_name,
+    const SDPInterfaceDescription &interface_request, const SDPInterfaceDescription &interface_response);
 
 /**
  * Global variables
@@ -85,6 +88,7 @@ void _rpc_meta_frame_broadcast_task(void *parameter);
 std::vector<SDPRPCCallbackEntry> _rpc_server_callbacks;
 // RPC response callback dictionary
 std::map<int32_t, std::tuple<std::string, SDPInterfaceDescription, std::vector<SDPData>>> _rpc_response_callback_dictionary;
+inline std::vector<std::tuple<std::string, SDPInterfaceDescription, SDPInterfaceDescription>> _vector_rpc_interfaces;
 
 /**
  * RPC Library
@@ -166,51 +170,46 @@ void unregister_rpc_service(const SDPInterfaceDescription &request_description) 
   }
 }
 
-// callback for response waiting
-void _request_response_waiting_callback(const uint8_t *mac_addr,
-                                        const SDPInterfaceDescription
-                                            &interface_description,
-                                        const std::vector<SDPData> &body) {
-  // Check if there is a callback matches with the response interface description
-  bool ok = false;
-  for (int i = 0; i < _rpc_response_callback_dictionary.size(); i++) {
-    SDPInterfaceDescription response_interface = std::get<1>(_rpc_response_callback_dictionary[i]);
-    if (std::get<0>(response_interface) == std::get<0>(interface_description) and
-        std::get<1>(response_interface) == std::get<1>(interface_description)) {
-      ok = true;
+std::vector<std::tuple<std::string, SDPInterfaceDescription, SDPInterfaceDescription>> get_rpc_interfaces(unsigned long duration) {
+  _vector_rpc_interfaces.clear();
+  unsigned long start_time = millis();
+  register_sdp_rpc_meta_callback(_get_device_interfaces_callback);
+  while (millis() - start_time < duration) {
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+  unregister_sdp_rpc_meta_callback(_get_device_interfaces_callback);
+  return _vector_rpc_interfaces;
+}
+
+// Call back function for get_device_interfaces() to store MetaFrame
+void _get_device_interfaces_callback(
+    const uint8_t *mac_addr, const std::string &device_name,
+    const SDPInterfaceDescription &interface_request, const SDPInterfaceDescription &interface_response) {
+  std::string address = _convert_mac_address(mac_addr);
+  const std::string &request_packet_description = std::get<0>(interface_request);
+  const std::string &request_serialization_format = std::get<1>(interface_request);
+  const std::string &response_packet_description = std::get<0>(interface_response);
+  const std::string &response_serialization_format = std::get<1>(interface_response);
+  bool ok = true;
+  for (auto &entry : _vector_rpc_interfaces) {
+    std::string &device_address = std::get<0>(entry);
+    SDPInterfaceDescription &entry_request_interface = std::get<1>(entry);
+    SDPInterfaceDescription &entry_response_interface = std::get<2>(entry);
+    std::string &entry_request_packet_description = std::get<0>(entry_request_interface);
+    std::string &entry_request_serialization_format = std::get<1>(entry_request_interface);
+    std::string &entry_response_packet_description = std::get<0>(entry_response_interface);
+    std::string &entry_response_serialization_format = std::get<1>(entry_response_interface);
+    // Add only there is no same entry
+    if (device_address == address and
+        entry_request_packet_description == request_packet_description and
+        entry_request_serialization_format == request_serialization_format) {
+      ok = false;
       break;
     }
   }
-  if (not ok) {
-    return;
+  if (ok) {
+    _vector_rpc_interfaces.push_back(std::make_tuple(address, interface_request, interface_response));
   }
-
-  int32_t request_id = std::get<int32_t>(body[0]);
-  if (_rpc_response_callback_dictionary.find(request_id) ==
-      _rpc_response_callback_dictionary.end()) {
-    return;
-  }
-
-  // Get request and response
-  std::string server_address = std::get<0>(
-      _rpc_response_callback_dictionary[request_id]);
-  SDPInterfaceDescription response_interface = std::get<1>(
-      _rpc_response_callback_dictionary[request_id]);
-
-  // Check if the request is correct
-  if (std::get<0>(response_interface) != std::get<0>(interface_description) or
-      std::get<1>(response_interface) != std::get<1>(interface_description)) {
-    return;
-  }
-
-  // Get response body
-  std::vector<SDPData> response_body;
-  for (int i = 1; i < body.size(); i++) {
-    response_body.push_back(body[i]);
-  }
-
-  // Store response body
-  _rpc_response_callback_dictionary[request_id] = std::make_tuple(server_address, response_interface, response_body);
 }
 
 bool call_sdp_rpc(

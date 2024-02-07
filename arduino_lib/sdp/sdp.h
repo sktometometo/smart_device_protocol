@@ -11,6 +11,7 @@
 #include <esp_now.h>
 #include <esp_system.h>
 #include <smart_device_protocol/Packet.h>
+#include <smart_device_protocol/PacketType.h>
 
 #include <map>
 
@@ -31,6 +32,10 @@ typedef void (*sdp_data_recv_cb_t)(
 typedef void (*sdp_meta_recv_cb_t)(
     const uint8_t *mac_addr, const std::string &device_name,
     const std::vector<SDPInterfaceDescription> &interfaces);
+typedef void (*sdp_rpc_meta_recv_cb_t)(
+    const uint8_t *mac_addr, const std::string &device_name,
+    const SDPInterfaceDescription &interface_request,
+    const SDPInterfaceDescription &interface_response);
 typedef std::tuple<SDPInterfaceDescription, sdp_data_if_recv_cb_t>
     SDPInterfaceCallbackEntry;
 
@@ -41,6 +46,7 @@ inline String _sdp_device_name;
 inline std::vector<SDPInterfaceCallbackEntry> _sdp_interface_data_callbacks;
 inline std::vector<sdp_data_recv_cb_t> _sdp_data_callbacks;
 inline std::vector<sdp_meta_recv_cb_t> _sdp_meta_callbacks;
+inline std::vector<sdp_rpc_meta_recv_cb_t> _sdp_rpc_meta_callbacks;
 inline std::vector<esp_now_recv_cb_t> _esp_now_recv_callbacks;
 // Internal variables for get_sdp_interfaces()
 // Each element stands for mac_addr, device_name, interfaces
@@ -122,6 +128,24 @@ bool register_sdp_meta_callback(sdp_meta_recv_cb_t callback);
  * @return false
  */
 bool unregister_sdp_meta_callback(sdp_meta_recv_cb_t callback);
+
+/**
+ * @brief Register a callback function for a RPCMetaFrame
+ *
+ * @param callback
+ * @return true
+ * @return false
+ */
+bool register_sdp_rpc_meta_callback(sdp_rpc_meta_recv_cb_t callback);
+
+/**
+ * @brief Unregister a callback function for a RPCMetaFrame
+ *
+ * @param callback
+ * @return true
+ * @return false
+ */
+bool unregister_sdp_rpc_meta_callback(sdp_rpc_meta_recv_cb_t callback);
 
 /**
  * @brief Register a callback function for a received ESP-NOW packet
@@ -254,6 +278,14 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
     for (auto &entry : _sdp_meta_callbacks) {
       entry(mac_addr, device_name, interfaces);
     }
+  } else if (packet_type == smart_device_protocol::PacketType::PACKET_TYPE_RPC_META) {
+    auto packet = parse_packet_as_rpc_meta_packet(data);
+    std::string device_name = std::get<0>(packet);
+    SDPInterfaceDescription interface_request = std::get<1>(packet);
+    SDPInterfaceDescription interface_response = std::get<2>(packet);
+    for (auto &entry : _sdp_rpc_meta_callbacks) {
+      entry(mac_addr, device_name, interface_request, interface_response);
+    }
   }
 }
 
@@ -361,6 +393,22 @@ bool unregister_sdp_meta_callback(sdp_meta_recv_cb_t callback) {
        ++it) {
     if (*it == callback) {
       _sdp_meta_callbacks.erase(it);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool register_sdp_rpc_meta_callback(sdp_rpc_meta_recv_cb_t callback) {
+  _sdp_rpc_meta_callbacks.push_back(callback);
+  return true;
+}
+
+bool unregister_sdp_rpc_meta_callback(sdp_rpc_meta_recv_cb_t callback) {
+  for (auto it = _sdp_rpc_meta_callbacks.begin();
+       it != _sdp_rpc_meta_callbacks.end(); ++it) {
+    if (*it == callback) {
+      _sdp_rpc_meta_callbacks.erase(it);
       return true;
     }
   }
