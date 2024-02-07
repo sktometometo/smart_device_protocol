@@ -1,19 +1,14 @@
 import struct
 import time
 from typing import Callable, Dict, List, Optional, Tuple, Union
-from urllib import response
 
 import rospy
-from gpg import Data
 from smart_device_protocol.esp_now_ros_interface import ESPNOWROSInterface
 from smart_device_protocol.msg import Packet, UWBDistance
-from smart_device_protocol.packet_parser import InvalidPacketError, parse_packet_as_v2
-from smart_device_protocol.sdp_frames import (
-    BaseFrame,
-    DataFrame,
-    MetaFrame,
-    RPCMetaFrame,
-)
+from smart_device_protocol.packet_parser import (InvalidPacketError,
+                                                 parse_packet_as_v2)
+from smart_device_protocol.sdp_frames import (BaseFrame, DataFrame, MetaFrame,
+                                              RPCMetaFrame)
 
 
 class SDPInterface:
@@ -22,40 +17,53 @@ class SDPInterface:
     def __init__(
         self,
         callbacks_data: Optional[
-            List[Callable[[Union[List[int], Tuple[int]], BaseFrame], None]]
+            List[Callable[[Tuple[int, int, int, int, int, int], DataFrame], None]]
         ] = None,
         callbacks_meta: Optional[
-            List[Callable[[Union[List[int], Tuple[int]], BaseFrame], None]]
+            List[Callable[[Tuple[int, int, int, int, int, int], MetaFrame], None]]
         ] = None,
         callbacks_rpc_meta: Optional[
-            List[Callable[[Union[List[int], Tuple[int]], BaseFrame], None]]
+            List[Callable[[Tuple[int, int, int, int, int, int], RPCMetaFrame], None]]
         ] = None,
     ):
         """Smart Device Protocol Interface"""
-        self._callbacks_data = callbacks_data
-        self._callbacks_meta = callbacks_meta
-        self._callbacks_rpc_meta = callbacks_rpc_meta
+        self._callbacks_data: List[
+            Callable[[Tuple[int, int, int, int, int, int], DataFrame], None]
+        ] = ([] if callbacks_data is None else callbacks_data)
+        self._callbacks_meta: List[
+            Callable[[Tuple[int, int, int, int, int, int], MetaFrame], None]
+        ] = ([] if callbacks_meta is None else callbacks_meta)
+        self._callbacks_rpc_meta: List[
+            Callable[[Tuple[int, int, int, int, int, int], RPCMetaFrame], None]
+        ] = ([] if callbacks_rpc_meta is None else callbacks_rpc_meta)
         self._smart_device_protocol_interface = ESPNOWROSInterface(self._callback)
 
-    def _callback(self, src_address, data):
+    def _callback(self, src_address: Tuple[int, int, int, int, int, int], data: bytes):
         try:
             _, frame = parse_packet_as_v2(
                 Packet(data=data, mac_address=struct.pack("6B", *list(src_address)))
             )
-        except InvalidPacketError:
-            rospy.logwarn("Failed to parse packet from {}".format(src_address))
+        except InvalidPacketError as e:
+            rospy.logwarn("Failed to parse packet from {}: {}".format(src_address, e))
             return
-        if isinstance(frame, DataFrame) and self._callbacks_data is not None:
-            for cb in self._callbacks_data:
-                cb(src_address, frame)
-        elif isinstance(frame, MetaFrame) and self._callbacks_meta is not None:
-            for cb in self._callbacks_meta:
-                cb(src_address, frame)
-        elif isinstance(frame, RPCMetaFrame) and self._callbacks_rpc_meta is not None:
-            for cb in self._callbacks_rpc_meta:
-                cb(src_address, frame)
+        if isinstance(frame, DataFrame):
+            for cb_data in self._callbacks_data:
+                cb_data(src_address, frame)
+        elif isinstance(frame, MetaFrame):
+            for cb_meta in self._callbacks_meta:
+                cb_meta(src_address, frame)
+        elif isinstance(frame, RPCMetaFrame):
+            for cb_rpc_meta in self._callbacks_rpc_meta:
+                cb_rpc_meta(src_address, frame)
+        else:
+            rospy.logwarn("Unknown frame type: {}".format(type(frame)))
 
-    def send(self, target_address, frame, num_trial=1):
+    def send(
+        self,
+        target_address: Tuple[int, int, int, int, int, int],
+        frame: Union[DataFrame, MetaFrame, RPCMetaFrame],
+        num_trial: int = 1,
+    ):
         if isinstance(frame, DataFrame):
             data = frame.to_bytes()
         elif isinstance(frame, MetaFrame):
@@ -67,45 +75,38 @@ class SDPInterface:
         self._smart_device_protocol_interface.send(target_address, data, num_trial)
 
     def register_callback_data(
-        self, callback: Callable[[Union[List[int], Tuple[int]], BaseFrame], None]
+        self, callback: Callable[[Tuple[int, int, int, int, int, int], DataFrame], None]
     ):
-        if self._callbacks_data is None:
-            self._callbacks_data = []
         self._callbacks_data.append(callback)
 
     def unregister_callback_data(
-        self, callback: Callable[[Union[List[int], Tuple[int]], BaseFrame], None]
+        self, callback: Callable[[Tuple[int, int, int, int, int, int], DataFrame], None]
     ):
-        if self._callbacks_data is not None and callback in self._callbacks_data:
+        if callback in self._callbacks_data:
             self._callbacks_data.remove(callback)
 
     def register_callback_meta(
-        self, callback: Callable[[Union[List[int], Tuple[int]], BaseFrame], None]
+        self, callback: Callable[[Tuple[int, int, int, int, int, int], MetaFrame], None]
     ):
-        if self._callbacks_meta is None:
-            self._callbacks_meta = []
         self._callbacks_meta.append(callback)
 
     def unregister_callback_meta(
-        self, callback: Callable[[Union[List[int], Tuple[int]], BaseFrame], None]
+        self, callback: Callable[[Tuple[int, int, int, int, int, int], MetaFrame], None]
     ):
-        if self._callbacks_meta is not None and callback in self._callbacks_meta:
+        if callback in self._callbacks_meta:
             self._callbacks_meta.remove(callback)
 
     def register_callback_rpc_meta(
-        self, callback: Callable[[Union[List[int], Tuple[int]], BaseFrame], None]
+        self,
+        callback: Callable[[Tuple[int, int, int, int, int, int], RPCMetaFrame], None],
     ):
-        if self._callbacks_rpc_meta is None:
-            self._callbacks_rpc_meta = []
         self._callbacks_rpc_meta.append(callback)
 
     def unregister_callback_rpc_meta(
-        self, callback: Callable[[Union[List[int], Tuple[int]], BaseFrame], None]
+        self,
+        callback: Callable[[Tuple[int, int, int, int, int, int], RPCMetaFrame], None],
     ):
-        if (
-            self._callbacks_rpc_meta is not None
-            and callback in self._callbacks_rpc_meta
-        ):
+        if callback in self._callbacks_rpc_meta:
             self._callbacks_rpc_meta.remove(callback)
 
 
@@ -114,27 +115,72 @@ class DeviceDictSDPInterface(SDPInterface):
 
     def __init__(self, timeout: float = 30.0, **kwargs):
         super().__init__(**kwargs)
-        self._device_interfaces: Dict[Union[List[int], Tuple[int]], Dict] = {}
-        self._device_rpc_interfaces: Dict[Union[List[int], Tuple[int]], Dict] = {}
+        self._device_interfaces: Dict[Tuple[int, int, int, int, int, int], Dict] = {}
+        self._device_rpc_interfaces: Dict[Tuple[int, int, int, int, int, int], Dict] = (
+            {}
+        )
         self._timeout = rospy.Duration(timeout)
         self.register_callback_meta(self._callback_meta_for_device_interfaces)
         self.register_callback_rpc_meta(self._callback_rpc_meta_for_device_interfaces)
 
-    def _callback_rpc_meta_for_device_interfaces(self, src_address, frame):
+    def _callback_meta_for_device_interfaces(
+        self, src_address: Tuple[int, int, int, int, int, int], frame: MetaFrame
+    ):
         # Remove timeout device
         now = rospy.Time.now()
-        for src_address in list(self._device_rpc_interfaces.keys()):
-            device_rpc_interface = self._device_rpc_interfaces[src_address]
+        for address in list(self._device_interfaces.keys()):
+            device_interface = self._device_interfaces[address]
+            if now - device_interface["last_stamp"] > self._timeout:
+                rospy.logwarn(
+                    "Remove timeout device: {}, {}".format(
+                        address, device_interface["device_name"]
+                    )
+                )
+                self._device_interfaces.pop(address)
+
+        # Device interface update
+        if src_address not in list(self._device_interfaces.keys()):
+            rospy.logdebug("Add new device: {}".format(src_address))
+            self._device_interfaces[src_address] = {}
+            self._device_interfaces[src_address]["device_name"] = frame.device_name
+            self._device_interfaces[src_address]["distance"] = None
+            self._device_interfaces[src_address]["uwb_id"] = None
+            self._device_interfaces[src_address]["interfaces"] = []
+
+        self._device_interfaces[src_address]["last_stamp"] = rospy.Time.now()
+
+        for interface_description in frame.interface_descriptions:
+            if (interface_description != ("", "")) and (
+                interface_description
+                not in self._device_interfaces[src_address]["interfaces"]
+            ):
+                rospy.logdebug("Add new interface: {}".format(interface_description))
+                self._device_interfaces[src_address]["interfaces"].append(
+                    interface_description
+                )
+
+    @property
+    def device_interfaces(self):
+        return self._device_interfaces
+
+    def _callback_rpc_meta_for_device_interfaces(
+        self, src_address: Tuple[int, int, int, int, int, int], frame: RPCMetaFrame
+    ):
+        # Remove timeout device
+        now = rospy.Time.now()
+        for address in list(self._device_rpc_interfaces.keys()):
+            device_rpc_interface = self._device_rpc_interfaces[address]
             if now - device_rpc_interface["last_stamp"] > self._timeout:
                 rospy.logwarn(
                     "Remove timeout rpc device: {}, {}".format(
-                        src_address, device_rpc_interface["device_name"]
+                        address, device_rpc_interface["device_name"]
                     )
                 )
-                self._device_rpc_interfaces.pop(src_address)
+                self._device_rpc_interfaces.pop(address)
 
         # Device interface update
-        if src_address not in self._device_rpc_interfaces:
+        if src_address not in list(self._device_rpc_interfaces.keys()):
+            rospy.logdebug("Add new rpc device: {}".format(src_address))
             self._device_rpc_interfaces[src_address] = {}
             self._device_rpc_interfaces[src_address]["device_name"] = frame.device_name
             self._device_rpc_interfaces[src_address]["rpc_interfaces"] = []
@@ -156,47 +202,11 @@ class DeviceDictSDPInterface(SDPInterface):
     def device_rpc_interfaces(self):
         return self._device_rpc_interfaces
 
-    def _callback_meta_for_device_interfaces(self, src_address, frame):
-        # Remove timeout device
-        now = rospy.Time.now()
-        for src_address in list(self._device_interfaces.keys()):
-            device_interface = self._device_interfaces[src_address]
-            if now - device_interface["last_stamp"] > self._timeout:
-                rospy.logwarn(
-                    "Remove timeout device: {}, {}".format(
-                        src_address, device_interface["device_name"]
-                    )
-                )
-                self._device_interfaces.pop(src_address)
-
-        # Device interface update
-        if src_address not in self._device_interfaces:
-            self._device_interfaces[src_address] = {}
-            self._device_interfaces[src_address]["device_name"] = frame.device_name
-            self._device_interfaces[src_address]["distance"] = None
-            self._device_interfaces[src_address]["uwb_id"] = None
-            self._device_interfaces[src_address]["interfaces"] = []
-
-        self._device_interfaces[src_address]["last_stamp"] = rospy.Time.now()
-
-        for interface_description in frame.interface_descriptions:
-            if (interface_description != ("", "")) and (
-                interface_description
-                not in self._device_interfaces[src_address]["interfaces"]
-            ):
-                self._device_interfaces[src_address]["interfaces"].append(
-                    interface_description
-                )
-
-    @property
-    def device_interfaces(self):
-        return self._device_interfaces
-
     def send(
         self,
-        target: Union[Tuple[int], str],
-        frame: Union[DataFrame, MetaFrame],
-        num_trial=1,
+        target: Union[Tuple[int, int, int, int, int, int], str],
+        frame: Union[DataFrame, MetaFrame, RPCMetaFrame],
+        num_trial: int = 1,
     ):
         if isinstance(target, str):
             for src_address, device_interface in self._device_interfaces.items():
@@ -210,7 +220,10 @@ class DeviceDictSDPInterface(SDPInterface):
         super().send(target_address, frame, num_trial)
 
     def rpc_call(
-        self, target: Union[Tuple[int], str], frame: DataFrame, timeout: float = 10.0
+        self,
+        target: Union[Tuple[int, int, int, int, int, int], str],
+        frame: DataFrame,
+        timeout: float = 10.0,
     ) -> Optional[DataFrame]:
         if isinstance(target, str):
             for (
@@ -223,7 +236,16 @@ class DeviceDictSDPInterface(SDPInterface):
             else:
                 raise ValueError(f"Unknown device name: {target}")
         else:
-            target_address = target
+            if len(target) != 6:
+                raise ValueError(f"Invalid target address: {target}")
+            target_address = (
+                int(target[0]),
+                int(target[1]),
+                int(target[2]),
+                int(target[3]),
+                int(target[4]),
+                int(target[5]),
+            )
 
         interface_description_request = frame.interface_description
         interface_description_response = None
@@ -241,7 +263,9 @@ class DeviceDictSDPInterface(SDPInterface):
 
         response_dataframe = None
 
-        def callback(src_address, frame):
+        def callback(
+            src_address: Tuple[int, int, int, int, int, int], frame: DataFrame
+        ):
             nonlocal response_dataframe
             if (
                 src_address == target_address
@@ -265,7 +289,10 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
     def __init__(
         self,
         interface_callbacks: Dict[
-            Tuple[str, str], Callable[[Union[List[int], Tuple[int]], List], None]
+            Tuple[str, str],
+            Callable[
+                [Union[List[int], Tuple[int, int, int, int, int, int]], List], None
+            ],
         ] = {},
         timeout: float = 30.0,
         **kwargs,
@@ -281,7 +308,9 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
     def register_interface_callback(
         self,
         interface_description: Tuple[str, str],
-        callback: Callable[[Union[List[int], Tuple[int]], List], None],
+        callback: Callable[
+            [Union[List[int], Tuple[int, int, int, int, int, int]], List], None
+        ],
     ):
         self._interface_callbacks[interface_description] = callback
 

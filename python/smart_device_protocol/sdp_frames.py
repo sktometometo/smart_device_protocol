@@ -148,22 +148,24 @@ class RPCMetaFrame(BaseFrame):
             .replace("\x00", "")
         )
         packet_description_request = (
-            struct.unpack("64s", data[22 : 22 + 64])[0]
+            struct.unpack("64s", data[2 + 20 : 2 + 20 + 64])[0]
             .decode("utf-8")
             .replace("\x00", "")
         )
         serialization_format_request = (
-            struct.unpack("10s", data[22 + 64 : 22 + 64 + 10])[0]
+            struct.unpack("10s", data[2 + 20 + 64 : 2 + 20 + 64 + 10])[0]
             .decode("utf-8")
             .replace("\x00", "")
         )
         packet_description_response = (
-            struct.unpack("64s", data[22 + 74 : 22 + 64 + 74])[0]
+            struct.unpack("64s", data[2 + 20 + 64 + 10 : 2 + 20 + 64 + 10 + 64])[0]
             .decode("utf-8")
             .replace("\x00", "")
         )
         serialization_format_response = (
-            struct.unpack("10s", data[22 + 64 + 74 : 22 + 64 + 10 + 74])[0]
+            struct.unpack(
+                "10s", data[2 + 20 + 64 + 10 + 64 : 2 + 20 + 64 + 10 + 64 + 10]
+            )[0]
             .decode("utf-8")
             .replace("\x00", "")
         )
@@ -312,4 +314,8 @@ class DataFrame(BaseFrame):
                 index += 64
             else:
                 raise ValueError(f"Unknown format specifier: {format_specifier}")
-        return DataFrame(packet_description=packet_description, content=content)
+        return DataFrame(
+            packet_description=packet_description,
+            content=content,
+            serialization_format=serialization_format,
+        )

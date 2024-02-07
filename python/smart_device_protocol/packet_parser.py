@@ -15,7 +15,10 @@ class InvalidPacketError(Exception):
 
 def parse_packet_as_v2(
     packet: Packet,
-) -> Tuple[Optional[Tuple], Union[MetaFrame, DataFrame, RPCMetaFrame]]:
+) -> Tuple[
+    Optional[Tuple[int, int, int, int, int, int]],
+    Union[MetaFrame, DataFrame, RPCMetaFrame],
+]:
     try:
         src_address = struct.unpack("6B", packet.mac_address)
     except struct.error:
