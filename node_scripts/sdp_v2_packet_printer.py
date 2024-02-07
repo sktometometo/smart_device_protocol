@@ -12,9 +12,9 @@ class Node:
             if target_address_str is not None
             else None
         )
-        self.interface = SDPInterface(
-            callback_data=self.callback, callback_meta=self.callback
-        )
+        self.interface = SDPInterface()
+        self.interface.register_callback_data(self.callback)
+        self.interface.register_callback_meta(self.callback)
 
     def callback(self, src_address, frame):
         if self.target_address is not None:
