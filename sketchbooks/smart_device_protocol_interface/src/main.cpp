@@ -110,7 +110,7 @@ void setup() {
   nh.getParam("~tag_id", &tag_id, 1);
 
   // UWB initialization
-  if (tag_id < 0) {
+  if (tag_id >= 0) {
     uwb_initialized = initUWB(true, tag_id, Serial2);
   } else {
     resetUWB(Serial2);
