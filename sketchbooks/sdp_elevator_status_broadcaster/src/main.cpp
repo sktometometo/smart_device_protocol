@@ -1,14 +1,13 @@
+#include <ArduinoJson.h>
+#include <Dps310.h>
 #include <M5Core2.h>
-
 #include <WiFi.h>
 
-#include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
-#include <Dps310.h>
-#include <ArduinoJson.h>
+#include <LovyanGFX.hpp>
 
-#include "smart_device_protocol/Packet.h"
 #include "sdp/sdp.h"
+#include "smart_device_protocol/Packet.h"
 #include "utils/config_loader.h"
 
 static LGFX lcd;
@@ -43,26 +42,21 @@ typedef struct
 } ElevatorConfig;
 std::vector<ElevatorConfig> elevator_config;
 
-bool load_config_from_FS(fs::FS &fs, const String &filename)
-{
+bool load_config_from_FS(fs::FS &fs, const String &filename) {
   StaticJsonDocument<1024> doc;
-  if (!load_json_from_FS<1024>(fs, filename, doc))
-  {
+  if (!load_json_from_FS<1024>(fs, filename, doc)) {
     return false;
   }
 
-  if (not doc.containsKey("device_name") or not doc.containsKey("elevator_config"))
-  {
+  if (not doc.containsKey("device_name") or not doc.containsKey("elevator_config")) {
     return false;
   }
 
   device_name = doc["device_name"].as<String>();
   JsonArray elevator_config_json = doc["elevator_config"].as<JsonArray>();
-  for (auto itr = elevator_config_json.begin(); itr != elevator_config_json.end(); ++itr)
-  {
+  for (auto itr = elevator_config_json.begin(); itr != elevator_config_json.end(); ++itr) {
     JsonObject e = *itr;
-    if (e.containsKey("floor_num") and e.containsKey("floor_height"))
-    {
+    if (e.containsKey("floor_num") and e.containsKey("floor_height")) {
       ElevatorConfig ec;
       ec.floor_num = e["floor_num"].as<uint8_t>();
       ec.floor_height = e["floor_height"].as<float>();
@@ -72,8 +66,7 @@ bool load_config_from_FS(fs::FS &fs, const String &filename)
   return true;
 }
 
-void init_lcd()
-{
+void init_lcd() {
   // LCD
   lcd.init();
   lcd.setRotation(1);
@@ -91,8 +84,7 @@ void init_lcd()
   sprite_status.setTextColor(0x000000);
 }
 
-void measure_sensors()
-{
+void measure_sensors() {
   M5.IMU.getGyroData(&sensor_gyroX, &sensor_gyroY, &sensor_gyroZ);
   M5.IMU.getAccelData(&sensor_accX, &sensor_accY, &sensor_accZ);
   M5.IMU.getAhrsData(&sensor_pitch, &sensor_roll, &sensor_yaw);
@@ -101,8 +93,7 @@ void measure_sensors()
   Dps310PressureSensor.measureTempOnce(sensor_temp_dps);
 }
 
-void setup()
-{
+void setup() {
   // Device Initialization
   M5.begin(true, false, true, true);
   Serial.begin(115200);
@@ -115,14 +106,11 @@ void setup()
   // Load config
   SD.begin();
   SPIFFS.begin();
-  if (not load_config_from_FS(SD, "/config.json"))
-  {
+  if (not load_config_from_FS(SD, "/config.json")) {
     Serial.println("Failed to load config from SD");
-    if (not load_config_from_FS(SPIFFS, "/config.json"))
-    {
+    if (not load_config_from_FS(SPIFFS, "/config.json")) {
       Serial.println("Failed to load config from SPIFFS");
-      while (true)
-      {
+      while (true) {
         delay(1000);
       }
     }
@@ -139,7 +127,6 @@ void setup()
   sprite_header.pushSprite(0, 0);
 }
 
-void loop()
-{
+void loop() {
   measure_sensors();
 }

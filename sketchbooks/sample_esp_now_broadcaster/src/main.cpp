@@ -1,12 +1,12 @@
 #define LGFX_M5STACK
 #define LGFX_USE_V1
 #include <M5Stack.h>
-#include <LovyanGFX.hpp>
-#include <LGFX_AUTODETECT.hpp>
-
-#include <esp_system.h>
-#include <esp_now.h>
 #include <WiFi.h>
+#include <esp_now.h>
+#include <esp_system.h>
+
+#include <LGFX_AUTODETECT.hpp>
+#include <LovyanGFX.hpp>
 
 static LGFX lcd;
 static LGFX_Sprite sprite_device_info(&lcd);
@@ -50,14 +50,13 @@ void setup() {
 
   sprite_device_info.println("ESP_NOW broadcast example");
   sprite_device_info.printf(
-          "MAC: %02X:%02X:%02X:%02X:%02X:%02X",
-          mac_address[0],
-          mac_address[1],
-          mac_address[2],
-          mac_address[3],
-          mac_address[4],
-          mac_address[5]
-          );
+      "MAC: %02X:%02X:%02X:%02X:%02X:%02X",
+      mac_address[0],
+      mac_address[1],
+      mac_address[2],
+      mac_address[3],
+      mac_address[4],
+      mac_address[5]);
   sprite_device_info.pushSprite(0, 0);
 
   sprite_packet_info.pushSprite(0, 60);
@@ -80,7 +79,7 @@ void setup() {
 }
 void loop() {
   Serial.println("Broadcasted!");
-  esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t*)message, sizeof(message));
+  esp_err_t result = esp_now_send(peer_broadcast.peer_addr, (uint8_t *)message, sizeof(message));
   sprite_send_result.fillScreen(0xFFFFFF);
   sprite_send_result.setCursor(0, 0);
   sprite_send_result.print("Send Status: ");

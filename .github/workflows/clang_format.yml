@@ -20,5 +20,5 @@ jobs:
         git diff --exit-code
     - name: Check Clang Format for sketches
       run: |
-        find arduino_lib -name '*.cpp' -o -name '*.h' | xargs clang-format -i
+        find sketchbooks -name '*.cpp' -o -name '*.h' | xargs clang-format -i
         git diff --exit-code

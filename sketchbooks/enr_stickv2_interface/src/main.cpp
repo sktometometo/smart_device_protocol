@@ -1,15 +1,12 @@
-#include <esp_now.h>
-#include <esp_system.h>
-
+#include <ArduinoJson.h>
 #include <M5Core2.h>
 #include <WiFi.h>
-
-#include <LovyanGFX.hpp>
-#include <LGFX_AUTODETECT.hpp>
-
-#include <ArduinoJson.h>
-
+#include <esp_now.h>
+#include <esp_system.h>
 #include <smart_device_protocol/Packet.h>
+
+#include <LGFX_AUTODETECT.hpp>
+#include <LovyanGFX.hpp>
 
 #include "sdp/packet_creator.h"
 
@@ -29,8 +26,7 @@ uint8_t packet[240];
 
 StaticJsonDocument<BUFSIZE> doc;
 
-void setup()
-{
+void setup() {
   // Initialize
   M5.begin(true, false, true, false);
   Serial1.begin(115200, SERIAL_8N1, 32, 33);
@@ -56,39 +52,29 @@ void setup()
   // ESP-NOW initialization
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
-  if (esp_now_init() == ESP_OK)
-  {
+  if (esp_now_init() == ESP_OK) {
     Serial.println("ESPNow Init Success");
-  }
-  else
-  {
+  } else {
     Serial.println("ESPNow Init Failed");
     ESP.restart();
   }
   // Peer initialization
-  for (int i = 0; i < 6; i++)
-  {
+  for (int i = 0; i < 6; i++) {
     peer.peer_addr[i] = 0xff;
   }
   esp_err_t add_status = esp_now_add_peer(&peer);
 }
 
-void loop()
-{
+void loop() {
   auto last_read_stamp = millis();
-  while (true)
-  {
-    if (not Serial1.available())
-    {
-      if (millis() > last_read_stamp + 10000)
-      {
+  while (true) {
+    if (not Serial1.available()) {
+      if (millis() > last_read_stamp + 10000) {
         Serial1.println("{\"function\": \"object_recognition\", \"args\": [\"./uploads/models/nanodet_80class\"]}");
         Serial.println("Send function command JSON.");
         last_read_stamp = millis();
       }
-    }
-    else
-    {
+    } else {
       last_read_stamp = millis();
 
       int actual_length = Serial1.readBytesUntil('\n', buf, BUFSIZE);
@@ -105,21 +91,17 @@ void loop()
       Serial.print("\n");
 
       DeserializationError error = deserializeJson(doc, buf);
-      if (error)
-      {
+      if (error) {
         Serial.print("JSON deserialization Failed: ");
         Serial.println(error.f_str());
         continue;
       }
 
-      if (doc.containsKey("num") and doc.containsKey("obj"))
-      {
+      if (doc.containsKey("num") and doc.containsKey("obj")) {
         int num_of_person = 0;
         long num_of_objects = doc["num"];
-        for (int i = 0; i < num_of_objects; i++)
-        {
-          if (strncmp(doc["obj"][i]["type"], "person", 3) == 0)
-          {
+        for (int i = 0; i < num_of_objects; i++) {
+          if (strncmp(doc["obj"][i]["type"], "person", 3) == 0) {
             ++num_of_person;
           }
         }
@@ -130,9 +112,7 @@ void loop()
 
         create_sensor_stickv2_packet(packet, num_of_person, place);
         esp_err_t result = esp_now_send(peer.peer_addr, (uint8_t *)packet, sizeof(packet) / sizeof(packet[0]));
-      }
-      else
-      {
+      } else {
         Serial.println("Unknown JSON Structure.");
       }
     }

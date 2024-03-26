@@ -2,8 +2,8 @@
 
 #ifdef USE_DISPLAY
 #define LGFX_AUTODETECT
-#include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
+#include <LovyanGFX.hpp>
 
 // Lovyan GFX
 static inline LGFX lcd;
@@ -11,8 +11,7 @@ static inline LGFX_Sprite sprite_device_info(&lcd);
 static inline LGFX_Sprite sprite_device_status(&lcd);
 static inline LGFX_Sprite sprite_event_info(&lcd);
 
-void init_lcd()
-{
+void init_lcd() {
   lcd.init();
   lcd.setRotation(1);
   lcd.setBrightness(128);
@@ -39,60 +38,50 @@ void init_lcd()
 #endif
 }
 
-void _clear_lcd(LGFX_Sprite& sprite)
-{
+void _clear_lcd(LGFX_Sprite& sprite) {
   sprite.fillScreen(0xFFFFFF);
   sprite.setCursor(0, 0);
 }
 
-void clear_device_info()
-{
+void clear_device_info() {
   _clear_lcd(sprite_device_info);
 }
 
-void clear_device_status()
-{
+void clear_device_status() {
   _clear_lcd(sprite_device_status);
 }
 
-void clear_event_info()
-{
+void clear_event_info() {
   _clear_lcd(sprite_event_info);
 }
 
 template <typename T>
-void print_event_info(T info)
-{
+void print_event_info(T info) {
   sprite_event_info.println(info);
 }
 
 void _update_lcd(LGFX& lcd, LGFX_Sprite& sprite_device_info, LGFX_Sprite& sprite_device_status,
-                 LGFX_Sprite& sprite_event_info)
-{
+                 LGFX_Sprite& sprite_event_info) {
   sprite_device_info.pushSprite(0, 0);
   sprite_device_status.pushSprite(0, lcd.height() / 3);
   sprite_event_info.pushSprite(0, lcd.height() * 2 / 3);
 }
 
-void update_lcd()
-{
+void update_lcd() {
   _update_lcd(lcd, sprite_device_info, sprite_device_status, sprite_device_info);
 }
 
-void print_ros_message_info(const smart_device_protocol::Packet& msg)
-{
+void print_ros_message_info(const smart_device_protocol::Packet& msg) {
   sprite_event_info.printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X\n", msg.mac_address[0], msg.mac_address[1],
                            msg.mac_address[2], msg.mac_address[3], msg.mac_address[4], msg.mac_address[5]);
   sprite_event_info.print("data: ");
-  for (int i = 0; i < msg.data_length; i++)
-  {
+  for (int i = 0; i < msg.data_length; i++) {
     sprite_event_info.printf("%d ", msg.data[i]);
   }
   sprite_event_info.println("");
 }
 
-void print_device_info(const uint8_t* device_mac_address, bool uwb_enabled, int tag_id)
-{
+void print_device_info(const uint8_t* device_mac_address, bool uwb_enabled, int tag_id) {
   sprite_device_info.println("ESP-NOW ROS Driver");
   sprite_device_info.printf("MAC ADDR: %02X:%02X:%02X:%02X:%02X:%02X\n", device_mac_address[0], device_mac_address[1],
                             device_mac_address[2], device_mac_address[3], device_mac_address[4], device_mac_address[5]);
@@ -102,37 +91,29 @@ void print_device_info(const uint8_t* device_mac_address, bool uwb_enabled, int 
 
 #else
 
-void init_lcd()
-{
+void init_lcd() {
 }
 
-void clear_device_info()
-{
+void clear_device_info() {
 }
 
-void clear_device_status()
-{
+void clear_device_status() {
 }
 
-void clear_event_info()
-{
+void clear_event_info() {
 }
 
 template <typename T>
-void print_event_info(T info)
-{
+void print_event_info(T info) {
 }
 
-void update_lcd()
-{
+void update_lcd() {
 }
 
-void print_ros_message_info(const smart_device_protocol::Packet& msg)
-{
+void print_ros_message_info(const smart_device_protocol::Packet& msg) {
 }
 
-void print_device_info(const uint8_t* device_mac_address, bool uwb_enabled, int tag_id)
-{
+void print_device_info(const uint8_t* device_mac_address, bool uwb_enabled, int tag_id) {
 }
 
 #endif

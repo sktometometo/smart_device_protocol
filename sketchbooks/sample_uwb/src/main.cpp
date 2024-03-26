@@ -1,12 +1,11 @@
+#include <Arduino.h>
+#include <WiFi.h>
 #include <esp_now.h>
 #include <esp_system.h>
 
-#include <Arduino.h>
-#include <WiFi.h>
-
 #define LGFX_AUTODETECT
-#include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
+#include <LovyanGFX.hpp>
 
 #include "devices/uwb_module_util.h"
 
@@ -14,8 +13,7 @@ static LGFX lcd;
 static LGFX_Sprite sprite_device_info(&lcd);
 static LGFX_Sprite sprite_event_info(&lcd);
 
-void setup()
-{
+void setup() {
   // Read device mac address
   uint8_t device_mac_address[6] = {0};
   esp_read_mac(device_mac_address, ESP_MAC_WIFI_STA);
@@ -50,21 +48,17 @@ void setup()
   initUWB(false, 1, Serial2);
 }
 
-void loop()
-{
+void loop() {
   delay(100);
   auto ret = readUWB(Serial2);
-  if (ret)
-  {
+  if (ret) {
     Serial.println(*ret);
 
     sprite_event_info.fillScreen(0xFFFFFF);
     sprite_event_info.setCursor(0, 0);
     sprite_event_info.println(*ret);
     sprite_event_info.pushSprite(0, lcd.height() / 3);
-  }
-  else
-  {
+  } else {
     Serial.println("No response");
 
     sprite_event_info.fillScreen(0xFFFFFF);
