@@ -303,13 +303,6 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
         interface_description = frame.interface_description
         if interface_description in self._interface_callbacks:
             self._interface_callbacks[interface_description](src_address, frame)
-        else:
-            rospy.logwarn("Unknown interface: {}".format(interface_description))
-            rospy.logwarn(
-                "known interface list: {}".format(
-                    list(self._interface_callbacks.keys())
-                )
-            )
 
     def register_interface_callback(
         self,
@@ -319,7 +312,6 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
         ],
     ):
         self._interface_callbacks[interface_description] = callback
-        rospy.logwarn("Register callback to {}".format(interface_description))
 
     def unregister_interface_callback(self, interface_description: Tuple[str, str]):
         del self._interface_callbacks[interface_description]
@@ -349,4 +341,3 @@ class UWBSDPInterface(DeviceDictSDPInterfaceWithInterfaceCallback):
     def _interface_callback_to_uwb(self, src_address, frame: DataFrame):
         if src_address in self._device_interfaces:
             self._device_interfaces[src_address]["uwb_id"] = frame.content[0]
-            rospy.logwarn("UWB ID: {}".format(frame.content[0]))
