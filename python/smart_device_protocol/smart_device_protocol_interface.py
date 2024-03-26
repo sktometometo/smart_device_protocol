@@ -5,7 +5,8 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 import rospy
 from smart_device_protocol.esp_now_ros_interface import ESPNOWROSInterface
 from smart_device_protocol.msg import Packet, UWBDistance
-from smart_device_protocol.packet_parser import InvalidPacketError, parse_packet_as_v2
+from smart_device_protocol.packet_parser import (InvalidPacketError,
+                                                 parse_packet_as_v2)
 from smart_device_protocol.sdp_frames import DataFrame, MetaFrame, RPCMetaFrame
 
 
@@ -42,7 +43,7 @@ class SDPInterface:
                 Packet(data=data, mac_address=struct.pack("6B", *list(src_address)))
             )
         except InvalidPacketError as e:
-            rospy.logwarn("Failed to parse packet from {}: {}".format(src_address, e))
+            rospy.logdebug("Failed to parse packet from {}: {}".format(src_address, e))
             return
         if isinstance(frame, DataFrame):
             for cb_data in self._callbacks_data:
