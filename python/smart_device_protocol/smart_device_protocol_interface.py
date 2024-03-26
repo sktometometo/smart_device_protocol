@@ -302,6 +302,9 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
         interface_description = frame.interface_description
         if interface_description in self._interface_callbacks:
             self._interface_callbacks[interface_description](src_address, frame)
+        else:
+            rospy.logwarn("Unknown interface: {}".format(interface_description))
+            rospy.logwarn("known interface list: {}".format(list(self._interface_callbacks.keys())))
 
     def register_interface_callback(
         self,
