@@ -126,16 +126,32 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
 }
 
 void setup() {
+#if defined(M5STACK_FIRE)
   M5.begin(true, true, true, false);
   Serial.begin(115200);
   Serial2.begin(115200, SERIAL_8N1, 22, 21);
+#elif defined(M5STACK_CORE2)
+  M5.begin(true, true, true, false);
+  Serial.begin(115200);
+  Serial2.begin(115200, SERIAL_8N1, 22, 21);
+#endif
 
   // LCD Print
   M5.Lcd.printf("SDP LANDMARK INFORMATION HOST\n");
 
   // Load config from FS
+#if defined(M5STACK_FIRE)
   SPIFFS.begin();
   SD.begin();
+#elif defined(M5STACK_CORE2)
+  SPIFFS.begin();
+  if (!SD.begin()) {
+    M5.lcd.println("Card Mount Failed");
+    while (1) {
+      delay(1000);
+    }
+  }
+#endif
   if (not load_config_from_FS(SD, "/config.json")) {
     if (not load_config_from_FS(SPIFFS, "/config.json")) {
       Serial.println("Failed to load config file");
