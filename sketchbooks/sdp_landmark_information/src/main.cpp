@@ -145,12 +145,7 @@ void setup() {
   SD.begin();
 #elif defined(M5STACK_CORE2)
   SPIFFS.begin();
-  if (!SD.begin()) {
-    M5.lcd.println("Card Mount Failed");
-    while (1) {
-      delay(1000);
-    }
-  }
+  SD.begin();
 #endif
   if (not load_config_from_FS(SD, "/config.json")) {
     if (not load_config_from_FS(SPIFFS, "/config.json")) {
