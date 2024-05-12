@@ -114,6 +114,7 @@ void callback_for_switch_control(const uint8_t* mac_address, const std::vector<S
     Serial.printf("Response: %s\n", ret.c_str());
   }
   Serial.printf("Light Control Command Done\n");
+  sleep(3);
   get_bot_status_and_update_buf();
 }
 
