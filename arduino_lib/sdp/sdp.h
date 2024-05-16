@@ -306,13 +306,15 @@ bool _broadcast_sdp_meta_packet(
 void _meta_frame_broadcast_task(void *parameter) {
   for (;;) {
     vTaskDelay(pdMS_TO_TICKS(1000));
-    for (auto &entry : _sdp_interface_data_callbacks) {
-      const SDPInterfaceDescription
-          &packet_description_and_serialization_format = std::get<0>(entry);
-      _broadcast_sdp_meta_packet(packet_description_and_serialization_format);
-    }
     if (_sdp_interface_data_callbacks.size() == 0) {
+      Serial.println("hoge");
       _broadcast_sdp_meta_packet(std::make_tuple("", ""));
+    } else {
+      for (auto &entry : _sdp_interface_data_callbacks) {
+        const SDPInterfaceDescription
+            &packet_description_and_serialization_format = std::get<0>(entry);
+        _broadcast_sdp_meta_packet(packet_description_and_serialization_format);
+      }
     }
   }
 }
