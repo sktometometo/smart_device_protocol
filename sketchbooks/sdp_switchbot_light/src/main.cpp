@@ -51,7 +51,7 @@ std::vector<SDPData> data;
 StaticJsonDocument<1024> result_json;
 int loop_counter = 0;
 
-void get_bot_status_and_update_buf() {
+String get_bot_status_and_update_buf() {
   Serial.printf("Get switchbot status\n");
   String result = send_serial_command(
       String("") + "{\"command\":\"get_device_status\"," + "\"device_id\":\"" + switchbot_device_id + "\"}\n", 5000);
@@ -59,12 +59,12 @@ void get_bot_status_and_update_buf() {
   if (error or (result_json.containsKey("success") and not result_json["success"].as<bool>())) {
     Serial.printf("deserializeJson() failed or get_device_status failed: %s, result: %s\n", error.c_str(),
                   result.c_str());
-    return;
+    return "";
   } else {
     String power = result_json["result"]["body"]["power"];
     body_status.clear();
     body_status.push_back(SDPData(power == "on" ? true : false));
-    return;
+    return power;
   }
 }
 
@@ -91,6 +91,7 @@ bool load_config_from_FS(fs::FS& fs, String filename = "/config.json") {
 }
 
 void callback_for_switch_control(const uint8_t* mac_address, const std::vector<SDPData>& body) {
+  unsigned int timeout = 10;
   Serial.printf("Length of body: %d\n", body.size());
   bool control = std::get<bool>(body[0]);
   Serial.printf("Light Control Command: %s\n", control ? "ON" : "OFF");
@@ -114,8 +115,15 @@ void callback_for_switch_control(const uint8_t* mac_address, const std::vector<S
     Serial.printf("Response: %s\n", ret.c_str());
   }
   Serial.printf("Light Control Command Done\n");
-  sleep(3);
-  get_bot_status_and_update_buf();
+  int deadline = millis() / 1000 + timeout;
+  while (millis() / 1000 < deadline) {
+    Serial.printf("Fetching result.");
+    String power = get_bot_status_and_update_buf();
+    if (power == (control ? "on" : "off")) {
+      break;
+    }
+    delay(1000);
+  }
 }
 
 void setup() {
