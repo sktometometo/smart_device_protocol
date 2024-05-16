@@ -17,12 +17,19 @@ static LGFX_Sprite sprite_status(&lcd);
 static LGFX_Sprite sprite_info(&lcd);
 
 /* SDP Interface */
-std::string packet_description = "Number of object";
-std::string serialization_format = "i";
+std::string packet_description_mode_change = "Target mode";
+std::string serialization_format_mode_change = "s";
+
+std::string packet_description_object_detection = "Number of object";
+std::string serialization_format_object_detection = "si";
+
+std::string packet_description_face_detection = "Detected face";
+std::string serialization_format_face_detection = "s";
 
 /* device information */
 uint8_t mac_address[6];
 String device_name;
+String target_mode = "object_detection";
 bool auto_start = true;
 
 // Object Detection Threashold
@@ -51,7 +58,18 @@ bool load_config_from_FS(fs::FS &fs, const String &filename) {
   if (doc.containsKey("auto_start")) {
     auto_start = doc["auto_start"].as<bool>();
   }
+  if (doc.containsKey("target_mode")) {
+    target_mode = doc["target_mode"].as<String>();
+  }
   return true;
+}
+
+void mode_change_cb(const uint8_t *addr, const std::vector<SDPData> &data) {
+  if (data.size() == 1) {
+    target_mode = String(std::get<std::string>(data[0]).c_str());
+    clear_sprite(sprite_info);
+    sprite_info.printf("Change mode to %s", target_mode.c_str());
+  }
 }
 
 void setup() {
@@ -98,6 +116,9 @@ void setup() {
     }
   }
 
+  register_sdp_interface_callback(std::make_tuple<>(packet_description_mode_change, serialization_format_mode_change),
+                                  mode_change_cb);
+
   // Display Device Info
   sprite_title.printf("Device Name: %s\n", device_name.c_str());
   sprite_title.printf("MAC Address: %02X:%02X:%02X:%02X:%02X:%02X\n",
@@ -126,37 +147,46 @@ void loop() {
       }
     }
     if (not Serial1.available() and (millis() - last_read_stamp > 10000) and auto_start) {
-      set_object_recognition_model(Serial1, String("./uploads/models/nanodet_80class"));
-      Serial.println("Set objection dection mode.");
+      if (target_mode == "object_detection") {
+        set_object_recognition_model(Serial1, String("./uploads/models/nanodet_80class"));
+      } else if (target_mode == "face_detection") {
+        set_face_recognition(Serial1);
+      } else {
+        clear_sprite(sprite_info);
+        sprite_info.printf("Invalid mode: %s", target_mode.c_str());
+        continue;
+      }
       clear_sprite(sprite_info);
-      sprite_info.println("Set objection dection mode.");
+      sprite_info.printf("Set %s mode.", target_mode.c_str());
       last_read_stamp = millis();
-    } else if (Serial1.available()) {
+    } else if (Serial1.availa++ble()) {
       doc.clear();
       bool success = read_data_from_serial(Serial1, doc);
+      std::vector<String> names;
       String doc_str;
       serializeJson(doc, doc_str);
       clear_sprite(sprite_info);
       Serial.printf("Read doc data: %s\n", doc_str.c_str());
       sprite_info.printf("Read doc data: %s\n", doc_str.c_str());
-      if (success and doc.containsKey("num") and doc.containsKey("obj")) {
-        int num_of_target = 0;
-        long num_of_objects = doc["num"];
-        for (int i = 0; i < num_of_objects; i++) {
-          Serial.printf(" %d th object: %s, %f\n",
-                        i,
-                        doc["obj"][i]["type"].as<String>().c_str(),
-                        doc["obj"][i]["prob"].as<float>());
-          if (doc["obj"][i]["type"] == target_class and doc["obj"][i]["prob"].as<float>() > threashold) {
-            ++num_of_target;
-          }
-        }
+      if (success and parse_object_recognition_response(doc, target_class, threashold) >= 0) {
+        int num_of_target = parse_object_recognition_response(doc, target_class, threashold);
         std::vector<SDPData> data;
+        data.push_back(SDPData(target_class.c_str()));
         data.push_back(SDPData(num_of_target));
-        send_sdp_data_packet(packet_description, data);
+        send_sdp_data_packet(packet_description_object_detection, data);
         clear_sprite(sprite_status);
         sprite_status.printf("Send SDP packet: %d\n", num_of_target);
         Serial.printf("Send SDP packet: %d\n", num_of_target);
+      } else if (success and parse_face_recognition_response(doc, 0.5, 0.5, names)) {
+        std::vector<SDPData> data;
+        for (auto &name : names) {
+          data.clear();
+          data.push_back(SDPData(name.c_str()));
+          send_sdp_data_packet(packet_description_face_detection, data);
+        }
+        clear_sprite(sprite_status);
+        sprite_status.println("Send SDP packet: 1");
+        Serial.println("Send SDP packet: 1");
       } else {
         clear_sprite(sprite_status);
         sprite_status.println("Failed to read data.");
