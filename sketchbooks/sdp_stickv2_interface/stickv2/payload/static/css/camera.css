@@ -1,0 +1,10 @@
+#camera{
+    background-color: transparent!important;
+}
+#camera>svg{
+    width: 2em;
+    height: 2em;      
+}
+#camera>svg:hover{
+    fill:#4b97df;     
+}
