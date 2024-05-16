@@ -29,11 +29,12 @@ std::string serialization_format_face_detection = "s";
 /* device information */
 uint8_t mac_address[6];
 String device_name;
-String target_mode = "object_detection";
 bool auto_start = true;
 
-// Object Detection Threashold
-float threashold = 0.5;
+String target_mode = "object_detection";
+
+// Object Detection threshold
+float threshold = 0.5;
 String target_class = "person";
 
 /* UWB */
@@ -52,7 +53,7 @@ bool load_config_from_FS(fs::FS &fs, const String &filename) {
   }
   device_name = doc["device_name"].as<String>();
   uwb_id = doc["uwb_id"].as<int>();
-  threashold = doc["threshold"].as<float>();
+  threshold = doc["threshold"].as<float>();
   target_class = doc["target_class"].as<String>();
 
   if (doc.containsKey("auto_start")) {
@@ -65,11 +66,10 @@ bool load_config_from_FS(fs::FS &fs, const String &filename) {
 }
 
 void mode_change_cb(const uint8_t *addr, const std::vector<SDPData> &data) {
-  if (data.size() == 1) {
-    target_mode = String(std::get<std::string>(data[0]).c_str());
-    clear_sprite(sprite_info);
-    sprite_info.printf("Change mode to %s", target_mode.c_str());
-  }
+  target_mode = String(std::get<std::string>(data[0]).c_str());
+  clear_sprite(sprite_info);
+  sprite_info.printf("Change mode to %s", target_mode.c_str());
+  set_mode();
 }
 
 void setup() {
@@ -126,9 +126,24 @@ void setup() {
                       mac_address[3], mac_address[4], mac_address[5]);
   sprite_title.printf("UWB ID: %d\n", uwb_id);
   sprite_title.printf("Target Class: %s\n", target_class.c_str());
-  sprite_title.printf("Threashold: %f\n", threashold);
+  sprite_title.printf("threshold: %f\n", threshold);
   sprite_status.println("Initialization Completed.");
   update_lcd(lcd, sprite_title, sprite_status, sprite_info);
+}
+
+bool set_mode() {
+  if (target_mode == "object_detection") {
+    set_object_recognition_model(Serial1, String("./uploads/models/nanodet_80class"));
+  } else if (target_mode == "face_recognition") {
+    set_face_recognition(Serial1);
+  } else {
+    clear_sprite(sprite_info);
+    sprite_info.printf("Invalid mode: %s", target_mode.c_str());
+    return false;
+  }
+  clear_sprite(sprite_info);
+  sprite_info.printf("Set %s mode.", target_mode.c_str());
+  return true;
 }
 
 void loop() {
@@ -147,19 +162,11 @@ void loop() {
       }
     }
     if (not Serial1.available() and (millis() - last_read_stamp > 10000) and auto_start) {
-      if (target_mode == "object_detection") {
-        set_object_recognition_model(Serial1, String("./uploads/models/nanodet_80class"));
-      } else if (target_mode == "face_detection") {
-        set_face_recognition(Serial1);
-      } else {
-        clear_sprite(sprite_info);
-        sprite_info.printf("Invalid mode: %s", target_mode.c_str());
+      last_read_stamp = millis();
+      if (not set_mode()) {
         continue;
       }
-      clear_sprite(sprite_info);
-      sprite_info.printf("Set %s mode.", target_mode.c_str());
-      last_read_stamp = millis();
-    } else if (Serial1.availa++ble()) {
+    } else if (Serial1.available()) {
       doc.clear();
       bool success = read_data_from_serial(Serial1, doc);
       std::vector<String> names;
@@ -168,8 +175,8 @@ void loop() {
       clear_sprite(sprite_info);
       Serial.printf("Read doc data: %s\n", doc_str.c_str());
       sprite_info.printf("Read doc data: %s\n", doc_str.c_str());
-      if (success and parse_object_recognition_response(doc, target_class, threashold) >= 0) {
-        int num_of_target = parse_object_recognition_response(doc, target_class, threashold);
+      if (success and parse_object_recognition_response(doc, target_class, threshold) >= 0) {
+        int num_of_target = parse_object_recognition_response(doc, target_class, threshold);
         std::vector<SDPData> data;
         data.push_back(SDPData(target_class.c_str()));
         data.push_back(SDPData(num_of_target));
