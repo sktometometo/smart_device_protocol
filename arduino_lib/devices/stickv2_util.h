@@ -10,6 +10,7 @@ bool send_data_to_serial(HardwareSerial &serial,
                          StaticJsonDocument<BUFSIZE> &doc) {
   String request;
   serializeJson(doc, request);
+  Serial.printf("Send data: %s\n", request.c_str());
   serial.println(request);
   return true;
 }
@@ -35,6 +36,7 @@ bool set_object_recognition_model(HardwareSerial &serial,
 bool set_face_recognition(HardwareSerial &serial) {
   StaticJsonDocument<BUFSIZE> doc;
   doc["function"] = "face_recognition";
+  JsonArray args = doc.createNestedArray("args");
   return send_data_to_serial(serial, doc);
 }
 
