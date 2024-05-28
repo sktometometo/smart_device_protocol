@@ -176,5 +176,19 @@ void loop() {
     }
   }
   nh.spinOnce();
+  if (not nh.connected()) {
+    resetUWB(Serial2);
+    while (not nh.connected()) {
+      delay(1000);
+      nh.spinOnce();
+    }
+    int tag_id = -1;
+    nh.getParam("~tag_id", &tag_id, 1);
+    if (tag_id >= 0) {
+      uwb_initialized = initUWB(true, tag_id, Serial2);
+    } else {
+      resetUWB(Serial2);
+    }
+  }
   delay(100);
 }
