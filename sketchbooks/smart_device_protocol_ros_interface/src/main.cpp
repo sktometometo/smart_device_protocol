@@ -12,6 +12,7 @@
 // ROS
 #include <smart_device_protocol/Packet.h>
 #include <smart_device_protocol/UWBDistance.h>
+#include <std_msgs/Bool.h>
 
 #include "ros/node_handle.h"
 #if defined(M5STACKATOMS3)
@@ -46,9 +47,11 @@ bool uwb_initialized = false;
 // ROSSerial
 smart_device_protocol::Packet msg_recv_packet;
 smart_device_protocol::UWBDistance msg_uwb;
+std_msgs::Bool msg_uwb_initialized;
 ros::NodeHandle_<ArduinoHardware, 25, 25, 2048, 2048> nh;
 ros::Publisher publisher("/smart_device_protocol/recv", &msg_recv_packet);
 ros::Publisher publisher_uwb("/smart_device_protocol/uwb", &msg_uwb);
+ros::Publisher publisher_uwb_initialized("/smart_device_protocol/uwb_initialized", &msg_uwb_initialized);
 ros::Subscriber<smart_device_protocol::Packet> subscriber("/smart_device_protocol/send", &messageCb);
 
 void messageCb(const smart_device_protocol::Packet &msg) {
@@ -150,6 +153,7 @@ void setup() {
   } else {
     nh.loginfo("UWB Init Failed. Disabled.");
   }
+  msg_uwb_initialized.data = uwb_initialized;
 
   // LCD Initialization
   init_lcd();
@@ -178,9 +182,11 @@ void loop() {
   nh.spinOnce();
   if (not nh.connected()) {
     resetUWB(Serial2);
+    uwb_initialized = false;
     while (not nh.connected()) {
       delay(1000);
       nh.spinOnce();
+      nh.logwarn("Reconnect to ROS.");
     }
     int tag_id = -1;
     nh.getParam("~tag_id", &tag_id, 1);
@@ -189,6 +195,8 @@ void loop() {
     } else {
       resetUWB(Serial2);
     }
+    msg_uwb_initialized.data = uwb_initialized;
   }
+  publisher_uwb_initialized.publish(&msg_uwb_initialized);
   delay(100);
 }
