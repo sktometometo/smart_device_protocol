@@ -20,6 +20,14 @@
 #include "ArduinoHardware.h"
 #endif
 
+#if defined(M5STACKFIRE)
+#include "m5stack_utils/m5stack.h"
+#elif defined(M5STACKCORE2)
+#include "m5stack_utils/m5core2.h"
+#elif defined(M5STACKATOMS3)
+#include "m5stack_utils/m5atoms3.h"
+#endif
+
 #include <WiFi.h>
 
 #include "devices/uwb_module_util.h"
@@ -33,8 +41,6 @@ uint8_t mac_address_for_msg[6];
 uint8_t buffer_for_msg[256];
 
 // UWB
-int8_t uwb_serial_rx_pin = 1;
-int8_t uwb_serial_tx_pin = 2;
 bool uwb_initialized = false;
 
 // ROSSerial
@@ -97,7 +103,7 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
 
 void setup() {
   // UWB initialization
-  Serial2.begin(115200, SERIAL_8N1, uwb_serial_rx_pin, uwb_serial_tx_pin);
+  Serial2.begin(115200, SERIAL_8N1, M5StackSerialPortInfoList[PORT_A].rx, M5StackSerialPortInfoList[PORT_A].tx);
 
   // Rosserial Initialization
   nh.initNode();

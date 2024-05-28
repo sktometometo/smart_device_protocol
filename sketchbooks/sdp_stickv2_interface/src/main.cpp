@@ -7,6 +7,7 @@
 #include "devices/stickv2_util.h"
 #include "devices/uwb_module_util.h"
 #include "lcd.h"
+#include "m5stack_utils/m5core2.h"
 #include "sdp/sdp.h"
 #include "sdp/sdp_rpc.h"
 #include "utils/config_loader.h"
@@ -44,6 +45,9 @@ String target_class = "person";
 
 /* UWB */
 int uwb_id = -1;
+std::string packet_description_uwb = "UWB Station";
+std::string serialization_format_uwb = "i";
+std::vector<SDPData> data_for_uwb_data_packet;
 
 bool set_mode();
 
@@ -92,7 +96,6 @@ void mode_change_handler(const uint8_t *mac_addr, const std::vector<SDPData> &re
 void setup() {
   // Initialize
   M5.begin(true, true, true, false);
-  Serial1.begin(115200, SERIAL_8N1, 33, 32);
   Serial.begin(115200, SERIAL_8N1);
 
   // Display Initialization
@@ -115,12 +118,22 @@ void setup() {
       }
     }
   }
+  SPIFFS.end();
+  SD.end();
+
+  Serial1.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);
+  Serial2.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);
 
   // UWB Initialization
-  if (not initUWB(false, uwb_id, Serial2)) {
-    Serial.println("UWB Initialization Failed.");
-    sprite_status.println("UWB Initialization Failed.");
-    update_lcd(lcd, sprite_title, sprite_status, sprite_info);
+  if (uwb_id >= 0) {
+    data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+    if (not initUWB(false, uwb_id, Serial2)) {
+      Serial.println("UWB Initialization Failed.");
+      sprite_status.println("UWB Initialization Failed.");
+      update_lcd(lcd, sprite_title, sprite_status, sprite_info);
+    }
+  } else {
+    resetUWB(Serial2);
   }
 
   // SDP Initialization
@@ -188,6 +201,7 @@ void loop() {
       }
     }
     if (not Serial1.available() and (millis() - last_read_stamp > 10000) and auto_start) {
+      Serial.println("Timeout for autostart.");
       last_read_stamp = millis();
       if (not set_mode()) {
         continue;
@@ -217,7 +231,7 @@ void loop() {
           std::vector<SDPData> data;
           for (auto &name : names) {
             data.clear();
-            data.push_back(SDPData(name.c_str()));
+            data.push_back(SDPData(std::string(name.c_str())));
             send_sdp_data_packet(packet_description_face_detection, data);
           }
           clear_sprite(sprite_status);
@@ -231,5 +245,13 @@ void loop() {
       last_read_stamp = millis();
     }
     update_lcd(lcd, sprite_title, sprite_status, sprite_info);
+
+    if (uwb_id >= 0) {
+      if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet)) {
+        Serial.println("Failed to send UWB SDP data packet");
+      } else {
+        Serial.println("Success to send UWB SDP data packet");
+      }
+    }
   }
 }

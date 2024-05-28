@@ -3,8 +3,12 @@
 
 #if defined(M5STACK_FIRE)
 #include <M5Stack.h>
+
+#include "m5stack_utils/m5stack.h"
 #elif defined(M5STACK_CORE2)
 #include <M5Core2.h>
+
+#include "m5stack_utils/m5core2.h"
 #endif
 #include <ArduinoJson.h>
 #include <FS.h>
@@ -45,6 +49,10 @@ String wifi_password = "";
 String switchbot_device_id = "";
 String switchbot_token = "";
 String switchbot_secret = "";
+
+// Port configuration
+M5StackSerialPortInfo port_info_m5atoms3 = M5StackSerialPortInfoList[PORT_A];
+M5StackSerialPortInfo port_info_uwb = M5StackSerialPortInfoList[PORT_C];
 
 // Other
 std::vector<SDPData> data;
@@ -129,16 +137,6 @@ void callback_for_switch_control(const uint8_t* mac_address, const std::vector<S
 void setup() {
   M5.begin(true, true, true, false);
   Serial.begin(115200);
-#if defined(M5STACK_FIRE)
-  Serial1.begin(115200, SERIAL_8N1, 16, 17);
-#elif defined(M5STACK_CORE2)
-  Serial1.begin(115200, SERIAL_8N1, 33, 32);
-#endif
-#if defined(M5STACK_FIRE)
-  Serial2.begin(115200, SERIAL_8N1, 22, 21);
-#elif defined(M5STACK_CORE2)
-  Serial2.begin(115200, SERIAL_8N1, 13, 14);
-#endif
 
   M5.Lcd.printf("SDP SWITCHBOT LIGHT HOST\n");
 
@@ -154,6 +152,9 @@ void setup() {
       }
     }
   }
+
+  Serial1.begin(115200, SERIAL_8N1, port_info_uwb.rx, port_info_uwb.tx);
+  Serial2.begin(115200, SERIAL_8N1, port_info_m5atoms3.rx, port_info_m5atoms3.tx);
 
   // Initialization of SDP
   if (not init_sdp(mac_address, device_name.c_str())) {
@@ -172,12 +173,22 @@ void setup() {
                 mac_address[4], mac_address[5]);
   M5.Lcd.printf("SSID: %s\n", wifi_ssid.c_str());
   M5.Lcd.printf("PASS: %s\n", wifi_password.c_str());
-  M5.Lcd.printf("UWB ID: %d\n", uwb_id);
 
   // UWB module
-  bool result = initUWB(false, uwb_id, Serial1);
-  body_uwb.clear();
-  body_uwb.push_back(SDPData(uwb_id));
+  if (uwb_id >= 0) {
+    bool result = initUWB(false, uwb_id, Serial1);
+    body_uwb.clear();
+    body_uwb.push_back(SDPData(uwb_id));
+    if (result) {
+      M5.Lcd.printf("UWB ID: %d\n", uwb_id);
+    } else {
+      uwb_id = -1;
+      M5.Lcd.printf("UWB ID: Failed to initialize\n");
+    }
+  } else {
+    bool result = resetUWB(Serial1);
+    M5.Lcd.printf("UWB ID: Not initialized\n");
+  }
 
   // Wifi Configuration
   Serial.printf("Wifi Configuration\n");
@@ -245,9 +256,11 @@ void loop() {
     Serial.printf("Failed to send SDP data packet\n");
     Serial.printf("packet description is %s\n", packet_description_status.c_str());
   }
-  if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
-    Serial.printf("Failed to send SDP data packet\n");
-    Serial.printf("packet description is %s\n", packet_description_uwb.c_str());
+  if (uwb_id >= 0) {
+    if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
+      Serial.printf("Failed to send SDP data packet\n");
+      Serial.printf("packet description is %s\n", packet_description_uwb.c_str());
+    }
   }
 
   // Get switchbot status

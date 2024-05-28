@@ -57,7 +57,7 @@ void loop() {
     DeserializationError error = deserializeJson(input_json, bufstring.c_str());
 
     if (error) {
-      String message = "deserializeJson() failed: " + String(error.c_str());
+      String message = "deserializeJson() failed: " + String(error.c_str()) + ", input: " + bufstring;
       USBSerial.println(message);
       show_device_info(message.c_str(), sprite_event_info, lcd);
       response_json["success"] = false;

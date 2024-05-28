@@ -169,9 +169,20 @@ void setup() {
                 mac_address[4], mac_address[5]);
 
   // UWB module
-  bool result = initUWB(false, uwb_id, Serial1);
-  body_uwb.clear();
-  body_uwb.push_back(SDPData(uwb_id));
+  if (uwb_id >= 0) {
+    bool result = initUWB(false, uwb_id, Serial1);
+    body_uwb.clear();
+    body_uwb.push_back(SDPData(uwb_id));
+    if (result) {
+      M5.Lcd.printf("UWB ID: %d\n", uwb_id);
+    } else {
+      uwb_id = -1;
+      M5.Lcd.printf("UWB ID: Failed to initialize\n");
+    }
+  } else {
+    bool result = resetUWB(Serial1);
+    M5.Lcd.printf("UWB ID: Not initialized\n");
+  }
 
   // Wifi Configuration
   Serial.printf("Wifi Configuration\n");
@@ -245,8 +256,10 @@ void loop() {
   if (not send_sdp_data_packet(packet_description_status, body_status)) {
     Serial.printf("Failed to send SDP data packet for status\n");
   }
-  if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
-    Serial.printf("Failed to send SDP data packet for uwb\n");
+  if (uwb_id >= 0) {
+    if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
+      Serial.printf("Failed to send SDP data packet for uwb\n");
+    }
   }
 
   clear_recv_buf(5000);
