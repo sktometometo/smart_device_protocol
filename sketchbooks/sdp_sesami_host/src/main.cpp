@@ -1,6 +1,10 @@
 #include <ArduinoJson.h>
 #include <FS.h>
+#if defined(M5STACK_FIRE)
 #include <M5Stack.h>
+#elif defined(M5STACK_CORE2)
+#include <M5Core2.h>
+#endif
 #include <SPIFFS.h>
 #include <smart_device_protocol/Packet.h>
 
@@ -39,6 +43,9 @@ String wifi_password = "";
 String sesami_device_uuid = "";
 String sesami_secret_key = "";
 String sesami_api_key = "";
+
+// Automatic status update duration
+float automatic_status_update_duration = 3600.0;  // sec
 
 // Other
 std::vector<SDPData> data;
@@ -94,6 +101,10 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
   sesami_api_key = doc["sesami_api_key"].as<String>();
   uwb_id = doc["uwb_id"].as<int>();
 
+  if (doc.containsKey("automatic_status_update_duration")) {
+    automatic_status_update_duration = doc["automatic_status_update_duration"].as<float>();
+  }
+
   return true;
 }
 
@@ -120,8 +131,16 @@ void setup() {
 
   M5.begin(true, true, true, false);
   Serial.begin(115200);
+#if defined(M5STACK_FIRE)
   Serial1.begin(115200, SERIAL_8N1, 16, 17);
+#elif defined(M5STACK_CORE2)
+  Serial1.begin(115200, SERIAL_8N1, 33, 32);
+#endif
+#if defined(M5STACK_FIRE)
   Serial2.begin(115200, SERIAL_8N1, 22, 21);
+#elif defined(M5STACK_CORE2)
+  Serial2.begin(115200, SERIAL_8N1, 13, 14);
+#endif
 
   M5.Lcd.printf("SDP SESAMI HOST DEVICE\n");
 
@@ -149,15 +168,33 @@ void setup() {
   register_sdp_interface_callback(interface_description_operation, callback_sesami_operation);
   Serial.println("SDP Initialized!");
 
+  // UWB module
+  bool result = false;
+  if (uwb_id >= 0) {
+    result = initUWB(false, uwb_id, Serial1);
+    if (not result) {
+      uwb_id = -1;
+    } else {
+      data_for_uwb_data_packet.clear();
+      data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+    }
+  } else {
+    result = resetUWB(Serial1);
+  }
+
   // Print info
+  M5.Lcd.printf("====================================\n");
   M5.Lcd.printf("Name: %s\n", device_name.c_str());
   M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
                 mac_address[4], mac_address[5]);
-
-  // UWB module
-  bool result = initUWB(false, uwb_id, Serial1);
-  data_for_uwb_data_packet.clear();
-  data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+  M5.Lcd.printf("WiFi SSID: %s\n", wifi_ssid.c_str());
+  M5.Lcd.printf("WiFi Password: %s\n", wifi_password.c_str());
+  M5.Lcd.printf("SESAMI Device UUID: %s\n", sesami_device_uuid.c_str());
+  M5.Lcd.printf("SESAMI Secret Key: %s\n", sesami_secret_key.c_str());
+  M5.Lcd.printf("SESAMI API Key: %s\n", sesami_api_key.c_str());
+  M5.Lcd.printf("UWB ID: %d\n", uwb_id);
+  M5.Lcd.printf("Automatic status update duration: %f\n", automatic_status_update_duration);
+  M5.Lcd.printf("====================================\n");
 
   // WiFi Configuration
   String ret = send_serial_command(
@@ -221,11 +258,13 @@ void loop() {
   if (not send_sdp_data_packet(packet_description_key_status, data_for_key_status_data_packet)) {
     Serial.println("Failed to send SDP data packet");
   }
-  if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet)) {
-    Serial.println("Failed to send SDP data packet");
+  if (uwb_id >= 0) {
+    if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet)) {
+      Serial.println("Failed to send SDP data packet");
+    }
   }
 
-  if (loop_counter % 50 == 0) {
+  if (loop_counter % (int)(automatic_status_update_duration / 5.0) == 0) {
     get_key_status_and_update_buf();
   }
 
