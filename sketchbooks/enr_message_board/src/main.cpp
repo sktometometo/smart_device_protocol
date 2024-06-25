@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "devices/uwb_module_util.h"
+#include "m5stack_utils/m5paper.h"
 #include "message.h"
 #include "sdp/sdp.h"
 #include "utils/config_loader.h"
@@ -18,6 +20,9 @@ String device_name = "msg_board";
 M5EPD_Canvas canvas_title(&M5.EPD);
 M5EPD_Canvas canvas_status(&M5.EPD);
 M5EPD_Canvas canvas_message(&M5.EPD);
+
+// UWB
+int uwb_id = -1;
 
 // SDP
 uint8_t mac_address[6] = {0};
@@ -89,6 +94,7 @@ void setup() {
   M5.RTC.begin();
   init_epd(canvas_title, canvas_status, canvas_message);
   Serial.println("Start init");
+  Serial2.begin(115200, SERIAL_8N1, M5StackSerialPortInfoList[PORT_A].rx, M5StackSerialPortInfoList[PORT_A].tx);
 
   // Load config
   load_config();
@@ -98,6 +104,8 @@ void setup() {
   register_sdp_esp_now_recv_callback(OnDataRecvV1);
   register_sdp_interface_callback(Message::get_interface_description(), callback_for_v2);
   Serial.println("SDP Initialized!");
+
+  // UWB Initialized
 
   // Show device info
   canvas_title.printf("ENR & SDP MESSAGE BOARD\n");

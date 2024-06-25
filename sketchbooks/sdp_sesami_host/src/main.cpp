@@ -8,6 +8,7 @@
 #include <SPIFFS.h>
 #include <smart_device_protocol/Packet.h>
 
+#include <optional>
 #include <variant>
 #include <vector>
 
@@ -52,24 +53,26 @@ std::vector<SDPData> data;
 StaticJsonDocument<1024> result_json;
 int loop_counter = 0;
 
-void get_key_status_and_update_buf() {
+std::optional<bool> get_key_status_and_update_buf() {
   Serial.printf("Get key status\n");
 
   String result = send_serial_command("{\"command\":\"status\"}\n");
   if (result.length() == 0) {
     Serial.println("Failed to get key status");
-    return;
+    return std::nullopt;
   }
   DeserializationError error = deserializeJson(result_json, result);
   if (error or (result_json.containsKey("success") and not result_json["success"].as<bool>())) {
     Serial.printf("deserializeJson() failed or Failed to get key status: %s\n", error.c_str());
-    return;
+    return std::nullopt;
   } else {
-    String status = result_json["result"]["CHSesami2Status"].as<String>();
+    String status = result_json["result"]["CHSesame2Status"].as<String>();
+    Serial.printf("Key result: %s\n", result_json["result"].as<String>().c_str());
+    Serial.printf("Key status: %s\n", status.c_str());
     bool locked = true ? status == "locked" : false;
     data_for_key_status_data_packet.clear();
     data_for_key_status_data_packet.push_back(SDPData(locked));
-    return;
+    return locked;
   }
 }
 
@@ -116,10 +119,26 @@ void callback_sesami_operation(const uint8_t *mac_address, const std::vector<SDP
     Serial.printf("Lock the key\n");
     String ret = send_serial_command("{\"command\":\"lock\"}\n");
     Serial.printf("Response: %s\n", ret.c_str());
+    auto deadline = millis() + 10000;
+    while (millis() < deadline) {
+      delay(500);
+      std::optional<bool> locked = get_key_status_and_update_buf();
+      if (locked.has_value() and locked.value()) {
+        break;
+      }
+    }
   } else if (operation_key == "unlock") {
     Serial.printf("Unlock the key\n");
     String ret = send_serial_command("{\"command\":\"unlock\"}\n");
     Serial.printf("Response: %s\n", ret.c_str());
+    auto deadline = millis() + 10000;
+    while (millis() < deadline) {
+      delay(500);
+      std::optional<bool> locked = get_key_status_and_update_buf();
+      if (locked.has_value() and not locked.value()) {
+        break;
+      }
+    }
   } else {
     Serial.printf("Unknown operation key\n");
   }
