@@ -23,6 +23,9 @@ M5EPD_Canvas canvas_message(&M5.EPD);
 
 // UWB
 int uwb_id = -1;
+std::string packet_description_uwb = "UWB Station";
+std::string serialization_format_uwb = "i";
+std::vector<SDPData> data_for_uwb_data_packet;
 
 // SDP
 uint8_t mac_address[6] = {0};
@@ -59,6 +62,8 @@ void load_config() {
   }
   if (doc.containsKey("device_name"))
     device_name = doc["device_name"].as<String>();
+  if (doc.containsKey("uwb_id"))
+    uwb_id = doc["uwb_id"].as<int>();
 }
 
 void clear_canvas(M5EPD_Canvas &canvas) {
@@ -94,7 +99,7 @@ void setup() {
   M5.RTC.begin();
   init_epd(canvas_title, canvas_status, canvas_message);
   Serial.println("Start init");
-  Serial2.begin(115200, SERIAL_8N1, M5StackSerialPortInfoList[PORT_A].rx, M5StackSerialPortInfoList[PORT_A].tx);
+  Serial1.begin(115200, SERIAL_8N1, M5StackSerialPortInfoList[PORT_C].rx, M5StackSerialPortInfoList[PORT_C].tx);
 
   // Load config
   load_config();
@@ -106,6 +111,21 @@ void setup() {
   Serial.println("SDP Initialized!");
 
   // UWB Initialized
+  if (uwb_id >= 0 ) {
+    bool result = initUWB(false, uwb_id, Serial1);
+    data_for_uwb_data_packet.clear();
+    data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+    if (result) {
+      Serial.println("Success for initialization of UWB");
+    } else {
+      uwb_id = -1;
+      resetUWB(Serial1);
+      Serial.println("Failed to initialize UWB");
+    }
+  } else {
+    resetUWB(Serial1);
+    Serial.println("UWB is not used");
+  }
 
   // Show device info
   canvas_title.printf("ENR & SDP MESSAGE BOARD\n");
@@ -114,6 +134,7 @@ void setup() {
                       mac_address[0], mac_address[1],
                       mac_address[2], mac_address[3],
                       mac_address[4], mac_address[5]);
+  canvas_title.printf("UWB_ID: %d\n", uwb_id);
   update_epd(canvas_title, canvas_status, canvas_message);
 }
 
