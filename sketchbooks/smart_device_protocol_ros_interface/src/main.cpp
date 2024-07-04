@@ -12,6 +12,7 @@
 // ROS
 #include <smart_device_protocol/Packet.h>
 #include <smart_device_protocol/UWBDistance.h>
+#include <std_srvs/SetBool.h>
 
 #include "ros/node_handle.h"
 #if defined(M5STACKATOMS3)
@@ -33,6 +34,7 @@
 #include "devices/uwb_module_util.h"
 #include "sdp/esp_now.h"
 
+void uwb_toggle(const std_srvs::SetBoolRequest &, std_srvs::SetBoolResponse &);
 void messageCb(const smart_device_protocol::Packet &);
 
 // ESP-NOW
@@ -50,6 +52,36 @@ ros::NodeHandle_<ArduinoHardware, 25, 25, 2048, 2048> nh;
 ros::Publisher publisher("/smart_device_protocol/recv", &msg_recv_packet);
 ros::Publisher publisher_uwb("/smart_device_protocol/uwb", &msg_uwb);
 ros::Subscriber<smart_device_protocol::Packet> subscriber("/smart_device_protocol/send", &messageCb);
+ros::ServiceServer<std_srvs::SetBoolRequest, std_srvs::SetBoolResponse> uwb_toggle_service(
+    "/smart_device_protocol/uwb_toggle", &uwb_toggle);
+
+void uwb_toggle(const std_srvs::SetBoolRequest &req, std_srvs::SetBoolResponse &res) {
+  if (req.data) {
+    if (uwb_initialized) {
+      res.success = true;
+      res.message = "UWB is already enabled.";
+    } else {
+      uwb_initialized = initUWB(true, 1, Serial2);
+      if (uwb_initialized) {
+        res.success = true;
+        res.message = "UWB is enabled.";
+      } else {
+        res.success = false;
+        res.message = "UWB is not enabled.";
+      }
+    }
+  } else {
+    if (uwb_initialized) {
+      resetUWB(Serial2);
+      uwb_initialized = false;
+      res.success = true;
+      res.message = "UWB is disabled.";
+    } else {
+      res.success = true;
+      res.message = "UWB is already disabled.";
+    }
+  }
+}
 
 void messageCb(const smart_device_protocol::Packet &msg) {
   if (msg.mac_address_length != 6) {
@@ -124,9 +156,8 @@ void setup() {
 
   // Subscribe and Publish
   nh.advertise(publisher);
-  if (uwb_initialized) {
-    nh.advertise(publisher_uwb);
-  }
+  nh.advertise(publisher_uwb);
+  nh.advertiseService(uwb_toggle_service);
   nh.subscribe(subscriber);
   while (not nh.connected()) {
     delay(1000);

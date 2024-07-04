@@ -301,6 +301,17 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
 
     def _callback_data_for_interface(self, src_address, frame):
         interface_description = frame.interface_description
+        if src_address in self._device_interfaces:
+            if "broadcast_interfaces" not in self._device_interfaces[src_address]:
+                self._device_interfaces[src_address]["broadcast_interfaces"] = []
+            if (
+                interface_description
+                not in self._device_interfaces[src_address]["broadcast_interfaces"]
+            ):
+                self._device_interfaces[src_address]["broadcast_interfaces"].append(
+                    interface_description
+                )
+            self._device_interfaces[src_address]["last_stamp"] = rospy.Time.now()
         if interface_description in self._interface_callbacks:
             self._interface_callbacks[interface_description](src_address, frame)
 
