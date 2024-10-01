@@ -1,9 +1,17 @@
 #include <ArduinoJson.h>
 #include <HTTPClient.h>
-#include <M5AtomS3.h>
 #include <WiFi.h>
 #include <WiFiMulti.h>
 
+#if defined(ARDUINO_M5AtomS3)
+#include <M5AtomS3.h>
+#define RX_PIN 2
+#define TX_PIN 1
+#elif defined(ARDUINO_M5StickC)
+#include "M5Unified.h"
+#define RX_PIN 32
+#define TX_PIN 33
+#endif
 #include <optional>
 
 #define LGFX_AUTODETECT
@@ -27,8 +35,15 @@ static LGFX_Sprite sprite_device_info(&lcd);
 static LGFX_Sprite sprite_event_info(&lcd);
 
 void setup() {
+#if defined(ARDUINO_M5AtomS3)
   M5.begin(false, true, false, false);
-  Serial2.begin(115200, SERIAL_8N1, 2, 1);
+#elif defined(ARDUINO_M5StickC)
+  auto cfg = M5.config();
+  cfg.serial_baudrate = 115200;
+  
+  M5.begin(true, false, false);
+#endif
+  Serial2.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN);
 
   // LovyanGFX Initialization
   init_screen(lcd, sprite_device_info, sprite_event_info);
