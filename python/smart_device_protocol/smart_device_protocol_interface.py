@@ -5,7 +5,8 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 import rospy
 from smart_device_protocol.esp_now_ros_interface import ESPNOWROSInterface
 from smart_device_protocol.msg import Packet, UWBDistance
-from smart_device_protocol.packet_parser import InvalidPacketError, parse_packet_as_v2
+from smart_device_protocol.packet_parser import (InvalidPacketError,
+                                                 parse_packet_as_v2)
 from smart_device_protocol.sdp_frames import DataFrame, MetaFrame, RPCMetaFrame
 
 
@@ -325,7 +326,9 @@ class DeviceDictSDPInterfaceWithInterfaceCallback(DeviceDictSDPInterface):
         self._interface_callbacks[interface_description] = callback
 
     def unregister_interface_callback(self, interface_description: Tuple[str, str]):
-        del self._interface_callbacks[interface_description]
+        rospy.logwarn(f"self._interface_callbacks: {self._interface_callbacks}")
+        if interface_description in self._interface_callbacks:
+            del self._interface_callbacks[interface_description]
 
 
 class UWBSDPInterface(DeviceDictSDPInterfaceWithInterfaceCallback):
@@ -347,6 +350,7 @@ class UWBSDPInterface(DeviceDictSDPInterfaceWithInterfaceCallback):
         for src_address, device_interface in self.device_interfaces.items():
             if device_interface["uwb_id"] == uwb_id:
                 self._device_interfaces[src_address]["distance"] = distance
+                self._device_interfaces[src_address]["distance_stamp"] = msg.header.stamp
                 break
 
     def _interface_callback_to_uwb(self, src_address, frame: DataFrame):

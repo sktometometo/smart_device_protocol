@@ -1,5 +1,16 @@
 #include <ArduinoJson.h>
+
+#if defined(M5STACK_CORE2)
 #include <M5Core2.h>
+
+#include "m5stack_utils/m5core2.h"
+#elif defined(M5STACK_FIRE)
+#include <M5Stack.h>
+
+#include "m5stack_utils/m5stack.h"
+#endif
+
+#include <smart_device_protocol/Packet.h>
 
 #include <LGFX_AUTODETECT.hpp>
 #include <LovyanGFX.hpp>
@@ -7,7 +18,6 @@
 #include "devices/stickv2_util.h"
 #include "devices/uwb_module_util.h"
 #include "lcd.h"
-#include "m5stack_utils/m5core2.h"
 #include "sdp/sdp.h"
 #include "sdp/sdp_rpc.h"
 #include "utils/config_loader.h"
@@ -121,8 +131,8 @@ void setup() {
   SPIFFS.end();
   SD.end();
 
-  Serial1.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);
-  Serial2.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);
+  Serial1.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);  // PORT A -> StickV2
+  Serial2.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);  // PORT C -> UWB
 
   // UWB Initialization
   if (uwb_id >= 0) {

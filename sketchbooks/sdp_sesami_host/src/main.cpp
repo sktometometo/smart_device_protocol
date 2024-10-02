@@ -2,8 +2,12 @@
 #include <FS.h>
 #if defined(M5STACK_FIRE)
 #include <M5Stack.h>
+
+#include "m5stack_utils/m5stack.h"
 #elif defined(M5STACK_CORE2)
 #include <M5Core2.h>
+
+#include "m5stack_utils/m5core2.h"
 #endif
 #include <SPIFFS.h>
 #include <smart_device_protocol/Packet.h>
@@ -150,16 +154,8 @@ void setup() {
 
   M5.begin(true, true, true, false);
   Serial.begin(115200);
-#if defined(M5STACK_FIRE)
-  Serial1.begin(115200, SERIAL_8N1, 16, 17);
-#elif defined(M5STACK_CORE2)
-  Serial1.begin(115200, SERIAL_8N1, 33, 32);
-#endif
-#if defined(M5STACK_FIRE)
-  Serial2.begin(115200, SERIAL_8N1, 22, 21);
-#elif defined(M5STACK_CORE2)
-  Serial2.begin(115200, SERIAL_8N1, 13, 14);
-#endif
+  Serial1.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);
+  Serial2.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);
 
   M5.Lcd.printf("SDP SESAMI HOST DEVICE\n");
 

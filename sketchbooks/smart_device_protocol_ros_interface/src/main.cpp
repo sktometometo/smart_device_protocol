@@ -7,7 +7,9 @@
 #endif
 
 // LCD
+#if defined(USE_DISPLAY)
 #include "lcd.h"
+#endif
 
 // ROS
 #include <smart_device_protocol/Packet.h>
@@ -23,6 +25,10 @@
 
 #if defined(M5STACKFIRE)
 #include "m5stack_utils/m5stack.h"
+#elif defined(M5ATOMLITE)
+#include "m5stack_utils/m5atomlite.h"
+#elif defined(M5STICKCPLUS)
+#include "m5stack_utils/m5stickcplus.h"
 #elif defined(M5STACKCORE2)
 #include "m5stack_utils/m5core2.h"
 #elif defined(M5STACKATOMS3)
@@ -100,10 +106,12 @@ void messageCb(const smart_device_protocol::Packet &msg) {
   esp_err_t del_status = esp_now_del_peer(peer_temp.peer_addr);
 
   // Display
+#if defined(USE_DISPLAY)
   clear_event_info();
   print_event_info("Send a packet");
   print_ros_message_info(msg);
   update_lcd();
+#endif
 
   // ROS Logging
   nh.logdebug("Subscribe a message and send a packet.");
@@ -124,10 +132,12 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   nh.spinOnce();
 
   // Display
+#if defined(USE_DISPLAY)
   clear_event_info();
   print_event_info("Receive a packet");
   print_ros_message_info(msg_recv_packet);
   update_lcd();
+#endif
 
   // Log
   nh.logdebug("Received a packet and publish a message.");
@@ -183,12 +193,16 @@ void setup() {
   }
 
   // LCD Initialization
+#if defined(USE_DISPLAY)
   init_lcd();
+#endif
 
   // Display
+#if defined(USE_DISPLAY)
   clear_device_info();
   print_device_info(device_mac_address, uwb_initialized, tag_id);
   update_lcd();
+#endif
 }
 
 void loop() {
