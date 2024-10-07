@@ -1,0 +1,4 @@
+earlephilhower/ESP8266Audio @ ^1.9.7
+bblanchon/ArduinoJson @ ^6
+m5stack/M5Atom
+FastLED/FastLED@^3.5.0
