@@ -18,18 +18,6 @@ uint8_t microphonedata0[1024 * 80];
 int data_offset = 0;
 bool installed = false;
 
-i2s_pin_config_t tx_pin_config;
-i2s_config_t i2s_config = {
-    .mode = (i2s_mode_t)(I2S_MODE_MASTER),
-    .sample_rate = 16000,
-    .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,  // is fixed at 12bit, stereo, MSB
-    .channel_format = I2S_CHANNEL_FMT_ALL_RIGHT,
-    .communication_format = I2S_COMM_FORMAT_I2S,
-    .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
-    .dma_buf_count = 6,
-    .dma_buf_len = 60,
-};
-
 bool InitI2SSpeakerOrMic(int mode) {
   esp_err_t ret = ESP_OK;
 
@@ -41,6 +29,16 @@ bool InitI2SSpeakerOrMic(int mode) {
     }
   }
   installed = true;
+  i2s_config_t i2s_config = {
+      .mode = (i2s_mode_t)(I2S_MODE_MASTER),
+      .sample_rate = 16000,
+      .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,  // is fixed at 12bit, stereo, MSB
+      .channel_format = I2S_CHANNEL_FMT_ALL_RIGHT,
+      .communication_format = I2S_COMM_FORMAT_I2S,
+      .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
+      .dma_buf_count = 6,
+      .dma_buf_len = 60,
+  };
   if (mode == MODE_MIC) {
     i2s_config.mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM);
   } else {
@@ -55,6 +53,7 @@ bool InitI2SSpeakerOrMic(int mode) {
     return false;
   }
 
+  i2s_pin_config_t tx_pin_config;
   tx_pin_config.mck_io_num = GPIO_NUM_0;
   tx_pin_config.bck_io_num = CONFIG_I2S_BCK_PIN;
   tx_pin_config.ws_io_num = CONFIG_I2S_LRCK_PIN;
