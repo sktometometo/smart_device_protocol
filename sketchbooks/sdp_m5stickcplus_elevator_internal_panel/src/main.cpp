@@ -41,15 +41,10 @@ String device_name;
 uint8_t mac_address[6] = {0};
 
 // Interface
-std::string packet_description_control = "Servo control";
+std::string packet_description_control = "Target floor";
 std::string serialization_format_control = "i";
 SDPInterfaceDescription interface_description_control =
     std::make_tuple(packet_description_control, serialization_format_control);
-
-// Light Status
-std::string packet_description_status = "Servo status (cur, min, max)";
-std::string serialization_format_status = "iii";
-std::vector<SDPData> body_status;
 
 // UWB
 int uwb_id = -1;
@@ -60,6 +55,8 @@ std::vector<SDPData> body_uwb;
 //
 int current_target = 0;
 int current_angle = 0;
+bool press = false;
+unsigned long last_pressed_sec = 0;
 
 // Other
 std::vector<SDPData> data;
@@ -92,22 +89,12 @@ void init_servo() {
 }
 
 void callback_for_servo_control(const uint8_t* mac_address, const std::vector<SDPData>& body) {
-  Serial.printf("Length of body: %d\n", body.size());
-  current_target = std::get<int32_t>(body[0]);
-  Serial.printf("Target: %d\n", current_target);
+  int32_t target_floor = std::get<int32_t>(body[0]);
+  if (target_floor == 2) {
+    press = true;
+    last_pressed_sec = millis() / 1000;
+  }
 }
-
-// void setup() {
-//   M5.begin(true, true, true);
-//   init_servo();
-// }
-
-// void loop() {
-//   for (int i = SERVO_MIN_ANGLE; i <= SERVO_MAX_ANGLE; i = i + 10) {
-//     move_servo(i);
-//     delay(1000);
-//   }
-// }
 
 void setup() {
   // put your setup code here, to run once:
@@ -159,6 +146,14 @@ void setup() {
 
 void loop() {
   delay(100);
+  if (press) {
+    current_target = 180;
+    if (millis() / 1000 - last_pressed_sec > 5) {
+      press = false;
+      current_target = 0;
+    }
+  }
+
   // current angle update
   if (current_target < SERVO_MIN_ANGLE) {
     current_target = SERVO_MIN_ANGLE;
@@ -181,14 +176,6 @@ void loop() {
   move_servo(current_angle);
   Serial.printf("Current target: %d, angle: %d\n", current_target, current_angle);
   // Send SDP Data
-  body_status.clear();
-  body_status.push_back(SDPData((int32_t)current_angle));
-  body_status.push_back(SDPData((int32_t)SERVO_MIN_ANGLE));
-  body_status.push_back(SDPData((int32_t)SERVO_MAX_ANGLE));
-  if (not send_sdp_data_packet(packet_description_status, body_status)) {
-    Serial.printf("Failed to send SDP data packet\n");
-    Serial.printf("packet description is %s\n", packet_description_status.c_str());
-  }
   if (uwb_id >= 0) {
     if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
       Serial.printf("Failed to send SDP data packet\n");

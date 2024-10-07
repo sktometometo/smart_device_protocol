@@ -27,8 +27,8 @@ String device_name;
 uint8_t mac_address[6] = {0};
 
 // Interface
-std::string packet_description_control = "Light control";
-std::string serialization_format_control = "?";
+std::string packet_description_control = "Elevator call";
+std::string serialization_format_control = "s";
 SDPInterfaceDescription interface_description_control =
     std::make_tuple(packet_description_control, serialization_format_control);
 
@@ -46,9 +46,10 @@ std::vector<SDPData> body_uwb;
 // Switchbot Client Configuration
 String wifi_ssid = "";
 String wifi_password = "";
-String switchbot_device_id = "";
 String switchbot_token = "";
 String switchbot_secret = "";
+String switchbot_upward_device_id = "";
+String switchbot_downward_device_id = "";
 
 // Port configuration
 M5StackSerialPortInfo port_info_m5atoms3 = M5StackSerialPortInfoList[PORT_A];
@@ -57,24 +58,6 @@ M5StackSerialPortInfo port_info_uwb = M5StackSerialPortInfoList[PORT_C];
 // Other
 std::vector<SDPData> data;
 StaticJsonDocument<1024> result_json;
-int loop_counter = 0;
-
-String get_bot_status_and_update_buf() {
-  Serial.printf("Get switchbot status\n");
-  String result = send_serial_command(
-      String("") + "{\"command\":\"get_device_status\"," + "\"device_id\":\"" + switchbot_device_id + "\"}\n", 5000);
-  DeserializationError error = deserializeJson(result_json, result);
-  if (error or (result_json.containsKey("success") and not result_json["success"].as<bool>())) {
-    Serial.printf("deserializeJson() failed or get_device_status failed: %s, result: %s\n", error.c_str(),
-                  result.c_str());
-    return "";
-  } else {
-    String power = result_json["result"]["body"]["power"];
-    body_status.clear();
-    body_status.push_back(SDPData(power == "on" ? true : false));
-    return power;
-  }
-}
 
 bool load_config_from_FS(fs::FS& fs, String filename = "/config.json") {
   StaticJsonDocument<1024> doc;
@@ -82,9 +65,14 @@ bool load_config_from_FS(fs::FS& fs, String filename = "/config.json") {
     return false;
   }
 
-  if (not doc.containsKey("device_name") or not doc.containsKey("wifi_ssid") or not doc.containsKey("wifi_password") or
-      not doc.containsKey("switchbot_token") or not doc.containsKey("switchbot_secret") or
-      not doc.containsKey("switchbot_device_id") or not doc.containsKey("uwb_id")) {
+  if (not doc.containsKey("device_name") or
+      not doc.containsKey("wifi_ssid") or
+      not doc.containsKey("wifi_password") or
+      not doc.containsKey("switchbot_token") or
+      not doc.containsKey("switchbot_secret") or
+      not doc.containsKey("switchbot_upward_device_id") or
+      not doc.containsKey("switchbot_downward_device_id") or
+      not doc.containsKey("uwb_id")) {
     return false;
   }
 
@@ -93,44 +81,31 @@ bool load_config_from_FS(fs::FS& fs, String filename = "/config.json") {
   wifi_password = doc["wifi_password"].as<String>();
   switchbot_token = doc["switchbot_token"].as<String>();
   switchbot_secret = doc["switchbot_secret"].as<String>();
-  switchbot_device_id = doc["switchbot_device_id"].as<String>();
+  switchbot_upward_device_id = doc["switchbot_upward_device_id"].as<String>();
+  switchbot_downward_device_id = doc["switchbot_downward_device_id"].as<String>();
   uwb_id = doc["uwb_id"].as<int>();
   return true;
 }
 
-void callback_for_switch_control(const uint8_t* mac_address, const std::vector<SDPData>& body) {
-  unsigned int timeout = 10;
+void callback_for_elevator_panel_control(const uint8_t* mac_address, const std::vector<SDPData>& body) {
   Serial.printf("Length of body: %d\n", body.size());
-  bool control = std::get<bool>(body[0]);
-  Serial.printf("Light Control Command: %s\n", control ? "ON" : "OFF");
-  if (control) {
-    Serial.printf("Turn On the light.\n");
+  std::string target = std::get<std::string>(body[0]);
+  if (target == "up") {
+    Serial.printf("Press upward button\n");
     String ret = send_serial_command(String("") + "{\"command\":\"send_device_command\"," + "\"device_id\":\"" +
-                                         switchbot_device_id + "\"," + "\"sb_command_type\":\"command\"," +
-                                         "\"sb_command\":\"turnOn\"}\n",
+                                         switchbot_upward_device_id + "\"," + "\"sb_command_type\":\"command\"," +
+                                         "\"sb_command\":\"press\"}\n",
+                                     10000);
+    Serial.printf("Response: %s\n", ret.c_str());
+  } else if (target == "down") {
+    Serial.printf("Press downward button\n");
+    String ret = send_serial_command(String("") + "{\"command\":\"send_device_command\"," + "\"device_id\":\"" +
+                                         switchbot_downward_device_id + "\"," + "\"sb_command_type\":\"command\"," +
+                                         "\"sb_command\":\"press\"}\n",
                                      10000);
     Serial.printf("Response: %s\n", ret.c_str());
   } else {
-    Serial.printf("Turn Off the light.\n");
-    Serial2.printf(
-        "{\"command\":\"send_device_command\",\"device_id\":\"%s\",\"sb_command_type\":\"command\",\"sb_command\":"
-        "\"turnOff\"}\n",
-        switchbot_device_id.c_str());
-    String ret = send_serial_command(String("") + "{\"command\":\"send_device_command\"," + "\"device_id\":\"" +
-                                         switchbot_device_id + "\"," + "\"sb_command_type\":\"command\"," +
-                                         "\"sb_command\":\"turnOff\"}\n",
-                                     10000);
-    Serial.printf("Response: %s\n", ret.c_str());
-  }
-  Serial.printf("Light Control Command Done\n");
-  int deadline = millis() / 1000 + timeout;
-  while (millis() / 1000 < deadline) {
-    Serial.printf("Fetching result.");
-    String power = get_bot_status_and_update_buf();
-    if (power == (control ? "on" : "off")) {
-      break;
-    }
-    delay(1000);
+    Serial.printf("Unknown command\n");
   }
 }
 
@@ -164,7 +139,7 @@ void setup() {
       delay(1000);
     }
   }
-  register_sdp_interface_callback(interface_description_control, callback_for_switch_control);
+  register_sdp_interface_callback(interface_description_control, callback_for_elevator_panel_control);
   Serial.println("SDP Initialized!");
 
   // Show device info
@@ -216,41 +191,6 @@ void setup() {
 void loop() {
   delay(5000);
 
-  // Run dummy callback if Serial available
-  if (Serial.available()) {
-    uint8_t buf_dummy[240];
-    data.clear();
-    String str = Serial.readStringUntil('\n');
-    Serial.printf("Input: %s\n", str.c_str());
-    if (str.indexOf("turnOn") != -1) {
-      data.push_back(SDPData(true));
-    } else if (str.indexOf("turnOff") != -1) {
-      data.push_back(SDPData(false));
-    } else {
-      Serial.printf("Unknown command. Buffer clearing...\n");
-      auto timeout = millis() + 5000;
-      while (millis() < timeout) {
-        delay(100);
-        if (Serial2.available()) {
-          Serial.println(String("response: ") + Serial2.readString());
-        }
-      }
-      return;
-    }
-    std::string serialization_format = get_serialization_format(data);
-    bool result = generate_data_frame(buf_dummy, packet_description_control.c_str(), data);
-    if (not result) {
-      Serial.printf("Failed to generate data frame\n");
-      return;
-    } else {
-      Serial.println("Generate data frame");
-    }
-    Serial.printf("Dummy callback calling\n");
-    _OnDataRecv(NULL, buf_dummy, sizeof(buf_dummy));
-    Serial.printf("Dummy callback called\n");
-    return;
-  }
-
   // Send SDP Data
   if (not send_sdp_data_packet(packet_description_status, body_status)) {
     Serial.printf("Failed to send SDP data packet\n");
@@ -262,10 +202,4 @@ void loop() {
       Serial.printf("packet description is %s\n", packet_description_uwb.c_str());
     }
   }
-
-  // Get switchbot status
-  if (loop_counter % 50 == 0) {
-    get_bot_status_and_update_buf();
-  }
-  loop_counter++;
 }

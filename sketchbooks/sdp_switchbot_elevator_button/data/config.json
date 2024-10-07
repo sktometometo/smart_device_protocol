@@ -4,7 +4,8 @@
     "wifi_password": "",
     "switchbot_token": "",
     "switchbot_secret": "",
-    "switchbot_device_id": "",
+    "switchbot_upward_device_id": "",
+    "switchbot_downward_device_id": "",
     "uwb_id": -1,
     "comment": "this is configuration for sdp_switchbot_light"
 }
