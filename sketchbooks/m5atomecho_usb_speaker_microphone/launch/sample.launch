@@ -18,8 +18,8 @@
             audio_topic: /audio
             voice_topic: /speech_to_text
             n_channel: 1
-            depth: 16
-            sample_rate: 16000
+            depth: 8
+            sample_rate: 8000
             engine: Google
             language: en-US
             continuous: true

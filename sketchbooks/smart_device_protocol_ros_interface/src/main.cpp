@@ -12,6 +12,7 @@
 #endif
 
 // ROS
+#include <sensor_msgs/Joy.h>
 #include <smart_device_protocol/Packet.h>
 #include <smart_device_protocol/UWBDistance.h>
 #include <std_srvs/SetBool.h>
@@ -26,6 +27,8 @@
 #if defined(M5STACKFIRE)
 #include "m5stack_utils/m5stack.h"
 #elif defined(M5ATOMLITE)
+#include <M5Atom.h>
+
 #include "m5stack_utils/m5atomlite.h"
 #elif defined(M5STICKCPLUS)
 #include "m5stack_utils/m5stickcplus.h"
@@ -51,12 +54,18 @@ uint8_t buffer_for_msg[256];
 // UWB
 bool uwb_initialized = false;
 
+// Button Buf
+constexpr int BUTTON_BUF_SIZE = 16;
+int32_t button_buf[BUTTON_BUF_SIZE] = {0};
+
 // ROSSerial
 smart_device_protocol::Packet msg_recv_packet;
 smart_device_protocol::UWBDistance msg_uwb;
+sensor_msgs::Joy msg_joy;
 ros::NodeHandle_<ArduinoHardware, 25, 25, 2048, 2048> nh;
 ros::Publisher publisher("/smart_device_protocol/recv", &msg_recv_packet);
 ros::Publisher publisher_uwb("/smart_device_protocol/uwb", &msg_uwb);
+ros::Publisher publisher_joy("/smart_device_protocol/joy", &msg_joy);
 ros::Subscriber<smart_device_protocol::Packet> subscriber("/smart_device_protocol/send", &messageCb);
 ros::ServiceServer<std_srvs::SetBoolRequest, std_srvs::SetBoolResponse> uwb_toggle_service(
     "/smart_device_protocol/uwb_toggle", &uwb_toggle);
@@ -144,6 +153,18 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
 }
 
 void setup() {
+#if defined(M5STACKFIRE)
+  // M5.begin();
+#elif defined(M5STACKCORE2)
+  // M5.begin();
+#elif defined(M5STACKATOMS3)
+  // M5.begin();
+#elif defined(M5STICKCPLUS)
+  // M5.begin();
+#elif defined(M5ATOMLITE)
+  M5.begin();
+#endif
+
   // UWB initialization
   Serial2.begin(115200, SERIAL_8N1, M5StackSerialPortInfoList[PORT_A].rx, M5StackSerialPortInfoList[PORT_A].tx);
 
@@ -167,6 +188,7 @@ void setup() {
   // Subscribe and Publish
   nh.advertise(publisher);
   nh.advertise(publisher_uwb);
+  nh.advertise(publisher_joy);
   nh.advertiseService(uwb_toggle_service);
   nh.subscribe(subscriber);
   while (not nh.connected()) {
@@ -206,6 +228,15 @@ void setup() {
 }
 
 void loop() {
+#if defined(M5STACKFIRE)
+#elif defined(M5ATOMLITE)
+  M5.update();
+  if (M5.Btn.isPressed()) {
+    button_buf[0] = 1;
+  } else {
+    button_buf[0] = 0;
+  }
+#endif
   if (uwb_initialized) {
     auto ret = getDistanceUWB(Serial2);
     if (ret) {
@@ -220,6 +251,13 @@ void loop() {
       nh.logdebug(buf_for_log);
     }
   }
+
+  // Joy Publish
+  msg_joy.header.stamp = nh.now();
+  msg_joy.buttons_length = BUTTON_BUF_SIZE;
+  msg_joy.buttons = button_buf;
+  publisher_joy.publish(&msg_joy);
+
   nh.spinOnce();
   delay(100);
 }
