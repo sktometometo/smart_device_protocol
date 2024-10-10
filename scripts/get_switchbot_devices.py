@@ -51,3 +51,4 @@ if __name__ == "__main__":
     response_jsontext = response.json()
     message = yaml.dump(response_jsontext, default_flow_style=False)
     print(message)
+

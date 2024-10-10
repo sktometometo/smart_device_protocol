@@ -32,11 +32,6 @@ std::string serialization_format_control = "s";
 SDPInterfaceDescription interface_description_control =
     std::make_tuple(packet_description_control, serialization_format_control);
 
-// Light Status
-std::string packet_description_status = "Light status";
-std::string serialization_format_status = "?";
-std::vector<SDPData> body_status;
-
 // UWB
 int uwb_id = -1;
 std::string packet_description_uwb = "UWB Station";
@@ -113,7 +108,7 @@ void setup() {
   M5.begin(true, true, true, false);
   Serial.begin(115200);
 
-  M5.Lcd.printf("SDP SWITCHBOT LIGHT HOST\n");
+  M5.Lcd.printf("SDP SWITCHBOT ELEVATOR PANEL\n");
 
   // Load config from FS
   SPIFFS.begin();
@@ -139,7 +134,13 @@ void setup() {
       delay(1000);
     }
   }
-  register_sdp_interface_callback(interface_description_control, callback_for_elevator_panel_control);
+  if (not register_sdp_interface_callback(interface_description_control, callback_for_elevator_panel_control)) {
+    Serial.println("Failed to register callback for elevator panel control");
+    M5.Lcd.printf("Failed to register callback for elevator panel control\n");
+    while (true) {
+      delay(1000);
+    }
+  }
   Serial.println("SDP Initialized!");
 
   // Show device info
@@ -189,13 +190,11 @@ void setup() {
 }
 
 void loop() {
-  delay(5000);
+  delay(1000);
+
+  Serial.println("Loop");
 
   // Send SDP Data
-  if (not send_sdp_data_packet(packet_description_status, body_status)) {
-    Serial.printf("Failed to send SDP data packet\n");
-    Serial.printf("packet description is %s\n", packet_description_status.c_str());
-  }
   if (uwb_id >= 0) {
     if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
       Serial.printf("Failed to send SDP data packet\n");
