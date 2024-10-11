@@ -307,7 +307,6 @@ void _meta_frame_broadcast_task(void *parameter) {
   for (;;) {
     vTaskDelay(pdMS_TO_TICKS(1000));
     if (_sdp_interface_data_callbacks.size() == 0) {
-      Serial.println("hoge");
       _broadcast_sdp_meta_packet(std::make_tuple("", ""));
     } else {
       for (auto &entry : _sdp_interface_data_callbacks) {
