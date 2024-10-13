@@ -15,6 +15,7 @@
 #include <sensor_msgs/Joy.h>
 #include <smart_device_protocol/Packet.h>
 #include <smart_device_protocol/UWBDistance.h>
+#include <std_msgs/ColorRGBA.h>
 #include <std_srvs/SetBool.h>
 
 #include "ros/node_handle.h"
@@ -30,6 +31,9 @@
 #include <M5Atom.h>
 
 #include "m5stack_utils/m5atomlite.h"
+CRGB dispColor(uint8_t r, uint8_t g, uint8_t b) {
+  return (CRGB)((r << 16) | (g << 8) | b);
+}
 #elif defined(M5STICKCPLUS)
 #include "m5stack_utils/m5stickcplus.h"
 #elif defined(M5STACKCORE2)
@@ -45,6 +49,7 @@
 
 void uwb_toggle(const std_srvs::SetBoolRequest &, std_srvs::SetBoolResponse &);
 void messageCb(const smart_device_protocol::Packet &);
+void ledcolorCb(const std_msgs::ColorRGBA &);
 
 // ESP-NOW
 uint8_t device_mac_address[6] = {0};
@@ -67,6 +72,7 @@ ros::Publisher publisher("/smart_device_protocol/recv", &msg_recv_packet);
 ros::Publisher publisher_uwb("/smart_device_protocol/uwb", &msg_uwb);
 ros::Publisher publisher_joy("/smart_device_protocol/joy", &msg_joy);
 ros::Subscriber<smart_device_protocol::Packet> subscriber("/smart_device_protocol/send", &messageCb);
+ros::Subscriber<std_msgs::ColorRGBA> subscriber_color("/smart_device_protocol/led_color", &ledcolorCb);
 ros::ServiceServer<std_srvs::SetBoolRequest, std_srvs::SetBoolResponse> uwb_toggle_service(
     "/smart_device_protocol/uwb_toggle", &uwb_toggle);
 
@@ -126,6 +132,22 @@ void messageCb(const smart_device_protocol::Packet &msg) {
   nh.logdebug("Subscribe a message and send a packet.");
 }
 
+void ledcolorCb(const std_msgs::ColorRGBA &msg) {
+  nh.loginfo("Receive a color message.");
+  if (msg.r < 0.0 || msg.r > 1.0 || msg.g < 0.0 || msg.g > 1.0 || msg.b < 0.0 || msg.b > 1.0 || msg.a < 0.0 ||
+      msg.a > 1.0) {
+    nh.logerror("Color value have to be between 0.0 and 1.0.");
+    return;
+  }
+
+#if defined(M5STACKATOMS3)
+#elif defined(M5ATOMLITE)
+  M5.dis.drawpix(0, dispColor(msg.r * 255, msg.g * 255, msg.b * 255));
+#endif
+}
+
+// Display
+
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   for (int i = 0; i < 6; i++) {
     mac_address_for_msg[i] = mac_addr[i];
@@ -162,7 +184,7 @@ void setup() {
 #elif defined(M5STICKCPLUS)
   // M5.begin();
 #elif defined(M5ATOMLITE)
-  M5.begin();
+  M5.begin(true, false, true);
 #endif
 
   // UWB initialization
@@ -191,6 +213,7 @@ void setup() {
   nh.advertise(publisher_joy);
   nh.advertiseService(uwb_toggle_service);
   nh.subscribe(subscriber);
+  nh.subscribe(subscriber_color);
   while (not nh.connected()) {
     delay(1000);
     nh.spinOnce();
