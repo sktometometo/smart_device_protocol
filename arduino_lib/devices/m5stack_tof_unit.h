@@ -117,9 +117,9 @@ std::optional<std::tuple<uint16_t, uint16_t, uint16_t, byte>> get_m5stack_tof_un
     cnt++;
   }
   if (val & 0x01) {
-    Serial.println("ready");
+    // Serial.println("ready");
   } else {
-    Serial.println("not ready");
+    // Serial.println("not ready");
     return std::nullopt;
   }
   _read_block_data_at(0x14, 12);

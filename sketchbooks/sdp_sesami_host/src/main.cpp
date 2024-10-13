@@ -154,8 +154,8 @@ void setup() {
 
   M5.begin(true, true, true, false);
   Serial.begin(115200);
-  Serial1.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);
-  Serial2.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);
+  Serial1.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);
+  Serial2.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);  // Sesami client uses serial2
 
   M5.Lcd.printf("SDP SESAMI HOST DEVICE\n");
 

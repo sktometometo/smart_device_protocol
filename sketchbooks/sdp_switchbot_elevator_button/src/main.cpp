@@ -29,8 +29,6 @@
 LGFX lcd;
 LGFX_Sprite sprite_header(&lcd);
 LGFX_Sprite sprite_status(&lcd);
-LGFX_Sprite sprite_info(&lcd);
-LGFX_Sprite sprite_plot(&lcd);
 
 // Device Name
 String device_name;
@@ -261,9 +259,7 @@ void setup() {
 }
 
 void loop() {
-  delay(100);
-
-  Serial.println("Loop");
+  delay(500);
 
   auto result = get_m5stack_tof_unit_data();
   if (not result.has_value()) {
@@ -274,7 +270,7 @@ void loop() {
     sprite_status.pushSprite(0, lcd.height() / 3);
   } else {
     auto [acnt, scnt, dist, status] = result.value();
-    Serial.printf("acnt: %d, scnt: %d, dist: %d, status: %d\n", acnt, scnt, dist, status);
+    // Serial.printf("acnt: %d, scnt: %d, dist: %d, status: %d\n", acnt, scnt, dist, status);
     sprite_status.fillScreen(0xFFFFFF);
     sprite_status.setCursor(0, 0);
     sprite_status.printf("ambient count: %d\n", acnt);
@@ -282,13 +278,13 @@ void loop() {
     sprite_status.printf("distance: %d\n", dist);
     sprite_status.printf("status: %d\n", status);
     if (dist > door_closed_distance + door_closed_clearance) {
-      Serial.println("Door is open");
+      // Serial.println("Door is open");
       sprite_status.printf("Door is open\n");
     } else if (status == 11) {
-      Serial.println("Door is closed");
+      // Serial.println("Door is closed");
       sprite_status.printf("Door is closed\n");
     } else {
-      Serial.println("Door status is unknown");
+      // Serial.println("Door status is unknown");
       sprite_status.printf("Door status is unknown\n");
     }
     body_door_open.clear();
