@@ -171,3 +171,24 @@ ElevatorMovingStatus calc_moving_status(float accel_on_gravity, ElevatorMovingSt
   }
   return HALT;
 }
+
+std::string moving_status_to_string(ElevatorMovingStatus status) {
+  switch (status) {
+    case HALT:
+      return "HALT";
+    case UP_ACCEL:
+      return "UP_ACCEL";
+    case UP_STABLE:
+      return "UP_STABLE";
+    case UP_DECEL:
+      return "UP_DECEL";
+    case DOWN_ACCEL:
+      return "DOWN_ACCEL";
+    case DOWN_STABLE:
+      return "DOWN_STABLE";
+    case DOWN_DECEL:
+      return "DOWN_DECEL";
+    default:
+      return "UNKNOWN";
+  }
+}

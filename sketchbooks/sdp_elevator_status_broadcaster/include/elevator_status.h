@@ -74,3 +74,5 @@ std::tuple<float, float, float> withdraw_gravity(float accels_x, float accels_y,
  * @return Moving status
  */
 ElevatorMovingStatus calc_moving_status(float accel_on_gravity, ElevatorMovingStatus current_status, float moving_threshold);
+
+std::string moving_status_to_string(ElevatorMovingStatus status);

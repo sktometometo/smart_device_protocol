@@ -12,6 +12,7 @@
 #include <LGFX_AUTODETECT.hpp>
 #include <LovyanGFX.hpp>
 
+#include "devices/uwb_module_util.h"
 #include "elevator_status.h"
 #include "lcd.h"
 #include "sdp/sdp.h"
@@ -24,6 +25,7 @@ LGFX lcd;
 LGFX_Sprite sprite_header(&lcd);
 LGFX_Sprite sprite_status(&lcd);
 LGFX_Sprite sprite_info(&lcd);
+LGFX_Sprite sprite_plot(&lcd);
 
 Dps310 Dps310PressureSensor = Dps310();
 
@@ -61,6 +63,26 @@ ElevatorMovingStatus current_status = HALT;
 uint8_t device_mac_address[6];
 String device_name;
 
+// UWB
+int uwb_id = -1;
+std::string packet_description_uwb = "UWB Station";
+std::string serialization_format_uwb = "i";
+std::vector<SDPData> body_uwb;
+
+// SDP
+// Current floor
+std::string packet_description_floor = "Floor";
+std::string serialization_format_floor = "i";
+std::vector<SDPData> body_floor;
+// Moving status
+std::string packet_description_moving_status = "Moving Status";
+std::string serialization_format_moving_status = "s";
+std::vector<SDPData> body_moving_status;
+
+// Port configuration
+// Port A is used for Wire
+M5StackSerialPortInfo port_info_uwb = M5StackSerialPortInfoList[PORT_C];
+
 /* Elevator config */
 std::vector<ElevatorConfig> elevator_config;
 float moving_threshold;
@@ -77,9 +99,10 @@ bool load_config_from_FS(fs::FS &fs, const String &filename) {
 
   if (not doc.containsKey("device_name") or
       not doc.containsKey("elevator_config") or
-      not doc.containsKey("moving_status_threshold")) {
+      not doc.containsKey("moving_status_threshold") or
+      not doc.containsKey("uwb_id")) {
     sprite_status.println("Invalid config file");
-    sprite_status.println("device_name and elevator_config and moving_status_threshold are required");
+    sprite_status.println("device_name and elevator_config and moving_status_threshold and uwb_id are required");
     sprite_status.pushSprite(0, lcd.height() / 3);
     return false;
   }
@@ -95,6 +118,7 @@ bool load_config_from_FS(fs::FS &fs, const String &filename) {
     initial_floor = 7;
   }
 
+  uwb_id = doc["uwb_id"].as<int32_t>();
   device_name = doc["device_name"].as<String>();
   JsonArray elevator_config_json = doc["elevator_config"].as<JsonArray>();
   moving_threshold = doc["moving_status_threshold"].as<float>();
@@ -129,15 +153,15 @@ void postprocess_sensors() {
 
 void calc_elevator_status() {
   altitude = calc_altitude(sensor_pressure, sensor_temp_dps);
-  if (fabs(accel_on_gravity) < 0.1) {
+  if (fabs(accel_on_gravity) < moving_threshold) {
     if (millis() - last_moving_stamp > moving_status_timeout * 1000) {
       current_status = HALT;
       initial_floor = current_floor;
       initial_altitude = altitude;
       last_moving_stamp = millis();
-      sprite_info.printf("Initial floor updated: %d\n", initial_floor);
-      sprite_info.printf("Initial altitude updated: %.2f\n", initial_altitude);
-      sprite_info.pushSprite(0, lcd.height() / 3 * 2);
+      sprite_info.printf("Init floor updated: %d\n", initial_floor);
+      sprite_info.printf("Init alt. updated: %.2f\n", initial_altitude);
+      sprite_info.pushSprite(lcd.width() / 2, lcd.height() / 3);
     }
   } else {
     last_moving_stamp = millis();
@@ -180,6 +204,9 @@ void setup() {
       }
     }
   }
+  Serial.println("Config loaded!");
+
+  Serial1.begin(115200, SERIAL_8N1, port_info_uwb.rx, port_info_uwb.tx);
 
   // Initialize ESP-NOW
   init_sdp(device_mac_address, device_name);
@@ -192,8 +219,25 @@ void setup() {
                        device_mac_address[3], device_mac_address[4], device_mac_address[5]);
   sprite_header.pushSprite(0, 0);
 
+  // UWB module
+  if (uwb_id >= 0) {
+    bool result = initUWB(false, uwb_id, Serial1);
+    body_uwb.clear();
+    body_uwb.push_back(SDPData(uwb_id));
+    if (result) {
+      sprite_header.printf("UWB ID: %d\n", uwb_id);
+    } else {
+      uwb_id = -1;
+      sprite_header.printf("UWB ID: Failed to initialize\n");
+    }
+  } else {
+    bool result = resetUWB(Serial1);
+    sprite_header.printf("UWB ID: Not initialized\n");
+  }
+  sprite_header.pushSprite(0, 0);
+
   // Show elevator config
-  print_elevator_config_vector(sprite_info, elevator_config, 0, lcd.height() / 3 * 2);
+  print_elevator_config_vector(sprite_info, elevator_config, lcd.width() / 2, lcd.height() / 3);
 
   // Initialization
   std::vector<float> accels_x;
@@ -236,4 +280,26 @@ void loop() {
   postprocess_sensors();
   calc_elevator_status();
   print_status();
+  // Send SDP Data
+  // Floor
+  body_floor.clear();
+  body_floor.push_back(SDPData(current_floor));
+  if (not send_sdp_data_packet(packet_description_floor, body_floor)) {
+    Serial.printf("Failed to send SDP data packet\n");
+    Serial.printf("packet description is %s\n", packet_description_floor.c_str());
+  }
+  // Moving status
+  body_moving_status.clear();
+  body_moving_status.push_back(SDPData(moving_status_to_string(current_status)));
+  if (not send_sdp_data_packet(packet_description_moving_status, body_moving_status)) {
+    Serial.printf("Failed to send SDP data packet\n");
+    Serial.printf("packet description is %s\n", packet_description_moving_status.c_str());
+  }
+  // UWB
+  if (uwb_id >= 0) {
+    if (not send_sdp_data_packet(packet_description_uwb, body_uwb)) {
+      Serial.printf("Failed to send SDP data packet\n");
+      Serial.printf("packet description is %s\n", packet_description_uwb.c_str());
+    }
+  }
 }

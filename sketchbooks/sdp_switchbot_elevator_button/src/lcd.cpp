@@ -16,7 +16,6 @@
 extern LGFX lcd;
 extern LGFX_Sprite sprite_header;
 extern LGFX_Sprite sprite_status;
-extern LGFX_Sprite sprite_info;
 
 void init_lcd() {
   // LCD
@@ -28,13 +27,10 @@ void init_lcd() {
 
   sprite_header.createSprite(lcd.width(), lcd.height() / 3);
   sprite_status.createSprite(lcd.width(), lcd.height() / 3);
-  sprite_info.createSprite(lcd.width(), lcd.height() / 3);
 
   sprite_header.fillScreen(0xFFFFFF);
   sprite_header.setTextColor(0x000000);
   sprite_header.setTextSize(1.5, 1.5);
   sprite_status.fillScreen(0xFFFFFF);
   sprite_status.setTextColor(0x000000);
-  sprite_info.fillScreen(0xFFFFFF);
-  sprite_info.setTextColor(0x000000);
 }

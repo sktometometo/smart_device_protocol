@@ -30,6 +30,7 @@ LGFX lcd;
 LGFX_Sprite sprite_header(&lcd);
 LGFX_Sprite sprite_status(&lcd);
 LGFX_Sprite sprite_info(&lcd);
+LGFX_Sprite sprite_plot(&lcd);
 
 // Device Name
 String device_name;
@@ -134,7 +135,7 @@ void callback_for_elevator_panel_control(const uint8_t* mac_address, const std::
 void setup() {
   M5.begin(true, true, true, false);
   Serial.begin(115200);
-  // init_lcd();
+  init_lcd();
 
   sprite_header.printf("SDP SWITCHBOT ELEVATOR PANEL\n");
   sprite_header.pushSprite(0, 0);
@@ -280,12 +281,15 @@ void loop() {
     sprite_status.printf("signal count: %d\n", scnt);
     sprite_status.printf("distance: %d\n", dist);
     sprite_status.printf("status: %d\n", status);
-    if (dist > door_closed_distance + door_closed_clearance or status != 11) {
+    if (dist > door_closed_distance + door_closed_clearance) {
       Serial.println("Door is open");
       sprite_status.printf("Door is open\n");
-    } else {
+    } else if (status == 11) {
       Serial.println("Door is closed");
       sprite_status.printf("Door is closed\n");
+    } else {
+      Serial.println("Door status is unknown");
+      sprite_status.printf("Door status is unknown\n");
     }
     body_door_open.clear();
     body_door_open.push_back(SDPData(dist > door_closed_distance + door_closed_clearance));

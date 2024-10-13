@@ -15,6 +15,7 @@ extern LGFX lcd;
 extern LGFX_Sprite sprite_header;
 extern LGFX_Sprite sprite_status;
 extern LGFX_Sprite sprite_info;
+extern LGFX_Sprite sprite_plot;
 
 extern float sensor_accX;
 extern float sensor_accY;
@@ -42,6 +43,9 @@ extern float accel_y_without_gravity;
 extern float accel_z_without_gravity;
 extern float accel_on_gravity;
 
+extern float initial_altitude;
+extern int32_t initial_floor;
+
 void init_lcd() {
   // LCD
   lcd.init();
@@ -50,9 +54,10 @@ void init_lcd() {
   lcd.setColorDepth(24);
   lcd.fillScreen(0xFFFFFF);
 
-  sprite_header.createSprite(lcd.width(), lcd.height() / 3);
-  sprite_status.createSprite(lcd.width(), lcd.height() / 3);
-  sprite_info.createSprite(lcd.width(), lcd.height() / 3);
+  sprite_header.createSprite(lcd.width(), lcd.height() / 3);      // Pos 0, 0
+  sprite_status.createSprite(lcd.width() / 2, lcd.height() / 3);  // Pos 0, lcd.height() / 3
+  sprite_info.createSprite(lcd.width() / 2, lcd.height() / 3);    // Pos lcd.width() / 2, lcd.height() / 3
+  sprite_plot.createSprite(lcd.width(), lcd.height() / 3);        // Pos 0, lcd.height() / 3 * 2
 
   sprite_header.fillScreen(0xFFFFFF);
   sprite_header.setTextColor(0x000000);
@@ -61,6 +66,8 @@ void init_lcd() {
   sprite_status.setTextColor(0x000000);
   sprite_info.fillScreen(0xFFFFFF);
   sprite_info.setTextColor(0x000000);
+  sprite_plot.fillScreen(0xFFFFFF);
+  sprite_plot.setTextColor(0x000000);
 }
 
 void print_status() {
@@ -69,36 +76,15 @@ void print_status() {
   //   sprite_status.printf("Acc: %.2f, %.2f, %.2f\n", sensor_accX, sensor_accY, sensor_accZ);
   //   sprite_status.printf("Gyro: %.2f, %.2f, %.2f\n", sensor_gyroX, sensor_gyroY, sensor_gyroZ);
   //   sprite_status.printf("Pitch: %.2f, Roll: %.2f, Yaw: %.2f\n", sensor_pitch, sensor_roll, sensor_yaw);
-  sprite_status.printf("Pressure: %.2f\n", sensor_pressure);
-  sprite_status.printf("Temp: %.2f, %.2f\n", sensor_temp_mpu, sensor_temp_dps);
-  sprite_status.printf("Altitude: %.2f\n", altitude);
-  sprite_status.printf("Gravity: %.2f, %.2f, %.2f\n", gravity_x, gravity_y, gravity_z);
-  sprite_status.printf("Accel without gravity: %.2f, %.2f, %.2f\n", accel_x_without_gravity, accel_y_without_gravity, accel_z_without_gravity);
-  sprite_status.printf("Accel on gravity: %.2f\n", accel_on_gravity);
+  sprite_status.printf("%.2f Pa, %.2f C\n", sensor_pressure, sensor_temp_dps);
+  sprite_status.printf("Alt.: %.2f m\n", altitude);
+  // sprite_status.printf("Grv.: %.2f, %.2f, %.2f\n", gravity_x, gravity_y, gravity_z);
+  sprite_status.printf("Acc(wo grav): %.2f, %.2f, %.2f\n", accel_x_without_gravity, accel_y_without_gravity, accel_z_without_gravity);
+  sprite_status.printf("Accel on grv dir: %.2f\n", accel_on_gravity);
+  sprite_status.printf("Init floor: %d, alt: %.2f\n", initial_floor, initial_altitude);
   sprite_status.printf("Floor: %d\n", current_floor);
   //   sprite_status.printf("Status: %d\n", current_status);
-  switch (current_status) {
-    case HALT:
-      sprite_status.printf("Status: HALT\n");
-      break;
-    case UP_ACCEL:
-      sprite_status.printf("Status: UP_ACCEL\n");
-      break;
-    case UP_STABLE:
-      sprite_status.printf("Status: UP_STABLE\n");
-      break;
-    case UP_DECEL:
-      sprite_status.printf("Status: UP_DECEL\n");
-      break;
-    case DOWN_ACCEL:
-      sprite_status.printf("Status: DOWN_ACCEL\n");
-      break;
-    case DOWN_STABLE:
-      sprite_status.printf("Status: DOWN_STABLE\n");
-      break;
-    case DOWN_DECEL:
-      sprite_status.printf("Status: DOWN_DECEL\n");
-      break;
-  }
+  std::string status_str = moving_status_to_string(current_status);
+  sprite_status.printf("Status: %s\n", status_str.c_str());
   sprite_status.pushSprite(0, lcd.height() / 3);
 }
