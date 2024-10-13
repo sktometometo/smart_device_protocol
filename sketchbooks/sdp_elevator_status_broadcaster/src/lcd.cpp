@@ -76,6 +76,29 @@ void print_status() {
   sprite_status.printf("Accel without gravity: %.2f, %.2f, %.2f\n", accel_x_without_gravity, accel_y_without_gravity, accel_z_without_gravity);
   sprite_status.printf("Accel on gravity: %.2f\n", accel_on_gravity);
   sprite_status.printf("Floor: %d\n", current_floor);
-  sprite_status.printf("Status: %d\n", current_status);
+  //   sprite_status.printf("Status: %d\n", current_status);
+  switch (current_status) {
+    case HALT:
+      sprite_status.printf("Status: HALT\n");
+      break;
+    case UP_ACCEL:
+      sprite_status.printf("Status: UP_ACCEL\n");
+      break;
+    case UP_STABLE:
+      sprite_status.printf("Status: UP_STABLE\n");
+      break;
+    case UP_DECEL:
+      sprite_status.printf("Status: UP_DECEL\n");
+      break;
+    case DOWN_ACCEL:
+      sprite_status.printf("Status: DOWN_ACCEL\n");
+      break;
+    case DOWN_STABLE:
+      sprite_status.printf("Status: DOWN_STABLE\n");
+      break;
+    case DOWN_DECEL:
+      sprite_status.printf("Status: DOWN_DECEL\n");
+      break;
+  }
   sprite_status.pushSprite(0, lcd.height() / 3);
 }
