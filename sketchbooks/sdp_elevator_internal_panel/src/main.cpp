@@ -191,13 +191,13 @@ void setup() {
     float default_angle = std::get<1>(servo_info);
     float pressed_angle = std::get<2>(servo_info);
     sprite_status.printf("Testing servo %d\n", servo_id);
-    sprite_status.printf("Move to %.2f deg\n", default_angle);
-    sprite_status.pushSprite(0, lcd.height() / 3);
-    Servo_write_angle(servo_id, default_angle);
-    delay(500);
     sprite_status.printf("Move to %.2f deg\n", pressed_angle);
     sprite_status.pushSprite(0, lcd.height() / 3);
     Servo_write_angle(servo_id, pressed_angle);
+    delay(500);
+    sprite_status.printf("Move to %.2f deg\n", default_angle);
+    sprite_status.pushSprite(0, lcd.height() / 3);
+    Servo_write_angle(servo_id, default_angle);
     delay(500);
   }
   sprite_status.fillScreen(TFT_WHITE);
