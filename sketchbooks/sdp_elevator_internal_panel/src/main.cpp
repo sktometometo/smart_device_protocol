@@ -200,6 +200,10 @@ void setup() {
     Servo_write_angle(servo_id, pressed_angle);
     delay(500);
   }
+  sprite_status.fillScreen(TFT_WHITE);
+  sprite_status.setCursor(0, 0);
+  sprite_status.printf("All servos are ready\n");
+  sprite_status.pushSprite(0, lcd.height() / 3);
 }
 
 void loop() {

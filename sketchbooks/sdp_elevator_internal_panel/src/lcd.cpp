@@ -15,7 +15,7 @@ extern LGFX_Sprite sprite_status;
 
 void init_lcd() {
   lcd.init();
-  lcd.setRotation(1);
+  lcd.setRotation(3);
   lcd.setBrightness(255);
   lcd.setColorDepth(16);
   lcd.fillScreen(TFT_WHITE);
