@@ -8,13 +8,14 @@
 #include <vector>
 
 #include "devices/uwb_module_util.h"
+#include "epd.h"
 #include "m5stack_utils/m5paper.h"
 #include "message.h"
 #include "sdp/sdp.h"
 #include "utils/config_loader.h"
 
 // CONFIG
-String device_name = "msg_board";
+String device_name;
 
 // CANVAS
 M5EPD_Canvas canvas_title(&M5.EPD);
@@ -25,6 +26,7 @@ M5EPD_Canvas canvas_message(&M5.EPD);
 int uwb_id = -1;
 std::string packet_description_uwb = "UWB Station";
 std::string serialization_format_uwb = "i";
+SDPInterfaceDescription interface_description_uwb = std::make_tuple(packet_description_uwb, serialization_format_uwb);
 std::vector<SDPData> data_for_uwb_data_packet;
 
 // SDP
@@ -36,15 +38,6 @@ std::vector<Message> message_board;
 // Others
 int loop_counter = 0;
 
-void OnDataRecvV1(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
-  uint8_t packet_type = get_packet_type(data);
-  if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_DEVICE_MESSAGE_BOARD_DATA) {
-    auto m = Message(data);
-    message_board.push_back(m);
-    Serial.printf("Push message from V1 Data\n");
-  }
-}
-
 void callback_for_v2(const uint8_t *mac_addr, const std::vector<SDPData> &body) {
   std::string source_name = std::get<std::string>(body[0]);
   int32_t duration_until_deletion = std::get<int32_t>(body[1]);
@@ -55,43 +48,23 @@ void callback_for_v2(const uint8_t *mac_addr, const std::vector<SDPData> &body) 
   Serial.printf("Push message from V2 Data\n");
 }
 
-void load_config() {
+bool load_config(fs::FS &fs, const String &filename) {
   StaticJsonDocument<1024> doc;
-  if (not load_json_from_FS<1024>(SD, "/config.json", doc)) {
-    return;
+  if (not load_json_from_FS<1024>(fs, filename, doc)) {
+    return false;
   }
-  if (doc.containsKey("device_name"))
-    device_name = doc["device_name"].as<String>();
-  if (doc.containsKey("uwb_id"))
-    uwb_id = doc["uwb_id"].as<int>();
-}
+  if (not doc.containsKey("device_name") or
+      not doc.containsKey("uwb_id")) {
+    return false;
+  }
 
-void clear_canvas(M5EPD_Canvas &canvas) {
-  canvas.clear();
-  canvas.setCursor(0, 0);
-}
+  device_name = doc["device_name"].as<String>();
+  uwb_id = doc["uwb_id"].as<int>();
 
-void init_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Canvas &canvas_message) {
-  canvas_title.createCanvas(540, 100);
-  canvas_status.createCanvas(540, 60);
-  canvas_message.createCanvas(540, 800);
-  canvas_title.setTextSize(3);
-  canvas_status.setTextSize(2);
-  canvas_message.setTextSize(2);
-  clear_canvas(canvas_title);
-  clear_canvas(canvas_status);
-  clear_canvas(canvas_message);
-}
-
-void update_epd(M5EPD_Canvas &canvas_title, M5EPD_Canvas &canvas_status, M5EPD_Canvas &canvas_message) {
-  canvas_title.pushCanvas(0, 0, UPDATE_MODE_DU4);
-  canvas_status.pushCanvas(0, 100, UPDATE_MODE_DU4);
-  canvas_message.pushCanvas(0, 160, UPDATE_MODE_DU4);
+  return true;
 }
 
 void setup() {
-  esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
-
   // Init M5Paper
   M5.begin(false, true, true, true, false);
   M5.EPD.SetRotation(90);
@@ -101,50 +74,89 @@ void setup() {
   Serial.println("Start init");
   Serial1.begin(115200, SERIAL_8N1, M5StackSerialPortInfoList[PORT_C].rx, M5StackSerialPortInfoList[PORT_C].tx);
 
+  // EPD
+  canvas_title.printf("SDP MESSAGE BOARD\n");
+  update_epd(canvas_title, canvas_status, canvas_message);
+
   // Load config
-  load_config();
+  if (not load_config(SD, "/config.json")) {
+    Serial.println("Failed to load config");
+    canvas_status.printf("Failed to load config\n");
+    update_epd(canvas_title, canvas_status, canvas_message);
+    while (true) {
+      delay(1000);
+    }
+  }
+  Serial.println("Config loaded");
+  clear_canvas(canvas_status);
+  canvas_status.printf("Config loaded\n");
+  update_epd(canvas_title, canvas_status, canvas_message);
+
+  // Show device name
+  canvas_title.printf("Name: %s\n", device_name.c_str());
+  update_epd(canvas_title, canvas_status, canvas_message);
 
   // Init SDP
-  init_sdp(mac_address, device_name);
-  register_sdp_esp_now_recv_callback(OnDataRecvV1);
-  register_sdp_interface_callback(Message::get_interface_description(), callback_for_v2);
+  if (not init_sdp(mac_address, device_name)) {
+    Serial.println("Failed to initialize SDP");
+    canvas_status.printf("Failed to initialize SDP\n");
+    update_epd(canvas_title, canvas_status, canvas_message);
+    while (true) {
+      delay(1000);
+    }
+  }
+  if (not register_sdp_interface_callback(Message::get_interface_description(), callback_for_v2)) {
+    Serial.println("Failed to register callback for V2");
+    canvas_status.printf("Failed to register callback for V2\n");
+    update_epd(canvas_title, canvas_status, canvas_message);
+    while (true) {
+      delay(1000);
+    }
+  }
   Serial.println("SDP Initialized!");
+  clear_canvas(canvas_status);
+  canvas_status.printf("SDP Initialized!\n");
+  update_epd(canvas_title, canvas_status, canvas_message);
+
+  // Show Address
+  canvas_title.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n",
+                      mac_address[0], mac_address[1],
+                      mac_address[2], mac_address[3],
+                      mac_address[4], mac_address[5]);
+  Serial.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n",
+                mac_address[0], mac_address[1],
+                mac_address[2], mac_address[3],
+                mac_address[4], mac_address[5]);
+  update_epd(canvas_title, canvas_status, canvas_message);
 
   // UWB Initialized
-  if (uwb_id >= 0 ) {
+  if (uwb_id >= 0) {
     bool result = initUWB(false, uwb_id, Serial1);
     data_for_uwb_data_packet.clear();
     data_for_uwb_data_packet.push_back(SDPData(uwb_id));
     if (result) {
       Serial.println("Success for initialization of UWB");
+      Serial.printf("UWB_ID: %d\n", uwb_id);
+      canvas_title.printf("UWB_ID: %d\n", uwb_id);
     } else {
       uwb_id = -1;
       resetUWB(Serial1);
       Serial.println("Failed to initialize UWB");
+      canvas_title.printf("Failed to initialize UWB\n");
     }
   } else {
     resetUWB(Serial1);
     Serial.println("UWB is not used");
+    canvas_title.printf("UWB is not used\n");
   }
-
-  // Show device info
-  canvas_title.printf("ENR & SDP MESSAGE BOARD\n");
-  canvas_title.printf("Name: %s\n", device_name.c_str());
-  canvas_title.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n",
-                      mac_address[0], mac_address[1],
-                      mac_address[2], mac_address[3],
-                      mac_address[4], mac_address[5]);
-  canvas_title.printf("UWB_ID: %d\n", uwb_id);
   update_epd(canvas_title, canvas_status, canvas_message);
+
+  delay(3000);
 }
 
 void loop() {
   Serial.printf("Loop %d\n", loop_counter);
   uint8_t buf[250];
-
-  // Manually Send V1 Meta Packet
-  create_device_message_board_meta_packet(buf, device_name.c_str());
-  broadcast_sdp_esp_now_packet((uint8_t *)buf, sizeof(buf));
 
   // Show Battery voltage
   uint32_t battery_voltage = M5.getBatteryVoltage();
@@ -155,7 +167,7 @@ void loop() {
     canvas_status.printf("x Battery: %u\n", battery_voltage);
   }
 
-  // Shoe messages
+  // Show messages and send SDP packet
   clear_canvas(canvas_message);
   for (auto m = message_board.begin(); m != message_board.end();) {
     if (millis() > m->deadline) {
@@ -170,14 +182,20 @@ void loop() {
     canvas_message.printf("Duration until deletion(sec): %d\n", (int)((m->deadline - millis()) / 1000));
     canvas_message.printf("Message: %s\n\n", m->message);
 
-    m->to_v1_packet(buf);
-    broadcast_sdp_esp_now_packet((uint8_t *)buf, sizeof(buf));
-    delay(10);
     m->to_v2_packet(buf);
     broadcast_sdp_esp_now_packet((uint8_t *)buf, sizeof(buf));
     delay(10);
   }
   update_epd(canvas_title, canvas_status, canvas_message);
+
+  // Send UWB packet
+  if (uwb_id >= 0) {
+    if (not send_sdp_data_packet(interface_description_uwb, data_for_uwb_data_packet)) {
+      Serial.println("Failed to send UWB packet");
+      canvas_status.printf("Failed to send UWB packet\n");
+      update_epd(canvas_title, canvas_status, canvas_message);
+    }
+  }
 
   delay(100);
   loop_counter++;
