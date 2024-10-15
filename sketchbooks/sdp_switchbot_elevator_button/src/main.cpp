@@ -113,6 +113,7 @@ void callback_for_elevator_panel_control(const uint8_t* mac_address, const std::
   std::string target = std::get<std::string>(body[0]);
   if (target == "up") {
     Serial.printf("Press upward button\n");
+    clear_recv_buf(500);
     String ret = send_serial_command(String("") + "{\"command\":\"send_device_command\"," + "\"device_id\":\"" +
                                          switchbot_upward_device_id + "\"," + "\"sb_command_type\":\"command\"," +
                                          "\"sb_command\":\"press\"}\n",
@@ -120,6 +121,7 @@ void callback_for_elevator_panel_control(const uint8_t* mac_address, const std::
     Serial.printf("Response: %s\n", ret.c_str());
   } else if (target == "down") {
     Serial.printf("Press downward button\n");
+    clear_recv_buf(500);
     String ret = send_serial_command(String("") + "{\"command\":\"send_device_command\"," + "\"device_id\":\"" +
                                          switchbot_downward_device_id + "\"," + "\"sb_command_type\":\"command\"," +
                                          "\"sb_command\":\"press\"}\n",
@@ -152,7 +154,6 @@ void setup() {
     }
   }
   Serial.println("Config loaded!");
-
   Serial1.begin(115200, SERIAL_8N1, port_info_uwb.rx, port_info_uwb.tx);
   Serial2.begin(115200, SERIAL_8N1, port_info_m5atoms3.rx, port_info_m5atoms3.tx);
 
@@ -200,23 +201,36 @@ void setup() {
 
   // Wifi Configuration
   Serial.printf("Wifi Configuration\n");
+  sprite_status.fillScreen(0xFFFFFF);
+  sprite_status.setCursor(0, 0);
+  sprite_status.printf("Wifi Configuration\n");
+  sprite_status.pushSprite(0, lcd.height() / 3);
+  clear_recv_buf();
   String ret = send_serial_command(String("") + "{\"command\":\"config_wifi\"," + "\"ssid\":\"" + wifi_ssid + "\"," +
                                        "\"password\":\"" + wifi_password + "\"}\n",
-                                   20000);
+                                   30000);
   Serial.printf("Response for wifi config: %s\n", ret.c_str());
-
+  sprite_status.printf("Response: %s\n", ret.c_str());
+  sprite_status.pushSprite(0, lcd.height() / 3);
   delay(3000);
 
   // Switchbot Client Configuration
   Serial.printf("Switchbot Client Configuration\n");
+  sprite_status.fillScreen(0xFFFFFF);
+  sprite_status.setCursor(0, 0);
+  sprite_status.printf("Switchbot Client Configuration\n");
+  sprite_status.pushSprite(0, lcd.height() / 3);
+  clear_recv_buf();
   ret = send_serial_command(String("") + "{\"command\":\"config_switchbot\"," + "\"token\":\"" + switchbot_token +
                                 "\"," + "\"secret\":\"" + switchbot_secret + "\"}\n",
-                            5000);
+                            10000);
   Serial.printf("Response for switchbot config: %s\n", ret.c_str());
-
+  sprite_status.printf("Response: %s\n", ret.c_str());
+  sprite_status.pushSprite(0, lcd.height() / 3);
   delay(3000);
 
   // Get device status
+  clear_recv_buf();
   ret = send_serial_command(String("") + "{\"command\":\"get_device_config\"}\n", 5000);
   Serial.printf("Response for get_device_status: %s\n", ret.c_str());
 
@@ -230,6 +244,11 @@ void setup() {
     }
   }
   Serial.println("ToF unit initialized!");
+  sprite_status.fillScreen(0xFFFFFF);
+  sprite_status.setCursor(0, 0);
+  sprite_status.printf("ToF unit initialized!\n");
+  sprite_status.pushSprite(0, lcd.height() / 3);
+  delay(3000);
 
   // Door detection parameter initialization
   sprite_status.fillScreen(0xFFFFFF);
@@ -259,7 +278,7 @@ void setup() {
 }
 
 void loop() {
-  delay(500);
+  delay(100);
 
   auto result = get_m5stack_tof_unit_data();
   if (not result.has_value()) {

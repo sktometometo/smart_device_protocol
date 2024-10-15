@@ -3,8 +3,14 @@
 
 #if defined(M5STACK_FIRE)
 #include <M5Stack.h>
+
+#include "m5stack_utils/m5stack.h"
+
 #elif defined(M5STACK_CORE2)
 #include <M5Core2.h>
+
+#include "m5stack_utils/m5core2.h"
+
 #endif
 #include <ArduinoJson.h>
 #include <FS.h>
@@ -23,13 +29,13 @@ String device_name;
 uint8_t mac_address[6] = {0};
 
 // Interface
-std::string packet_description_control = "Key control";
+std::string packet_description_control = "Lock control. True: Lock, False: Unlock";
 std::string serialization_format_control = "?";
 SDPInterfaceDescription interface_description_control =
     std::make_tuple(packet_description_control, serialization_format_control);
 
 // Lock Status
-std::string packet_description_status = "Key status";
+std::string packet_description_status = "Lock status: True: Locked, False: Unlocked";
 std::string serialization_format_status = "?";
 std::vector<SDPData> body_status;
 
@@ -56,6 +62,8 @@ int loop_counter = 0;
 
 void get_bot_status_and_update_buf() {
   Serial.printf("Get switchbot status\n");
+
+  clear_recv_buf(500);
   String result = send_serial_command(
       String("") + "{\"command\":\"get_device_status\"," + "\"device_id\":\"" + switchbot_device_id + "\"}\n", 5000);
   Serial.printf("Response for get_device_status: %s\n", result.c_str());
@@ -78,9 +86,13 @@ bool load_config_from_FS(fs::FS& fs, String filename = "/config.json") {
     return false;
   }
 
-  if (not doc.containsKey("device_name") or not doc.containsKey("wifi_ssid") or not doc.containsKey("wifi_password") or
-      not doc.containsKey("switchbot_token") or not doc.containsKey("switchbot_secret") or
-      not doc.containsKey("switchbot_device_id") or not doc.containsKey("uwb_id")) {
+  if (not doc.containsKey("device_name") or
+      not doc.containsKey("wifi_ssid") or
+      not doc.containsKey("wifi_password") or
+      not doc.containsKey("switchbot_token") or
+      not doc.containsKey("switchbot_secret") or
+      not doc.containsKey("switchbot_device_id") or
+      not doc.containsKey("uwb_id")) {
     return false;
   }
 
@@ -107,14 +119,22 @@ void callback_for_switch_control(const uint8_t* mac_address, const std::vector<S
   Serial.printf("Lock Control Command: %s\n", control ? "Lock" : "Unlock");
   if (control) {
     Serial.printf("Lock the key.\n");
-    String command = String("") + "{\"command\":\"send_device_command\"," + "\"device_id\":\"" + switchbot_device_id +
-                     "\"," + "\"sb_command_type\":\"command\"," + "\"sb_command\":\"lock\"}\n";
+    clear_recv_buf(500);
+    String command = String("") +
+                     "{\"command\":\"send_device_command\"," +
+                     "\"device_id\":\"" + switchbot_device_id + "\"," +
+                     "\"sb_command_type\":\"command\"," +
+                     "\"sb_command\":\"lock\"}\n";
     String ret = send_serial_command(command, 10000);
     Serial.printf("Response: %s\n", ret.c_str());
   } else {
     Serial.printf("Unlock the key.\n");
-    String command = String("") + "{\"command\":\"send_device_command\"," + "\"device_id\":\"" + switchbot_device_id +
-                     "\"," + "\"sb_command_type\":\"command\"," + "\"sb_command\":\"unlock\"}\n";
+    clear_recv_buf(500);
+    String command = String("") +
+                     "{\"command\":\"send_device_command\"," +
+                     "\"device_id\":\"" + switchbot_device_id + "\"," +
+                     "\"sb_command_type\":\"command\"," +
+                     "\"sb_command\":\"unlock\"}\n";
     String ret = send_serial_command(command, 10000);
     Serial.printf("Response: %s\n", ret.c_str());
   }
@@ -136,8 +156,6 @@ void setup() {
 #elif defined(M5STACK_CORE2)
   Serial2.begin(115200, SERIAL_8N1, 13, 14);
 #endif
-
-  M5.Lcd.printf("SDP SWITCHBOT LOCK HOST\n");
 
   // Load config from FS
   SPIFFS.begin();
@@ -163,11 +181,6 @@ void setup() {
   register_sdp_interface_callback(interface_description_control, callback_for_switch_control);
   Serial.println("SDP Initialized!");
 
-  // Show device info
-  M5.Lcd.printf("Name: %s\n", device_name.c_str());
-  M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
-                mac_address[4], mac_address[5]);
-
   // UWB module
   if (uwb_id >= 0) {
     bool result = initUWB(false, uwb_id, Serial1);
@@ -184,69 +197,46 @@ void setup() {
     M5.Lcd.printf("UWB ID: Not initialized\n");
   }
 
-  // Wifi Configuration
-  Serial.printf("Wifi Configuration\n");
-  String ret = send_serial_command(String("") + "{\"command\":\"config_wifi\"," + "\"ssid\":\"" + wifi_ssid + "\"," +
-                                       "\"password\":\"" + wifi_password + "\"}\n",
-                                   20000);
-  Serial.printf("Response for wifi config: %s\n", ret.c_str());
-
-  // Switchbot Client Configuration
-  Serial.printf("Switchbot Client Configuration\n");
-  ret = send_serial_command(String("") + "{\"command\":\"config_switchbot\"," + "\"token\":\"" + switchbot_token +
-                                "\"," + "\"secret\":\"" + switchbot_secret + "\"}\n",
-                            5000);
-  Serial.printf("Response for switchbot config: %s\n", ret.c_str());
-
-  // Get device status
-  ret = send_serial_command(String("") + "{\"command\":\"get_device_config\"}\n", 5000);
-  Serial.printf("Response for get_device_status: %s\n", ret.c_str());
-
-  // LCD print
+  // Show device info
   M5.lcd.println("=== Device Configuration ===");
+  M5.Lcd.printf("SDP SWITCHBOT LOCK HOST\n");
   M5.lcd.printf("device_name: %s\n", device_name.c_str());
+  M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
+                mac_address[4], mac_address[5]);
   M5.lcd.printf("wifi_ssid: %s\n", wifi_ssid.c_str());
   M5.lcd.printf("switchbot_device_id: %s\n", switchbot_device_id.c_str());
   M5.lcd.printf("uwb_id: %d\n", uwb_id);
   M5.lcd.println("============================");
+
+  // Wifi Configuration
+  Serial.printf("Wifi Configuration\n");
+  clear_recv_buf(500);
+  String ret = send_serial_command(
+      String("") +
+          "{\"command\":\"config_wifi\"," +
+          "\"ssid\":\"" + wifi_ssid + "\"," +
+          "\"password\":\"" + wifi_password + "\"}\n",
+      30000);
+  Serial.printf("Response for wifi config: %s\n", ret.c_str());
+
+  // Switchbot Client Configuration
+  Serial.printf("Switchbot Client Configuration\n");
+  clear_recv_buf(500);
+  ret = send_serial_command(
+      String("") +
+          "{\"command\":\"config_switchbot\"," +
+          "\"token\":\"" + switchbot_token + "\"," +
+          "\"secret\":\"" + switchbot_secret + "\"}\n",
+      10000);
+  Serial.printf("Response for switchbot config: %s\n", ret.c_str());
+
+  // Get device status
+  clear_recv_buf(500);
+  ret = send_serial_command(String("") + "{\"command\":\"get_device_config\"}\n", 5000);
+  Serial.printf("Response for get_device_status: %s\n", ret.c_str());
 }
 
 void loop() {
-  // Run dummy callback if Serial available
-  if (Serial.available()) {
-    uint8_t buf_dummy[240];
-    data.clear();
-    String str = Serial.readStringUntil('\n');
-    Serial.printf("Input: %s\n", str.c_str());
-    if (str.indexOf("unlock") != -1) {
-      data.push_back(SDPData(false));
-    } else if (str.indexOf("lock") != -1) {
-      data.push_back(SDPData(true));
-    } else {
-      Serial.printf("Unknown command. Buffer clearing...\n");
-      auto timeout = millis() + 5000;
-      while (millis() < timeout) {
-        delay(100);
-        if (Serial2.available()) {
-          Serial.println(String("response: ") + Serial2.readString());
-        }
-      }
-      return;
-    }
-    std::string serialization_format = get_serialization_format(data);
-    bool result = generate_data_frame(buf_dummy, packet_description_control.c_str(), data);
-    if (not result) {
-      Serial.printf("Failed to generate data frame\n");
-      return;
-    } else {
-      Serial.println("Generate data frame");
-    }
-    Serial.printf("Dummy callback calling\n");
-    _OnDataRecv(NULL, buf_dummy, sizeof(buf_dummy));
-    Serial.printf("Dummy callback called\n");
-    return;
-  }
-
   // Get switchbot status
   if (loop_counter % status_retrieve_iteration == 0) {
     get_bot_status_and_update_buf();
@@ -261,8 +251,5 @@ void loop() {
       Serial.printf("Failed to send SDP data packet for uwb\n");
     }
   }
-
-  clear_recv_buf(5000);
-
   loop_counter++;
 }

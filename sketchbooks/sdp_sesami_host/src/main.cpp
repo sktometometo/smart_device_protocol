@@ -28,12 +28,13 @@ String device_name = "";
 uint8_t mac_address[6] = {0};
 
 // Interface
-std::string packet_description_operation = "Key control";
+std::string packet_description_operation = "Key control: arg is \"lock\" or \"unlock\"";
 std::string serialization_format_operation = "s";
 SDPInterfaceDescription interface_description_operation = std::make_tuple(packet_description_operation, serialization_format_operation);
 
 // Key Status
-std::string packet_description_key_status = "Key status";
+std::string packet_description_key_status = "Key status: true if locked, false if unlocked";
+std::string serialization_format_key_status = "b";
 std::vector<SDPData> data_for_key_status_data_packet;
 
 // UWB
@@ -150,8 +151,6 @@ void callback_sesami_operation(const uint8_t *mac_address, const std::vector<SDP
 }
 
 void setup() {
-  esp_read_mac(mac_address, ESP_MAC_WIFI_STA);
-
   M5.begin(true, true, true, false);
   Serial.begin(115200);
   Serial1.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);
