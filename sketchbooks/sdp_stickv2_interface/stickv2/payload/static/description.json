@@ -1,0 +1,54 @@
+{
+    "online_classifier": {
+        "description": "This function can real time train and classify objects in the green target frame, and the characteristic value can be saved on the device for next use.\n\u25a0 Click the 'Reset' button to clear the existing categories and enter the training mode.\n\u25a0 Click the'+' button to create a new category.\n\u25a0 Select the category you want to train.\n\u25a0 Put the object to be trained in the green target frame.\n\u25a0 Click the 'Train' button to complete a training.\n\u25a0 Change the angle of the object and repeat the training until your expected effect is achieved.\n\u25a0Click the 'Save&Run' button to save the training results on the device, exit the training mode, and classify.",
+        "title": "Online Classifier"
+    },
+    "code_detector": {
+        "description": "Identify the QR code on the screen, and return the coordinates and content of the QR code.",
+        "title": "Code Detector"
+    },
+    "color_tracker": {
+        "description": "Detect the specified color area and return the coordinates.\n\u25a0 To adjust the LAB threshold value or slide the slider to filter out the background can get the color area.\nAlso can frame the color area directly on the screen. The system will automatically calculate the color with the largest proportion of the target area and filter out the background. You can further adjust the slider based on the calculation result to achieve a better filtering effect.\nClick the ‘To Mask Mode’ button will switch to Mask mode, which can directly see the filtering effect. Click the ‘To RGB Mode’ button again will switch back to RGB mode.\n*For details on CIELAB color space, please refer to: https://en.wikipedia.org/wiki/CIELAB_color_space\n* The LAB threshold is mapped to 0~255.\n* The L in LAB stands for brightness. This threshold is usually not set (0~255) which means the effect of brightness is ignored. But please note this will cause the algorithm unable to distinguish between black and white.\n* Algorithm will only return the largest target.",
+        "title": "Color Tracker"
+    },
+    "face_detector": {
+        "description": "Detects faces in the screen and gives 5-point landmark.",
+        "title": "Face Detector"
+    },
+    "face_recognition": {
+        "description": "Face detection and recognition.\n\u25a0 Click the ‘Reset’ button to clear all existing faces.\n\u25a0 Click the ‘+’ button to create a new face.\n\u25a0 Select the face to be trained.\n\u25a0 Look into the camera and make sure the face is in the right place.\n\u25a0 Click the ‘Train’ button.\n\u25a0 During training, when the bounding box is yellow means training is in progress, then you can slowly turn your head to sample different angles to get better recognition results.\n\u25a0 If the bounding box turns red, the target has been lost. It is because of the face has changed too often, please adjust the face position until it is found again.\n\u25a0 Click the ‘Stop’ button when your expected effect is reached, now the device is able to recognize the face.\n\u25a0 Click the ‘Save’ button to save the characteristic data to the device for next use.",
+        "title": "Face Recognition"
+    },
+    "lane_line_tracker": {
+        "description": "Detects the path line on the screen, fits it to a straight line, and returns its angle and coordinates.\nTo adjust the LAB threshold value or slide the slider to filter out the background can get the color area.\nAlso can frame the color area directly on the screen. The system will automatically calculate the color with the largest proportion of the target area and filter out the background. You can further adjust the slider based on the calculation result to achieve a better filtering effect. \nClick the ‘To Mask Mode’ button will switch to Mask mode, which can directly see the filtering effect. Click the ‘To RGB Mode’ button again will switch back to RGB mode.\n*For details on CIELAB color space, please refer to: https://en.wikipedia.org/wiki/CIELAB_color_space\n* The LAB threshold is mapped to 0~255.\n* The L in LAB stands for brightness. This threshold is usually not set (0~255) which means the effect of brightness is ignored. But please note this will cause the algorithm unable to distinguish between black and white.",
+        "title": "Line Tracker"
+    },
+    "target_tracker": {
+        "description": "Using MOSSE algorithm to select targets on the screen and track them.\n\u25a0 Simply frame the target of interest on the screen.",
+        "title": "Target Tracker"
+    },
+    "motion_tracker": {
+        "description": "Detects and tracks a moving target, returns the coordinates and angle of the target.\n\u25a0 Click the ‘Set as background’ button to confirm the background. The algorithm can adapt to a slowly changing background.",
+        "title": "Motion Tracker"
+    },
+    "camera_stream": {
+        "description": "480P real-time video preview.",
+        "title": "Camera Stream"
+    },
+    "object_recognition": {
+        "description": "Target detection based on YOLO Fastest and NanoDet, V-Training is supported.",
+        "title": "Object Recognition"
+    },
+    "shape_detector": {
+        "description": "Detect the shape in the screen and calculate its area. Squares, rectangles, triangles, pentagons and circles are able to be recognized.\n\u25a0 Click the ‘Set as background’ button to confirm the background. The algorithm can adapt to a slowly changing background.",
+        "title": "Shape Detector"
+    },
+    "shape_matching": {
+        "description": "Match any given shape (but the shape should not contain curves) and the uploaded shape will be converted to characteristic data and saved on the device for next use.\n\u25a0 Click the ‘add’ button to add a shape. You need to upload a template picture (png format, the shape is black with a white background), and the file name will be the name of the shape.",
+        "title": "Shape Matching"
+    },
+    "audio_fft": {
+        "description": "Capturing the audio through the microphone on the device to make real-time FFT (Fast Fourier Transform) and draw a time-frequency diagram. The green chart below is the RMS of the audio, indicating the current loudness.\n* The cutoff frequency of the microphone response is about 10KHz.",
+        "title": "Audio FFT"
+    }
+}

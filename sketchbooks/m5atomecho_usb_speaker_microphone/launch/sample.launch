@@ -1,0 +1,39 @@
+<launch>
+    <arg name="port" />
+
+    <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="serial_node"
+        output="screen">
+        <param name="port" value="$(arg port)" />
+        <param name="baud" value="115200" />
+    </node>
+
+    <node name="speech_recognition"
+        pkg="ros_speech_recognition" type="speech_recognition_node.py"
+        respawn="true"
+        output="screen">
+        <rosparam subst_value="true">
+            audio_topic: /audio
+            voice_topic: /speech_to_text
+            n_channel: 1
+            depth: 8
+            sample_rate: 8000
+            engine: Google
+            language: en-US
+            continuous: true
+            auto_start: true
+            enable_sound_effect: false
+            self_cancellation: true
+            tts_tolerance: 1.0
+            tts_action_names: []
+        </rosparam>
+    </node>
+
+    <node name="speech_recognition_candidates_to_string"
+        pkg="ros_speech_recognition" type="speech_recognition_candidates_to_string.py"
+        output="screen">
+        <remap from="~input" to="/speech_to_text" />
+    </node>
+</launch>

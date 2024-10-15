@@ -75,42 +75,36 @@ AESTiny128 aes128;
 AES_CMAC cmac(aes128);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void setup()
-{
-    USBSerial.begin(115200);
-    delay(1000);
-    USBSerial.println("AES_CMAC example");
+void setup() {
+  USBSerial.begin(115200);
+  delay(1000);
+  USBSerial.println("AES_CMAC example");
 
-    // Generate the MAC from data_raw, using the key. The result is stored into mac
-    cmac.generateMAC(mac, key, data_raw, sizeof(data_raw));
+  // Generate the MAC from data_raw, using the key. The result is stored into mac
+  cmac.generateMAC(mac, key, data_raw, sizeof(data_raw));
 
-    // Print the result
-    USBSerial.print("MAC: ");
-    for (int i = 0; i < sizeof(mac); ++i)
-    {
-        if (mac[i] < 0x10)
-        {
-            USBSerial.print('0');
-        }
-        USBSerial.print(mac[i], HEX);
-        USBSerial.print(' ');
+  // Print the result
+  USBSerial.print("MAC: ");
+  for (int i = 0; i < sizeof(mac); ++i) {
+    if (mac[i] < 0x10) {
+      USBSerial.print('0');
     }
-    USBSerial.println();
+    USBSerial.print(mac[i], HEX);
+    USBSerial.print(' ');
+  }
+  USBSerial.println();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void loop()
-{
-    delay(100);
-    USBSerial.print("MAC: ");
-    for (int i = 0; i < sizeof(mac); ++i)
-    {
-        if (mac[i] < 0x10)
-        {
-            USBSerial.print('0');
-        }
-        USBSerial.print(mac[i], HEX);
-        USBSerial.print(' ');
+void loop() {
+  delay(100);
+  USBSerial.print("MAC: ");
+  for (int i = 0; i < sizeof(mac); ++i) {
+    if (mac[i] < 0x10) {
+      USBSerial.print('0');
     }
-    USBSerial.println();
+    USBSerial.print(mac[i], HEX);
+    USBSerial.print(' ');
+  }
+  USBSerial.println();
 }

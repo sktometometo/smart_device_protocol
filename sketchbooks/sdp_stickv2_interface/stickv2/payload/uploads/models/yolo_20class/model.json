@@ -1,0 +1,20 @@
+{
+    "modelType": "yolov3",
+    "modelParamName": "yolo-fastest.param",
+    "modelBinName": "yolo-fastest.bin",
+    "numOfClass": 21,
+    "className": [
+        "null", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"
+    ],
+    "model": {
+        "modelInputNodes": {
+            "data" : -1
+        },
+
+        "modelOutputNodes": [
+            {
+                "Yolov3DetectionOutput" : "output"
+            }
+        ]
+    }
+}

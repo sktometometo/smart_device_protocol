@@ -1,22 +1,37 @@
 import struct
-from typing import List, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
-from smart_device_protocol.sdp_frames import MetaFrame, DataFrame
-from smart_device_protocol.msg import Packet
+from smart_device_protocol.msg import Packet, PacketType
+from smart_device_protocol.sdp_frames import DataFrame, MetaFrame, RPCMetaFrame
 
 PACKET_TYPE_META = Packet.PACKET_TYPE_META
 PACKET_TYPE_DATA = Packet.PACKET_TYPE_DATA
+PACKET_TYPE_RPC_META = PacketType.PACKET_TYPE_RPC_META
 
 
-def parse_packet_as_v2(packet: Packet) -> Tuple[Tuple, Union[MetaFrame, DataFrame]]:
-    src_address = struct.unpack("6B", packet.mac_address)
+class InvalidPacketError(Exception):
+    pass
+
+
+def parse_packet_as_v2(
+    packet: Packet,
+) -> Tuple[
+    Optional[Tuple[int, int, int, int, int, int]],
+    Union[MetaFrame, DataFrame, RPCMetaFrame],
+]:
+    try:
+        src_address = struct.unpack("6B", packet.mac_address)
+    except struct.error:
+        src_address = None
     packet_type = struct.unpack("<H", packet.data[0:2])[0]
     if packet_type == PACKET_TYPE_META:
         return src_address, MetaFrame.from_bytes(packet.data)
     elif packet_type == PACKET_TYPE_DATA:
         return src_address, DataFrame.from_bytes(packet.data)
+    elif packet_type == PACKET_TYPE_RPC_META:
+        return src_address, RPCMetaFrame.from_bytes(packet.data)
     else:
-        raise ValueError(f"Unknown packet type: {packet_type}")
+        raise InvalidPacketError(f"Unknown packet type: {packet_type}")
 
 
 # Version 1 of the packet parser
@@ -122,6 +137,12 @@ def parse_packet(packet):
         )
         return packet_type, source_name, timeout_duration, message
 
+    elif (
+        packet_type == Packet.PACKET_TYPE_DATA
+        or packet_type == Packet.PACKET_TYPE_META
+        or packet_type == PACKET_TYPE_RPC_META
+    ):
+        src_address, frame = parse_packet_as_v2(Packet(data=packet))
+        return packet_type, frame
     else:
-        print("{} is not supported packet type", format(packet_type))
         return Packet.PACKET_TYPE_NONE, None

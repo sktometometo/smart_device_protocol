@@ -1,27 +1,24 @@
-#include <vector>
 #include <variant>
+#include <vector>
 
 #if defined(M5STACK_FIRE)
 #include <M5Stack.h>
 #elif defined(M5STACK_CORE2)
 #include <M5Core2.h>
 #endif
+#include <ArduinoJson.h>
 #include <FS.h>
 #include <SPIFFS.h>
-
-#include <ArduinoJson.h>
-
-#include <smart_device_protocol/Packet.h>
-
-#include <sdp/sdp.h>
-#include <utils/config_loader.h>
 #include <devices/uwb_module_util.h>
+#include <sdp/sdp.h>
+#include <smart_device_protocol/Packet.h>
+#include <utils/config_loader.h>
 
 // Device name
 String device_name = "";
 
 // ESP-NOW
-uint8_t mac_address[6] = { 0 };
+uint8_t mac_address[6] = {0};
 
 // SDP Interface
 std::string packet_description_information = "Landmark information";
@@ -34,19 +31,89 @@ std::string packet_description_uwb = "UWB Station";
 std::string serialization_format_uwb = "i";
 std::vector<SDPData> data_for_uwb_data_packet;
 
+// UWB Toggle
+std::string packet_description_uwb_toggle = "Turn On/Off UWB";
+std::string serialization_format_uwb_toggle = "?i";
+SDPInterfaceDescription interface_description_uwb_toggle(packet_description_uwb_toggle, serialization_format_uwb_toggle);
+
+// Routing plan request
+std::string packet_description_routing_plan_request = "Routing plan req";
+std::string serialization_format_routing_plan_request = "is";
+SDPInterfaceDescription interface_description_routing_plan_request(packet_description_routing_plan_request, serialization_format_routing_plan_request);
+
+// Routing plan response
+std::string packet_description_routing_plan_response = "Routing plan res";
+std::string serialization_format_routing_plan_response = "iS";
+SDPInterfaceDescription interface_description_routing_plan_response(packet_description_routing_plan_response, serialization_format_routing_plan_response);
+
+// Response buffer mac_address -> (request_id, response string)
+std::map<std::string, std::tuple<int32_t, std::string>> _response_buffer;
+
+// Adjacent devices
+std::vector<std::string> adjacent_devices;
+
 // Other
 std::vector<SDPData> data;
 int loop_counter = 0;
 
-bool load_config_from_FS(fs::FS& fs, String filename = "/config.json")
-{
+void callback_routing_plan_request(const uint8_t *mac_addr,
+                                   const std::vector<SDPData> &body) {
+  int request_id = std::get<int32_t>(body[0]);
+  std::string destination = std::get<std::string>(body[1]);
+  std::string source = _convert_mac_address(mac_addr);
+  std::string result = "";
+  Serial.printf("Routing plan request: %d, %s\n", request_id, destination.c_str());
+  Serial.printf("Source: %s\n", source.c_str());
+  _response_buffer[source] = std::make_tuple(request_id, "");
+  data.clear();
+  data.push_back(SDPData(request_id));
+  data.push_back(SDPData(destination));
+  auto device_interfaces = get_sdp_interfaces();
+  for (auto itr = adjacent_devices.begin(); itr != adjacent_devices.end(); itr++) {
+    if (*itr == source) {
+      continue;
+    }
+    for (auto itr2 = device_interfaces.begin(); itr2 != device_interfaces.end(); itr2++) {
+      if (std::get<1>(*itr2) == *itr) {
+        continue;
+      }
+    }
+  }
+
+  if (not send_sdp_data_packet(packet_description_routing_plan_response, data)) {
+    Serial.println("Failed to send routing plan response");
+  } else {
+    Serial.println("Success to send routing plan response");
+  }
+}
+
+void callback_uwb_toggle(const uint8_t *mac_addr,
+                         const std::vector<SDPData> &body) {
+  bool uwb_on = std::get<bool>(body[0]);
+  if (uwb_on) {
+    uwb_id = std::get<int32_t>(body[1]);
+  } else {
+    uwb_id = -1;
+  }
+
+  if (uwb_on) {
+    Serial.printf("Turn On UWB: %d\n", uwb_id);
+    initUWB(false, uwb_id, Serial2);
+    data_for_uwb_data_packet.clear();
+    data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+  } else {
+    Serial.println("Turn Off UWB");
+    resetUWB(Serial2);
+    data_for_uwb_data_packet.clear();
+  }
+}
+
+bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
   StaticJsonDocument<1024> doc;
-  if (not load_json_from_FS<1024>(fs, filename, doc))
-  {
+  if (not load_json_from_FS<1024>(fs, filename, doc)) {
     return false;
   }
-  if (not doc.containsKey("device_name") or not doc.containsKey("uwb_id") or not doc.containsKey("information"))
-  {
+  if (not doc.containsKey("device_name") or not doc.containsKey("uwb_id") or not doc.containsKey("information")) {
     return false;
   }
 
@@ -58,38 +125,43 @@ bool load_config_from_FS(fs::FS& fs, String filename = "/config.json")
   return true;
 }
 
-void setup()
-{
+void setup() {
+#if defined(M5STACK_FIRE)
   M5.begin(true, true, true, false);
   Serial.begin(115200);
   Serial2.begin(115200, SERIAL_8N1, 22, 21);
+#elif defined(M5STACK_CORE2)
+  M5.begin(true, true, true, false);
+  Serial.begin(115200);
+  Serial2.begin(115200, SERIAL_8N1, 22, 21);
+#endif
 
   // LCD Print
   M5.Lcd.printf("SDP LANDMARK INFORMATION HOST\n");
 
   // Load config from FS
+#if defined(M5STACK_FIRE)
   SPIFFS.begin();
   SD.begin();
-  if (not load_config_from_FS(SD, "/config.json"))
-  {
-    if (not load_config_from_FS(SPIFFS, "/config.json"))
-    {
+#elif defined(M5STACK_CORE2)
+  SPIFFS.begin();
+  SD.begin();
+#endif
+  if (not load_config_from_FS(SD, "/config.json")) {
+    if (not load_config_from_FS(SPIFFS, "/config.json")) {
       Serial.println("Failed to load config file");
       M5.lcd.printf("Failed to load config file\n");
-      while (true)
-      {
+      while (true) {
         delay(1000);
       }
     }
   }
 
   // Initialization of SDP
-  if (not init_sdp(mac_address, device_name))
-  {
+  if (not init_sdp(mac_address, device_name)) {
     Serial.println("Failed to initialize SDP");
     M5.lcd.printf("Failed to initialize SDP\n");
-    while (true)
-    {
+    while (true) {
       delay(1000);
     }
   }
@@ -101,37 +173,64 @@ void setup()
 #elif defined(M5STACK_CORE2)
   Serial1.begin(115200, SERIAL_8N1, 33, 32);
 #endif
-  bool result = initUWB(false, uwb_id, Serial1);
-  data_for_uwb_data_packet.push_back(SDPData(uwb_id));
-  if (result)
-  {
-    M5.lcd.printf("Success for initialization of UWB\n");
+  if (uwb_id >= 0) {
+    bool result = initUWB(false, uwb_id, Serial1);
+    data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+    if (result) {
+      M5.lcd.printf("Success for initialization of UWB\n");
+      Serial.println("Success for initialization of UWB");
+    } else {
+      M5.lcd.printf("Failed to initialize UWB\n");
+      Serial.println("Failed to initialize UWB");
+    }
+  } else {
+    resetUWB(Serial1);
+    M5.lcd.printf("UWB is not used\n");
+    Serial.println("UWB is not used");
   }
-  else
-  {
-    M5.lcd.printf("Failed to initialize UWB\n");
+
+  // register UWB toggle
+  if (register_sdp_interface_callback(interface_description_uwb_toggle,
+                                      callback_uwb_toggle)) {
+    Serial.println("Registered UWB toggle callback");
+
+  } else {
+    Serial.println("Failed to register UWB toggle callback");
   }
 
   // Display MAC address
   M5.Lcd.printf("Name: %s\n", device_name.c_str());
   M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
                 mac_address[4], mac_address[5]);
+  Serial.printf("Name: %s\n", device_name.c_str());
+  Serial.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
+                mac_address[4], mac_address[5]);
 
   // Display loaded config
   M5.Lcd.printf("UWB ID: %d\n", uwb_id);
+
+  Serial.println("Initialization completed!");
 }
 
-void loop()
-{
+void loop() {
   delay(5000);
 
-  // Send SDP data packet
-  if (not send_sdp_data_packet(packet_description_information, data_for_information_data_packet))
-  {
-    Serial.println("Failed to send SDP data packet");
+  for (auto itr = data_for_information_data_packet.begin(); itr != data_for_information_data_packet.end(); itr++) {
+    std::string information = std::get<std::string>(*itr);
+    Serial.printf("Information: %s\n", information.c_str());
   }
-  if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet))
-  {
+
+  // Send SDP data packet
+  if (not send_sdp_data_packet(packet_description_information, data_for_information_data_packet)) {
     Serial.println("Failed to send SDP data packet");
+  } else {
+    Serial.println("Success to send SDP data packet");
+  }
+  if (uwb_id >= 0) {
+    if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet)) {
+      Serial.println("Failed to send UWB SDP data packet");
+    } else {
+      Serial.println("Success to send UWB SDP data packet");
+    }
   }
 }

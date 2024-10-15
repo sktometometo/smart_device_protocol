@@ -1,0 +1,20 @@
+.func-result{
+    flex: 1 1 400px;
+    max-height: 480px;
+    font-size: 1em;
+    overflow: scroll;
+    box-sizing: border-box;
+}
+.func-result-title{
+    padding: 1em;
+    margin: 0;
+    font-size: 1em;
+    background: #fff;
+    box-shadow: -1px 1px 3px 1px #d4d3d3;
+}
+#func-result-pre{
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    font-family: 'roboto';
+    padding: 0em 1em;
+}

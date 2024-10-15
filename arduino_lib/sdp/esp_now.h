@@ -1,8 +1,10 @@
 #pragma once
 
 #include <WiFi.h>
+#include <esp_mac.h>
 #include <esp_now.h>
 #include <esp_system.h>
+#include <esp_wifi.h>
 #include <smart_device_protocol/Packet.h>
 
 bool init_esp_now(uint8_t *mac_address, esp_now_recv_cb_t callback_receive) {

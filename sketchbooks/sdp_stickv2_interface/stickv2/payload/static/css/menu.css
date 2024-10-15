@@ -1,0 +1,206 @@
+.menu-list {
+    display: none;
+    flex-direction: row;
+    justify-content: flex-end;
+    transition: linear .2s width;
+}
+.menu-btn-list{
+    display: flex;
+    flex-flow: row wrap;
+
+}
+.menu-img{
+    width:32px;
+    height: 32px;
+    background-color: transparent!important;
+    border:none!important;
+}
+#menu-btn{
+    background-color: transparent!important;
+    border:none!important;
+}
+#menu-btn-label-circle{
+    transition: all .325s ease-in-out;
+}
+.btn-div>button {
+    padding-bottom: .5em;
+    height: 4em;
+    display: none;
+}
+
+.btn-div>button:hover{
+    background-color: #3559ab!important;
+    /* #223F81 */
+}
+
+.btn-group-nav-right , .btn-group-nav-left{
+    background-color: #222831!important;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 50px;
+}
+.btn-group-nav-right:hover,.btn-group-nav-left:hover{
+    background-color: #6461cc!important;
+}
+.btn-group-nav-right > svg{
+    width: 1em;
+    height: 1em;
+}
+.btn-group-nav-left > svg{
+    width: 1em;
+    height: 1em;
+}
+
+.btn-group {
+    display: flex;
+    z-index: 100;
+    width: 100%;
+    flex-wrap: wrap;
+    background-color: #222831!important;
+    padding: 1em;
+    justify-content: flex-start;
+}
+
+.btn-group>.btn-div>.btn-active{
+    color: #fff!important;
+    background: #3559ab!important;
+    /* #223F81 */
+}
+
+.btn-group>.btn {
+    margin-right: 1.25em;
+    margin-bottom: .625em;
+}
+
+.btn-group>.btn-div>.tip {
+    color: #c3b4b4;
+}
+
+.btn-group>.btn-div {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    flex: 0 1 240px;
+    z-index: 1;
+}
+.btn-group>.btn-div:last-child{
+    flex: 0 0 240px;
+}
+
+.btn-group>.btn-div>button {
+    /* position: relative; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;            
+    font-size: 1em;
+    border-radius: 1em;
+    margin:1px;
+    color:#b9baba;
+}
+.btn-group>.btn-div>button>.btn-inner{
+    display: flex;
+    flex-direction: row;   
+    align-items: center;  
+}
+.btn-group>.btn-div>button>.btn-inner>div{
+    padding:.3125em;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+}
+.btn-group>.btn-div>button>.btn-inner>svg{
+    width: 2em;
+    height: 1.5em;
+    padding-right: .3125em;
+    fill:#B9BABA;
+}
+.btn-group>.btn-div>button>.btn-inner>svg:hover{
+    fill: #fff;
+}
+
+.btn-group>.btn-div>button>.btn-inner>div>span{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    letter-spacing: .02785714em;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    text-align: left;
+}
+.btn-group>.btn-div>button>.under-line{
+    display: none;
+    /* width: 100%;
+    border-radius: 2px;
+    padding:0px;
+    border: 2px solid rgb(255, 255, 255);
+    bottom: 2px; */
+}
+.btn-group>.btn-div>button>img{
+    width: 2em;
+    height: 2em;
+}
+
+.btn-group>.btn-div>button:hover{
+    color: #fff!important;
+}
+.btn-primary{
+    background-color: #222831;
+    color: #ffffff ;
+}       
+.btn-primary-1 {
+    background-color: #048ABF ;
+    color: #ffffff ;
+}
+
+.btn-primary-2 {
+    background-color: #4388ca ;
+    color: #ffffff ;
+   
+    
+}
+
+.btn-primary-3 {
+    background-color: #5290B5 ;
+    color: #ffffff ;
+    
+}
+
+.btn-primary-4 {
+    background-color: #2291B5 ;
+    color: #ffffff ;
+}
+
+.btn-primary-5 {
+    
+    background-color: #009cb1 ;
+    color: #ffffff ;
+}
+
+.btn-primary-6 {
+   
+    background-color: #59d2b8 ;
+    color: #ffffff ;
+  
+}
+.btn-primary-7{
+   
+    background-color: #00A682 ;
+    color: #ffffff ;
+}
+.btn-primary-8{
+    background-color: #11b995 ;
+    color: #ffffff ;
+}
+.btn-primary-9{
+    background-color: #027368 ;
+    color: #ffffff ;
+   
+}
+.btn-primary-10 {
+    background-color: #025951 ;
+    color: #ffffff ;
+   
+}

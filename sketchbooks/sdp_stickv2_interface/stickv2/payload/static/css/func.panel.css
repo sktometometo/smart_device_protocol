@@ -1,0 +1,356 @@
+/* firmware */
+.firmware>.firmware-func{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 0;
+}
+
+.func-panel{
+    position:fixed;
+    right:-400px;
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+    height:100%;
+    box-shadow: 0px 0px 5px 1px #bfbdbd4d;
+    background-color: #eee;
+    z-index: 1001;
+}
+
+.func-header{
+    padding: 1.5em .3125em;
+    box-shadow: 2px 1px 5px 1px #9a91914d;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.func-header>p{
+    flex: 1 0;
+}
+#func-header-btn{
+    width: 2em;
+    height: 2em;
+    background-color: transparent!important;
+    
+}
+#func-header-btn>.func-img{
+    width: 2em;
+    height: 2em;   
+}
+#func-header-btn>.func-img:hover{
+    animation: menu-btn-func 2s linear ;
+    animation-iteration-count: infinite;
+}
+
+.func-body{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.func-body>.boot-func{
+    padding: 1em 1em 0 1em;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 70px;
+    font-size: 1em;
+    flex-wrap: wrap;
+}
+.func-body>.boot-func>p{
+    flex: 1 0 ;
+}
+.func-body>.boot-func>button{
+    display: flex;
+    flex: 1 0;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    box-shadow: 0px 0px 3px 1px #9c9c9c;
+    color: white;
+}
+.func-body>.boot-func>button>img{
+    width: 1em;
+    height: 1em;
+}
+.boot-func-list{
+    display: flex;
+    flex-flow: row wrap;
+    flex:1 0;
+    padding: 1em;
+}
+.boot-func-list>button{
+    flex-wrap: wrap;
+    flex:1 0 160px;
+    text-align: left;
+    padding: 0.5em;
+    border: 1px solid;
+    font-size: .825em;
+    color: #fff;
+}
+
+.boot-func-list>button:hover{
+    background-color: #222831!important;
+}
+
+/*switch-sys-mode*/
+.switch-sys-mode{
+    flex-flow: column wrap;
+    padding: 1em;
+    flex: 0 0;
+}
+.switch-sys-mode>button{
+    width: 100%;
+    display: flex;
+    flex: 1 0;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    box-shadow: 0px 0px 3px 1px #9c9c9c;
+    color: white;
+}
+/* wifi */
+.wifi-func{
+    display: none;
+    padding: 1em;
+    /* display: flex; */
+    flex-flow: column wrap;
+    flex: 0 0;
+}
+.wifi-func>.wifi-mode{
+    display: flex;
+    flex-flow: column wrap;
+    flex: 0 0;   
+    padding-bottom: 1em;
+}
+.wifi-func>.wifi-mode>label{
+    flex: 1 0;
+    font-size: 1em;
+    padding-bottom: 5px;
+}
+.wifi-func>.wifi-mode>select{
+    font-family: Montserrat!important;
+    flex: 1 0;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid #393e46;
+    outline: none;
+}
+.wifi-func>.ssid{
+    display: flex;
+    flex-flow: column wrap;
+    flex: 0 0;
+    padding-bottom: 1em;
+}
+.wifi-func>.ssid>label{
+    flex: 1 0;
+    font-size: 1em;
+    line-height: 2;
+    padding-bottom: 5px;
+}
+.wifi-func>.ssid>input{
+    flex: 1 0 ;
+}
+.wifi-func>.ssid>input:hover{
+    border-color: #222831;
+}
+.wifi-func>.ssid>input:focus{
+    border-color: #222831;
+}
+.wifi-func>.password{
+    display: flex;
+    flex-flow: column wrap;
+    flex: 0 0;
+}
+.wifi-func>.password>label{
+    flex: 1 0;
+    font-size: 1em;
+    line-height: 2;
+    padding-bottom: 5px;
+}
+.wifi-func>.password>input{
+    flex: 1 0;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 2px solid #393e46;
+    outline: none;
+}
+.wifi-func>.password>input:hover{
+    border-color: #222831;
+}
+.wifi-func>.password>input:focus{
+    border-color: #222831;
+}
+.wifi-func>.wifi-btn-group{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 0 0;
+    padding-top: 1em;
+}
+.wifi-func>.wifi-btn-group>.wifi-btn-group-loading{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 0;
+    justify-content: center;
+    align-items: center;
+}
+.wifi-func>.wifi-btn-group>.wifi-btn-group-loading>svg{
+    width: 2em;
+    height: 2em;
+    animation: animate_wifi_loading infinite 2s linear;
+}
+.wifi-func>.wifi-btn-group>.wifi-btn-group-submit{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 0;
+    justify-content: center;
+    align-items: center;
+}
+.wifi-func>.wifi-btn-group>.wifi-btn-group-submit>button{
+    background-color: #222831;
+    border-color: #222831;
+    color: #ffffff;
+    flex: 1 0;
+    box-shadow: 0px 0px 3px 1px #9c9c9c;
+}
+.wifi-func>.wifi-btn-group>.wifi-btn-group-submit>button:hover{
+    background-color: #393e46;
+    border-color: #393e46;
+}
+
+@keyframes animate_wifi_loading{
+    0% {
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+
+/* firmware */
+.firmware{
+    display: none;
+    padding: 1em;
+    /* display: flex; */
+    flex-direction: column;
+    flex: 0 0;
+}
+.firmware>#firmware_file_form>.firmware-func{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 0;
+    justify-content: space-between;
+}
+.firmware>#firmware_file_form>.firmware-func>div,.firmware>#firmware_file_form>.firmware-func>div>label:first-child{
+    flex: 1 0;
+}
+.firmware-file-tips{
+    font-size: .5em;
+    color: #bfbdbd;
+    padding: 3px 0px;
+}
+.firmware>#firmware_file_form>.firmware-func>.input-label{
+    flex: 1 0;
+    box-shadow: 0px 0px 3px 1px #9c9c9c;
+    background-color: #222831;
+    border-color: #222831;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row-reverse;
+    align-items: center;
+    color:white;
+}
+.firmware>#firmware_file_form>.firmware-func>.input-label:hover{
+    background-color: #393e46;
+    color: #fff;
+}
+.firmware>#firmware_file_form>.firmware-func>.input-label>svg{
+    width: 1em;
+    height: 1em;
+}
+.firmware>#firmware_file_form>.firmware-func>input{
+    display: none;
+}
+.firmware-submit{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 0 0;
+    padding-top: 1em;
+    border-radius: 1em;
+}
+.btn-firmware-submit{
+    background-color: #222831;
+    border-color: #222831;
+    color: #ffffff;
+    flex: 0 0;
+    box-shadow: 0px 0px 3px 1px #9c9c9c;
+    border-radius: .8em;
+}
+.btn-firmware-submit:hover{
+    background-color: #393e46;
+    border-color: #393e46;
+}
+
+/* model */
+.model{
+    padding:1em;
+    display: flex;
+    flex-flow: column wrap;
+    flex: 0 0;
+}
+.model>#model_file_form>.model-func{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 0;
+    justify-content: space-between;
+}
+.model>#model_file_form>.model-func>div,.model>#model_file_form>.model-func>div>label:first-child{
+    flex: 1 0;
+}
+
+.model>#model_file_form>.model-func>.input-label{
+    flex: 1 0;
+    box-shadow: 0px 0px 3px 1px #9c9c9c;
+    background-color: #222831;
+    border-color: #222831;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+.model>#model_file_form>.model-func>.input-label:hover{
+    background-color: #393e46;
+    color: #fff;
+}
+.model>#model_file_form>.model-func>.input-label>svg{
+    width: 1em;
+    height: 1em;
+}
+.model-file-tips{
+    font-size: .5em;
+    color: #bfbdbd;
+    padding: 3px 0px;
+}
+
+.model>#model_file_form>.model-func>input{
+    display: none;
+}
+.model-submit{
+    display: flex;
+    flex-flow: row wrap;
+    flex: 0 0;
+    padding-top: 1em;
+    border-radius: 1em;
+}
+.btn-model-submit{
+    background-color: #222831;
+    border-color: #222831;
+    color: #ffffff;
+    flex: 0 0;
+    box-shadow: 0px 0px 3px 1px #9c9c9c;
+    border-radius: .8em;
+}
+.btn-model-submit:hover{
+    background-color: #393e46;
+    border-color: #393e46;
+}
