@@ -148,7 +148,16 @@ void ledcolorCb(const std_msgs::ColorRGBA &msg) {
 
 // Display
 
+#if defined(TESTING)
+void OnDataRecv(const esp_now_recv_info_t *esp_now_info, const uint8_t *data, int data_len) {
+  uint8_t mac_addr[6];
+  // copy esp_now_info->mac_addr to mac_addr
+  for (int i = 0; i < 6; i++) {
+    mac_addr[i] = esp_now_info->src_addr[i];
+  }
+#else
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
+#endif
   for (int i = 0; i < 6; i++) {
     mac_address_for_msg[i] = mac_addr[i];
   }
@@ -157,6 +166,7 @@ void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   }
   msg_recv_packet.mac_address = mac_address_for_msg;
   msg_recv_packet.mac_address_length = 6;
+  // msg_recv_packet.rssi = esp_now_info->rx_ctrl->rssi;
   msg_recv_packet.data = buffer_for_msg;
   msg_recv_packet.data_length = data_len;
   publisher.publish(&msg_recv_packet);
