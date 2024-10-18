@@ -1,15 +1,12 @@
+#include <Dps310.h>
+#include <M5Core2.h>
+#include <WiFi.h>
 #include <esp_now.h>
 #include <esp_system.h>
-
-#include <WiFi.h>
-
-#include <M5Core2.h>
-#include <Dps310.h>
-
-#include <LovyanGFX.hpp>
-#include <LGFX_AUTODETECT.hpp>
-
 #include <smart_device_protocol/Packet.h>
+
+#include <LGFX_AUTODETECT.hpp>
+#include <LovyanGFX.hpp>
 
 #include "sdp/packet_creator.h"
 #include "sdp/packet_parser.h"
@@ -42,24 +39,20 @@ float pressure = 0;
 
 char module_name[64];
 
-void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len)
-{
+void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
   uint16_t packet_type = get_packet_type(data);
-  if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_NAMED_STRING)
-  {
+  if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_NAMED_STRING) {
     char name[64];
     char temp_module_name[64];
     parse_packet_as_named_string_packet(data, packet_type, name, temp_module_name);
-    if (strncmp(name, "module_name", 10))
-    {
+    if (strncmp(name, "module_name", 10)) {
       strncpy(module_name, temp_module_name, 64);
       Serial.printf("module_name is updated to %s\n", module_name);
     }
   }
 }
 
-void setup()
-{
+void setup() {
   // Read device mac address
   uint8_t device_mac_address[6] = {0};
   esp_read_mac(device_mac_address, ESP_MAC_WIFI_STA);
@@ -97,20 +90,16 @@ void setup()
   // Initialize ESP-NOW
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
-  if (esp_now_init() == ESP_OK)
-  {
+  if (esp_now_init() == ESP_OK) {
     Serial.println("ESPNow Init Success");
-  }
-  else
-  {
+  } else {
     Serial.println("ESPNow Init Failed");
     ESP.restart();
   }
   esp_now_register_recv_cb(OnDataRecv);
 }
 
-void loop()
-{
+void loop() {
   M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
   M5.IMU.getAccelData(&accX, &accY, &accZ);
   M5.IMU.getAhrsData(&pitch, &roll, &yaw);

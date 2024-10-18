@@ -1,0 +1,135 @@
+.stream{
+    display: flex;
+    flex-direction: row;
+    height: 100%; 
+    justify-content: flex-start; 
+    flex-wrap: wrap;
+    box-shadow: 1px 1px 3px 1px #adadad66
+}
+
+#interactive_area::-webkit-scrollbar,.func-result::-webkit-scrollbar {display:none}
+#canvas {
+    background-color: #fff;
+    box-shadow: 0px 0px 3px 1px #b5b5b5;
+    z-index: 999;
+}
+
+.canvas-interactive-tab{
+    text-align: center;
+    padding: .625em;
+    background-color:#00adb5 ;
+    color: #fff;
+}
+.canvas-area-tab{
+    text-align: center;
+    padding: .625em;
+    background-color:#00adb5 ;
+    width: 100%;
+    color: #fff;
+}
+.canvas-func-tab{
+    text-align: center;
+    padding: .625em;
+    background-color:#00adb5 ;
+    color: #fff;
+}
+
+.canvas-func-info{
+
+    flex: 1 0;
+    width: 100%;
+    padding: 1px;
+    box-sizing: border-box;
+    background: #fff;
+    position: absolute;
+    display: none;
+}
+.canvas-func-tips{
+    position: relative;
+    z-index: 1000;
+    display: flex;
+    flex-flow: column;
+    box-shadow: -1px 1px 3px 1px #d4d3d3;
+}
+.canvas-func-titel{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1em 1em .5em 0;
+    background: #fff;
+}
+#canvas-func-tips-svg{
+    cursor: pointer;
+    fill: #000;
+    transform: rotate(0);
+    transition: all 0.5s linear;
+}
+.canvas-func-title{
+    padding:0 1em;
+    padding-bottom: 0px;
+    margin: 0;
+}
+.canvas-func-p{
+    font-size:1em;
+    padding: 1em;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+    transition: all .55s linear;
+}
+/*canvas*/
+.canvas-area{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 0 1 480px;
+}
+
+/*控制台*/   
+#interactive_area {
+    flex: 1 1 400px;
+    position: relative;
+    overflow: scroll;
+    max-height: 480px;
+    box-sizing: border-box;
+}
+.console {
+    display: flex;
+    flex-flow: row wrap;
+    background: #222831;
+}
+
+.console>button {
+    border: 1px solid;
+    flex: 1 0 150px;
+    width: 100%;
+    color: white;
+    background-color: transparent;
+}
+.console>button:hover{
+    background-color: #00adb5!important;
+}
+
+#dynamic_func_area {
+    padding-top: 1.25em;
+    padding-left:1.25em;
+    flex:1 0;
+}
+
+ /*input*/
+ input[type="text"] {
+    padding: .3125em;
+    border-radius: 3px;
+    border: 2px solid #393e46;
+    outline: none;
+}
+
+input:focus {
+    border-color: #22B2Da
+}
+
+input[type="radio"] {
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    margin-top: .375em;
+}

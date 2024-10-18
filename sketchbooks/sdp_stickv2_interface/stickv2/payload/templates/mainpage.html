@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery.range.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/loading.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/camera.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/gallery.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/mainpage.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/func.panel.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/progress.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/slider.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/menu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/uploading.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/message.box.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/stream.canvas.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bin/color_tracker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bin/lane_line_tracker.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bin/shape_matching.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bin/object_recognition.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bin/fft.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/func.result.css') }}">
+    <title>Unit V2</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="brand">
+            <div class="title">
+                <button class="btn btn-primary" disabled="disabled">
+                    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="48px" height="48px"
+                        version="1.1"
+                        style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                        viewBox="0 0 5779.508 7361.541" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="图层_x0020_1">
+                            <metadata id="CorelCorpID_0Corel-Layer" />
+                            <g id="_2143895865456">
+                                <path class="fil0" style="fill:#82c3e9;fill-opacity:0.901961"
+                                    d="M2162.883 6323.649l2116.454 -5814.889c145.508,-399.79 591.635,-607.826 991.425,-462.318l0 0c399.776,145.509 607.812,591.648 462.304,991.425l-2116.454 5814.888c-145.508,399.777 -591.648,607.813 -991.425,462.305l0 0c-399.776,-145.509 -607.812,-591.635 -462.304,-991.411z" />
+                                <path class="fil1" style="fill:#f37f6a;fill-opacity:0.900000"
+                                    d="M3616.625 6323.649l-2116.454 -5814.889c-145.508,-399.79 -591.635,-607.826 -991.411,-462.318l0 0c-399.777,145.509 -607.826,591.648 -462.318,991.425l2116.454 5814.888c145.509,399.777 591.661,607.813 991.438,462.305l0 0c399.776,-145.509 607.799,-591.635 462.291,-991.411z" />
+                            </g>
+                            <path class="fil2" style="fill:#FEFEFE;fill-rule:nonzero"
+                                d="M5779.508 7283.704c0,23.438 -7.536,42.273 -22.596,56.504 -15.06,14.218 -34.316,21.333 -57.741,21.333l-843.614 0c-25.108,0 -46.034,-8.365 -62.765,-25.108 -16.743,-16.73 -25.108,-37.656 -25.108,-62.765 0,-13.389 0.828,-28.462 2.499,-45.192 1.683,-16.744 5.866,-32.645 12.561,-47.705 21.754,-51.888 50.217,-103.367 85.361,-154.413 35.157,-51.046 72.813,-100.434 112.981,-148.139 40.182,-47.705 82.021,-93.726 125.543,-138.09 43.522,-44.351 85.361,-86.611 125.543,-126.792 40.168,-38.498 80.336,-77.417 120.505,-116.744 40.181,-39.339 76.995,-78.258 110.482,-116.756 38.498,-43.509 71.972,-93.305 100.421,-149.388 28.463,-56.07 42.694,-119.256 42.694,-189.557 0,-100.434 -27.621,-184.125 -82.862,-251.072 -55.242,-66.961 -138.932,-100.434 -251.072,-100.434 -48.547,0 -94.16,4.603 -136.841,13.81 -42.68,9.207 -81.599,21.347 -116.743,36.407 -8.379,3.341 -19.256,8.786 -32.645,16.322 -13.39,7.524 -25.109,15.481 -35.144,23.846 -13.39,8.365 -26.779,15.481 -40.182,21.347 -13.389,5.853 -25.937,8.786 -37.656,8.786 -20.084,0 -38.077,-6.695 -53.979,-20.084 -15.901,-13.39 -23.859,-31.803 -23.859,-55.242 0,-28.449 19.256,-56.07 57.754,-82.848 127.213,-73.656 267.815,-110.483 421.807,-110.483 76.996,0 146.455,12.14 208.391,36.407 61.923,24.279 113.824,57.753 155.663,100.434 41.852,42.68 74.063,92.897 96.659,150.651 22.596,57.74 33.908,119.255 33.908,184.532 0,103.775 -16.744,191.661 -50.217,263.633 -33.487,71.971 -76.996,137.248 -130.567,195.83 -38.498,46.877 -75.313,87.466 -110.47,121.781 -35.144,34.303 -68.631,66.527 -100.434,96.66 -80.337,75.325 -157.333,153.991 -230.988,236.012 -73.642,82.02 -134.736,174.917 -183.283,278.692l735.657 0c23.425,0 42.681,7.524 57.741,22.597 15.06,15.059 22.596,33.473 22.596,55.228z" />
+                        </g>
+                    </svg>
+                </button>
+            </div>
+            <div class="brand-main btn-primary"></div>
+            <div class="menu-gear">
+                <button id="func_model" class="btn btn-func btn-primary"><img class="func-img"
+                        src="{{ url_for('static', filename='./image/gear.png') }}"></button>
+            </div>
+        </div>
+
+        <div class="func-panel">
+            <div class="func-header">
+                <button id="func-header-btn" class="btn btn-func ">
+                    <img class="func-img" src="{{ url_for('static', filename='./image/gear_panel.png') }}">
+
+                </button>
+                <p>FUNC PANEL</p>
+            </div>
+            <div class="func-body">
+                <div class="boot-func">
+                    <p>BOOT FUNCTION</p>
+                    <button class="btn btn-func btn-primary">
+                        <span>NULL</span>
+                        <svg class="func-img" t="1617961181468" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="2012" width="16" height="16">
+                            <path fill="#ffffff"
+                                d="M987.2 397.248L553.344 831.072a64 64 0 0 1-90.528 0L29.056 397.248A64 64 0 0 1 74.304 288h867.616a64 64 0 0 1 45.248 109.248z"
+                                p-id="2013"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="boot-func-list" style="display: none;">
+                    <button class="btn btn-func btn-primary-1" id="object_recognition-1">Object Recongnition</button>
+                    <button class="btn btn-func btn-primary-2" id="code_detector-2">Code Detector</button>
+                    <button class="btn btn-func btn-primary-3" id="camera_stream-3">Camera Stream</button>
+                    <button class="btn btn-func btn-primary-4" id="color_tracker-4">Color Tracker</button>
+                    <button class="btn btn-func btn-primary-5" id="lane_line_tracker-5">LaneLine Tracker</button>
+                    <button class="btn btn-func btn-primary-6" id="target_tracker-6">Target Trakcer</button>
+                    <button class="btn btn-func btn-primary-7" id="motion_tracker-7">Motion Trakcer</button>
+                    <button class="btn btn-func btn-primary-8" id="online_classifier-8">Online Classifier</button>
+                    <button class="btn btn-func btn-primary-9" id="face_recognition-9">Face Recognition</button>
+                    <button class="btn btn-func btn-primary-10" id="face_detector-10">Face Detector</button>
+                    <button class="btn btn-func btn-primary-11" id="shape_detector-11">Shape Detector</button>
+                    <button class="btn btn-func btn-primary-12" id="shape_matching-12">Shape Matching</button>
+                    <button class="btn btn-func btn-primary-13" id="audio_fft-13">Audio FFT</button>
+                </div>
+            </div>
+
+            <div class="switch-sys-mode">
+                <button id="switch_sys_mode_btn"  class="btn btn-func" onclick="switch_sys_mode()">Switch to notebook mode</button>
+            </div>
+
+
+            <div class="wifi-func">
+                <div class="wifi-mode">
+                    <label for="wifi-mode-select">WIFI-MODE</label>
+                    <select class="wifi-mode-select">
+                        <option value="sta">STA</option>
+                        <option value="ap">AP</option>
+                    </select>
+                </div>
+                <div class="ssid">
+                    <label for="wifi-ssid">WIFI-SSID</label>
+                    <input id="wifi-ssid" type="text" placeholder="SSID">
+                </div>
+                <div class="password">
+                    <label for="wifi-password">WIFI-PASSWORD</label>
+                    <input id="wifi-password" type="password" placeholder="PASSWORD">
+                </div>
+                <div class="wifi-btn-group">
+                    <div class="wifi-btn-group-loading">
+                        <svg t="1615789421139" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="5021" width="200" height="200">
+                            <path
+                                d="M404.52096 230.46144a37.2736 37.2736 0 0 1-13.96736 51.2 38.21568 38.21568 0 0 1-51.87584-13.63968l-87.8592-150.3232a37.2736 37.2736 0 0 1 13.98784-51.2 38.21568 38.21568 0 0 1 51.87584 13.63968l87.8592 150.3232z"
+                                fill="#999999" opacity=".3" p-id="5022"></path>
+                            <path
+                                d="M773.16096 906.30144a37.2736 37.2736 0 0 1-13.96736 51.2 38.21568 38.21568 0 0 1-51.87584-13.63968l-87.8592-150.3232a37.2736 37.2736 0 0 1 13.98784-51.2 38.21568 38.21568 0 0 1 51.87584 13.63968l87.8592 150.3232z"
+                                fill="#999999" opacity=".9" p-id="5023"></path>
+                            <path
+                                d="M793.53856 404.52096a37.2736 37.2736 0 0 1-51.2-13.96736 38.21568 38.21568 0 0 1 13.63968-51.87584l150.3232-87.8592a37.2736 37.2736 0 0 1 51.2 13.98784 38.21568 38.21568 0 0 1-13.63968 51.87584l-150.3232 87.8592z"
+                                fill="#999999" opacity=".1" p-id="5024"></path>
+                            <path
+                                d="M117.69856 773.16096a37.2736 37.2736 0 0 1-51.2-13.96736 38.21568 38.21568 0 0 1 13.63968-51.87584l150.3232-87.8592a37.2736 37.2736 0 0 1 51.2 13.98784 38.21568 38.21568 0 0 1-13.63968 51.87584l-150.3232 87.8592z"
+                                fill="#999999" opacity=".6" p-id="5025"></path>
+                            <path
+                                d="M685.32224 268.02176a38.21568 38.21568 0 0 1-51.87584 13.63968 37.25312 37.25312 0 0 1-13.96736-51.2l87.8592-150.3232a38.21568 38.21568 0 0 1 51.85536-13.63968 37.2736 37.2736 0 0 1 13.96736 51.2l-87.8592 150.3232z"
+                                fill="#999999" opacity=".1" p-id="5026"></path>
+                            <path
+                                d="M316.68224 943.86176a38.21568 38.21568 0 0 1-51.87584 13.63968 37.2736 37.2736 0 0 1-13.96736-51.2l87.8592-150.3232a38.21568 38.21568 0 0 1 51.85536-13.63968 37.2736 37.2736 0 0 1 13.96736 51.2l-87.8592 150.3232z"
+                                fill="#999999" opacity=".7" p-id="5027"></path>
+                            <path
+                                d="M755.97824 685.32224a38.21568 38.21568 0 0 1-13.63968-51.87584 37.25312 37.25312 0 0 1 51.2-13.96736l150.3232 87.8592a38.21568 38.21568 0 0 1 13.63968 51.85536 37.25312 37.25312 0 0 1-51.2 13.96736l-150.3232-87.8592z"
+                                fill="#999999" opacity=".95" p-id="5028"></path>
+                            <path
+                                d="M80.13824 316.68224a38.21568 38.21568 0 0 1-13.63968-51.87584 37.2736 37.2736 0 0 1 51.2-13.96736l150.3232 87.8592a38.21568 38.21568 0 0 1 13.63968 51.85536 37.2736 37.2736 0 0 1-51.2 13.96736l-150.3232-87.8592z"
+                                fill="#999999" opacity=".4" p-id="5029"></path>
+                            <path
+                                d="M797.88032 552.96C775.72096 552.96 757.76 534.6304 757.76 512s17.96096-40.96 40.12032-40.96h185.99936c22.15936 0 40.12032 18.3296 40.12032 40.96s-17.96096 40.96-40.12032 40.96H797.9008z"
+                                fill="#999999" p-id="5030"></path>
+                            <path
+                                d="M40.12032 552.96C17.96096 552.96 0 534.6304 0 512s17.96096-40.96 40.12032-40.96h185.99936c22.15936 0 40.12032 18.3296 40.12032 40.96s-17.96096 40.96-40.12032 40.96H40.1408z"
+                                fill="#999999" opacity=".5" p-id="5031"></path>
+                            <path
+                                d="M471.04 797.88032c0-22.15936 18.3296-40.12032 40.96-40.12032s40.96 17.96096 40.96 40.12032v185.99936C552.96 1006.03904 534.6304 1024 512 1024s-40.96-17.96096-40.96-40.12032V797.9008z"
+                                fill="#999999" opacity=".8" p-id="5032"></path>
+                            <path
+                                d="M471.04 40.12032C471.04 17.96096 489.3696 0 512 0s40.96 17.96096 40.96 40.12032v185.99936C552.96 248.27904 534.6304 266.24 512 266.24s-40.96-17.96096-40.96-40.12032V40.1408z"
+                                fill="#999999" opacity=".2" p-id="5033"></path>
+                        </svg>
+                    </div>
+                    <div class="wifi-btn-group-submit">
+                        <button type="button" class="btn btn-wifi-submit" onclick="wifi_connect()">submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="firmware">
+                <form id="firmware_file_form" method="POST" enctype="multipart/form-data">
+                    <div class="firmware-func">
+                        <div>
+                            <label>FIRMWARE FILE</label>
+                            <p class="firmware-file-tips">(support zip,tar,gz)</p>
+                        </div>
+                        <label id="firmware_file_label" for="firmware_file" class="input-label">
+                            <svg t="1616064118468" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" p-id="8526" width="200" height="200">
+                                <path
+                                    d="M512 0a512 512 0 1 0 512 512A512 512 0 0 0 512 0z m253.44 509.44a51.2 51.2 0 0 1-72.192 0L563.2 379.392V768a51.2 51.2 0 0 1-102.4 0V379.392L330.752 509.44a51.2 51.2 0 0 1-72.192-72.704l217.088-217.088a51.2 51.2 0 0 1 10.24-6.656 51.2 51.2 0 0 1 6.656-4.096 51.2 51.2 0 0 1 39.424 0 51.2 51.2 0 0 1 6.656 4.096 51.2 51.2 0 0 1 10.24 6.656l217.088 217.088a51.2 51.2 0 0 1-0.512 72.704z"
+                                    fill="#ffffff" p-id="8527"></path>
+                            </svg>
+                            <span>UPLOAD FILE</span>
+                        </label>
+                        <input id="firmware_file" name="file" type="file">
+                    </div>
+                    <div class="progress">
+                        <div></div>
+                    </div>
+                    <div class="firmware-submit">
+                        <button id="firmware_file_upload" class="btn btn-firmware-submit" type="button">UPLOAD</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="menu-div">
+                <div class="menu-btn-list">
+                    <button id="camera" class="btn btn-func">
+                        <svg t="1614240389210" class="icon" viewBox="0 0 1194 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="11086" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <path
+                                d="M1066.666667 160h-181.333334L842.154667 38.912a42.752 42.752 0 0 0-40.277334-28.245333H392.789333a42.666667 42.666667 0 0 0-40.106666 28.245333l-43.349334 121.088H128c-58.88 0-106.666667 47.786667-106.666667 106.666667v608c0 58.88 47.786667 106.666667 106.666667 106.666666h938.666667c58.88 0 106.666667-47.786667 106.666666-106.666666V266.666667c0-58.88-47.786667-106.666667-106.666666-106.666667z m10.666666 714.666667a10.666667 10.666667 0 0 1-10.666666 10.666666h-938.666667a10.666667 10.666667 0 0 1-10.666667-10.666666V266.666667c0-5.888 4.778667-10.666667 10.666667-10.666667h248.917333l22.784-63.744 30.549334-85.589333h333.994666l30.549334 85.589333 22.784 63.744H1066.666667c5.888 0 10.666667 4.778667 10.666666 10.666667v608zM597.333333 341.333333a213.333333 213.333333 0 1 0-0.085333 426.581334A213.333333 213.333333 0 0 0 597.333333 341.333333z m0 341.333334a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"
+                                p-id="11087"></path>
+                        </svg>
+                    </button>
+                    <button id="gallery" class="btn btn-func">
+                        <svg t="1615261498524" class="icon" viewBox="0 0 1192 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="5233" width="200" height="200">
+                            <path
+                                d="M843.494457 366.687361a38.59867 38.59867 0 1 1 38.598669-38.598669 38.59867 38.59867 0 0 1-38.598669 38.598669z m0-170.288248a134.527716 134.527716 0 1 0 134.527716 134.527716 134.527716 134.527716 0 0 0-134.527716-136.798226z m252.594235 388.824834l-157.232816-67.547672a47.68071 47.68071 0 0 0-56.76275 0l-207.184035 139.636364L380.310421 290.05765a48.248337 48.248337 0 0 0-70.385809 0L95.929047 507.45898V95.929047h1000.159645z m0 345.117516H95.929047v-283.813747L340.576497 392.230599l288.922394 359.308204a47.68071 47.68071 0 0 0 63.006652 7.946785l215.698448-144.745012 187.884701 88.54989z m0-930.341463H95.929047A95.929047 95.929047 0 0 0 0 95.929047v832.141906A95.929047 95.929047 0 0 0 95.929047 1021.72949h1000.159645A95.929047 95.929047 0 0 0 1192.017738 928.070953V95.929047A95.929047 95.929047 0 0 0 1096.088692 0z"
+                                p-id="5234"></path>
+                        </svg>
+                    </button>
+                </div>
+                <button id="menu-btn" class="btn btn-func">
+                    <svg t="1618306266951" id="menu-btn-label" class="icon" viewBox="0 0 1643 1024" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" p-id="5577" width="32" height="32">
+                        <path
+                            d="M1131.861333 0H512a512 512 0 0 0 0 1024h619.861333a512 512 0 0 0 0-1024z m0 887.466667H512a375.466667 375.466667 0 0 1 0-750.933334h619.861333a375.466667 375.466667 0 0 1 0 750.933334z"
+                            p-id="5578"></path>
+                        <path id="menu-btn-label-circle"
+                            d="M1104.554667 278.528a247.125333 247.125333 0 1 0 245.76 245.76 247.125333 247.125333 0 0 0-245.76-245.76z"
+                            p-id="5579"></path>
+                    </svg>
+                </button>
+
+            </div>
+
+            <div class="menu-list">
+                <div class="btn-group"></div>
+            </div>
+            <div class="stream">
+                <!-- 交互区 -->
+                <div class="flex-col" id="interactive_area">
+                    <div class="canvas-func-tips">
+                        <div class="canvas-func-titel">
+                            <h3 class="canvas-func-title">Video Stream</h3>
+                            <svg id="canvas-func-tips-svg" class="func-img" t="1617961181468" class="icon"
+                                viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2012"
+                                width="16" height="16">
+                                <path
+                                    d="M987.2 397.248L553.344 831.072a64 64 0 0 1-90.528 0L29.056 397.248A64 64 0 0 1 74.304 288h867.616a64 64 0 0 1 45.248 109.248z"
+                                    p-id="2013"></path>
+                            </svg>
+                        </div>
+                        <!-- 文本介绍 -->
+                        <div class="canvas-func-info">
+                            <div class="canvas-func-p">640 * 480 video stream.</div>
+                        </div>
+                    </div>
+
+                    <div id="dynamic_func_area">
+                    </div>
+                    <!-- 控制台 -->
+                    <div class="console">
+
+                    </div>
+                </div>
+                <!-- 实时画面 -->
+                <div class="canvas-area">
+                    <canvas id="canvas" width="640" height="480"></canvas>
+                    <img id="img" src="/video_feed"  />
+                    <div class="uploading" style="display: none;">
+                        <div class="uploading-context">
+                            <div class="uploading-menu">
+                                <svg id="uploading-menu-close" t="1617070555350" class="icon" viewBox="0 0 1024 1024"
+                                    version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6330">
+                                    <path
+                                        d="M810.666667 128H213.333333a85.333333 85.333333 0 0 0-85.333333 85.333333V810.666667a85.333333 85.333333 0 0 0 85.333333 85.333333H810.666667a85.333333 85.333333 0 0 0 85.333333-85.333333V213.333333a85.333333 85.333333 0 0 0-85.333333-85.333333m-145.066667 597.333333L512 571.733333 358.4 725.333333 298.666667 665.6l153.6-153.6L298.666667 358.4 358.4 298.666667l153.6 153.6L665.6 298.666667 725.333333 358.4 571.733333 512l153.6 153.6-59.733333 59.733333z"
+                                        p-id="6331"></path>
+                                </svg>
+                            </div>
+                            <p class="uploading-text">uploading ...</p>
+                            <div class="uploading-process">
+                                <div></div>
+                            </div>
+                            <div class="uploading-success">
+                                <svg t="1617344436677" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                    xmlns="http://www.w3.org/2000/svg" p-id="2773" width="32" height="32">
+                                    <path
+                                        d="M512 1024C230.4 1024 0 793.6 0 512S230.4 0 512 0s512 230.4 512 512S793.6 1024 512 1024zM512 85.333333C277.333333 85.333333 85.333333 277.333333 85.333333 512s192 426.666667 426.666667 426.666667 426.666667-192 426.666667-426.666667S746.666667 85.333333 512 85.333333z"
+                                        p-id="2774" fill="#1fcc57"></path>
+                                    <path
+                                        d="M469.333333 682.666667c-12.8 0-21.333333-4.266667-29.866667-12.8l-128-128c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l128 128c17.066667 17.066667 17.066667 42.666667 0 59.733333C490.666667 678.4 482.133333 682.666667 469.333333 682.666667z"
+                                        p-id="2775" fill="#1fcc57"></path>
+                                    <path
+                                        d="M469.333333 682.666667c-12.8 0-21.333333-4.266667-29.866667-12.8-17.066667-17.066667-17.066667-42.666667 0-59.733333l256-256c17.066667-17.066667 42.666667-17.066667 59.733333 0s17.066667 42.666667 0 59.733333l-256 256C490.666667 678.4 482.133333 682.666667 469.333333 682.666667z"
+                                        p-id="2776" fill="#1fcc57"></path>
+                                </svg>
+                            </div>
+
+                            <div class="uploading-failed">
+                                <svg t="1617344558782" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                    xmlns="http://www.w3.org/2000/svg" p-id="3493" width="32" height="32">
+                                    <path
+                                        d="M512 1024C230.4 1024 0 793.6 0 512S230.4 0 512 0s512 230.4 512 512S793.6 1024 512 1024zM512 85.333333C277.333333 85.333333 85.333333 277.333333 85.333333 512s192 426.666667 426.666667 426.666667 426.666667-192 426.666667-426.666667S746.666667 85.333333 512 85.333333z"
+                                        p-id="3494" fill="#d81e06"></path>
+                                    <path
+                                        d="M341.333333 725.333333c-12.8 0-21.333333-4.266667-29.866667-12.8-17.066667-17.066667-17.066667-42.666667 0-59.733333l341.333333-341.333333c17.066667-17.066667 42.666667-17.066667 59.733333 0s17.066667 42.666667 0 59.733333l-341.333333 341.333333C362.666667 721.066667 354.133333 725.333333 341.333333 725.333333z"
+                                        p-id="3495" fill="#d81e06"></path>
+                                    <path
+                                        d="M682.666667 725.333333c-12.8 0-21.333333-4.266667-29.866667-12.8l-341.333333-341.333333c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l341.333333 341.333333c17.066667 17.066667 17.066667 42.666667 0 59.733333C704 721.066667 695.466667 725.333333 682.666667 725.333333z"
+                                        p-id="3496" fill="#d81e06"></path>
+                                </svg>
+                            </div>
+                            <div class="uploading-res">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="func-result">
+                    <h5 class="func-result-title">Result</h5>
+                    <pre id="func-result-pre"></pre>
+                </div>
+            </div>
+
+            <div class="loading">
+                <div class="loading-context">
+                    <div class="loading-menu">
+                        <svg t="1617070555350" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="6330">
+                            <path
+                                d="M810.666667 128H213.333333a85.333333 85.333333 0 0 0-85.333333 85.333333V810.666667a85.333333 85.333333 0 0 0 85.333333 85.333333H810.666667a85.333333 85.333333 0 0 0 85.333333-85.333333V213.333333a85.333333 85.333333 0 0 0-85.333333-85.333333m-145.066667 597.333333L512 571.733333 358.4 725.333333 298.666667 665.6l153.6-153.6L298.666667 358.4 358.4 298.666667l153.6 153.6L665.6 298.666667 725.333333 358.4 571.733333 512l153.6 153.6-59.733333 59.733333z"
+                                p-id="6331"></path>
+                        </svg>
+                    </div>
+                    <p class="loading-text">loading ...</p>
+                    <div class="loading-icon"></div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="gallery-section">
+        <div class="gallery-func-section">
+            <p class="gallery-section-title">GALLERY</p>
+            <div class="gallery-section-close">
+                <svg t="1617786292447" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="2438" width="24" height="24">
+                    <path d="M0 0h1024v1024H0z" style="opacity: 0" fill="transparent" p-id="2439"></path>
+                    <path
+                        d="M696.64 374.624a32 32 0 0 0-45.28-45.248l45.248 45.248z m-369.28 278.72a32 32 0 1 0 45.28 45.248l-45.248-45.248z m324 45.248a32 32 0 0 0 45.248-45.248l-45.248 45.248z m-278.72-369.216a32 32 0 1 0-45.248 45.248l45.248-45.248z m278.72 0L327.392 653.344l45.248 45.248 323.968-323.968-45.248-45.248z m45.248 323.968L372.64 329.376l-45.248 45.248 323.968 323.968 45.248-45.248zM896 512c0 212.064-171.936 384-384 384v64c247.424 0 448-200.576 448-448h-64zM512 896C299.936 896 128 724.064 128 512H64c0 247.424 200.576 448 448 448v-64zM128 512C128 299.936 299.936 128 512 128V64C264.576 64 64 264.576 64 512h64zM512 128c212.064 0 384 171.936 384 384h64c0-247.424-200.576-448-448-448v64z"
+                        fill="#FEFEFE" p-id="2440"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="gallery-main-section">
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="copy">
+            © 2021 M5Stack Technology Co., Ltd. All rights reserved.
+        </div>
+        <div class="log">
+
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='./js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='./js/jquery.range.js') }}"></script>
+    <script src="{{ url_for('static', filename='./js/common.js') }}"></script>
+</body>
+
+</html>

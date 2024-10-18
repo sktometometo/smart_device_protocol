@@ -1,0 +1,65 @@
+.loading {
+    position: absolute;
+    z-index: 1000;
+    background-color: #ffffff00;
+    align-self: center;           
+}
+
+.loading-context {
+    width: 350px;
+    height: 100px;
+    padding:2em 3.125em 4em 3.125em;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #fdfdfd;
+    box-shadow: 0px 0px 3px 1px rgba(202, 201, 201, 0.493);
+}
+.loading-menu{
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+}
+.loading-menu>svg{
+    width: 2em;
+    height: 2em;
+    fill:#dd3611
+}
+.loading-menu>svg:hover{
+    fill: #f43911;
+}
+
+
+.loading-text {
+    font-size: 1.125em;
+    padding-bottom: .3125em;
+}
+
+.loading-icon {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: text-bottom;
+    border: .25em solid;
+    border-right: .25em solid transparent;
+    border-radius: 50%;
+    animation: rotate-icon 1s linear ;
+    animation-iteration-count: infinite;
+
+}
+
+
+@keyframes rotate-icon {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
