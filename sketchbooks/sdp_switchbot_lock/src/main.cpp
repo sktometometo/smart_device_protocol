@@ -1,5 +1,5 @@
-#include <variant>
-#include <vector>
+#include <ArduinoJson.h>
+#include <FS.h>
 
 #if defined(M5STACK_FIRE)
 #include <M5Stack.h>
@@ -10,12 +10,13 @@
 #include <M5Core2.h>
 
 #include "m5stack_utils/m5core2.h"
-
 #endif
-#include <ArduinoJson.h>
-#include <FS.h>
 #include <SPIFFS.h>
+#include <WiFi.h>
 #include <smart_device_protocol/Packet.h>
+
+#include <variant>
+#include <vector>
 
 #include "devices/uwb_module_util.h"
 #include "iot_com_util/iot_host_util.h"
@@ -65,7 +66,10 @@ void get_bot_status_and_update_buf() {
 
   clear_recv_buf(500);
   String result = send_serial_command(
-      String("") + "{\"command\":\"get_device_status\"," + "\"device_id\":\"" + switchbot_device_id + "\"}\n", 5000);
+      String("") +
+          "{\"command\":\"get_device_status\"," +
+          "\"device_id\":\"" + switchbot_device_id + "\"}\n",
+      5000);
   Serial.printf("Response for get_device_status: %s\n", result.c_str());
   DeserializationError error = deserializeJson(result_json, result);
   if (error or (result_json.containsKey("success") and not result_json["success"].as<bool>())) {
@@ -93,6 +97,8 @@ bool load_config_from_FS(fs::FS& fs, String filename = "/config.json") {
       not doc.containsKey("switchbot_secret") or
       not doc.containsKey("switchbot_device_id") or
       not doc.containsKey("uwb_id")) {
+    Serial.println("\"device_name\" or \"wifi_ssid\" or \"wifi_password\" or \"switchbot_token\" or \"switchbot_secret\" or \"switchbot_device_id\" or \"uwb_id\" not found in config file");
+    M5.Lcd.printf("\"device_name\" or \"wifi_ssid\" or \"wifi_password\" or \"switchbot_token\" or \"switchbot_secret\" or \"switchbot_device_id\" or \"uwb_id\" not found in config file\n");
     return false;
   }
 
@@ -146,16 +152,8 @@ void callback_for_switch_control(const uint8_t* mac_address, const std::vector<S
 void setup() {
   M5.begin(true, true, true, false);
   Serial.begin(115200);
-#if defined(M5STACK_FIRE)
-  Serial1.begin(115200, SERIAL_8N1, 16, 17);
-#elif defined(M5STACK_CORE2)
-  Serial1.begin(115200, SERIAL_8N1, 33, 32);
-#endif
-#if defined(M5STACK_FIRE)
-  Serial2.begin(115200, SERIAL_8N1, 22, 21);
-#elif defined(M5STACK_CORE2)
-  Serial2.begin(115200, SERIAL_8N1, 13, 14);
-#endif
+  Serial1.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);
+  Serial2.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);  // Switchbot client uses serial2
 
   // Load config from FS
   SPIFFS.begin();
@@ -181,6 +179,13 @@ void setup() {
   register_sdp_interface_callback(interface_description_control, callback_for_switch_control);
   Serial.println("SDP Initialized!");
 
+  // Show device info
+  M5.Lcd.printf("SDP SWITCHBOT LOCK HOST\n");
+  M5.lcd.println("=== Device Configuration ===");
+  M5.lcd.printf("device_name: %s\n", device_name.c_str());
+  M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
+                mac_address[4], mac_address[5]);
+
   // UWB module
   if (uwb_id >= 0) {
     bool result = initUWB(false, uwb_id, Serial1);
@@ -197,19 +202,16 @@ void setup() {
     M5.Lcd.printf("UWB ID: Not initialized\n");
   }
 
-  // Show device info
-  M5.lcd.println("=== Device Configuration ===");
-  M5.Lcd.printf("SDP SWITCHBOT LOCK HOST\n");
-  M5.lcd.printf("device_name: %s\n", device_name.c_str());
-  M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
-                mac_address[4], mac_address[5]);
   M5.lcd.printf("wifi_ssid: %s\n", wifi_ssid.c_str());
+  M5.lcd.printf("wifi_password: %s\n", wifi_password.c_str());
   M5.lcd.printf("switchbot_device_id: %s\n", switchbot_device_id.c_str());
-  M5.lcd.printf("uwb_id: %d\n", uwb_id);
+  M5.lcd.printf("switchbot_token: %s\n", switchbot_token.c_str());
+  M5.lcd.printf("switchbot_secret: %s\n", switchbot_secret.c_str());
   M5.lcd.println("============================");
 
   // Wifi Configuration
   Serial.printf("Wifi Configuration\n");
+  M5.Lcd.printf("Configuring Wifi\n");
   clear_recv_buf(500);
   String ret = send_serial_command(
       String("") +
