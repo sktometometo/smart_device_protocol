@@ -84,7 +84,7 @@ void callback_lock_operation(const uint8_t *mac_address, const std::vector<SDPDa
 void setup() {
   M5.begin(true, true, true, false);
   Serial.begin(115200);
-  Serial1.begin(115200, SERIAL_8N1, PORT_C_SERIAL_RX, PORT_C_SERIAL_TX);
+  Serial1.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);
 
   init_lcd();
 

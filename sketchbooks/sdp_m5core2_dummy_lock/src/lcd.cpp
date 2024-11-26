@@ -50,13 +50,11 @@ void show_lock_image() {
   if (!draw_sucess) {
     Serial.println("Failed to draw image");
   }
-  // sprite_lock_image.pushSprite(lcd.width() / 4, lcd.height() / 8);
   sprite_lock_image.pushRotateZoom(&lcd, lcd.width() / 2, (int)(lcd.height() * (1.0 / 8 + 3.5 / 8)), 0.0, 2.0, 2.0);
 }
 
 void show_unlock_image() {
   sprite_lock_image.fillScreen(0xFFFFFF);
   sprite_lock_image.drawJpgFile(SD, "/unlock.jpg");
-  // sprite_lock_image.pushSprite(lcd.width() / 4, lcd.height() / 8);
   sprite_lock_image.pushRotateZoom(&lcd, lcd.width() / 2, (int)(lcd.height() * (1.0 / 8 + 3.5 / 8)), 0.0, 2.0, 2.0);
 }
