@@ -92,72 +92,61 @@ void setup() {
   sprite_header.pushSprite(0, 0);
 
   // Load config from FS
-  SPIFFS.begin();
-  SD.begin();
-  // if (not load_config_from_FS(SD, "/config.json")) {
-  //   if (not load_config_from_FS(SPIFFS, "/config.json")) {
-  //     Serial.println("Failed to load config file");
-  //     M5.Lcd.printf("Failed to load config file\n");
-  //     while (true) {
-  //       delay(1000);
-  //     }
-  //   }
-  // }
+  if (not load_config_from_FS(SD, "/config.json")) {
+    Serial.println("Failed to load config file");
+    while (true) {
+      delay(1000);
+    }
+  }
 
-  // // Initialization of SDP
-  // if (not init_sdp(mac_address, device_name)) {
-  //   Serial.println("Failed to initialize SDP");
-  //   M5.lcd.printf("Failed to initialize SDP\n");
-  //   while (true) {
-  //     delay(1000);
-  //   }
-  // }
-  // register_sdp_interface_callback(interface_description_operation, callback_lock_operation);
-  // Serial.println("SDP Initialized!");
+  // Initialization of SDP
+  if (not init_sdp(mac_address, device_name)) {
+    Serial.println("Failed to initialize SDP");
+    while (true) {
+      delay(1000);
+    }
+  }
+  register_sdp_interface_callback(interface_description_operation, callback_lock_operation);
+  Serial.println("SDP Initialized!");
 
-  // // UWB module
-  // bool result = false;
-  // if (uwb_id >= 0) {
-  //   result = initUWB(false, uwb_id, Serial1);
-  //   if (not result) {
-  //     uwb_id = -1;
-  //   } else {
-  //     data_for_uwb_data_packet.clear();
-  //     data_for_uwb_data_packet.push_back(SDPData(uwb_id));
-  //   }
-  // } else {
-  //   result = resetUWB(Serial1);
-  // }
+  // UWB module
+  bool result = false;
+  if (uwb_id >= 0) {
+    result = initUWB(false, uwb_id, Serial1);
+    if (not result) {
+      uwb_id = -1;
+    } else {
+      data_for_uwb_data_packet.clear();
+      data_for_uwb_data_packet.push_back(SDPData(uwb_id));
+    }
+  } else {
+    result = resetUWB(Serial1);
+  }
 
-  // // Print info
-  // M5.Lcd.printf("====================================\n");
-  // M5.Lcd.printf("Name: %s\n", device_name.c_str());
-  // M5.Lcd.printf("ADDR: %2x:%2x:%2x:%2x:%2x:%2x\n", mac_address[0], mac_address[1], mac_address[2], mac_address[3],
-  //               mac_address[4], mac_address[5]);
-  // M5.Lcd.printf("UWB ID: %d\n", uwb_id);
-  // M5.Lcd.printf("====================================\n");
+  String header_message = "Name: " + device_name + "\n";
+  header_message += "ADDR: " + String(mac_address[0], HEX) + ":" + String(mac_address[1], HEX) + ":" + String(mac_address[2], HEX) + ":" + String(mac_address[3], HEX) + ":" + String(mac_address[4], HEX) + ":" + String(mac_address[5], HEX) + "\n";
+  header_message += "UWB ID: " + String(uwb_id) + "\n";
+  print_header(header_message);
 }
 
 void loop() {
-  delay(5000);
+  delay(500);
 
   if (lock_status) {
-    Serial.println("Lock the key");
     show_lock_image();
-    lock_status = false;
   } else {
-    Serial.println("Unlock the key");
     show_unlock_image();
-    lock_status = true;
   }
 
-  // // Send SDP data packet
-  // if (not send_sdp_data_packet(packet_description_key_status, data_for_key_status_data_packet)) {
-  //   Serial.println("Failed to send SDP data packet");
-  // }
-  // if (uwb_id >= 0) {
-  //   if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet)) {
-  //     Serial.println("Failed to send SDP data packet");
-  //   }
-  // }
+  // Send SDP data packet
+  data_for_key_status_data_packet.clear();
+  data_for_key_status_data_packet.push_back(SDPData(lock_status));
+  if (not send_sdp_data_packet(packet_description_key_status, data_for_key_status_data_packet)) {
+    Serial.println("Failed to send SDP data packet");
+  }
+  if (uwb_id >= 0) {
+    if (not send_sdp_data_packet(packet_description_uwb, data_for_uwb_data_packet)) {
+      Serial.println("Failed to send SDP data packet");
+    }
+  }
 }
