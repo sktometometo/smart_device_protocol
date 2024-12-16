@@ -246,6 +246,11 @@ void _get_device_interfaces_callback(
  * Definitions
  */
 void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
+#ifdef DEBUG_SDP
+  Serial.printf("Data received from: %02x:%02x:%02x:%02x:%02x:%02x\n",
+                mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4],
+                mac_addr[5]);
+#endif
   uint8_t packet_type = get_packet_type(data);
   for (auto &entry : _esp_now_recv_callbacks) {
     entry(mac_addr, data, data_len);
@@ -259,6 +264,10 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
     std::string serialization_format =
         std::get<1>(packet_description_and_serialization_format);
     std::vector<SDPData> body = std::get<1>(packet);
+#ifdef DEBUG_SDP
+    Serial.printf("packet_description: %s\n", packet_description.c_str());
+    Serial.printf("serialization_format: %s\n", serialization_format.c_str());
+#endif
 
     for (auto &entry : _sdp_data_callbacks) {
       entry(mac_addr, packet_description_and_serialization_format, body);
@@ -268,6 +277,16 @@ void _OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len) {
       if (packet_description == std::get<0>(std::get<0>(entry)) and
           serialization_format == std::get<1>(std::get<0>(entry))) {
         std::get<1>(entry)(mac_addr, body);
+      } else {
+#ifdef DEBUG_SDP
+        Serial.println("Callback not called");
+        Serial.printf("packet_description: %s\n",
+                      std::get<0>(std::get<0>(entry)).c_str());
+        Serial.printf("serialization_format: %s\n",
+                      std::get<1>(std::get<0>(entry)).c_str());
+#else
+        continue;
+#endif
       }
     }
   } else if (packet_type == smart_device_protocol::Packet::PACKET_TYPE_META) {

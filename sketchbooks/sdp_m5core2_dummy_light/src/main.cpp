@@ -20,7 +20,7 @@
 LGFX lcd;
 LGFX_Sprite sprite_header(&lcd);
 LGFX_Sprite sprite_status(&lcd);
-LGFX_Sprite sprite_lock_image(&lcd);
+LGFX_Sprite sprite_light_image(&lcd);
 
 // Device name
 String device_name = "";
@@ -29,13 +29,13 @@ String device_name = "";
 uint8_t mac_address[6] = {0};
 
 // Interface
-std::string packet_description_operation = "Key control: arg is \"lock\" or \"unlock\"";
-std::string serialization_format_operation = "s";
+std::string packet_description_operation = "Light control: true is on, false is off";
+std::string serialization_format_operation = "?";
 SDPInterfaceDescription interface_description_operation = std::make_tuple(packet_description_operation, serialization_format_operation);
 
 // Key Status
-std::string packet_description_key_status = "Key status: true if locked, false if unlocked";
-std::string serialization_format_key_status = "b";
+std::string packet_description_key_status = "Light status: true is on, false is off";
+std::string serialization_format_key_status = "?";
 std::vector<SDPData> data_for_key_status_data_packet;
 
 // UWB
@@ -45,7 +45,7 @@ std::string serialization_format_uwb = "i";
 std::vector<SDPData> data_for_uwb_data_packet;
 
 // Status
-bool lock_status = true;
+bool light_status = true;
 
 // Other
 std::vector<SDPData> data;
@@ -62,23 +62,26 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
   }
   device_name = doc["device_name"].as<String>();
   uwb_id = doc["uwb_id"].as<int>();
+  if (doc.containsKey("packet_description_operation")) {
+    packet_description_operation = doc["packet_description_operation"].as<String>().c_str();
+  }
+  if (doc.containsKey("packet_description_key_status")) {
+    packet_description_key_status = doc["packet_description_key_status"].as<String>().c_str();
+  }
   return true;
 }
 
-void callback_lock_operation(const uint8_t *mac_address, const std::vector<SDPData> &body) {
-  std::string operation_key = std::get<std::string>(body[0]);
-  Serial.printf("operation_key: %s\n", operation_key.c_str());
-  Serial.printf("operation_key length: %d\n", operation_key.length());
-  if (operation_key == "lock") {
-    Serial.printf("Lock the key\n");
-    lock_status = true;
-  } else if (operation_key == "unlock") {
-    Serial.printf("Unlock the key\n");
-    lock_status = false;
+void callback_light_operation(const uint8_t *mac_address, const std::vector<SDPData> &body) {
+  Serial.println("Light control command received");
+  bool control = std::get<bool>(body[0]);
+  if (control) {
+    Serial.println("Turn on light");
+    light_status = true;
   } else {
-    Serial.printf("Unknown operation key\n");
+    Serial.println("Turn off light");
+    light_status = false;
   }
-  Serial.printf("Key control command done\n");
+  Serial.printf("Light control command done\n");
 }
 
 void setup() {
@@ -87,8 +90,7 @@ void setup() {
   Serial1.begin(115200, SERIAL_8N1, PORT_A_SERIAL_RX, PORT_A_SERIAL_TX);
 
   init_lcd();
-
-  sprite_header.printf("SDP SESAMI HOST DEVICE\n");
+  sprite_header.printf("SDP DUMMY LIGHT HOST DEVICE\n");
   sprite_header.pushSprite(0, 0);
 
   // Load config from FS
@@ -106,7 +108,7 @@ void setup() {
       delay(1000);
     }
   }
-  register_sdp_interface_callback(interface_description_operation, callback_lock_operation);
+  register_sdp_interface_callback(interface_description_operation, callback_light_operation);
   Serial.println("SDP Initialized!");
 
   // UWB module
@@ -130,17 +132,20 @@ void setup() {
 }
 
 void loop() {
-  delay(500);
+  delay(1000);
 
-  if (lock_status) {
-    show_lock_image();
+  float batt = M5.Axp.GetBatVoltage();
+  show_status("Battery: " + String(batt) + "V");
+
+  if (light_status) {
+    show_light_on_image();
   } else {
-    show_unlock_image();
+    show_light_off_image();
   }
 
   // Send SDP data packet
   data_for_key_status_data_packet.clear();
-  data_for_key_status_data_packet.push_back(SDPData(lock_status));
+  data_for_key_status_data_packet.push_back(SDPData(light_status));
   if (not send_sdp_data_packet(packet_description_key_status, data_for_key_status_data_packet)) {
     Serial.println("Failed to send SDP data packet");
   }

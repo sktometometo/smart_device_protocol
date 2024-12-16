@@ -19,8 +19,8 @@ void init_lcd() {
   lcd.setColorDepth(24);
   lcd.fillScreen(0xFFFFFF);
 
-  sprite_header.createSprite(lcd.width(), lcd.height() / 8);                  // Pos 0, 0
-  sprite_status.createSprite(lcd.width(), lcd.height() * 7 / 8);              // Pos 0, lcd.height() / 8
+  sprite_header.createSprite(lcd.width() / 2, lcd.height() / 8);              // Pos 0, 0
+  sprite_status.createSprite(lcd.width() / 2, lcd.height() / 8);              // Pos 0, lcd.height() / 8
   sprite_lock_image.createSprite(lcd.width() / 2, lcd.height() * 7 / 8 / 2);  // Pos 0, lcd.height() / 8
 
   sprite_header.fillScreen(0xFFFFFF);
@@ -34,7 +34,7 @@ void show_status(String &status) {
   sprite_status.fillScreen(0xFFFFFF);
   sprite_status.setCursor(0, 0);
   sprite_status.print(status);
-  sprite_status.pushSprite(0, lcd.height() / 8);
+  sprite_status.pushSprite(lcd.width() / 2, 0);
 }
 
 void print_header(String &header) {

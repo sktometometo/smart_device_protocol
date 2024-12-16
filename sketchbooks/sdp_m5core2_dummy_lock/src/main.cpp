@@ -62,6 +62,12 @@ bool load_config_from_FS(fs::FS &fs, String filename = "/config.json") {
   }
   device_name = doc["device_name"].as<String>();
   uwb_id = doc["uwb_id"].as<int>();
+  if (doc.containsKey("packet_description_operation")) {
+    packet_description_operation = doc["packet_description_operation"].as<String>();
+  }
+  if (doc.containsKey("packet_description_key_status")) {
+    packet_description_key_status = doc["packet_description_key_status"].as<String>();
+  }
   return true;
 }
 
@@ -131,6 +137,9 @@ void setup() {
 
 void loop() {
   delay(500);
+
+  float batt = M5.Axp.GetBatVoltage();
+  show_status("Battery: " + String(batt) + "V");
 
   if (lock_status) {
     show_lock_image();
